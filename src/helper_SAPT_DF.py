@@ -347,22 +347,20 @@ class helper_SAPT(object):
                 f"helper_SAPT.potential side must be either A or B, not {side}."
             )
 
-    def chf(self, monomer, ind=False, **kwargs):
+    def cpscf(self, monomer, ind=False, **kwargs):
         """
-        Coupled perturbed HF calculations.
+        Coupled perturbed HF or KS calculations.
         """
 
         if monomer not in ["A", "B"]:
             psi4.core.clean()
             raise ValueError(f"'{monomer}' is not a valid monomer for CHF.")
 
-        if self.reference == "ROHF":
+        if self.reference is not "RHF":
             psi4.core.clean()
-            raise ValueError("CPHF for a ROHF reference not implemented yet.")
-
-        if self.reference == "UHF":
-            psi4.core.clean()
-            raise ValueError("CPHF for a ROHF reference not implemented yet.")
+            raise ValueError(
+                f"CPSCF solver for a {self.reference} reference not implemented yet."
+            )
 
         if self.reference == "RHF":
 
@@ -437,32 +435,6 @@ class helper_SAPT(object):
 
             # We want to return a (vo) matrix
             t = t.reshape(no, nv).T
-
-        if ind:
-            e20_ind_r = 2 * np.einsum("vo,ov", t, omega_ov)
-            return t, e20_ind_r
-        else:
-            return t
-
-    def cks(self, monomer, ind=False, **kwargs):
-        """
-        Coupled perturbed KS calculations.
-        """
-
-        if monomer not in ["A", "B"]:
-            psi4.core.clean()
-            raise ValueError(f"'{monomer}' is not a valid monomer for CKS.")
-
-        if self.reference == "UKS":
-            psi4.core.clean()
-            raise ValueError("CPKS for a UKS reference not implemented yet.")
-
-        if self.reference == "UKS":
-            # TODO: new code goes here
-            # NOTE: some parts of chf code probalby can be reused
-
-            omega_ov = 0  # Begone error message!
-            t = 0  # Begone error message!
 
         if ind:
             e20_ind_r = 2 * np.einsum("vo,ov", t, omega_ov)

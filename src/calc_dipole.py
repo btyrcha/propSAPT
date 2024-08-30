@@ -57,8 +57,8 @@ def get_dipole_moment(mol_dimer, sapt: helper_SAPT, sinf: sinfinity) -> pd.DataF
     del d_vec
 
     ### Response amplitudes
-    cphf_ra = sapt.chf("A")
-    cphf_sb = sapt.chf("B")
+    cphf_ra = sapt.cpscf("A")
+    cphf_sb = sapt.cpscf("B")
 
     ### Dipole moment contributions
     start_time = time()
@@ -94,9 +94,9 @@ def get_dipole_moment(mol_dimer, sapt: helper_SAPT, sinf: sinfinity) -> pd.DataF
         d_B_ss = d_vec_B_ss[i]
 
         # relaxed amplitudes with dipole moment
-        xt_A_ra = sapt.chf("A", perturbation=d_A_ar)
+        xt_A_ra = sapt.cpscf("A", perturbation=d_A_ar)
         xt_A_ar = xt_A_ra.T
-        xt_B_sb = sapt.chf("B", perturbation=d_B_bs)
+        xt_B_sb = sapt.cpscf("B", perturbation=d_B_bs)
         xt_B_bs = xt_B_sb.T
 
         results["d0_A"][x[i]] = 2 * oe.contract("aa", d_A_aa)

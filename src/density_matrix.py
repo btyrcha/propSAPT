@@ -38,8 +38,8 @@ def get_density_matirx(
     rho_MO_exch = np.zeros((sapt.nmo, sapt.nmo))
 
     if monomer == "A":
-        rho_pol_ra = sapt.chf("B")
-        rho_exch_ra = 0.5 * sapt.chf(
+        rho_pol_ra = sapt.cpscf("B")
+        rho_exch_ra = 0.5 * sapt.cpscf(
             "B", perturbation=sinf.omega_exchB_ar + sinf.omega_exchB_ra.T
         )
 
@@ -50,8 +50,8 @@ def get_density_matirx(
         rho_MO_exch[: sapt.ndocc_A, sapt.ndocc_A :] = rho_exch_ra.T
 
     if monomer == "B":
-        rho_pol_sb = sapt.chf("A")
-        rho_exch_sb = 0.5 * sapt.chf(
+        rho_pol_sb = sapt.cpscf("A")
+        rho_exch_sb = 0.5 * sapt.cpscf(
             "A", perturbation=sinf.omega_exchA_bs + sinf.omega_exchA_sb.T
         )
 
