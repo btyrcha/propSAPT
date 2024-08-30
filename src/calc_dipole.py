@@ -57,43 +57,8 @@ def get_dipole_moment(mol_dimer, sapt: helper_SAPT, sinf: sinfinity) -> pd.DataF
     del d_vec
 
     ### Response amplitudes
-    cphf_ra = sapt.chf("B")
-    cphf_sb = sapt.chf("A")
-
-    ### Second-order amplitudes
-    start_amplitudes = time()
-
-    # Second-order induction 10 amplitudes
-    u_ind_ra = (
-        oe.contract("rR,Ra->ra", sinf.omegaB_rr, sinf.tB_ra)
-        - oe.contract("Aa,rA->ra", sinf.omegaB_aa, sinf.tB_ra)
-        + 2 * oe.contract("Qar,Qbs,sb->ra", sinf.Qar, sinf.Qbs, sinf.tA_sb)
-        + 2 * oe.contract("bs,rsab->ra", sinf.omegaA_bs, sinf.t_rsab)
-    ) / (-sapt.eps("r", dim=2) + sapt.eps("a"))
-
-    # Second-order induction 01 amplitudes
-    u_ind_sb = (
-        oe.contract("sS,Sb->sb", sinf.omegaA_ss, sinf.tA_sb)
-        - oe.contract("Bb,sB->sb", sinf.omegaA_bb, sinf.tA_sb)
-        + 2 * oe.contract("Qar,Qbs,ra->sb", sinf.Qar, sinf.Qbs, sinf.tB_ra)
-        + 2 * oe.contract("ar,rsab->sb", sinf.omegaB_ar, sinf.t_rsab)
-    ) / (-sapt.eps("s", dim=2) + sapt.eps("b"))
-
-    # Second-order ind-disp 10 amplitudes
-    u_ind_disp_ra = (
-        2 * oe.contract("QrR,Qbs,Rsab->ra", sinf.Qrr, sinf.Qbs, sinf.t_rsab)
-        - 2 * oe.contract("QAa,Qbs,rsAb->ra", sinf.Qaa, sinf.Qbs, sinf.t_rsab)
-    ) / (-sapt.eps("r", dim=2) + sapt.eps("a"))
-
-    # Second-order ind-disp 01 amplitudes
-    u_ind_disp_sb = (
-        2 * oe.contract("Qar,QsS,rSab->sb", sinf.Qar, sinf.Qss, sinf.t_rsab)
-        - 2 * oe.contract("Qar,QBb,rsaB->sb", sinf.Qar, sinf.Qbb, sinf.t_rsab)
-    ) / (-sapt.eps("s", dim=2) + sapt.eps("b"))
-
-    psi4.core.print_out(
-        f"...preparation of second-order amplitudes took {time() - start_amplitudes:.2f} seconds.\n"
-    )
+    cphf_ra = sapt.chf("A")
+    cphf_sb = sapt.chf("B")
 
     ### Dipole moment contributions
     start_time = time()
@@ -129,10 +94,10 @@ def get_dipole_moment(mol_dimer, sapt: helper_SAPT, sinf: sinfinity) -> pd.DataF
         d_B_ss = d_vec_B_ss[i]
 
         # relaxed amplitudes with dipole moment
-        xt_B_sb = sapt.chf("A", perturbation=d_B_bs)
-        xt_B_bs = xt_B_sb.T
-        xt_A_ra = sapt.chf("B", perturbation=d_A_ar)
+        xt_A_ra = sapt.chf("A", perturbation=d_A_ar)
         xt_A_ar = xt_A_ra.T
+        xt_B_sb = sapt.chf("B", perturbation=d_B_bs)
+        xt_B_bs = xt_B_sb.T
 
         results["d0_A"][x[i]] = 2 * oe.contract("aa", d_A_aa)
         results["d0_B"][x[i]] = 2 * oe.contract("bb", d_B_bb)
