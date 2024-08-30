@@ -38,7 +38,13 @@ class helper_SAPT(object):
 
         # Initialize time
         tinit_start = time.time()
-        psi4.core.print_out(message_box("helper_SAPT calculations") + "\n")
+        psi4.core.print_out(
+            f"""         ---------------------------------------------------------
+                             helper_SAPT_DF
+                              {reference} Reference
+         ---------------------------------------------------------
+         """
+        )
         psi4.core.print_out("\nInitializing SAPT object...\n")
         psi4.core.print_out(f"\nSelcted reference is {reference}\n")
 
@@ -77,13 +83,13 @@ class helper_SAPT(object):
                     "\nWARNING!: GRAC shift for monomer A not specified!\n"
                 )
             self.dftA, self.wfnA = psi4.energy(
-                kwargs.get("functional", None), return_wfn=True, molecule=monomerA
+                kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerA
             )
         self.V_A = np.asarray(
             psi4.core.MintsHelper(self.wfnA.basisset()).ao_potential()
         )
         psi4.core.print_out(
-            f"\n{reference} for monomer A finished in {time.time() - tstart:.2f} seconds.\n"
+            f"\n{reference} for monomer A finished in {time.time() - tstart:.2f} seconds.\n\n"
         )
 
         psi4.core.print_out(message_box(f"Monomer B {reference}") + "\n")
@@ -100,13 +106,13 @@ class helper_SAPT(object):
                     "\nWARNING!: GRAC shift for monomer B not specified!\n"
                 )
             self.dftB, self.wfnB = psi4.energy(
-                kwargs.get("functional", None), return_wfn=True, molecule=monomerB
+                kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerB
             )
         self.V_B = np.asarray(
             psi4.core.MintsHelper(self.wfnB.basisset()).ao_potential()
         )
         psi4.core.print_out(
-            f"\n{reference} for monomer B finished in {time.time() - tstart:.2f} seconds.\n"
+            f"\n{reference} for monomer B finished in {time.time() - tstart:.2f} seconds.\n\n"
         )
 
         # Setup a few variables
