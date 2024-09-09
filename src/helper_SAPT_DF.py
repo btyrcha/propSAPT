@@ -15,11 +15,11 @@ References:
 [Szalewicz:2012:254], and [Hohenstein:2012:304]
 """
 
+import time
 import numpy as np
 import opt_einsum as oe
-import time
 import psi4
-from psi4.driver.p4util import message_box
+from psi4.driver.p4util import message_box, cg_solver
 
 
 class helper_SAPT(object):
@@ -356,13 +356,13 @@ class helper_SAPT(object):
             psi4.core.clean()
             raise ValueError(f"'{monomer}' is not a valid monomer for CHF.")
 
-        if self.reference is not "RHF":
+        if self.reference in ["ROHF", "UHF", "UKS"]:
             psi4.core.clean()
             raise ValueError(
                 f"CPSCF solver for a {self.reference} reference not implemented yet."
             )
 
-        if self.reference == "RHF":
+        if self.reference == "RHF" or self.reference == "RKS":
 
             # NOTE: Changed the monomer naming scheme:
             # 'monomer' refers now to the one that returned amplitudes are for.
@@ -384,10 +384,13 @@ class helper_SAPT(object):
                 no = self.ndocc_A
                 nv = self.nvirt_A
 
-                # Set indicies
-                oo = "aa"
-                ov = "ar"
-                vv = "rr"
+                # apply hessian func
+                def _hess_x(x_vec, act_mask):
+                    if act_mask[0]:
+                        # monomer A
+                        return self.wfnA.cphf_Hx([x_vec[0]])
+                    else:
+                        return [False]
 
             if monomer == "B":
                 if kwargs.get("perturbation", None) is None:
@@ -407,31 +410,36 @@ class helper_SAPT(object):
                 no = self.ndocc_B
                 nv = self.nvirt_B
 
-                # Set indicies
-                oo = "bb"
-                ov = "bs"
-                vv = "ss"
+                # apply hessian func
+                def _hess_x(x_vec, act_mask):
+                    if act_mask[0]:
+                        # monomer B
+                        return self.wfnB.cphf_Hx([x_vec[0]])
+                    else:
+                        return [False]
 
-            # Construct DF integrals
-            Qov = self.df_ints(ov)
-            Qoo = self.df_ints(oo)
-            Qvv = self.df_ints(vv)
+            # preconditioner - applies denominator (for faster convergence)
+            def _apply_precon(x_vec, act_mask):
+                if act_mask[0]:
+                    p = x_vec[0].clone()
+                    p.apply_denominator(psi4.core.Matrix.from_array(eps_ov))
+                else:
+                    p = False
 
-            # Build H^(1) matrix
-            H1 = (
-                +4 * oe.contract("Qov,QOV->ovOV", Qov, Qov)
-                - oe.contract("QoO,QvV->ovOV", Qoo, Qvv)
-                - oe.contract("QOv,QoV->ovOV", Qov, Qov)
-                - oe.contract(
-                    "ov,oO,vV->ovOV", eps_ov, np.diag(np.ones(no)), np.diag(np.ones(nv))
-                )
+                return [p]
+
+            # solve cpscf
+            t = cg_solver(
+                [psi4.core.Matrix.from_array(pert_ov)],
+                _hess_x,
+                _apply_precon,
+                printlvl=2,
+                maxiter=20,
+                rcond=1.0e-8,
             )
 
-            # Solve liear matrix equation
-            # H1 * t = omega,
-            # where t and omega are vectors of size (ov)
-            # and H1 is an (ov)x(ov) matrix.
-            t = np.linalg.solve(H1.reshape(no * nv, no * nv), -pert_ov.ravel())
+            # unwrap the lists
+            t = np.array(t[0])[0]
 
             # We want to return a (vo) matrix
             t = t.reshape(no, nv).T
