@@ -30,11 +30,6 @@ OPTIONS = {
     "DF_BASIS_SCF": DF_BASIS + "-jkfit",
     "DF_BASIS_SAPT": DF_BASIS + "-ri",
     "scf_type": "df",
-    "e_convergence": 1e-12,
-    "d_convergence": 1e-12,
-    "s_tolerance": 1e-12,
-    "screening": "density",
-    "ints_tolerance": 1e-14,
 }
 
 # specify output and resultS filenames
@@ -57,6 +52,10 @@ if __name__ == "__main__":
 
     ### Calculate interaction-induced denisty matrix
     density_matrix = ii.calc_density(dimer)
+
+    ### Use Psi4 to perform other calculations
+    dimer_psi4 = dimer.get_psi4_molecule()
+    psi4.energy("mp2", molecule=dimer_psi4)
 
     ### End calculations
     psi4.core.clean()
