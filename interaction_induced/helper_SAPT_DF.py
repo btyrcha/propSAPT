@@ -40,6 +40,7 @@ class helper_SAPT(object):
 
         # Initialize time
         tinit_start = time.time()
+        psi4.core.print_out("\nInitializing SAPT object...\n")
         psi4.core.print_out(
             f"""         ---------------------------------------------------------
                              helper_SAPT_DF
@@ -47,7 +48,6 @@ class helper_SAPT(object):
          ---------------------------------------------------------
          """
         )
-        psi4.core.print_out("\nInitializing SAPT object...\n")
         psi4.core.print_out(f"\nSelcted reference is {reference}\n")
 
         # Set a few crucial attributes
@@ -223,6 +223,14 @@ class helper_SAPT(object):
                 "s": self.nvirt_B,
             }
 
+        ### Number of basis functions
+        psi4.core.print_out("\nNumber of molecular orbitals per type:\n")
+        psi4.core.print_out("-" * 38 + "\n")
+        psi4.core.print_out("".join([f"{dim:>5}" for dim in self.sizes]) + "\n")
+        psi4.core.print_out("-" * 38 + "\n")
+        psi4.core.print_out("".join([f"{self.sizes[dim]:5d}" for dim in self.sizes]))
+        psi4.core.print_out("\n\n")
+
         ### Compute DF ERIs for dimer basis
         tstart = time.time()
         psi4.core.print_out("\nCompute DF integrals for dimer-centered basis...\n")
@@ -274,9 +282,8 @@ class helper_SAPT(object):
         self.S_AB = oe.contract("ui,vj,uv->ij", self.C_A, self.C_B, self.S)
 
         psi4.core.print_out(
-            f"\n...finished initializing SAPT object in {time.time() - tinit_start:5.2f} seconds.\n"
+            f"\n...finished initializing SAPT object in {time.time() - tinit_start:5.2f} seconds.\n\n"
         )
-        psi4.core.print_out("\n")
 
     # Gets transformed DF intergrals in MO
     def df_ints(self, string):

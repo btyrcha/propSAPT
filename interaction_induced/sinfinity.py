@@ -380,5 +380,5 @@ class sinfinity(helper_SAPT):
 
         ### Print time
         psi4.core.print_out(
-            f"...finished initializing Sinfinity object in {(time() - t_start):5.2f} seconds.\n"
+            f"...finished initializing Sinfinity object in {(time() - t_start):5.2f} seconds.\n\n"
         )
