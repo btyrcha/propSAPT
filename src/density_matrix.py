@@ -1,7 +1,7 @@
 import psi4
 import numpy as np
-from helper_SAPT_DF import helper_SAPT
-from sinfinity import sinfinity
+from .helper_SAPT_DF import helper_SAPT
+from .sinfinity import sinfinity
 
 
 def density_mo_to_ao(

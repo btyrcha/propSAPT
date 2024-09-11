@@ -6,7 +6,7 @@ from time import time
 import psi4
 import numpy as np
 import opt_einsum as oe
-from helper_SAPT_DF import helper_SAPT
+from .helper_SAPT_DF import helper_SAPT
 
 
 def get_A_bb(s_ba, s_ab):
@@ -35,29 +35,32 @@ def get_B_aa(s_ba, s_ab):
     return B_aa
 
 
-class sinfinity:
-    def __init__(self, sapt: helper_SAPT, df_basis=None) -> None:
+class sinfinity(helper_SAPT):
+
+    def __init__(self, dimer, reference="RHF", memory=8, **kwargs):
+        super().__init__(dimer, reference, memory, **kwargs)
+
         ### Starting initialisation
         psi4.core.print_out("\nInitializing Sinfinity object...\n")
         t_start = time()
 
         ###  Matrices and tensors from helper_sapt
-        s_ab = sapt.s("ab")
-        s_ba = sapt.s("ba")
-        s_sa = sapt.s("sa")
-        s_as = sapt.s("as")
-        s_rb = sapt.s("rb")
-        s_sr = sapt.s("sr")
-        s_rs = sapt.s("rs")
-        s_br = sapt.s("br")
+        s_ab = self.s("ab")
+        s_ba = self.s("ba")
+        s_sa = self.s("sa")
+        s_as = self.s("as")
+        s_rb = self.s("rb")
+        s_sr = self.s("sr")
+        s_rs = self.s("rs")
+        s_br = self.s("br")
 
-        vA_bb = sapt.potential("bb", "A")
-        vA_bs = sapt.potential("bs", "A")
-        vA_ss = sapt.potential("ss", "A")
+        vA_bb = self.potential("bb", "A")
+        vA_bs = self.potential("bs", "A")
+        vA_ss = self.potential("ss", "A")
 
-        vB_aa = sapt.potential("aa", "B")
-        vB_ar = sapt.potential("ar", "B")
-        vB_rr = sapt.potential("rr", "B")
+        vB_aa = self.potential("aa", "B")
+        vB_ar = self.potential("ar", "B")
+        vB_rr = self.potential("rr", "B")
 
         ### Calculating A and B matrices
         self.A_bb = get_A_bb(s_ba, s_ab)
@@ -73,10 +76,10 @@ class sinfinity:
         self.G_sr = s_sr + oe.contract("br,Bb,aB,sa->sr", s_br, self.A_bb, s_ab, s_sa)
         self.G_rs = s_rs + oe.contract("as,Aa,bA,rb->rs", s_as, self.B_aa, s_ba, s_rb)
 
-        self.C_rr = np.identity(sapt.sizes["r"]) - oe.contract(
+        self.C_rr = np.identity(self.sizes["r"]) - oe.contract(
             "bR,Bb,rB->rR", s_br, self.A_bb, s_rb
         )
-        self.D_ss = np.identity(sapt.sizes["s"]) - oe.contract(
+        self.D_ss = np.identity(self.sizes["s"]) - oe.contract(
             "aS,Aa,sA->sS", s_as, self.B_aa, s_sa
         )
 
@@ -87,20 +90,20 @@ class sinfinity:
 
         # dispersion denominator
         self.e_rsab = 1 / (
-            -sapt.eps("r", dim=4)
-            - sapt.eps("s", dim=3)
-            + sapt.eps("a", dim=2)
-            + sapt.eps("b")
+            -self.eps("r", dim=4)
+            - self.eps("s", dim=3)
+            + self.eps("a", dim=2)
+            + self.eps("b")
         )
 
-        if df_basis:
+        if self.is_density_fitted:
             # MO transformed df ERIs
-            self.Qaa = sapt.df_ints("aa")
-            self.Qar = sapt.df_ints("ar")
-            self.Qrr = sapt.df_ints("rr")
-            self.Qbb = sapt.df_ints("bb")
-            self.Qbs = sapt.df_ints("bs")
-            self.Qss = sapt.df_ints("ss")
+            self.Qaa = self.df_ints("aa")
+            self.Qar = self.df_ints("ar")
+            self.Qrr = self.df_ints("rr")
+            self.Qbb = self.df_ints("bb")
+            self.Qbs = self.df_ints("bs")
+            self.Qss = self.df_ints("ss")
 
             ### omegaA and omegaB
             self.omegaA_bs = vA_bs + 2 * oe.contract("Qaa,Qbs->bs", self.Qaa, self.Qbs)
@@ -310,18 +313,18 @@ class sinfinity:
 
         else:
             ### omegaA and omegaB
-            v_abas = sapt.v("abas")
-            v_abrb = sapt.v("abrb")
-            self.v_abrs = sapt.v("abrs")
-            v_abab = sapt.v("abab")
+            v_abas = self.v("abas")
+            v_abrb = self.v("abrb")
+            self.v_abrs = self.v("abrs")
+            v_abab = self.v("abab")
 
             self.omegaA_bs = vA_bs + 2 * oe.contract("abas->bs", v_abas)
             self.omegaB_ar = vB_ar + 2 * oe.contract("abrb->ar", v_abrb)
 
-            self.omegaB_rr = 2 * oe.contract("rbRb->rR", sapt.v("rbrb")) + vB_rr
+            self.omegaB_rr = 2 * oe.contract("rbRb->rR", self.v("rbrb")) + vB_rr
             self.omegaB_aa = 2 * oe.contract("abAb->aA", v_abab) + vB_aa
 
-            self.omegaA_ss = 2 * oe.contract("asaS->sS", sapt.v("asas")) + vA_ss
+            self.omegaA_ss = 2 * oe.contract("asaS->sS", self.v("asas")) + vA_ss
             self.omegaA_bb = 2 * oe.contract("abaB->bB", v_abab) + vA_bb
 
             ### omega_exchA and omega_exchB
@@ -369,10 +372,10 @@ class sinfinity:
             )
 
         ### Non-response amplitudes
-        e_ra = 1 / (-sapt.eps("r", dim=2) + sapt.eps("a"))
+        e_ra = 1 / (-self.eps("r", dim=2) + self.eps("a"))
         self.tB_ra = self.omegaB_ar.T * e_ra
 
-        e_sb = 1 / (-sapt.eps("s", dim=2) + sapt.eps("b"))
+        e_sb = 1 / (-self.eps("s", dim=2) + self.eps("b"))
         self.tA_sb = self.omegaA_bs.T * e_sb
 
         ### Print time

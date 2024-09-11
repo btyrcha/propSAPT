@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 import opt_einsum as oe
 import tracemalloc
-from helper_SAPT_DF import helper_SAPT
-from sinfinity import sinfinity
+from .helper_SAPT_DF import helper_SAPT
+from .sinfinity import sinfinity
 
 
 def trace_memory_peak(func):
@@ -29,7 +29,8 @@ def trace_memory_peak(func):
     return wrapper
 
 
-def get_dipole_moment(mol_dimer, sapt: helper_SAPT, sinf: sinfinity) -> pd.DataFrame:
+# TODO: rewrite to get a funciton `calc_property`
+def calc_property(mol_dimer, sapt: helper_SAPT, sinf: sinfinity) -> pd.DataFrame:
     """
     Calculates dipole moment contributions
     calculated using SAPT.

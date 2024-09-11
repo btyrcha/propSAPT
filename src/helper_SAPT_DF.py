@@ -23,9 +23,11 @@ from psi4.driver.p4util import message_box, cg_solver
 
 
 class helper_SAPT(object):
-    def __init__(
-        self, dimer, df_basis, memory=8, algorithm="MO", reference="RHF", **kwargs
-    ):
+    def __init__(self, dimer, reference="RHF", memory=8, **kwargs):
+
+        # This is denisty_fitted version of helper_SAPT
+        self.is_density_fitted = True
+
         # Verify reference
         if reference not in ["RHF", "ROHF", "UHF", "RKS", "UKS"]:
             psi4.core.clean()
@@ -49,7 +51,6 @@ class helper_SAPT(object):
         psi4.core.print_out(f"\nSelcted reference is {reference}\n")
 
         # Set a few crucial attributes
-        self.alg = algorithm.upper()
         self.reference = reference.upper()
         dimer.reset_point_group("c1")
         dimer.fix_orientation(True)
@@ -234,12 +235,13 @@ class helper_SAPT(object):
 
         # DF intergrals in AO
         # loading custom basis stored at keyword
+        # NOTE: requiers testing
         aux_basis = psi4.core.BasisSet.build(
             self.dimer_wfn.molecule(),
-            "DF_BASIS_SCF",
-            psi4.core.get_global_option("DF_BASIS_SAPT"),
-            "RIFIT",
-            df_basis,
+            # key= "PSI4_KEYWORD",
+            target=psi4.core.get_global_option("DF_BASIS_SAPT"),
+            other=psi4.core.get_global_option("DF_BASIS_SAPT"),
+            fitrole="RIFIT",
         )
         aux_basis.print_out()
         self.nao_aux = aux_basis.nao()
