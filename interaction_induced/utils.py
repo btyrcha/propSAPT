@@ -1,3 +1,4 @@
+import os
 import tracemalloc
 import psi4
 
@@ -22,3 +23,17 @@ def trace_memory_peak(func):
         return result
 
     return wrapper
+
+
+def prepare_path(file_path):
+    """
+    Create directories (and subdirectories)
+    from `file_path` if they don't exist.
+    """
+
+    directories = os.path.dirname(file_path)
+
+    if not directories == "" and not os.path.exists(directories):
+        os.makedirs(directories)
+
+    return file_path
