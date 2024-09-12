@@ -52,7 +52,15 @@ if __name__ == "__main__":
     data = ii.calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
 
     ### Calculate interaction-induced denisty matrix
-    density_matrix = ii.calc_density(dimer)
+    delta_dm_A = ii.calc_density_matirx(dimer, "A")
+    delta_dm_B = ii.calc_density_matirx(dimer, "B")
+
+    delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
+
+    ### Store densities to .cube files
+    ii.save_cube(delta_dm_A["total"], filename="delta_dm_A.cube")
+    ii.save_cube(delta_dm_B["total"], filename="delta_dm_B.cube")
+    ii.save_cube(delta_dm, filename="delta_dm.cube")
 
     ### Use Psi4 to perform other calculations
     dimer_psi4 = dimer.get_psi4_molecule()
