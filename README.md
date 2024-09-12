@@ -1,6 +1,6 @@
 # interaction-induced
 
-Repo for calculation of first-order interaction-induced properties and density matrices in the spirit of SAPT.
+Package for calculations of first-order interaction-induced properties and density matrices in the spirit of SAPT.
 
 
 ## Implementation
