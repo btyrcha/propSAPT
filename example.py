@@ -30,6 +30,7 @@ OPTIONS = {
     "DF_BASIS_SCF": DF_BASIS + "-jkfit",
     "DF_BASIS_SAPT": DF_BASIS + "-ri",
     "scf_type": "df",
+    "save_jk": True,  # necessary option
 }
 
 # specify output and resultS filenames
