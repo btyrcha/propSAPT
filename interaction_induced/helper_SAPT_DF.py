@@ -81,7 +81,7 @@ class helper_SAPT(object):
                 psi4.set_options({"dft_grac_shift": kwargs["grac_A"]})
             else:
                 psi4.core.print_out(
-                    "\nWARNING!: GRAC shift for monomer A not specified!\n"
+                    "\n*** WARNING!: GRAC shift for monomer A not specified! ***\n"
                 )
             self.dftA, self.wfnA = psi4.energy(
                 kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerA
@@ -104,7 +104,7 @@ class helper_SAPT(object):
                 psi4.set_options({"dft_grac_shift": kwargs["grac_B"]})
             else:
                 psi4.core.print_out(
-                    "\nWARNING!: GRAC shift for monomer B not specified!\n"
+                    "\n*** WARNING!: GRAC shift for monomer B not specified! ***\n"
                 )
             self.dftB, self.wfnB = psi4.energy(
                 kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerB

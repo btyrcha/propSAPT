@@ -98,7 +98,7 @@ class Molecule(sinfinity):
 
             # write a header
             file.write("interaction-induced .cube file\n")
-            file.write(f"isovalues for 85% of the denisty: {isovalues}\n")
+            file.write(f"isovalues for 85% of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n")
 
             # wirte number of atoms and begining of the grid
             file.write(f"{len(elez):6d}  "

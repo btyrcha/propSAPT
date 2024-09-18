@@ -58,8 +58,8 @@ if __name__ == "__main__":
     delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
 
     ### Store densities to .cube files
-    dimer.save_cube(delta_dm_A["total"], filename="delta_dm_A.cube")
-    dimer.save_cube(delta_dm_B["total"], filename="delta_dm_B.cube")
+    dimer.save_cube(2 * delta_dm_A["total"], filename="delta_dm_A.cube")
+    dimer.save_cube(2 * delta_dm_B["total"], filename="delta_dm_B.cube")
     dimer.save_cube(2 * delta_dm, filename="delta_dm.cube")
 
     ### Use Psi4 to perform other calculations

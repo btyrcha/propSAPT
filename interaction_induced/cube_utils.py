@@ -85,6 +85,32 @@ def calculate_isocontour(values: np.ndarray, threshold: float = 0.85):
             f"`threshold` must be within range (0.0, 1.0), was {threshold:.2f}!"
         )
 
-    # TODO: implement isovalue calculations
+    flatened_vals = values.flatten()
+    positive_target = threshold * np.sum(
+        0.5 * (np.sign(flatened_vals) + 1) * np.abs(flatened_vals)
+    )
+    negative_target = threshold * np.sum(
+        0.5 * (np.sign(flatened_vals) - 1) * np.abs(flatened_vals)
+    )
 
-    return (0.0, 0.0)
+    positive_sum = 0.0
+    negative_sum = 0.0
+    positive_isoval = 0.0
+    negative_isoval = 0.0
+    do_positive = True
+    do_negative = True
+    for i in np.argsort(np.abs(flatened_vals)):
+
+        if do_positive and flatened_vals[i] >= 0.0:
+            positive_sum += flatened_vals[i]
+            if positive_sum >= positive_target:
+                positive_isoval = flatened_vals[i]
+                do_positive = False
+
+        elif do_negative and flatened_vals[i] < 0.0:
+            negative_sum += flatened_vals[i]
+            if negative_sum <= negative_target:
+                negative_isoval = flatened_vals[i]
+                do_negative = False
+
+    return (positive_isoval, negative_isoval)
