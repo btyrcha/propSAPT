@@ -20,6 +20,7 @@ class Molecule(sinfinity):
         t_start = time()
         psi4.core.print_out("*" * 80)
         psi4.core.print_out("\nInitializing Molecule object...\n\n")
+        psi4.core.tstart()
 
         # create Psi4 Molecule object
         self.geometry = geometry
@@ -33,6 +34,8 @@ class Molecule(sinfinity):
         psi4.core.print_out(
             f"...finished initializing Molecule object in {(time() - t_start):5.2f} seconds.\n"
         )
+        psi4.core.tstop()
+        psi4.core.print_out("\n")
         psi4.core.print_out("*" * 80)
         psi4.core.print_out("\n")
 
@@ -70,6 +73,7 @@ class Molecule(sinfinity):
         psi4.core.print_out("        |            `save_cube`             |        \n")
         psi4.core.print_out("        |------------------------------------|        \n")
         psi4.core.print_out(f"\nSaving volumetric data to file `{filename}`.\n\n")
+        psi4.core.tstart()
 
         # get basis set and geometry
         basisset = self.get_psi4_basisset()
@@ -136,5 +140,7 @@ class Molecule(sinfinity):
         psi4.core.print_out(
             f"...finished evaluating density on the grid in {(time() - t_start):5.2f} seconds.\n"
         )
+        psi4.core.tstop()
+        psi4.core.print_out("\n")
         psi4.core.print_out("*" * 80)
         psi4.core.print_out("\n\n")
