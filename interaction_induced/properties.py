@@ -30,9 +30,9 @@ def perform_property_contractions(
     prop_A_ar = mol.transform_ao_to_mo(property_matix, "ar")
     # prop_A_rr = mol.transform_ao_to_mo(property_matix, "rr")
 
-    prop_B_bb = mol.transform_ao_to_mo(property_matix, "aa")
-    prop_B_bs = mol.transform_ao_to_mo(property_matix, "ar")
-    # prop_B_ss = mol.transform_ao_to_mo(property_matix, "rr")
+    prop_B_bb = mol.transform_ao_to_mo(property_matix, "bb")
+    prop_B_bs = mol.transform_ao_to_mo(property_matix, "bs")
+    # prop_B_ss = mol.transform_ao_to_mo(property_matix, "ss")
 
     # relaxed amplitudes with dipole moment
     xt_A_ra = mol.cpscf("A", perturbation=prop_A_ar)
@@ -72,7 +72,7 @@ def calc_induced_dipole(mol: Molecule):
 
     # grab nuclear dipole moment
     nuc_dipole = mol.dimer.nuclear_dipole()
-    nuc_dipole = [nuc_dipole[0], nuc_dipole[1], nuc_dipole[2]]
+    nuc_dipole = np.array([nuc_dipole[0], nuc_dipole[1], nuc_dipole[2]])
 
     # grab AO dipole moment matrices
     d_vec = mol.mints.ao_dipole()
@@ -90,6 +90,7 @@ def calc_induced_dipole(mol: Molecule):
     del d_vec
 
     results.set_index("axis", inplace=True)
+    results["nuc"] = nuc_dipole
 
     return results
 
