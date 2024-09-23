@@ -1,0 +1,18 @@
+name: inter-ind
+channels:
+  - psi4/label/qcdb
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - psi4=1.9
+  - qcdb
+  - jupyterlab
+  - numpy<2.0
+  - pandas
+  - matplotlib
+  - seaborn
+  - fortecubeview
+  - opt_einsum
+  - click
+prefix: /home/bt/miniconda3/envs/inter-ind
