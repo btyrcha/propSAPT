@@ -99,7 +99,7 @@ def calculate_isocontour(values: np.ndarray, threshold: float = 0.85):
     negative_isoval = 0.0
     do_positive = True
     do_negative = True
-    for i in np.argsort(np.abs(flatened_vals)):
+    for i in np.argsort(np.abs(flatened_vals))[::-1]:
 
         if do_positive and flatened_vals[i] >= 0.0:
             positive_sum += flatened_vals[i]

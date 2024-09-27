@@ -95,14 +95,16 @@ class Molecule(sinfinity):
                     values[i][j][k] = basis_vals.dot(matrix).dot(basis_vals.T)
 
         # get isocontour values
-        isovalues = calculate_isocontour(values)
+        iso_sum_level = kwargs.get("iso_sum_level", 0.85)
+        isovalues = calculate_isocontour(values, threshold=iso_sum_level)
 
         # create and save cube string
         with open(filename, "w", encoding="utf-8") as file:
 
             # write a header
             file.write("interaction-induced .cube file\n")
-            file.write(f"isovalues for 85% of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n")
+            file.write(f"isovalues for {iso_sum_level*100:.0f}%"
+                       f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n")
 
             # wirte number of atoms and begining of the grid
             file.write(f"{len(elez):6d}  "
