@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def read_cube_file(filename):
+def read_cube_file(filename:str):
     """
     Reads the data form .cube file 'filename'.
     """
@@ -61,6 +61,55 @@ def read_cube_file(filename):
         "volumetric_data": volumetric_data,
     }
 
+def save_cube_file(cube_dict: dict, filename:str, **kwargs):
+    """
+    Saves a 'cube_dict', dictionary structure assumed 
+    the same as from 'read_cube_file' into the 'filename'.
+    """
+
+    # get isocontour values
+    iso_sum_level = kwargs.get("iso_sum_level", 0.85)
+    isovalues = calculate_isocontour(cube_dict["volumetric_data"], threshold=iso_sum_level)
+
+    # create and save cube string
+    with open(filename, "w", encoding="utf-8") as file:
+
+        # write a header
+        file.write("interaction-induced .cube file\n")
+        file.write(f"isovalues for {iso_sum_level*100:.0f}%"
+                    f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n")
+
+        # wirte number of atoms and begining of the grid
+        file.write(f"{cube_dict["n_atoms"]:6d}  "
+                    f"{cube_dict["origin"][0]: .6f}  "
+                    f"{cube_dict["origin"][1]: .6f}  "
+                    f"{cube_dict["origin"][2]: .6f}\n")
+
+        # write grid details
+        file.write(f"{cube_dict["n_x"]:6d}  "+"  ".join([f"{i: .6f}" for i in cube_dict["x_vector"]])+"\n")
+        file.write(f"{cube_dict["n_y"]:6d}  "+"  ".join([f"{i: .6f}" for i in cube_dict["y_vector"]])+"\n")
+        file.write(f"{cube_dict["n_z"]:6d}  "+"  ".join([f"{i: .6f}" for i in cube_dict["z_vector"]])+"\n")
+
+
+        # write geometry
+        for atom in cube_dict["atoms"]:
+            file.write(
+                f"{atom[0]:3d}  "
+                f"{atom[1]: .6f}  "
+                f"{atom[2][0]: .6f}  "
+                f"{atom[2][1]: .6f}  "
+                f"{atom[2][2]: .6f}\n"
+            )
+
+        # write volumetric information
+        count = 0
+        for value in cube_dict["volumetric_data"].flatten():
+
+            file.write(f"{value: .5E} ")
+            count += 1
+
+            if count % 6 == 0:
+                file.write("\n")
 
 def prepare_grid(
     geometry: np.ndarray, grid_step: float | tuple, grid_overage: float | tuple
