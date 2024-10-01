@@ -1,9 +1,9 @@
 import numpy as np
 
 
-def read_cube_file(filename:str):
+def read_cube_file(filename: str):
     """
-    Reads the data form .cube file 'filename'.
+    Reads the data form .cube file `filename`.
     """
 
     with open(filename, "r", encoding="utf-8") as f:
@@ -61,35 +61,44 @@ def read_cube_file(filename:str):
         "volumetric_data": volumetric_data,
     }
 
-def save_cube_file(cube_dict: dict, filename:str, **kwargs):
-    """
-    Saves a 'cube_dict', dictionary structure assumed 
-    the same as from 'read_cube_file' into the 'filename'.
-    """
 
-    # get isocontour values
-    iso_sum_level = kwargs.get("iso_sum_level", 0.85)
-    isovalues = calculate_isocontour(cube_dict["volumetric_data"], threshold=iso_sum_level)
+def save_cube_file(cube_dict: dict, filename: str):
+    """
+    Saves a `cube_dict`, dictionary structure assumed
+    the same as from `read_cube_file` into the `filename`.
+    """
 
     # create and save cube string
     with open(filename, "w", encoding="utf-8") as file:
 
         # write a header
-        file.write("interaction-induced .cube file\n")
-        file.write(f"isovalues for {iso_sum_level*100:.0f}%"
-                    f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n")
+        file.write(cube_dict["comment1"] + "\n")
+        file.write(cube_dict["comment2"] + "\n")
 
         # wirte number of atoms and begining of the grid
-        file.write(f"{cube_dict["n_atoms"]:6d}  "
-                    f"{cube_dict["origin"][0]: .6f}  "
-                    f"{cube_dict["origin"][1]: .6f}  "
-                    f"{cube_dict["origin"][2]: .6f}\n")
+        file.write(
+            f"{cube_dict['n_atoms']:6d}  "
+            f"{cube_dict['origin'][0]: .6f}  "
+            f"{cube_dict['origin'][1]: .6f}  "
+            f"{cube_dict['origin'][2]: .6f}\n"
+        )
 
         # write grid details
-        file.write(f"{cube_dict["n_x"]:6d}  "+"  ".join([f"{i: .6f}" for i in cube_dict["x_vector"]])+"\n")
-        file.write(f"{cube_dict["n_y"]:6d}  "+"  ".join([f"{i: .6f}" for i in cube_dict["y_vector"]])+"\n")
-        file.write(f"{cube_dict["n_z"]:6d}  "+"  ".join([f"{i: .6f}" for i in cube_dict["z_vector"]])+"\n")
-
+        file.write(
+            f"{cube_dict['n_x']:6d}  "
+            + "  ".join([f"{i: .6f}" for i in cube_dict["x_vector"]])
+            + "\n"
+        )
+        file.write(
+            f"{cube_dict['n_y']:6d}  "
+            + "  ".join([f"{i: .6f}" for i in cube_dict["y_vector"]])
+            + "\n"
+        )
+        file.write(
+            f"{cube_dict['n_z']:6d}  "
+            + "  ".join([f"{i: .6f}" for i in cube_dict["z_vector"]])
+            + "\n"
+        )
 
         # write geometry
         for atom in cube_dict["atoms"]:
@@ -110,6 +119,53 @@ def save_cube_file(cube_dict: dict, filename:str, **kwargs):
 
             if count % 6 == 0:
                 file.write("\n")
+
+
+def subtract_cubes(cube_1: dict, cube_2: dict):
+    """
+    Calculate a difference between volumetric data of two cubes.
+
+    Cube grids have to be the same for this operation.
+    Data about molecule geometry is taken from `cube_1`.
+    """
+
+    if False in np.isclose(cube_1["origin"], cube_2["origin"]):
+        raise ValueError(
+            "Cube grids have different origins!\n"
+            f"cube_1: {cube_1['origin']}\n"
+            f"cube_2: {cube_2['origin']}"
+        )
+
+    if (
+        False in np.isclose(cube_1["x_vector"], cube_2["x_vector"])
+        or False in np.isclose(cube_1["y_vector"], cube_2["y_vector"])
+        or False in np.isclose(cube_1["z_vector"], cube_2["z_vector"])
+    ):
+        raise ValueError("Cube grids have different vectors!\n"
+                         f"cube_1: {cube_1["x_vector"]}\n"
+                         f"        {cube_1["y_vector"]}\n"
+                         f"        {cube_1["z_vector"]}\n"
+                         f"cube_2: {cube_2["x_vector"]}\n"
+                         f"        {cube_2["y_vector"]}\n"
+                         f"        {cube_2["z_vector"]}")
+
+    volumetric_data = cube_1["volumetric_data"] - cube_2["volumetric_data"]
+
+    return {
+        "comment1": "",
+        "comment2": "",
+        "origin": cube_1["origin"],
+        "n_atoms": cube_1["n_atoms"],
+        "atoms": cube_1["atoms"],
+        "n_x": cube_1["n_x"],
+        "n_y": cube_1["n_y"],
+        "n_z": cube_1["n_z"],
+        "x_vector": cube_1["x_vector"],
+        "y_vector": cube_1["y_vector"],
+        "z_vector": cube_1["z_vector"],
+        "volumetric_data": volumetric_data,
+    }
+
 
 def prepare_grid(
     geometry: np.ndarray, grid_step: float | tuple, grid_overage: float | tuple
@@ -147,7 +203,7 @@ def prepare_grid(
 
     else:
         raise TypeError(
-            f"`grid_overage' has to be float or tuple but was {type(grid_overage)}!"
+            f"`grid_overage` has to be float or tuple but was {type(grid_overage)}!"
         )
 
     # figure out grid points
