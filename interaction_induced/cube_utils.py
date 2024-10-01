@@ -1,6 +1,67 @@
 import numpy as np
 
 
+def read_cube_file(filename):
+    """
+    Reads the data form .cube file 'filename'.
+    """
+
+    with open(filename, "r", encoding="utf-8") as f:
+        # Read the comment lines
+        comment1 = f.readline().strip()
+        comment2 = f.readline().strip()
+
+        # Read the number of atoms and the origin
+        n_atoms, x_origin, y_origin, z_origin = map(float, f.readline().split())
+        n_atoms = int(n_atoms)
+        origin = np.array([x_origin, y_origin, z_origin])
+
+        # Read the number of voxels and the axis vectors
+        x_info = list(map(float, f.readline().split()))
+        y_info = list(map(float, f.readline().split()))
+        z_info = list(map(float, f.readline().split()))
+
+        n_x = int(x_info[0])
+        n_y = int(y_info[0])
+        n_z = int(z_info[0])
+
+        x_vector = np.array(x_info[1:])
+        y_vector = np.array(y_info[1:])
+        z_vector = np.array(z_info[1:])
+
+        # Read the atomic information
+        atoms = []
+        for _ in range(n_atoms):
+            atom_info = list(map(float, f.readline().split()))
+            atomic_number = int(atom_info[0])
+            charge = atom_info[1]
+            position = np.array(atom_info[2:])
+            atoms.append((atomic_number, charge, position))
+
+        # Read the volumetric data
+        volumetric_data = []
+        for _ in range(n_x * n_y * n_z):
+            line = f.readline().split()
+            volumetric_data.extend(map(float, line))
+
+        volumetric_data = np.array(volumetric_data).reshape((n_x, n_y, n_z))
+
+    return {
+        "comment1": comment1,
+        "comment2": comment2,
+        "origin": origin,
+        "n_atoms": n_atoms,
+        "atoms": atoms,
+        "n_x": n_x,
+        "n_y": n_y,
+        "n_z": n_z,
+        "x_vector": x_vector,
+        "y_vector": y_vector,
+        "z_vector": z_vector,
+        "volumetric_data": volumetric_data,
+    }
+
+
 def prepare_grid(
     geometry: np.ndarray, grid_step: float | tuple, grid_overage: float | tuple
 ) -> dict:
