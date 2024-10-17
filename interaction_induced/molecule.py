@@ -5,9 +5,9 @@ from .sinfinity import sinfinity
 from .cube_utils import prepare_grid, calculate_isocontour
 
 
-class Molecule(sinfinity):
+class Dimer(sinfinity):
     """
-    Molecule class.
+    Core dimer (molecule-like) class.
 
     Initialises and stores all necessary values
     for 'interaction_induced' clalculations.
@@ -103,19 +103,29 @@ class Molecule(sinfinity):
 
             # write a header
             file.write("interaction-induced .cube file\n")
-            file.write(f"isovalues for {iso_sum_level*100:.0f}%"
-                       f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n")
+            file.write(
+                f"isovalues for {iso_sum_level*100:.0f}%"
+                f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n"
+            )
 
             # wirte number of atoms and begining of the grid
-            file.write(f"{len(elez):6d}  "
-                       f"{grid['x'][0]: .6f}  "
-                       f"{grid['y'][0]: .6f}  "
-                       f"{grid['z'][0]: .6f}\n")
+            file.write(
+                f"{len(elez):6d}  "
+                f"{grid['x'][0]: .6f}  "
+                f"{grid['y'][0]: .6f}  "
+                f"{grid['z'][0]: .6f}\n"
+            )
 
             # write grid details
-            file.write(f"{grid["n_x"]:6d}  {grid["step_x"]: .6f}   0.000000   0.000000\n")
-            file.write(f"{grid["n_y"]:6d}   0.000000  {grid["step_y"]: .6f}   0.000000\n")
-            file.write(f"{grid["n_z"]:6d}   0.000000   0.000000  {grid["step_z"]: .6f}\n")
+            file.write(
+                f"{grid["n_x"]:6d}  {grid["step_x"]: .6f}   0.000000   0.000000\n"
+            )
+            file.write(
+                f"{grid["n_y"]:6d}   0.000000  {grid["step_y"]: .6f}   0.000000\n"
+            )
+            file.write(
+                f"{grid["n_z"]:6d}   0.000000   0.000000  {grid["step_z"]: .6f}\n"
+            )
 
             # write geometry
             for atom_xyz, atom_num in zip(geo_matrix, elez):

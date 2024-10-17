@@ -1,11 +1,11 @@
 import psi4
 import numpy as np
-from .molecule import Molecule
+from .molecule import Dimer
 from .utils import trace_memory_peak
 
 
 def density_mo_to_ao(
-    mol: Molecule, monomer: str, density_matrix: np.ndarray
+    mol: Dimer, monomer: str, density_matrix: np.ndarray
 ) -> np.ndarray:
     """
     Transform density matrix from MO to AO.
@@ -19,7 +19,7 @@ def density_mo_to_ao(
 
 @trace_memory_peak
 def calc_density_matirx(
-    mol: Molecule, monomer: str, orbital_basis="AO"
+    mol: Dimer, monomer: str, orbital_basis="AO"
 ) -> dict[str, np.ndarray]:
     """
     Calculate first-order induced chagne in the density matrix of the 'monomer'.

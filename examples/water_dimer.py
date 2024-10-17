@@ -51,7 +51,7 @@ if __name__ == "__main__":
     psi4.set_options(OPTIONS)
 
     ### Initalise interaction_induced.Molecule object
-    dimer = ii.Molecule(GEO)
+    dimer = ii.Dimer(GEO)
 
     ### Calculate interaction-induced dipole moment
     data = ii.calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)

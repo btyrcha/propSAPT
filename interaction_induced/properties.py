@@ -8,12 +8,12 @@ import numpy as np
 import pandas as pd
 import opt_einsum as oe
 
-from .molecule import Molecule
+from .molecule import Dimer
 from .utils import trace_memory_peak
 
 
 def perform_property_contractions(
-    mol: Molecule, property_matix: np.ndarray
+    mol: Dimer, property_matix: np.ndarray
 ) -> pd.DataFrame:
     """
     Calculates property contributions.
@@ -64,7 +64,7 @@ def perform_property_contractions(
     return results
 
 
-def calc_induced_dipole(mol: Molecule):
+def calc_induced_dipole(mol: Dimer):
     """
     Calculate interaction-induced dipole moment
     along X, Y and Z axes.
@@ -96,7 +96,7 @@ def calc_induced_dipole(mol: Molecule):
 
 
 @trace_memory_peak
-def calc_property(mol: Molecule, prop: str | np.ndarray, **kwargs) -> pd.DataFrame:
+def calc_property(mol: Dimer, prop: str | np.ndarray, **kwargs) -> pd.DataFrame:
     """
     Calculation of interaction-induced property.
     """
