@@ -1,9 +1,48 @@
+"""
+Cube files related things.
+"""
+
 import numpy as np
+
+
+class Cube:
+    """
+    Class for storing cube files.
+    """
+
+    def __init__(self, **kwargs):
+
+        self.comment1 = kwargs.get("comment1", None)
+        self.comment2 = kwargs.get("comment2", None)
+        self.origin = kwargs.get("origin", None)
+        self.n_atoms = kwargs.get("n_atoms", None)
+        self.atoms = kwargs.get("atoms", None)
+        self.n_x = kwargs.get("n_x", None)
+        self.n_y = kwargs.get("n_y", None)
+        self.n_z = kwargs.get("n_z", None)
+        self.x_vector = kwargs.get("x_vector", None)
+        self.y_vector = kwargs.get("y_vector", None)
+        self.z_vector = kwargs.get("z_vector", None)
+        self.volumetric_data = kwargs.get("volumetric_data", None)
+
+    def from_file(self, filename: str):
+        """
+        Read cube data form `filename`.
+        """
+
+        return read_cube_file(filename)
+
+    def save(self, filename: str):
+        "Save a `Cuve` object inot `filename`."
+
+        save_cube_file(self, filename)
 
 
 def read_cube_file(filename: str):
     """
     Reads the data form .cube file `filename`.
+
+    Returns `Cube` object.
     """
 
     with open(filename, "r", encoding="utf-8") as f:
@@ -46,62 +85,57 @@ def read_cube_file(filename: str):
 
         volumetric_data = np.array(volumetric_data).reshape((n_x, n_y, n_z))
 
-    return {
-        "comment1": comment1,
-        "comment2": comment2,
-        "origin": origin,
-        "n_atoms": n_atoms,
-        "atoms": atoms,
-        "n_x": n_x,
-        "n_y": n_y,
-        "n_z": n_z,
-        "x_vector": x_vector,
-        "y_vector": y_vector,
-        "z_vector": z_vector,
-        "volumetric_data": volumetric_data,
-    }
+    return Cube(
+        **{
+            "comment1": comment1,
+            "comment2": comment2,
+            "origin": origin,
+            "n_atoms": n_atoms,
+            "atoms": atoms,
+            "n_x": n_x,
+            "n_y": n_y,
+            "n_z": n_z,
+            "x_vector": x_vector,
+            "y_vector": y_vector,
+            "z_vector": z_vector,
+            "volumetric_data": volumetric_data,
+        }
+    )
 
 
-def save_cube_file(cube_dict: dict, filename: str):
+def save_cube_file(cube: Cube, filename: str):
     """
-    Saves a `cube_dict`, dictionary structure assumed
-    the same as from `read_cube_file` into the `filename`.
+    Saves a `Cube` object, into the cube file: `filename`.
     """
 
     # create and save cube string
     with open(filename, "w", encoding="utf-8") as file:
 
         # write a header
-        file.write(cube_dict["comment1"] + "\n")
-        file.write(cube_dict["comment2"] + "\n")
+        file.write(cube.comment1 + "\n")
+        file.write(cube.comment2 + "\n")
 
         # wirte number of atoms and begining of the grid
         file.write(
-            f"{cube_dict['n_atoms']:6d}  "
-            f"{cube_dict['origin'][0]: .6f}  "
-            f"{cube_dict['origin'][1]: .6f}  "
-            f"{cube_dict['origin'][2]: .6f}\n"
+            f"{cube.n_atoms:6d}  "
+            f"{cube.origin[0]: .6f}  "
+            f"{cube.origin[1]: .6f}  "
+            f"{cube.origin[2]: .6f}\n"
         )
 
         # write grid details
         file.write(
-            f"{cube_dict['n_x']:6d}  "
-            + "  ".join([f"{i: .6f}" for i in cube_dict["x_vector"]])
-            + "\n"
+            f"{cube.n_x:6d}  " + "  ".join([f"{i: .6f}" for i in cube.x_vector]) + "\n"
         )
         file.write(
-            f"{cube_dict['n_y']:6d}  "
-            + "  ".join([f"{i: .6f}" for i in cube_dict["y_vector"]])
-            + "\n"
+            f"{cube.n_y:6d}  " + "  ".join([f"{i: .6f}" for i in cube.y_vector]) + "\n"
         )
         file.write(
-            f"{cube_dict['n_z']:6d}  "
-            + "  ".join([f"{i: .6f}" for i in cube_dict["z_vector"]])
-            + "\n"
+            f"{cube.n_z:6d}  " + "  ".join([f"{i: .6f}" for i in cube.z_vector]) + "\n"
         )
 
         # write geometry
-        for atom in cube_dict["atoms"]:
+        for atom in cube.atoms:
             file.write(
                 f"{atom[0]:3d}  "
                 f"{atom[1]: .6f}  "
@@ -112,7 +146,7 @@ def save_cube_file(cube_dict: dict, filename: str):
 
         # write volumetric information
         count = 0
-        for value in cube_dict["volumetric_data"].flatten():
+        for value in cube.volumetric_data.flatten():
 
             file.write(f"{value: .5E} ")
             count += 1
@@ -121,7 +155,7 @@ def save_cube_file(cube_dict: dict, filename: str):
                 file.write("\n")
 
 
-def subtract_cubes(cube_1: dict, cube_2: dict):
+def subtract_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
     """
     Calculate a difference between volumetric data of two cubes.
 
@@ -129,42 +163,46 @@ def subtract_cubes(cube_1: dict, cube_2: dict):
     Data about molecule geometry is taken from `cube_1`.
     """
 
-    if False in np.isclose(cube_1["origin"], cube_2["origin"]):
+    if False in np.isclose(cube_1.origin, cube_2.origin):
         raise ValueError(
             "Cube grids have different origins!\n"
-            f"cube_1: {cube_1['origin']}\n"
-            f"cube_2: {cube_2['origin']}"
+            f"cube_1: {cube_1.origin}\n"
+            f"cube_2: {cube_2.origin}"
         )
 
     if (
-        False in np.isclose(cube_1["x_vector"], cube_2["x_vector"])
-        or False in np.isclose(cube_1["y_vector"], cube_2["y_vector"])
-        or False in np.isclose(cube_1["z_vector"], cube_2["z_vector"])
+        False in np.isclose(cube_1.x_vector, cube_2.x_vector)
+        or False in np.isclose(cube_1.y_vector, cube_2.y_vector)
+        or False in np.isclose(cube_1.z_vector, cube_2.z_vector)
     ):
-        raise ValueError("Cube grids have different vectors!\n"
-                         f"cube_1: {cube_1["x_vector"]}\n"
-                         f"        {cube_1["y_vector"]}\n"
-                         f"        {cube_1["z_vector"]}\n"
-                         f"cube_2: {cube_2["x_vector"]}\n"
-                         f"        {cube_2["y_vector"]}\n"
-                         f"        {cube_2["z_vector"]}")
+        raise ValueError(
+            "Cube grids have different vectors!\n"
+            f"cube_1: {cube_1.x_vector}\n"
+            f"        {cube_1.y_vector}\n"
+            f"        {cube_1.z_vector}\n"
+            f"cube_2: {cube_2.x_vector}\n"
+            f"        {cube_2.y_vector}\n"
+            f"        {cube_2.z_vector}"
+        )
 
-    volumetric_data = cube_1["volumetric_data"] - cube_2["volumetric_data"]
+    volumetric_data = cube_1.volumetric_data - cube_2.volumetric_data
 
-    return {
-        "comment1": "",
-        "comment2": "",
-        "origin": cube_1["origin"],
-        "n_atoms": cube_1["n_atoms"],
-        "atoms": cube_1["atoms"],
-        "n_x": cube_1["n_x"],
-        "n_y": cube_1["n_y"],
-        "n_z": cube_1["n_z"],
-        "x_vector": cube_1["x_vector"],
-        "y_vector": cube_1["y_vector"],
-        "z_vector": cube_1["z_vector"],
-        "volumetric_data": volumetric_data,
-    }
+    return Cube(
+        **{
+            "comment1": "",
+            "comment2": "",
+            "origin": cube_1.origin,
+            "n_atoms": cube_1.n_atoms,
+            "atoms": cube_1.atoms,
+            "n_x": cube_1.n_x,
+            "n_y": cube_1.n_y,
+            "n_z": cube_1.n_z,
+            "x_vector": cube_1.x_vector,
+            "y_vector": cube_1.y_vector,
+            "z_vector": cube_1.z_vector,
+            "volumetric_data": volumetric_data,
+        }
+    )
 
 
 def prepare_grid(
@@ -240,11 +278,16 @@ def prepare_grid(
     return grid
 
 
-def calculate_isocontour(values: np.ndarray, threshold: float = 0.85):
+def calculate_isocontour(volumetric_data: np.ndarray | Cube, threshold: float = 0.85):
     """
     Calculate isocontour values for a given `threshlod`,
     assumed as the density fraction.
     """
+
+    if isinstance(volumetric_data, Cube):
+        values = volumetric_data.volumetric_data
+    else:
+        values = volumetric_data
 
     if threshold <= 0.0 or threshold >= 1.0:
         raise ValueError(

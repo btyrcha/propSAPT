@@ -2,7 +2,7 @@ from time import time
 import numpy as np
 import psi4
 from .sinfinity import sinfinity
-from .cube_utils import prepare_grid, calculate_isocontour
+from .cubes import Cube, prepare_grid, calculate_isocontour
 
 
 class Dimer(sinfinity):
@@ -59,9 +59,10 @@ class Dimer(sinfinity):
         wfn_object = self.get_psi4_wavefunction()
         return wfn_object.basisset()
 
-    def save_cube(self, matrix: np.ndarray, filename: str = "density.cube", **kwargs):
+    def make_cube(self, matrix: np.ndarray, **kwargs) -> Cube:
         """
-        Evaluate `matrix` values on a grid and save to a .cube file.
+        Create a `Cube` object with volumetric data
+        of the given `matrix` calculated on a grid.
         """
 
         # initialize
@@ -70,9 +71,9 @@ class Dimer(sinfinity):
         psi4.core.print_out("*" * 80)
         psi4.core.print_out("\n\n")
         psi4.core.print_out("        |------------------------------------|        \n")
-        psi4.core.print_out("        |            `save_cube`             |        \n")
+        psi4.core.print_out("        |            `make_cube`             |        \n")
         psi4.core.print_out("        |------------------------------------|        \n")
-        psi4.core.print_out(f"\nSaving volumetric data to file `{filename}`.\n\n")
+        psi4.core.print_out("\n")
         psi4.core.tstart()
 
         # get basis set and geometry
@@ -98,54 +99,24 @@ class Dimer(sinfinity):
         iso_sum_level = kwargs.get("iso_sum_level", 0.85)
         isovalues = calculate_isocontour(values, threshold=iso_sum_level)
 
-        # create and save cube string
-        with open(filename, "w", encoding="utf-8") as file:
-
-            # write a header
-            file.write("interaction-induced .cube file\n")
-            file.write(
-                f"isovalues for {iso_sum_level*100:.0f}%"
-                f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n"
-            )
-
-            # wirte number of atoms and begining of the grid
-            file.write(
-                f"{len(elez):6d}  "
-                f"{grid['x'][0]: .6f}  "
-                f"{grid['y'][0]: .6f}  "
-                f"{grid['z'][0]: .6f}\n"
-            )
-
-            # write grid details
-            file.write(
-                f"{grid["n_x"]:6d}  {grid["step_x"]: .6f}   0.000000   0.000000\n"
-            )
-            file.write(
-                f"{grid["n_y"]:6d}   0.000000  {grid["step_y"]: .6f}   0.000000\n"
-            )
-            file.write(
-                f"{grid["n_z"]:6d}   0.000000   0.000000  {grid["step_z"]: .6f}\n"
-            )
-
-            # write geometry
-            for atom_xyz, atom_num in zip(geo_matrix, elez):
-                file.write(
-                    f"{int(atom_num):3d}  "
-                    " 0.000000  "
-                    f"{atom_xyz[0]: .6f}  "
-                    f"{atom_xyz[1]: .6f}  "
-                    f"{atom_xyz[2]: .6f}\n"
-                )
-
-            # write volumetric information
-            count = 0
-            for value in values.flatten():
-
-                file.write(f"{value: .5E} ")
-                count += 1
-
-                if count % 6 == 0:
-                    file.write("\n")
+        cube_dict = {
+            "comment1": "interaction-induced .cube file\n",
+            "comment2": f"isovalues for {iso_sum_level*100:.0f}%"
+            f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n",
+            "origin": [grid['x'][0], grid['y'][0], grid['z'][0]],
+            "n_atoms": len(elez),
+            "atoms": [
+                (int(atom_num), float(0.0), atom_xyz)
+                for atom_xyz, atom_num in zip(geo_matrix, elez)
+            ],
+            "n_x": grid["n_x"],
+            "n_y": grid["n_y"],
+            "n_z": grid["n_z"],
+            "x_vector": np.array([grid["step_x"], 0.0, 0.0]),
+            "y_vector": np.array([0.0, grid["step_y"], 0.0]),
+            "z_vector": np.array([0.0, 0.0, grid["step_z"]]),
+            "volumetric_data": values,
+        }
 
         # finilize
         psi4.core.print_out("\n")
@@ -156,3 +127,12 @@ class Dimer(sinfinity):
         psi4.core.print_out("\n")
         psi4.core.print_out("*" * 80)
         psi4.core.print_out("\n\n")
+
+        return Cube(**cube_dict)
+
+    def save_cube(self, matrix: np.ndarray, filename: str = "density.cube", **kwargs):
+        """
+        Evaluate `matrix` values on a grid and save to a .cube file.
+        """
+
+        self.make_cube(matrix, **kwargs).save(filename)
