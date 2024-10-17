@@ -92,6 +92,7 @@ class helper_SAPT(object):
         psi4.core.print_out(
             f"\n{reference} for monomer A finished in {time.time() - tstart:.2f} seconds.\n\n"
         )
+        psi4.set_options({"dft_grac_shift": 0.0})  # reset GRAC shift back to zero
 
         psi4.core.print_out(message_box(f"Monomer B {reference}") + "\n")
         tstart = time.time()
@@ -115,6 +116,7 @@ class helper_SAPT(object):
         psi4.core.print_out(
             f"\n{reference} for monomer B finished in {time.time() - tstart:.2f} seconds.\n\n"
         )
+        psi4.set_options({"dft_grac_shift": 0.0})  # reset GRAC shift back to zero
 
         # Setup a few variables
         self.memory = memory
