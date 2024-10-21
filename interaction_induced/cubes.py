@@ -278,11 +278,24 @@ def prepare_grid(
     return grid
 
 
-def calculate_isocontour(volumetric_data: np.ndarray | Cube, threshold: float = 0.85):
+def calculate_isocontour(
+    volumetric_data: np.ndarray | Cube,
+    threshold: float = 0.85,
+    obj_type: str = "density",
+):
     """
     Calculate isocontour values for a given `threshlod`,
     assumed as the density fraction.
     """
+
+    if obj_type == "density":
+        power = 1
+    elif obj_type == "orbital":
+        power = 2
+    else:
+        raise ValueError(
+            f"`obj_type` should be \"density\" or \"orbital\", was {obj_type}!"
+        )
 
     if isinstance(volumetric_data, Cube):
         values = volumetric_data.volumetric_data
@@ -296,10 +309,10 @@ def calculate_isocontour(volumetric_data: np.ndarray | Cube, threshold: float = 
 
     flatened_vals = values.flatten()
     positive_target = threshold * np.sum(
-        0.5 * (np.sign(flatened_vals) + 1) * np.abs(flatened_vals)
+        0.5 * (np.sign(flatened_vals) + 1) * np.abs(flatened_vals) ** power
     )
     negative_target = threshold * np.sum(
-        0.5 * (np.sign(flatened_vals) - 1) * np.abs(flatened_vals)
+        0.5 * (np.sign(flatened_vals) - 1) * np.abs(flatened_vals) ** power
     )
 
     positive_sum = 0.0
@@ -311,13 +324,13 @@ def calculate_isocontour(volumetric_data: np.ndarray | Cube, threshold: float = 
     for i in np.argsort(np.abs(flatened_vals))[::-1]:
 
         if do_positive and flatened_vals[i] >= 0.0:
-            positive_sum += flatened_vals[i]
+            positive_sum += flatened_vals[i] ** power
             if positive_sum >= positive_target:
                 positive_isoval = flatened_vals[i]
                 do_positive = False
 
         elif do_negative and flatened_vals[i] < 0.0:
-            negative_sum += flatened_vals[i]
+            negative_sum -= np.abs(flatened_vals[i]) ** power
             if negative_sum <= negative_target:
                 negative_isoval = flatened_vals[i]
                 do_negative = False

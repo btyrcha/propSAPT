@@ -59,11 +59,18 @@ class Dimer(sinfinity):
         wfn_object = self.get_psi4_wavefunction()
         return wfn_object.basisset()
 
-    def make_cube(self, matrix: np.ndarray, **kwargs) -> Cube:
+    def make_cube(
+        self, matrix: np.ndarray, obj_type: str = "density", **kwargs
+    ) -> Cube:
         """
         Create a `Cube` object with volumetric data
         of the given `matrix` calculated on a grid.
         """
+
+        if obj_type not in ["density", "orbital"]:
+            raise ValueError(
+                f"`obj_type` should be \"density\" or \"orbital\", was {obj_type}!"
+            )
 
         # initialize
         t_start = time()
@@ -93,16 +100,23 @@ class Dimer(sinfinity):
             for j, y in enumerate(grid["y"]):
                 for k, z in enumerate(grid["z"]):
                     basis_vals = basisset.compute_phi(x, y, z)
-                    values[i][j][k] = basis_vals.dot(matrix).dot(basis_vals.T)
+
+                    if obj_type == "density":
+                        values[i][j][k] = basis_vals.dot(matrix).dot(basis_vals.T)
+
+                    elif obj_type == "orbital":
+                        values[i][j][k] = basis_vals.dot(matrix)
 
         # get isocontour values
         iso_sum_level = kwargs.get("iso_sum_level", 0.85)
-        isovalues = calculate_isocontour(values, threshold=iso_sum_level)
+        isovalues = calculate_isocontour(
+            values, threshold=iso_sum_level, obj_type=obj_type
+        )
 
         cube_dict = {
-            "comment1": "interaction-induced .cube file\n",
+            "comment1": "interaction-induced .cube file",
             "comment2": f"isovalues for {iso_sum_level*100:.0f}%"
-            f" of the denisty: ({isovalues[0]:.6E}, {isovalues[1]:.6E})\n",
+            f" of the {obj_type}: ({isovalues[0]:.6E}, {isovalues[1]:.6E})",
             "origin": [grid['x'][0], grid['y'][0], grid['z'][0]],
             "n_atoms": len(elez),
             "atoms": [
@@ -130,9 +144,15 @@ class Dimer(sinfinity):
 
         return Cube(**cube_dict)
 
-    def save_cube(self, matrix: np.ndarray, filename: str = "density.cube", **kwargs):
+    def save_cube(
+        self,
+        matrix: np.ndarray,
+        obj_type: str = "density",
+        filename: str = "density.cube",
+        **kwargs,
+    ):
         """
         Evaluate `matrix` values on a grid and save to a .cube file.
         """
 
-        self.make_cube(matrix, **kwargs).save(filename)
+        self.make_cube(matrix, obj_type=obj_type, **kwargs).save(filename)
