@@ -2,7 +2,9 @@
 Cube files related things.
 """
 
+from time import time
 import numpy as np
+import psi4
 
 
 class Cube:
@@ -38,7 +40,102 @@ class Cube:
         save_cube_file(self, filename)
 
 
-def read_cube_file(filename: str):
+def make_cube(
+    mol: psi4.core.Molecule,
+    matrix: np.ndarray,
+    obj_type: str = "density",
+    **kwargs,
+) -> Cube:
+    """
+    Create a `Cube` object with volumetric data of the given `matrix`
+    calculated on a grid for a psi4 `Molecule` object.
+    """
+
+    if obj_type not in ["density", "orbital"]:
+        raise ValueError(
+            f"`obj_type` should be \"density\" or \"orbital\", was {obj_type}!"
+        )
+
+    # initialize
+    t_start = time()
+    psi4.core.print_out("\n")
+    psi4.core.print_out("*" * 80)
+    psi4.core.print_out("\n\n")
+    psi4.core.print_out("        |------------------------------------|        \n")
+    psi4.core.print_out("        |            `make_cube`             |        \n")
+    psi4.core.print_out("        |------------------------------------|        \n")
+    psi4.core.print_out("\n")
+    psi4.core.tstart()
+
+    # get basis set and geometry
+    if isinstance(mol, psi4.core.Molecule):
+        basisset = psi4.core.Wavefunction.build(mol).basisset()
+        geo_matrix, _, _, elez, _ = mol.to_arrays()
+
+    else:
+        raise TypeError(
+            "`mol` should be of type `psi4.core.Molecule` or "
+            f"`interaction_induced.Dimer`, was `{type(mol)}`!"
+        )
+
+    basisset.print_out()
+
+    # default grid parameters in bohr
+    grid_step = kwargs.get("grid_step", 0.2)
+    grid_overage = kwargs.get("grid_overage", 4.0)
+
+    grid = prepare_grid(geo_matrix, grid_step, grid_overage)
+
+    # compute values on the grid on the fly
+    values = np.zeros((grid["n_x"], grid["n_y"], grid["n_z"]))
+    for i, x in enumerate(grid["x"]):
+        for j, y in enumerate(grid["y"]):
+            for k, z in enumerate(grid["z"]):
+                basis_vals = basisset.compute_phi(x, y, z)
+
+                if obj_type == "density":
+                    values[i][j][k] = basis_vals.dot(matrix).dot(basis_vals.T)
+
+                elif obj_type == "orbital":
+                    values[i][j][k] = basis_vals.dot(matrix)
+
+    # get isocontour values
+    iso_sum_level = kwargs.get("iso_sum_level", 0.85)
+    isovalues = calculate_isocontour(values, threshold=iso_sum_level, obj_type=obj_type)
+
+    cube_dict = {
+        "comment1": "interaction-induced .cube file",
+        "comment2": f"isovalues for {iso_sum_level*100:.0f}%"
+        f" of the {obj_type}: ({isovalues[0]:.6E}, {isovalues[1]:.6E})",
+        "origin": [grid['x'][0], grid['y'][0], grid['z'][0]],
+        "n_atoms": len(elez),
+        "atoms": [
+            (int(atom_num), float(0.0), atom_xyz)
+            for atom_xyz, atom_num in zip(geo_matrix, elez)
+        ],
+        "n_x": grid["n_x"],
+        "n_y": grid["n_y"],
+        "n_z": grid["n_z"],
+        "x_vector": np.array([grid["step_x"], 0.0, 0.0]),
+        "y_vector": np.array([0.0, grid["step_y"], 0.0]),
+        "z_vector": np.array([0.0, 0.0, grid["step_z"]]),
+        "volumetric_data": values,
+    }
+
+    # finilize
+    psi4.core.print_out("\n")
+    psi4.core.print_out(
+        f"...finished evaluating density on the grid in {(time() - t_start):5.2f} seconds.\n"
+    )
+    psi4.core.tstop()
+    psi4.core.print_out("\n")
+    psi4.core.print_out("*" * 80)
+    psi4.core.print_out("\n\n")
+
+    return Cube(**cube_dict)
+
+
+def read_cube_file(filename: str) -> Cube:
     """
     Reads the data form .cube file `filename`.
 
@@ -282,7 +379,7 @@ def calculate_isocontour(
     volumetric_data: np.ndarray | Cube,
     threshold: float = 0.85,
     obj_type: str = "density",
-):
+) -> tuple[float]:
     """
     Calculate isocontour values for a given `threshlod`,
     assumed as the density fraction.
