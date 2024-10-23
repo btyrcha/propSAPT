@@ -1,5 +1,8 @@
 """
 Cube files related things.
+
+Cube file refefence:
+https://paulbourke.net/dataformats/cube/
 """
 
 from time import time
@@ -10,6 +13,25 @@ import psi4
 class Cube:
     """
     Class for storing cube files.
+
+    Params:
+        comment1 (str): First comment line of `.cube` file.
+        comment2 (str): Second comment line of `.cube` file.
+        origin (list[float]): Origin of the grid.
+        n_atoms (int): Number of atoms.
+        atoms (list): List of tuples describing molecule.
+            Should look like: (atomic_number, charge, xyz_coordinates).
+            Coordinates should be in bohr.
+        n_x (int): Number of grid points in x direction.
+        n_y (int): Number of grid points in y direction.
+        n_z (int): Number of grid points in z direction.
+        x_vector (np.ndarray): Grid step in x direction.
+        y_vector (np.ndarray): Grid step in y direction.
+        z_vector (np.ndarray): Grid step in z direction.
+        volumetric_data (np.ndarray): Array with values at the grid points.
+
+    Returns:
+        Cube: Initialised cube object.
     """
 
     def __init__(self, **kwargs):
@@ -30,12 +52,23 @@ class Cube:
     def from_file(self, filename: str):
         """
         Read cube data form `filename`.
+
+        Args:
+            filename (str): Path to file.
+
+        Returns:
+            Cube: Loaded cube.
         """
 
         return read_cube_file(filename)
 
     def save(self, filename: str):
-        "Save a `Cuve` object inot `filename`."
+        """
+        "Save a `Cuve` object inot `filename`.
+
+        Args:
+            filename (str): File path.
+        """
 
         save_cube_file(self, filename)
 
@@ -49,6 +82,15 @@ def make_cube(
     """
     Create a `Cube` object with volumetric data of the given `matrix`
     calculated on a grid for a psi4 `Molecule` object.
+
+    Args:
+        mol (psi4.core.Molecule): A cubes corresponding molecule.
+        matrix (np.ndarray): Either density matrix or orbital coefficients vector.
+        obj_type (str, optional): Specifies the `matrix` argument type,
+            either "density" or "orbital". Defaults to "density".
+
+    Returns:
+        Cube: Resulting cube.
     """
 
     if obj_type not in ["density", "orbital"]:
@@ -139,7 +181,11 @@ def read_cube_file(filename: str) -> Cube:
     """
     Reads the data form .cube file `filename`.
 
-    Returns `Cube` object.
+    Args:
+        filename (str): Path to file.
+
+    Returns:
+        Cube: Loaded cube.
     """
 
     with open(filename, "r", encoding="utf-8") as f:
@@ -203,6 +249,10 @@ def read_cube_file(filename: str) -> Cube:
 def save_cube_file(cube: Cube, filename: str):
     """
     Saves a `Cube` object, into the cube file: `filename`.
+
+    Args:
+        cube (Cube): Cube object to be saved.
+        filename (str): File path.
     """
 
     # create and save cube string
@@ -258,6 +308,13 @@ def subtract_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
 
     Cube grids have to be the same for this operation.
     Data about molecule geometry is taken from `cube_1`.
+
+    Args:
+        cube_1 (Cube): Cube serving as minuend.
+        cube_2 (Cube): Cube serving as subtrahend.
+
+    Returns:
+        Cube: Resulting Cube.
     """
 
     if False in np.isclose(cube_1.origin, cube_2.origin):
@@ -307,6 +364,18 @@ def prepare_grid(
 ) -> dict:
     """
     Prepares a simple scalar grid in 3D space.
+
+    Args:
+        geometry (np.ndarray): Molecule geometry. Shloud have shape (N_atom, 3).
+        grid_step (float | tuple): Step size of the grid (in bohr). If float then the same step
+            is applied in all directions. If tuple, should have length 3, specifies step size
+            for x, y and z directions separately.
+        grid_overage (float | tuple): Overage of the grid (in bohr). If float then the same overage
+            in all directions. If tuple, should have length 3, specifies grid overage
+            for x, y and z directions separately.
+
+    Returns:
+        dict: Grid info.
     """
 
     if len(geometry.T) != 3:
@@ -383,6 +452,16 @@ def calculate_isocontour(
     """
     Calculate isocontour values for a given `threshlod`,
     assumed as the density fraction.
+
+    Args:
+        volumetric_data (np.ndarray | Cube): Data for isovale calculations.
+        threshold (float, optional): Fraction of the density to be inside of the isosurface
+            described by isovalues. Defaults to 0.85.
+        obj_type (str, optional): Specifies the type of volumetric data,
+            either "density" or "orbital". Defaults to "density".
+
+    Returns:
+        tuple[float]: Isovalues tuple.
     """
 
     if obj_type == "density":

@@ -41,21 +41,33 @@ class Dimer(sinfinity):
 
     def get_psi4_molecule(self) -> psi4.core.Molecule:
         """
-        Get 'psi4.core.Molecule' object of the molecule.
+        Get 'psi4.core.Molecule' object of the dimer.
+
+        Returns:
+            psi4.core.Molecule: Psi4 molecule object of the dimer.
         """
+
         return self.dimer
 
     def get_psi4_wavefunction(self) -> psi4.core.Wavefunction:
         """
-        Get 'psi4.core.Wavefunction' object of the molecule.
+        Get 'psi4.core.Wavefunction' object of the dimer.
+
+        Returns:
+            psi4.core.Wavefunction: Psi4 wavefunction object of the dimer.
         """
+
         mol_object = self.get_psi4_molecule()
         return psi4.core.Wavefunction.build(mol_object)
 
     def get_psi4_basisset(self) -> psi4.core.BasisSet:
         """
         Get 'psi4.core.BasisSet' object of the molecule.
+
+        Returns:
+            psi4.core.BasisSet: Psi4 basis set object of the dimer.
         """
+
         wfn_object = self.get_psi4_wavefunction()
         return wfn_object.basisset()
 
@@ -63,8 +75,15 @@ class Dimer(sinfinity):
         self, matrix: np.ndarray, obj_type: str = "density", **kwargs
     ) -> Cube:
         """
-        Create a `Cube` object with volumetric data
-        of the given `matrix` calculated on a grid.
+        Create a `Cube` object with volumetric data of the given `matrix` calculated on a grid.
+
+        Args:
+            matrix (np.ndarray): Either density matrix or orbital coefficients vector.
+            obj_type (str, optional): Specifies the `matrix` argument type, either "density" or
+                "orbital". Defaults to "density".
+
+        Returns:
+            Cube: Resulting Cube.
         """
 
         return make_cube(
@@ -80,6 +99,12 @@ class Dimer(sinfinity):
     ):
         """
         Evaluate `matrix` values on a grid and save to a .cube file.
+
+        Args:
+            matrix (np.ndarray): Either density matrix or orbital coefficients vector.
+            obj_type (str, optional): Specifies the `matrix` argument type, either "density" or
+                "orbital". Defaults to "density".
+            filename (str, optional): File path to save resulting cube. Defaults to "density.cube".
         """
 
         self.make_cube(matrix, obj_type=obj_type, **kwargs).save(filename)

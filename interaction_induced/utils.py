@@ -1,13 +1,19 @@
 import os
+from functools import wraps
+from collections.abc import Callable
 import tracemalloc
 import psi4
 
 
-def trace_memory_peak(func):
+def trace_memory_peak(func: Callable):
     """
-    Trace peak memory usage of 'func'.
+    Decorator. Trace peak memory usage of 'func'.
+
+    Args:
+        func (Callable): A function to trace peak memory usage.
     """
 
+    @wraps(func)
     def wrapper(*args, **kwargs):
         tracemalloc.start()
 
@@ -25,10 +31,15 @@ def trace_memory_peak(func):
     return wrapper
 
 
-def prepare_path(file_path):
+def prepare_path(file_path: str) -> str:
     """
-    Create directories (and subdirectories)
-    from `file_path` if they don't exist.
+    Create directories (and subdirectories) from `file_path` if they don't exist.
+
+    Args:
+        file_path (str): Path to check or create.
+
+    Returns:
+        str: The `file_path` given.
     """
 
     directories = os.path.dirname(file_path)

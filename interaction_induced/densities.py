@@ -9,6 +9,14 @@ def density_mo_to_ao(
 ) -> np.ndarray:
     """
     Transform density matrix from MO to AO.
+
+    Args:
+        mol (Dimer): A dimer system.
+        monomer (str): Select a monomer, either "A" or "B".
+        density_matrix (np.ndarray): Density matrix to transform.
+
+    Returns:
+        np.ndarray: Transformed density matrix.
     """
 
     if monomer == "A":
@@ -23,6 +31,18 @@ def calc_density_matirx(
 ) -> dict[str, np.ndarray]:
     """
     Calculate first-order induced chagne in the density matrix of the 'monomer'.
+
+    Args:
+        mol (Dimer): A dimer system.
+        monomer (str): Select a monomer, either "A" or "B".
+        orbital_basis (str, optional): Select orbital baisi of the returned density matrix, either
+            "AO" or "MO". Defaults to "AO".
+
+    Returns:
+        dict[str, np.ndarray]: Dictionary with three matrices, with keys "pol", "exch" and "total".
+            "pol": First-order polarisation correction to the change in the monomer density matrix.
+            "exch": First-order exchange correction to the change in the monomer density matrix.
+            "total": Sum of polarisation and exchange corrections.
     """
 
     if monomer not in ["A", "B"]:

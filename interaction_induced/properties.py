@@ -1,5 +1,5 @@
 """
-Calculations of SAPT dipole moment contributions.
+Calculations of SAPT one-electron properties.
 """
 
 from time import time
@@ -16,10 +16,16 @@ def perform_property_contractions(
     mol: Dimer, property_matix: np.ndarray
 ) -> pd.DataFrame:
     """
-    Calculates property contributions.
+    Calculates property contributions. Returns pandas.DataFrame with values of separate
+    contributions and sumed up total.
 
-    Returns pandas.DataFrame with values
-    of separate contributions and sumed up total.
+    Args:
+        mol (Dimer): A dimer system.
+        property_matix (np.ndarray): A matrix representation of the operator corresponding
+            to a property to calculate, in AO basis.
+
+    Returns:
+        pd.DataFrame: DataFrame with results.
     """
 
     # prepare results DataFrame
@@ -64,10 +70,15 @@ def perform_property_contractions(
     return results
 
 
-def calc_induced_dipole(mol: Dimer):
+def calc_induced_dipole(mol: Dimer) -> pd.DataFrame:
     """
-    Calculate interaction-induced dipole moment
-    along X, Y and Z axes.
+    Calculate interaction-induced dipole moment along X, Y and Z axes.
+
+    Args:
+        mol (Dimer): A dimer system.
+
+    Returns:
+        pd.DataFrame: DataFrame with results.
     """
 
     # grab nuclear dipole moment
@@ -99,6 +110,15 @@ def calc_induced_dipole(mol: Dimer):
 def calc_property(mol: Dimer, prop: str | np.ndarray, **kwargs) -> pd.DataFrame:
     """
     Calculation of interaction-induced property.
+
+    Args:
+        mol (Dimer): A dimer system.
+        prop (str | np.ndarray): Property to calculate. Either name of already implemented
+            property, e.g. dipole moment (prop="dipole") or an array with matrix representation,
+            in AO basis, of the operator corresponding to a property to calculate.
+
+    Returns:
+        pd.DataFrame: DataFrame with results.
     """
 
     ### Start total time of calculations
