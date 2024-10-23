@@ -1,5 +1,5 @@
 import psi4
-import interaction_induced as ii
+from interaction_induced import Dimer, calc_property, calc_density_matirx
 
 
 # specify geometry in Psi4 format
@@ -46,14 +46,14 @@ if __name__ == "__main__":
     psi4.set_options(OPTIONS)
 
     ### Initalise interaction_induced.Molecule object
-    dimer = ii.Dimer(GEO)
+    dimer = Dimer(GEO)
 
     ### Calculate interaction-induced dipole moment
-    data = ii.calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
+    data = calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
 
     ### Calculate interaction-induced denisty matrix
-    delta_dm_A = ii.calc_density_matirx(dimer, "A")
-    delta_dm_B = ii.calc_density_matirx(dimer, "B")
+    delta_dm_A = calc_density_matirx(dimer, "A")
+    delta_dm_B = calc_density_matirx(dimer, "B")
 
     delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
 
