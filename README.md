@@ -8,7 +8,7 @@ Python package for calculations of first-order interaction-induced properties an
 2. Go to its root directory.
 3. Create a conda environment with all requirements by running:
    ```
-   conda env create -f inter-ind.yml
+   conda env create -f inter-ind.yaml
    ```
 4. Activate the environment.
    ```
