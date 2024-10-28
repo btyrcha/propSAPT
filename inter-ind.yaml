@@ -15,4 +15,4 @@ dependencies:
   - fortecubeview
   - opt_einsum
   - click
-prefix: /home/bt/miniconda3/envs/inter-ind
+  
