@@ -31,6 +31,9 @@ class Dimer(sinfinity):
         # initialize parent class
         super().__init__(self.dimer, reference, memory, **kwargs)
 
+        self.cpscf_ra = None
+        self.cpscf_sb = None
+
         # print time
         psi4.core.print_out(
             f"...finished initializing Molecule object in {(time() - t_start):5.2f} seconds.\n"
@@ -39,6 +42,34 @@ class Dimer(sinfinity):
         psi4.core.print_out("\n")
         psi4.core.print_out("*" * 80)
         psi4.core.print_out("\n")
+
+    def get_cpscf_ra(self) -> np.ndarray:
+        """
+        Grab CPSCF response amplitudes for monomer A or calculate them if they haven't been
+        calculated already.
+
+        Returns:
+            np.ndarray: Response amplitudes for monomer A.
+        """
+
+        if self.cpscf_ra is None:
+            self.cpscf_ra = self.cpscf("A")
+
+        return self.cpscf_ra
+
+    def get_cpscf_sb(self) -> np.ndarray:
+        """
+        Grab CPSCF response amplitudes for monomer B or calculate them if they haven't been
+        calculated already.
+
+        Returns:
+            np.ndarray: Response amplitudes for monomer B.
+        """
+
+        if self.cpscf_sb is None:
+            self.cpscf_sb = self.cpscf("B")
+
+        return self.cpscf_sb
 
     def get_psi4_molecule(self) -> psi4.core.Molecule:
         """

@@ -60,7 +60,7 @@ def calc_density_matirx(
     rho_MO_exch = np.zeros((mol.nmo, mol.nmo))
 
     if monomer == "A":
-        rho_pol_ra = mol.cpscf("A")
+        rho_pol_ra = mol.get_cpscf_ra()
         rho_exch_ra = 0.5 * mol.cpscf(
             "A", perturbation=mol.omega_exchB_ar + mol.omega_exchB_ra.T
         )
@@ -72,7 +72,7 @@ def calc_density_matirx(
         rho_MO_exch[: mol.ndocc_A, mol.ndocc_A :] = rho_exch_ra.T
 
     if monomer == "B":
-        rho_pol_sb = mol.cpscf("B")
+        rho_pol_sb = mol.get_cpscf_sb()
         rho_exch_sb = 0.5 * mol.cpscf(
             "B", perturbation=mol.omega_exchA_bs + mol.omega_exchA_sb.T
         )

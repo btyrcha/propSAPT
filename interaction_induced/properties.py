@@ -34,17 +34,19 @@ def perform_property_contractions(
     # variables for each axis
     prop_A_aa = mol.transform_ao_to_mo(property_matix, "aa")
     prop_A_ar = mol.transform_ao_to_mo(property_matix, "ar")
-    # prop_A_rr = mol.transform_ao_to_mo(property_matix, "rr")
+    prop_A_rr = mol.transform_ao_to_mo(property_matix, "rr")
 
     prop_B_bb = mol.transform_ao_to_mo(property_matix, "bb")
     prop_B_bs = mol.transform_ao_to_mo(property_matix, "bs")
-    # prop_B_ss = mol.transform_ao_to_mo(property_matix, "ss")
+    prop_B_ss = mol.transform_ao_to_mo(property_matix, "ss")
 
     # relaxed amplitudes with dipole moment
     xt_A_ra = mol.cpscf("A", perturbation=prop_A_ar)
     # xt_A_ar = xt_A_ra.T
     xt_B_sb = mol.cpscf("B", perturbation=prop_B_bs)
     # xt_B_bs = xt_B_sb.T
+
+    # First-order
 
     results["x0_A"] = np.array([2 * oe.contract("aa", prop_A_aa)])
     results["x0_B"] = np.array([2 * oe.contract("bb", prop_B_bb)])
@@ -74,7 +76,62 @@ def perform_property_contractions(
         ]
     )
 
-    results["x_induced"] = results["x1_pol,r"] + results["x1_exch,r"]
+    ### Second-order
+
+    alpha = results["x1_exch,r"] / results["x1_pol,r"]
+
+    # TODO: verify on diagrams and test
+    results["x2_ind,r"] = (
+        # 2 Re <R(X)|V R(V)>
+        -4 * oe.contract("ra,ac,rc", mol.get_cpscf_ra(), mol.omegaB_aa, xt_A_ra)
+        + 4 * oe.contract("ra,cr,ca", mol.get_cpscf_ra(), mol.omegaB_rr, xt_A_ra)
+        + 8
+        * oe.contract("sb,Qar,Qbs,ra", mol.get_cpscf_sb(), mol.Qar, mol.Qbs, xt_A_ra)
+        - 4 * oe.contract("sb,bc,sc", mol.get_cpscf_sb(), mol.omegaA_bb, xt_B_sb)
+        + 4 * oe.contract("sb,cs,cb", mol.get_cpscf_sb(), mol.omegaA_ss, xt_B_sb)
+        + 8
+        * oe.contract("ra,Qar,Qbs,sb", mol.get_cpscf_ra(), mol.Qar, mol.Qbs, xt_B_sb)
+        # <R(V)|d R(V)>
+        - 2 * oe.contract("ac,rc,ra", prop_A_aa, mol.get_cpscf_ra(), mol.get_cpscf_ra())
+        + 2 * oe.contract("cr,ca,ra", prop_A_rr, mol.get_cpscf_ra(), mol.get_cpscf_ra())
+        - 2 * oe.contract("bc,sc,sb", prop_B_bb, mol.get_cpscf_sb(), mol.get_cpscf_sb())
+        + 2 * oe.contract("cs,cb,sb", prop_B_ss, mol.get_cpscf_sb(), mol.get_cpscf_sb())
+        + 8
+        * oe.contract("ra,Qar,Qbs,sb", xt_A_ra, mol.Qar, mol.Qbs, mol.get_cpscf_sb())
+        + 8
+        * oe.contract("sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra())
+    )
+
+    # scaled exchange-induction
+    results["x2_exch-ind,r"] = alpha * results["x2_ind,r"]
+
+    # TODO: verify on diagrams and test
+    results["x2_disp"] = (
+        # 2 Re <R(X)|V R(V)>
+        # NOTE some response not coupled
+        8 * oe.contract("rsab,Qcr,Qbs,ca", mol.t_rsab, mol.Qrr, mol.Qbs, xt_A_ra)
+        - 8 * oe.contract("rsab,Qac,Qbs,rc", mol.t_rsab, mol.Qaa, mol.Qbs, xt_A_ra)
+        + 8 * oe.contract("rsab,Qar,Qcs,cb", mol.t_rsab, mol.Qar, mol.Qss, xt_B_sb)
+        - 8 * oe.contract("rsab,Qar,Qbc,sc", mol.t_rsab, mol.Qar, mol.Qbb, xt_B_sb)
+        # <R(V)|d R(V)>
+        # NOTE not coupled no response
+        - 4 * oe.contract("ac,rscb,rsab", prop_A_aa, mol.t_rsab, mol.t_rsab)
+        - 4 * oe.contract("bc,rsac,rsab", prop_B_bb, mol.t_rsab, mol.t_rsab)
+        + 4 * oe.contract("cr,csab,rsab", prop_A_rr, mol.t_rsab, mol.t_rsab)
+        + 4 * oe.contract("cs,rcab,rsab", prop_B_ss, mol.t_rsab, mol.t_rsab)
+    )
+
+    # scaled exchange-dispersion
+    results["x2_exch-disp"] = alpha * results["x2_disp"]
+
+    results["x_induced"] = (
+        results["x1_pol,r"]
+        + results["x1_exch,r"]
+        + results["x2_ind,r"]
+        + results["x2_exch-ind,r"]
+        + results["x2_disp"]
+        + results["x2_exch-disp"]
+    )
 
     return results
 
