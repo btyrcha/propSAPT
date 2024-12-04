@@ -66,40 +66,29 @@ if __name__ == "__main__":
 
     ### Store densities to .cube files
     dimer.save_cube(
-        2 * delta_dm_A["pol"],
-        filename=prepare_path("water-dimer-cubes/delta_dm_pol_A.cube"),
-    )
-    dimer.save_cube(
-        2 * delta_dm_A["exch"],
-        filename="water-dimer-cubes/delta_dm_exch_A.cube",
-    )
-    dimer.save_cube(
-        2 * delta_dm_B["pol"],
-        filename="water-dimer-cubes/delta_dm_pol_B.cube",
-    )
-    dimer.save_cube(
-        2 * delta_dm_B["exch"],
-        filename="water-dimer-cubes/delta_dm_exch_B.cube",
-    )
-    dimer.save_cube(
-        2 * delta_dm_A["total"],
-        filename="water-dimer-cubes/delta_dm_A.cube",
-    )
-    dimer.save_cube(
-        2 * delta_dm_B["total"],
-        filename="water-dimer-cubes/delta_dm_B.cube",
-    )
-    dimer.save_cube(
-        2 * delta_dm,
-        filename="water-dimer-cubes/delta_dm.cube",
-    )
-    dimer.save_cube(
-        2 * delta_dm_pol,
-        filename="water-dimer-cubes/delta_dm_pol.cube",
-    )
-    dimer.save_cube(
-        2 * delta_dm_exch,
-        filename="water-dimer-cubes/delta_dm_exch.cube",
+        [
+            2 * delta_dm_A["pol"],
+            2 * delta_dm_A["exch"],
+            2 * delta_dm_B["pol"],
+            2 * delta_dm_B["exch"],
+            2 * delta_dm_A["total"],
+            2 * delta_dm_B["total"],
+            2 * delta_dm,
+            2 * delta_dm_pol,
+            2 * delta_dm_exch,
+        ],
+        ["density"] * 9,
+        [
+            prepare_path("water-dimer-cubes/delta_dm_pol_A.cube"),
+            "water-dimer-cubes/delta_dm_exch_A.cube",
+            "water-dimer-cubes/delta_dm_pol_B.cube",
+            "water-dimer-cubes/delta_dm_exch_B.cube",
+            "water-dimer-cubes/delta_dm_A.cube",
+            "water-dimer-cubes/delta_dm_B.cube",
+            "water-dimer-cubes/delta_dm.cube",
+            "water-dimer-cubes/delta_dm_pol.cube",
+            "water-dimer-cubes/delta_dm_exch.cube",
+        ],
     )
 
     ### End calculations

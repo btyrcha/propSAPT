@@ -6,6 +6,7 @@ https://paulbourke.net/dataformats/cube/
 """
 
 from time import time
+from collections.abc import Iterable
 import numpy as np
 import psi4
 
@@ -75,28 +76,37 @@ class Cube:
 
 def make_cube(
     mol: psi4.core.Molecule,
-    matrix: np.ndarray,
-    obj_type: str = "density",
+    matrix: np.ndarray | Iterable[np.ndarray],
+    obj_type: str | Iterable[str] = "density",
     **kwargs,
-) -> Cube:
+) -> Cube | list[Cube]:
     """
     Create a `Cube` object with volumetric data of the given `matrix`
-    calculated on a grid for a psi4 `Molecule` object.
+    calculated on a grid for a psi4 `Molecule` object. If iterables with matrices and types
+        are given as `matrix` and `obj_type` returns a list with a Cube for each element of the list.
 
     Args:
-        mol (psi4.core.Molecule): A cubes corresponding molecule.
-        matrix (np.ndarray): Either density matrix or orbital coefficients vector.
-        obj_type (str, optional): Specifies the `matrix` argument type,
-            either "density" or "orbital". Defaults to "density".
+        mol (psi4.core.Molecule): A corresponding molecule.
+        matrices (np.ndarray | Iterable[np.ndarray]): Either density matrix,
+            orbital coefficients vector, or list of such objects.
+        obj_types (str | Iterable[str], optional): Specifies the `matrices` argument type(s),
+            must be either "density", "orbital" or a list with such strings. Defaults to "density".
 
     Returns:
-        Cube: Resulting cube.
+        Cube | list[Cube]: Resulting cube(s).
     """
 
-    if obj_type not in ["density", "orbital"]:
-        raise ValueError(
-            f"`obj_type` should be \"density\" or \"orbital\", was {obj_type}!"
-        )
+    if isinstance(matrix, np.ndarray):
+        matrix = [matrix]
+
+    if isinstance(obj_type, str):
+        obj_type = [obj_type]
+
+    for m_type in obj_type:
+        if m_type not in ["density", "orbital"]:
+            raise ValueError(
+                f"Element of `obj_type` should be either \"density\" or \"orbital\", got {m_type}!"
+            )
 
     # initialize
     t_start = time()
@@ -116,8 +126,7 @@ def make_cube(
 
     else:
         raise TypeError(
-            "`mol` should be of type `psi4.core.Molecule` or "
-            f"`interaction_induced.Dimer`, was `{type(mol)}`!"
+            "`mol` should be of type `psi4.core.Molecule` was `{type(mol)}`!"
         )
 
     basisset.print_out()
@@ -129,52 +138,66 @@ def make_cube(
     grid = prepare_grid(geo_matrix, grid_step, grid_overage)
 
     # compute values on the grid on the fly
-    values = np.zeros((grid["n_x"], grid["n_y"], grid["n_z"]))
+    values = np.zeros((len(matrix), grid["n_x"], grid["n_y"], grid["n_z"]))
+
     for i, x in enumerate(grid["x"]):
         for j, y in enumerate(grid["y"]):
             for k, z in enumerate(grid["z"]):
                 basis_vals = basisset.compute_phi(x, y, z)
 
-                if obj_type == "density":
-                    values[i][j][k] = basis_vals.dot(matrix).dot(basis_vals.T)
+                for m_idx, m, m_type in zip(range(len(matrix)), matrix, obj_type):
 
-                elif obj_type == "orbital":
-                    values[i][j][k] = basis_vals.dot(matrix)
+                    if m_type == "density":
+                        values[m_idx][i][j][k] = basis_vals.dot(m).dot(basis_vals.T)
+
+                    elif m_type == "orbital":
+                        values[m_idx][i][j][k] = basis_vals.dot(m)
 
     # get isocontour values
     iso_sum_level = kwargs.get("iso_sum_level", 0.85)
-    isovalues = calculate_isocontour(values, threshold=iso_sum_level, obj_type=obj_type)
 
-    cube_dict = {
-        "comment1": "interaction-induced .cube file",
-        "comment2": f"isovalues for {iso_sum_level*100:.0f}%"
-        f" of the {obj_type}: ({isovalues[0]:.6E}, {isovalues[1]:.6E})",
-        "origin": [grid['x'][0], grid['y'][0], grid['z'][0]],
-        "n_atoms": len(elez),
-        "atoms": [
-            (int(atom_num), float(0.0), atom_xyz)
-            for atom_xyz, atom_num in zip(geo_matrix, elez)
-        ],
-        "n_x": grid["n_x"],
-        "n_y": grid["n_y"],
-        "n_z": grid["n_z"],
-        "x_vector": np.array([grid["step_x"], 0.0, 0.0]),
-        "y_vector": np.array([0.0, grid["step_y"], 0.0]),
-        "z_vector": np.array([0.0, 0.0, grid["step_z"]]),
-        "volumetric_data": values,
-    }
+    cubes_list = []
+    for m_idx, m, m_type in zip(range(len(matrix)), matrix, obj_type):
+
+        isovalues = calculate_isocontour(
+            values[m_idx], threshold=iso_sum_level, obj_type=m_type
+        )
+
+        cube_dict = {
+            "comment1": "interaction-induced .cube file",
+            "comment2": f"isovalues for {iso_sum_level*100:.0f}%"
+            f" of the {m_type}: ({isovalues[0]:.6E}, {isovalues[1]:.6E})",
+            "origin": [grid['x'][0], grid['y'][0], grid['z'][0]],
+            "n_atoms": len(elez),
+            "atoms": [
+                (int(atom_num), float(0.0), atom_xyz)
+                for atom_xyz, atom_num in zip(geo_matrix, elez)
+            ],
+            "n_x": grid["n_x"],
+            "n_y": grid["n_y"],
+            "n_z": grid["n_z"],
+            "x_vector": np.array([grid["step_x"], 0.0, 0.0]),
+            "y_vector": np.array([0.0, grid["step_y"], 0.0]),
+            "z_vector": np.array([0.0, 0.0, grid["step_z"]]),
+            "volumetric_data": values[m_idx],
+        }
+
+        cubes_list.append(Cube(**cube_dict))
 
     # finilize
     psi4.core.print_out("\n")
     psi4.core.print_out(
-        f"...finished evaluating density on the grid in {(time() - t_start):5.2f} seconds.\n"
+        f"...finished evaluating values on the grid in {(time() - t_start):5.2f} seconds.\n"
     )
     psi4.core.tstop()
     psi4.core.print_out("\n")
     psi4.core.print_out("*" * 80)
     psi4.core.print_out("\n\n")
 
-    return Cube(**cube_dict)
+    if len(cubes_list) == 1:
+        return cubes_list[0]
+    else:
+        return cubes_list
 
 
 def read_cube_file(filename: str) -> Cube:

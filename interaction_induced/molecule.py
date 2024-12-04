@@ -1,4 +1,5 @@
 from time import time
+from collections.abc import Iterable
 import numpy as np
 import psi4
 from .sinfinity import sinfinity
@@ -72,8 +73,11 @@ class Dimer(sinfinity):
         return wfn_object.basisset()
 
     def make_cube(
-        self, matrix: np.ndarray, obj_type: str = "density", **kwargs
-    ) -> Cube:
+        self,
+        matrix: np.ndarray | Iterable[np.ndarray],
+        obj_type: str | Iterable[str] = "density",
+        **kwargs,
+    ) -> Cube | list[Cube]:
         """
         Create a `Cube` object with volumetric data of the given `matrix` calculated on a grid.
 
@@ -92,9 +96,9 @@ class Dimer(sinfinity):
 
     def save_cube(
         self,
-        matrix: np.ndarray,
-        obj_type: str = "density",
-        filename: str = "density.cube",
+        matrix: np.ndarray | Iterable[np.ndarray],
+        obj_type: str | Iterable[str] = "density",
+        filename: str | Iterable[str] = "density.cube",
         **kwargs,
     ):
         """
@@ -107,4 +111,11 @@ class Dimer(sinfinity):
             filename (str, optional): File path to save resulting cube. Defaults to "density.cube".
         """
 
-        self.make_cube(matrix, obj_type=obj_type, **kwargs).save(filename)
+        cubes = self.make_cube(matrix, obj_type=obj_type, **kwargs)
+
+        if isinstance(cubes, Iterable):
+            for cube, fname in zip(cubes, filename):
+                cube.save(fname)
+
+        else:
+            cubes.save(filename)
