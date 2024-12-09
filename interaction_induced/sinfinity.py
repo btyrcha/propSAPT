@@ -227,6 +227,14 @@ class sinfinity(helper_SAPT):
                     self.F_sb,
                     self.E_ra,
                 )
+                + 2
+                * oe.contract(
+                    "ra,bS,Qar,QSs->sb", self.E_ra, self.F_bs, self.Qar, self.Qss
+                )
+                - 2
+                * oe.contract(
+                    "ra,Bs,Qar,QbB->sb", self.E_ra, self.F_bs, self.Qar, self.Qbb
+                )
             )
 
             self.omega_exchB_ar_S2 = (
@@ -339,6 +347,14 @@ class sinfinity(helper_SAPT):
                     self.E_ra,
                     self.E_ra,
                     self.F_sb,
+                )
+                + 2
+                * oe.contract(
+                    "aR,sb,QRr,Qbs->ra", self.E_ar, self.F_sb, self.Qrr, self.Qbs
+                )
+                - 2
+                * oe.contract(
+                    "Ar,sb,QaA,Qbs->ra", self.E_ar, self.F_sb, self.Qaa, self.Qbs
                 )
             )
 
