@@ -116,6 +116,15 @@ class sinfinity(helper_SAPT):
             self.omegaA_bb = 2 * oe.contract("Qaa,QbB->bB", self.Qaa, self.Qbb) + vA_bb
 
             ### omega_exchA and omega_exchB
+            self.omega_exchA_bs_S2 = (
+                oe.contract("ab,Ba,bs->Bs", s_ab, s_ba, self.omegaA_bs)
+                - oe.contract("aS,sa,bs->bS", s_as, s_sa, self.omegaA_bs)
+                - oe.contract("rs,ba,ar->bs", s_rs, s_ba, self.omegaB_ar)
+                - oe.contract("rS,sa,Qar,Qbs->bS", s_rs, s_sa, self.Qar, self.Qbs)
+                + oe.contract("rb,Ba,Qar,Qbs->Bs", s_rb, s_ba, self.Qar, self.Qbs)
+                - 2 * oe.contract("rB,Ba,Qar,Qbs->bs", s_rb, s_ba, self.Qar, self.Qbs)
+            )
+
             self.omega_exchA_bs = (
                 oe.contract("Bb,sS,bs->BS", self.A_bb, self.D_ss, self.omegaA_bs)
                 - oe.contract("rs,ba,ar->bs", self.G_rs, self.H_ba, self.omegaB_ar)
@@ -154,6 +163,15 @@ class sinfinity(helper_SAPT):
                     self.Qbs,
                 )
             ) - self.omegaA_bs
+
+            self.omega_exchA_sb_S2 = (
+                +oe.contract("as,ba,cb->sc", s_as, s_ba, self.omegaA_bb)
+                - oe.contract("as,ba,sc->cb", s_as, s_ba, self.omegaA_ss)
+                - oe.contract("br,as,ar->sb", s_br, s_as, self.omegaB_ar)
+                + oe.contract("br,as,Qar,Qcb->sc", s_br, s_as, self.Qar, self.Qbb)
+                - oe.contract("br,as,Qar,Qsc->cb", s_br, s_as, self.Qar, self.Qss)
+                - 2 * oe.contract("br,ab,Qar,Qcs->sc", s_br, s_ab, self.Qar, self.Qbs)
+            )
 
             self.omega_exchA_sb = (
                 -2 * oe.contract("Qar,Qbs,ra->sb", self.Qar, self.Qbs, self.E_ra)
@@ -209,6 +227,23 @@ class sinfinity(helper_SAPT):
                     self.F_sb,
                     self.E_ra,
                 )
+                + 2
+                * oe.contract(
+                    "ra,bS,Qar,QSs->sb", self.E_ra, self.F_bs, self.Qar, self.Qss
+                )
+                - 2
+                * oe.contract(
+                    "ra,Bs,Qar,QbB->sb", self.E_ra, self.F_bs, self.Qar, self.Qbb
+                )
+            )
+
+            self.omega_exchB_ar_S2 = (
+                oe.contract("ba,Ab,ar->Ar", s_ba, s_ab, self.omegaB_ar)
+                - oe.contract("bR,rb,ar->aR", s_br, s_rb, self.omegaB_ar)
+                - oe.contract("sr,ab,bs->ar", s_sr, s_ab, self.omegaA_bs)
+                + oe.contract("sa,Ab,Qar,Qbs->Ar", s_sa, s_ab, self.Qar, self.Qbs)
+                - oe.contract("sR,rb,Qar,Qbs->aR", s_sr, s_rb, self.Qar, self.Qbs)
+                - 2 * oe.contract("sA,Ab,Qar,Qbs->ar", s_sa, s_ab, self.Qar, self.Qbs)
             )
 
             self.omega_exchB_ar = (
@@ -249,6 +284,15 @@ class sinfinity(helper_SAPT):
                     self.Qbs,
                 )
             ) - self.omegaB_ar
+
+            self.omega_exchB_ra_S2 = (
+                +oe.contract("br,ab,ca->rc", s_br, s_ab, self.omegaB_aa)
+                - oe.contract("br,ab,rc->ca", s_br, s_ab, self.omegaB_rr)
+                - oe.contract("br,as,bs->ra", s_br, s_as, self.omegaA_bs)
+                + oe.contract("br,as,Qca,Qbs->rc", s_br, s_as, self.Qaa, self.Qbs)
+                - oe.contract("br,as,Qrc,Qbs->ca", s_br, s_as, self.Qrr, self.Qbs)
+                - 2 * oe.contract("as,ba,Qcr,Qbs->rc", s_as, s_ba, self.Qar, self.Qbs)
+            )
 
             self.omega_exchB_ra = (
                 -2 * oe.contract("Qar,Qbs,sb->ra", self.Qar, self.Qbs, self.F_sb)
@@ -303,6 +347,14 @@ class sinfinity(helper_SAPT):
                     self.E_ra,
                     self.E_ra,
                     self.F_sb,
+                )
+                + 2
+                * oe.contract(
+                    "aR,sb,QRr,Qbs->ra", self.E_ar, self.F_sb, self.Qrr, self.Qbs
+                )
+                - 2
+                * oe.contract(
+                    "Ar,sb,QaA,Qbs->ra", self.E_ar, self.F_sb, self.Qaa, self.Qbs
                 )
             )
 

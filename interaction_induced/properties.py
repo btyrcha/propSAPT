@@ -56,6 +56,15 @@ def perform_property_contractions(
         ]
     )
 
+    results["x1_exch,r_S2"] = np.array(
+        [
+            2 * oe.contract("ra,ar", xt_A_ra, mol.omega_exchB_ar_S2)
+            + 2 * oe.contract("ra,ra", mol.omega_exchB_ra_S2, xt_A_ra)
+            + 2 * oe.contract("sb,bs", xt_B_sb, mol.omega_exchA_bs_S2)
+            + 2 * oe.contract("sb,sb", mol.omega_exchA_sb_S2, xt_B_sb)
+        ]
+    )
+
     results["x1_exch,r"] = np.array(
         [
             2 * oe.contract("ra,ar", xt_A_ra, mol.omega_exchB_ar)
