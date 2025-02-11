@@ -121,7 +121,12 @@ def make_cube(
 
     # get basis set and geometry
     if isinstance(mol, psi4.core.Molecule):
-        basisset = psi4.core.Wavefunction.build(mol).basisset()
+        if kwargs.get("basisset", None) is not None and isinstance(
+            kwargs["basisset"], psi4.core.BasisSet
+        ):
+            basisset = kwargs["basisset"]
+        else:
+            basisset = psi4.core.Wavefunction.build(mol).basisset()
         geo_matrix, _, _, elez, _ = mol.to_arrays()
 
     else:
