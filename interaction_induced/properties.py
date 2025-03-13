@@ -78,34 +78,24 @@ def perform_property_contractions(
 
     ### Second-order
 
-    alpha = results["x1_exch,r"] / results["x1_pol,r"]
-
-    # TODO: verify on diagrams and test
     results["x2_ind,r"] = (
-        # 2 Re <R(X)|V R(V)>
-        -4 * oe.contract("ra,ac,rc", mol.get_cpscf_ra(), mol.omegaB_aa, xt_A_ra)
-        + 4 * oe.contract("ra,cr,ca", mol.get_cpscf_ra(), mol.omegaB_rr, xt_A_ra)
+        +8 * oe.contract("ra,Qar,Qbs,sb", xt_A_ra, mol.Qar, mol.Qbs, mol.get_cpscf_sb())
         + 8
         * oe.contract("sb,Qar,Qbs,ra", mol.get_cpscf_sb(), mol.Qar, mol.Qbs, xt_A_ra)
-        - 4 * oe.contract("sb,bc,sc", mol.get_cpscf_sb(), mol.omegaA_bb, xt_B_sb)
-        + 4 * oe.contract("sb,cs,cb", mol.get_cpscf_sb(), mol.omegaA_ss, xt_B_sb)
+        + 8
+        * oe.contract("sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra())
         + 8
         * oe.contract("ra,Qar,Qbs,sb", mol.get_cpscf_ra(), mol.Qar, mol.Qbs, xt_B_sb)
-        # <R(V)|d R(V)>
+        - 4 * oe.contract("ra,ac,rc", mol.get_cpscf_ra(), mol.omegaB_aa, xt_A_ra)
+        + 4 * oe.contract("ra,cr,ca", mol.get_cpscf_ra(), mol.omegaB_rr, xt_A_ra)
+        - 4 * oe.contract("sb,bc,sc", mol.get_cpscf_sb(), mol.omegaA_bb, xt_B_sb)
+        + 4 * oe.contract("sb,cs,cb", mol.get_cpscf_sb(), mol.omegaA_ss, xt_B_sb)
         - 2 * oe.contract("ac,rc,ra", prop_A_aa, mol.get_cpscf_ra(), mol.get_cpscf_ra())
         + 2 * oe.contract("cr,ca,ra", prop_A_rr, mol.get_cpscf_ra(), mol.get_cpscf_ra())
         - 2 * oe.contract("bc,sc,sb", prop_B_bb, mol.get_cpscf_sb(), mol.get_cpscf_sb())
         + 2 * oe.contract("cs,cb,sb", prop_B_ss, mol.get_cpscf_sb(), mol.get_cpscf_sb())
-        + 8
-        * oe.contract("ra,Qar,Qbs,sb", xt_A_ra, mol.Qar, mol.Qbs, mol.get_cpscf_sb())
-        + 8
-        * oe.contract("sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra())
     )
 
-    # scaled exchange-induction
-    results["x2_exch-ind,r"] = alpha * results["x2_ind,r"]
-
-    # TODO: verify on diagrams and test
     results["x2_disp"] = (
         # 2 Re <R(X)|V R(V)>
         # NOTE some response not coupled
@@ -121,16 +111,11 @@ def perform_property_contractions(
         + 4 * oe.contract("cs,rcab,rsab", prop_B_ss, mol.t_rsab, mol.t_rsab)
     )
 
-    # scaled exchange-dispersion
-    results["x2_exch-disp"] = alpha * results["x2_disp"]
-
     results["x_induced"] = (
         results["x1_pol,r"]
         + results["x1_exch,r"]
         + results["x2_ind,r"]
-        + results["x2_exch-ind,r"]
         + results["x2_disp"]
-        + results["x2_exch-disp"]
     )
 
     return results
