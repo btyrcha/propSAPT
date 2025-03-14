@@ -1,5 +1,6 @@
 import psi4
 import numpy as np
+import opt_einsum as oe
 from .molecule import Dimer
 from .utils import trace_memory_peak
 
@@ -58,6 +59,8 @@ def calc_density_matirx(
 
     rho_MO_pol = np.zeros((mol.nmo, mol.nmo))
     rho_MO_exch = np.zeros((mol.nmo, mol.nmo))
+    rho_MO_ind = np.zeros((mol.nmo, mol.nmo))
+    rho_MO_disp = np.zeros((mol.nmo, mol.nmo))
 
     if monomer == "A":
         rho_pol_ra = mol.get_cpscf_ra()
@@ -65,11 +68,34 @@ def calc_density_matirx(
             "A", perturbation=mol.omega_exchB_ar + mol.omega_exchB_ra.T
         )
 
+        # first-order polarisation
         rho_MO_pol[mol.ndocc_A :, : mol.ndocc_A] = rho_pol_ra
         rho_MO_pol[: mol.ndocc_A, mol.ndocc_A :] = rho_pol_ra.T
 
+        # first-order exchange
         rho_MO_exch[mol.ndocc_A :, : mol.ndocc_A] = rho_exch_ra
         rho_MO_exch[: mol.ndocc_A, mol.ndocc_A :] = rho_exch_ra.T
+
+        # second-order induction
+        rho_MO_ind_ra = (
+            +2 * oe.contract("Qar,Qbs,sb->ra", mol.Qar, mol.Qbs, mol.get_cpscf_sb())
+            + 2 * oe.contract("sb,Qar,Qbs->ra", mol.get_cpscf_sb(), mol.Qar, mol.Qbs)
+            - oe.contract("ra,aA->rA", mol.get_cpscf_ra(), mol.omegaB_aa)
+            + oe.contract("ra,Rr->Ra", mol.get_cpscf_ra(), mol.omegaB_rr)
+        )
+        rho_MO_ind_ra = mol.cpscf("A", perturbation=rho_MO_ind_ra.T)
+
+        rho_MO_ind[mol.ndocc_A :, : mol.ndocc_A] = rho_MO_ind_ra
+        rho_MO_ind[: mol.ndocc_A, mol.ndocc_A :] = rho_MO_ind_ra.T
+
+        rho_MO_ind[: mol.ndocc_A, : mol.ndocc_A] = -oe.contract(
+            "rA,ra->aA", mol.get_cpscf_ra(), mol.get_cpscf_ra()
+        )
+        rho_MO_ind[mol.ndocc_A :, mol.ndocc_A :] = +oe.contract(
+            "Ra,ra->Rr", mol.get_cpscf_ra(), mol.get_cpscf_ra()
+        )
+
+        # TODO second-order dispersion
 
     if monomer == "B":
         rho_pol_sb = mol.get_cpscf_sb()
@@ -77,21 +103,51 @@ def calc_density_matirx(
             "B", perturbation=mol.omega_exchA_bs + mol.omega_exchA_sb.T
         )
 
+        # first-order polarisation
         rho_MO_pol[mol.ndocc_B :, : mol.ndocc_B] = rho_pol_sb
         rho_MO_pol[: mol.ndocc_B, mol.ndocc_B :] = rho_pol_sb.T
 
+        # first-order exchange
         rho_MO_exch[mol.ndocc_B :, : mol.ndocc_B] = rho_exch_sb
         rho_MO_exch[: mol.ndocc_B, mol.ndocc_B :] = rho_exch_sb.T
+
+        # second-order induction
+        rho_MO_ind_sb = (
+            +2 * oe.contract("Qar,Qbs,ra->sb", mol.Qar, mol.Qbs, mol.get_cpscf_ra())
+            + 2 * oe.contract("ra,Qar,Qbs->sb", mol.get_cpscf_ra(), mol.Qar, mol.Qbs)
+            - oe.contract("sb,bB->sB", mol.get_cpscf_sb(), mol.omegaA_bb)
+            + oe.contract("sb,Ss->Sb", mol.get_cpscf_sb(), mol.omegaA_ss)
+        )
+        rho_MO_ind_sb = mol.cpscf("B", perturbation=rho_MO_ind_sb.T)
+
+        rho_MO_ind[mol.ndocc_B :, : mol.ndocc_B] = rho_MO_ind_sb
+        rho_MO_ind[: mol.ndocc_B, mol.ndocc_B :] = rho_MO_ind_sb.T
+
+        rho_MO_ind[: mol.ndocc_B, : mol.ndocc_B] = -oe.contract(
+            "sB,sb->bB", mol.get_cpscf_sb(), mol.get_cpscf_sb()
+        )
+        rho_MO_ind[mol.ndocc_B :, mol.ndocc_B :] = +oe.contract(
+            "Sb,sb->Ss", mol.get_cpscf_sb(), mol.get_cpscf_sb()
+        )
+
+        # TODO second-order dispersion
+
+    # sum up all contributions
+    rho_MO_total = rho_MO_pol + rho_MO_exch + rho_MO_ind + rho_MO_disp
 
     if orbital_basis == "AO":
         return {
             "pol": density_mo_to_ao(mol, monomer, rho_MO_pol),
             "exch": density_mo_to_ao(mol, monomer, rho_MO_exch),
-            "total": density_mo_to_ao(mol, monomer, rho_MO_pol + rho_MO_exch),
+            "ind": density_mo_to_ao(mol, monomer, rho_MO_ind),
+            "disp": density_mo_to_ao(mol, monomer, rho_MO_disp),
+            "total": density_mo_to_ao(mol, monomer, rho_MO_total),
         }
     if orbital_basis == "MO":
         return {
             "pol": rho_MO_pol,
             "exch": rho_MO_exch,
-            "total": rho_MO_pol + rho_MO_exch,
+            "ind": rho_MO_ind,
+            "disp": rho_MO_disp,
+            "total": rho_MO_total,
         }
