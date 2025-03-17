@@ -95,7 +95,21 @@ def calc_density_matirx(
             "Ra,ra->Rr", mol.get_cpscf_ra(), mol.get_cpscf_ra()
         )
 
-        # TODO second-order dispersion
+        # second-order dispersion
+        rho_MO_disp_ra = 2 * oe.contract(
+            "rsab,QRr,Qbs->Ra", mol.t_rsab, mol.Qrr, mol.Qbs
+        ) - 2 * oe.contract("rsab,QaA,Qbs->rA", mol.t_rsab, mol.Qaa, mol.Qbs)
+        rho_MO_disp_ra = mol.cpscf("A", perturbation=rho_MO_disp_ra.T)
+
+        rho_MO_disp[mol.ndocc_A :, : mol.ndocc_A] = rho_MO_disp_ra
+        rho_MO_disp[: mol.ndocc_A, mol.ndocc_A :] = rho_MO_disp_ra.T
+
+        rho_MO_disp[: mol.ndocc_A, : mol.ndocc_A] = -2 * oe.contract(
+            "rsAb,rsab->aA", mol.t_rsab, mol.t_rsab
+        )
+        rho_MO_disp[mol.ndocc_A :, mol.ndocc_A :] = +2 * oe.contract(
+            "Rsab,rsab->Rr", mol.t_rsab, mol.t_rsab
+        )
 
     if monomer == "B":
         rho_pol_sb = mol.get_cpscf_sb()
@@ -130,7 +144,21 @@ def calc_density_matirx(
             "Sb,sb->Ss", mol.get_cpscf_sb(), mol.get_cpscf_sb()
         )
 
-        # TODO second-order dispersion
+        # second-order dispersion
+        rho_MO_disp_sb = +2 * oe.contract(
+            "rsab,Qar,QSs->Sb", mol.t_rsab, mol.Qar, mol.Qss
+        ) - 2 * oe.contract("rsab,Qar,QbB->sB", mol.t_rsab, mol.Qar, mol.Qbb)
+        rho_MO_disp_sb = mol.cpscf("B", perturbation=rho_MO_disp_sb.T)
+
+        rho_MO_disp[mol.ndocc_B :, : mol.ndocc_B] = rho_MO_disp_sb
+        rho_MO_disp[: mol.ndocc_B, mol.ndocc_B :] = rho_MO_disp_sb.T
+
+        rho_MO_disp[: mol.ndocc_B, : mol.ndocc_B] = -2 * oe.contract(
+            "rsaB,rsab->bB", mol.t_rsab, mol.t_rsab
+        )
+        rho_MO_disp[mol.ndocc_B :, mol.ndocc_B :] = +2 * oe.contract(
+            "rSab,rsab->Ss", mol.t_rsab, mol.t_rsab
+        )
 
     # sum up all contributions
     rho_MO_total = rho_MO_pol + rho_MO_exch + rho_MO_ind + rho_MO_disp
