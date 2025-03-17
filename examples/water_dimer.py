@@ -42,6 +42,8 @@ OPTIONS = {
 OUTPUT_FILE_PATH = "output.dat"
 RESULTS_FILE_PATH = "results.csv"
 
+CUBES_DIR = prepare_path("water-dimer-cubes/")
+
 if __name__ == "__main__":
 
     ### Psi4 options
@@ -63,32 +65,30 @@ if __name__ == "__main__":
     delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
     delta_dm_pol = delta_dm_A["pol"] + delta_dm_B["pol"]
     delta_dm_exch = delta_dm_A["exch"] + delta_dm_B["exch"]
+    delta_dm_ind = delta_dm_A["ind"] + delta_dm_B["ind"]
+    delta_dm_disp = delta_dm_A["disp"] + delta_dm_B["disp"]
 
     ### Store densities to .cube files
+    densities_to_save = [2 * rho for rho in delta_dm_A.values()]
+    densities_to_save += [2 * rho for rho in delta_dm_B.values()]
+    densities_to_save += [
+        2 * rho
+        for rho in [delta_dm, delta_dm_pol, delta_dm_exch, delta_dm_ind, delta_dm_disp]
+    ]
+
+    cube_filenames = [CUBES_DIR + f"delta_dm_{key}_A.cube" for key in delta_dm_A.keys()]
+    cube_filenames += [
+        CUBES_DIR + f"delta_dm_{key}_B.cube" for key in delta_dm_B.keys()
+    ]
+    cube_filenames += [
+        CUBES_DIR + f"delta_dm{key}.cube"
+        for key in ["", "_pol", "_exch", "_ind", "_disp"]
+    ]
+
     dimer.save_cube(
-        [
-            2 * delta_dm_A["pol"],
-            2 * delta_dm_A["exch"],
-            2 * delta_dm_B["pol"],
-            2 * delta_dm_B["exch"],
-            2 * delta_dm_A["total"],
-            2 * delta_dm_B["total"],
-            2 * delta_dm,
-            2 * delta_dm_pol,
-            2 * delta_dm_exch,
-        ],
-        ["density"] * 9,
-        [
-            prepare_path("water-dimer-cubes/delta_dm_pol_A.cube"),
-            "water-dimer-cubes/delta_dm_exch_A.cube",
-            "water-dimer-cubes/delta_dm_pol_B.cube",
-            "water-dimer-cubes/delta_dm_exch_B.cube",
-            "water-dimer-cubes/delta_dm_A.cube",
-            "water-dimer-cubes/delta_dm_B.cube",
-            "water-dimer-cubes/delta_dm.cube",
-            "water-dimer-cubes/delta_dm_pol.cube",
-            "water-dimer-cubes/delta_dm_exch.cube",
-        ],
+        densities_to_save,
+        ["density"] * len(densities_to_save),
+        cube_filenames,
     )
 
     ### End calculations
