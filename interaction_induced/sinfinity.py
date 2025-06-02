@@ -364,63 +364,8 @@ class sinfinity(helper_SAPT):
             )
 
         else:
-            ### omegaA and omegaB
-            v_abas = self.v("abas")
-            v_abrb = self.v("abrb")
-            self.v_abrs = self.v("abrs")
-            v_abab = self.v("abab")
-
-            self.omegaA_bs = vA_bs + 2 * oe.contract("abas->bs", v_abas)
-            self.omegaB_ar = vB_ar + 2 * oe.contract("abrb->ar", v_abrb)
-
-            self.omegaB_rr = 2 * oe.contract("rbRb->rR", self.v("rbrb")) + vB_rr
-            self.omegaB_aa = 2 * oe.contract("abAb->aA", v_abab) + vB_aa
-
-            self.omegaA_ss = 2 * oe.contract("asaS->sS", self.v("asas")) + vA_ss
-            self.omegaA_bb = 2 * oe.contract("abaB->bB", v_abab) + vA_bb
-
-            ### omega_exchA and omega_exchB
-            self.omega_exchA_bs = (
-                oe.contract("Bb,sS,bs->BS", self.A_bb, self.D_ss, self.omegaA_bs)
-                - oe.contract("rs,ba,ar->bs", self.G_rs, self.H_ba, self.omegaB_ar)
-                - 2
-                * oe.contract(
-                    "ra,Bb,sS,abrs->BS", self.E_ra, self.A_bb, self.D_ss, self.v_abrs
-                )
-                - oe.contract(
-                    "Bb,rS,sa,abrs->BS", self.A_bb, self.G_rs, self.J_sa, self.v_abrs
-                )
-                + oe.contract(
-                    "rb,sS,Ba,abrs->BS", self.I_rb, self.D_ss, self.H_ba, self.v_abrs
-                )
-                + 2
-                * oe.contract(
-                    "sb,rS,Ba,abrs->BS", self.F_sb, self.G_rs, self.H_ba, self.v_abrs
-                )
-            ) - self.omegaA_bs
-
-            self.omega_exchB_ar = (
-                oe.contract("Aa,rR,ar->AR", self.B_aa, self.C_rr, self.omegaB_ar)
-                - oe.contract("sr,ab,bs->ar", self.G_sr, self.H_ab, self.omegaA_bs)
-                - 2
-                * oe.contract(
-                    "Aa,rR,sb,abrs->AR", self.B_aa, self.C_rr, self.F_sb, self.v_abrs
-                )
-                - oe.contract(
-                    "rb,Aa,sR,abrs->AR", self.I_rb, self.B_aa, self.G_sr, self.v_abrs
-                )
-                + oe.contract(
-                    "rR,Ab,sa,abrs->AR", self.C_rr, self.H_ab, self.J_sa, self.v_abrs
-                )
-                + 2
-                * oe.contract(
-                    "ra,sR,Ab,abrs->AR", self.E_ra, self.G_sr, self.H_ab, self.v_abrs
-                )
-            ) - self.omegaB_ar
-
-            ### dispersion amplitudes
-            self.t_rsab = np.array(
-                oe.contract("abrs,rsab->rsab", self.v_abrs, self.e_rsab)
+            raise NotImplementedError(
+                "Second-quantized SAPT S^infinity is not implemented for non-density-fitted calculations."
             )
 
         ### Non-response amplitudes
