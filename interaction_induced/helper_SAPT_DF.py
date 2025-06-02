@@ -392,7 +392,7 @@ class helper_SAPT(object):
                 f"helper_SAPT.potential side must be either A or B, not {side}."
             )
 
-    def cpscf(self, monomer, ind=False, **kwargs):
+    def cpscf(self, monomer, ind=False, **kwargs) -> np.ndarray:
         """
         Coupled perturbed HF or KS calculations.
         """

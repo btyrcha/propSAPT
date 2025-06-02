@@ -22,12 +22,14 @@ def density_mo_to_ao(
 
     if monomer == "A":
         return mol.C_A.dot(density_matrix).dot(mol.C_A.T)
-    if monomer == "B":
+    elif monomer == "B":
         return mol.C_B.dot(density_matrix).dot(mol.C_B.T)
+    else:
+        raise ValueError(f"Invalid monomer: {monomer}")
 
 
 @trace_memory_peak
-def calc_density_matirx(
+def calc_density_matrix(
     mol: Dimer, monomer: str, orbital_basis="AO"
 ) -> dict[str, np.ndarray]:
     """
@@ -171,7 +173,7 @@ def calc_density_matirx(
             "disp": density_mo_to_ao(mol, monomer, rho_MO_disp),
             "total": density_mo_to_ao(mol, monomer, rho_MO_total),
         }
-    if orbital_basis == "MO":
+    elif orbital_basis == "MO":
         return {
             "pol": rho_MO_pol,
             "exch": rho_MO_exch,
@@ -179,3 +181,8 @@ def calc_density_matirx(
             "disp": rho_MO_disp,
             "total": rho_MO_total,
         }
+    else:
+        psi4.core.clean()
+        raise ValueError(
+            f"Argument 'orbital_basis' should be either 'MO' or 'AO' but was '{orbital_basis}'!"
+        )

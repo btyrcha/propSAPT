@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 
 from prepare_dimer import prepare_dimer
-from interaction_induced import Dimer, calc_density_matirx
+from interaction_induced import Dimer, calc_density_matrix
 
 
 @pytest.fixture(scope="module")
@@ -21,8 +21,8 @@ def prepare_dipole_along_x(prepare_dimer):
 def get_density_matrices(prepare_dimer):
     """Get interaction-induced density matrices for monomers A and B."""
 
-    rho_A = calc_density_matirx(prepare_dimer, "A", orbital_basis="AO")
-    rho_B = calc_density_matirx(prepare_dimer, "B", orbital_basis="AO")
+    rho_A = calc_density_matrix(prepare_dimer, "A", orbital_basis="AO")
+    rho_B = calc_density_matrix(prepare_dimer, "B", orbital_basis="AO")
 
     return rho_A, rho_B
 
