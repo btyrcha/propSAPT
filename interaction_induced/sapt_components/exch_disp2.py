@@ -161,31 +161,31 @@ def calc_exch_disp2_energy(dimer: Dimer):
 
     ### ExchDisp200_Sinfinity
 
-    disp2_all = -4 * oe.contract(
+    term_abrs = -4 * oe.contract(
         "cd,eb,sf,bs->dfce", dimer.E_ar, dimer.A_bb, dimer.D_ss, dimer.omegaA_bs
     )
-    disp2_all -= 4 * oe.contract(
+    term_abrs -= 4 * oe.contract(
         "ca,rd,ef,ar->dfce", dimer.B_aa, dimer.C_rr, dimer.F_bs, dimer.omegaB_ar
     )
-    disp2_all -= 2 * oe.contract(
+    term_abrs -= 2 * oe.contract(
         "cd,ea,rf,ar->dfec", dimer.I_br, dimer.B_aa, dimer.G_rs, dimer.omegaB_ar
     )
-    disp2_all -= 2 * oe.contract(
+    term_abrs -= 2 * oe.contract(
         "cb,sd,ef,bs->dfec", dimer.A_bb, dimer.G_sr, dimer.J_as, dimer.omegaA_bs
     )
-    disp2_all += 2 * oe.contract(
+    term_abrs += 2 * oe.contract(
         "cd,se,fb,bs->defc", dimer.I_br, dimer.D_ss, dimer.H_ab, dimer.omegaA_bs
     )
-    disp2_all += 2 * oe.contract(
+    term_abrs += 2 * oe.contract(
         "rc,da,ef,ar->cfed", dimer.C_rr, dimer.H_ba, dimer.J_as, dimer.omegaB_ar
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "cd,re,fa,ar->decf", dimer.E_ar, dimer.G_rs, dimer.H_ba, dimer.omegaB_ar
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "cd,se,fb,bs->edfc", dimer.F_bs, dimer.G_sr, dimer.H_ab, dimer.omegaA_bs
     )
-    disp2_all -= 8 * oe.contract(
+    term_abrs -= 8 * oe.contract(
         "cd,sb,re,fa,Qar,Qbs->decf",
         dimer.E_ar,
         dimer.F_sb,
@@ -194,7 +194,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 8 * oe.contract(
+    term_abrs -= 8 * oe.contract(
         "ra,cd,se,fb,Qar,Qbs->edfc",
         dimer.E_ra,
         dimer.F_bs,
@@ -203,7 +203,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 4 * oe.contract(
+    term_abrs -= 4 * oe.contract(
         "cd,rb,se,fa,Qar,Qbs->decf",
         dimer.E_ar,
         dimer.I_rb,
@@ -212,7 +212,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 4 * oe.contract(
+    term_abrs -= 4 * oe.contract(
         "ra,cd,se,fb,Qar,Qbs->defc",
         dimer.E_ra,
         dimer.I_br,
@@ -221,7 +221,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 4 * oe.contract(
+    term_abrs -= 4 * oe.contract(
         "rc,de,fb,sa,Qar,Qbs->cefd",
         dimer.C_rr,
         dimer.F_bs,
@@ -230,7 +230,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 4 * oe.contract(
+    term_abrs -= 4 * oe.contract(
         "rc,sb,da,ef,Qar,Qbs->cfed",
         dimer.C_rr,
         dimer.F_sb,
@@ -239,7 +239,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 2 * oe.contract(
+    term_abrs -= 2 * oe.contract(
         "cd,re,fb,sa,Qar,Qbs->defc",
         dimer.I_br,
         dimer.G_rs,
@@ -248,7 +248,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 2 * oe.contract(
+    term_abrs -= 2 * oe.contract(
         "rb,sc,da,ef,Qar,Qbs->cfed",
         dimer.I_rb,
         dimer.G_sr,
@@ -257,7 +257,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 2 * oe.contract(
+    term_abrs -= 2 * oe.contract(
         "cb,da,se,rf,Qar,Qbs->efdc",
         dimer.A_bb,
         dimer.B_aa,
@@ -266,7 +266,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all -= 2 * oe.contract(
+    term_abrs -= 2 * oe.contract(
         "rc,sd,ea,fb,Qar,Qbs->cdfe",
         dimer.C_rr,
         dimer.D_ss,
@@ -275,7 +275,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 2 * oe.contract(
+    term_abrs += 2 * oe.contract(
         "cd,rb,ea,sf,Qar,Qbs->dfec",
         dimer.I_br,
         dimer.I_rb,
@@ -284,7 +284,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 2 * oe.contract(
+    term_abrs += 2 * oe.contract(
         "cb,rd,ef,sa,Qar,Qbs->dfec",
         dimer.A_bb,
         dimer.C_rr,
@@ -293,7 +293,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "cd,eb,rf,sa,Qar,Qbs->dfce",
         dimer.E_ar,
         dimer.A_bb,
@@ -302,7 +302,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "ra,cb,sd,ef,Qar,Qbs->dfec",
         dimer.E_ra,
         dimer.A_bb,
@@ -311,7 +311,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "cd,ea,sb,rf,Qar,Qbs->dfec",
         dimer.I_br,
         dimer.B_aa,
@@ -320,7 +320,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "rb,ca,de,sf,Qar,Qbs->fecd",
         dimer.I_rb,
         dimer.B_aa,
@@ -329,7 +329,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "cb,da,re,sf,Qar,Qbs->efdc",
         dimer.A_bb,
         dimer.B_aa,
@@ -338,7 +338,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 4 * oe.contract(
+    term_abrs += 4 * oe.contract(
         "sc,rd,ea,fb,Qar,Qbs->cdfe",
         dimer.G_sr,
         dimer.G_rs,
@@ -347,7 +347,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 8 * oe.contract(
+    term_abrs += 8 * oe.contract(
         "cd,ra,eb,sf,Qar,Qbs->dfce",
         dimer.E_ar,
         dimer.E_ra,
@@ -356,7 +356,7 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qar,
         dimer.Qbs,
     )
-    disp2_all += 8 * oe.contract(
+    term_abrs += 8 * oe.contract(
         "ca,rd,ef,sb,Qar,Qbs->dfce",
         dimer.B_aa,
         dimer.C_rr,
@@ -366,7 +366,8 @@ def calc_exch_disp2_energy(dimer: Dimer):
         dimer.Qbs,
     )
 
-    disp2 = 4 * oe.contract("rsab,abrs", dimer.t_rsab, dimer.Qar, dimer.Qbs)
+    disp2_all = oe.contract("rsab,abrs", dimer.t_rsab, term_abrs)
+    disp2 = 4 * oe.contract("rsab,Qar,Qbs", dimer.t_rsab, dimer.Qar, dimer.Qbs)
     exch_disp2_sinf = disp2_all - disp2
 
     return exch_disp2_sinf
