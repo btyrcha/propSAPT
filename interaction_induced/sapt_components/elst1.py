@@ -13,8 +13,8 @@ def calc_elst1_energy(dimer: Dimer):
         _type_: First-order SAPT electrostatic interaction energy.
     """
 
-    vA_aa = dimer.potential("A", "aa")
-    vB_bb = dimer.potential("B", "bb")
+    vA_aa = dimer.potential("aa", "A")
+    vB_bb = dimer.potential("bb", "B")
 
     elst1 = dimer.nuc_rep
     elst1 += 2 * oe.contract("aa", vA_aa)
