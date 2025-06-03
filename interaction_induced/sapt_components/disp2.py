@@ -18,7 +18,7 @@ def calc_disp2_energy(dimer: Dimer) -> pd.Series:
     """
 
     # Calculate the second-order dispersion energy
-    disp2 = 4 * oe.contract("rsab,Qar,Qab", dimer.t_rsab, dimer.Qar, dimer.Qbs)
+    disp2 = 4 * oe.contract("rsab,Qar,Qbs", dimer.t_rsab, dimer.Qar, dimer.Qbs)
 
     # Combine the results into a pandas Series
     results = pd.Series()
