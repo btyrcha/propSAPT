@@ -217,8 +217,14 @@ def calc_property(mol: Dimer, prop: str | np.ndarray, **kwargs) -> pd.DataFrame:
         ### Dipole moment calculations
         results = calc_induced_dipole(mol)
 
-    else:
+    elif isinstance(prop, np.ndarray):
+        ### Property matrix is given
         results = perform_property_contractions(mol, prop)
+    else:
+        raise ValueError(
+            f"Property {prop} is not implemented. "
+            "Please provide a valid property name or a property matrix."
+        )
 
     ### Results saving to file
     results.to_csv(results_fname)
@@ -226,7 +232,7 @@ def calc_property(mol: Dimer, prop: str | np.ndarray, **kwargs) -> pd.DataFrame:
     ### End of calculations
     total_time = time() - total_time
     psi4.core.print_out(
-        f"\nInteraction-induced property calculaitons took {total_time:.2f} seconds.\n"
+        f"\nInteraction-induced property calculations took {total_time:.2f} seconds.\n"
     )
     psi4.core.clean()
 
