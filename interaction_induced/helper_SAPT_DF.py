@@ -516,37 +516,3 @@ class helper_SAPT(object):
 
 
 # End SAPT helper
-
-
-class sapt_timer(object):
-    """
-    Simple timer object.
-    """
-
-    def __init__(self, name):
-        self.name = name
-        self.start = time.time()
-        psi4.core.print_out(f"\nStarting {name}...")
-
-    def stop(self):
-        """
-        Stops timer.
-        """
-
-        t = time.time() - self.start
-        psi4.core.print_out(f"...{self.name} took a total of {t: .2f} seconds.")
-
-
-def sapt_printer(line, value):
-    """
-    Prints out 'value' in mH and kcal/mol
-    along a label given in 'line'.
-    """
-
-    spacer = " " * (20 - len(line))
-    psi4.core.print_out(
-        line + spacer + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol"
-    )
-
-
-# End SAPT helper
