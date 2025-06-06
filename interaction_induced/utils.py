@@ -64,16 +64,27 @@ class CalcTimer(object):
         """
 
         self.name = name
-        self.start = time.time()
-        psi4.core.print_out(f"\nStarting {name}...")
+        self.start = 0.0
 
-    def stop(self):
+    def __enter__(self):
+        """Starts the timer.
+
+        Returns:
+            CalcTimer: Returns the CalcTimer instance to allow for use in a `with` statement.
+        """
+
+        self.start = time.process_time()
+        psi4.core.print_out(f"\nStarting {self.name}...\n")
+
+        return self
+
+    def __exit__(self, *args):
         """
         Stops the timer. And prints out the time taken for the operation into the output file.
         """
 
-        t = time.time() - self.start
-        psi4.core.print_out(f"...{self.name} took a total of {t: .2f} seconds.")
+        t = time.process_time() - self.start
+        psi4.core.print_out(f"...{self.name} took a total of {t: .2f} seconds.\n")
 
 
 def energy_printer(name: str, value: float):
@@ -86,5 +97,5 @@ def energy_printer(name: str, value: float):
 
     spacer = " " * (20 - len(name))
     psi4.core.print_out(
-        name + spacer + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol"
+        name + spacer + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol\n"
     )
