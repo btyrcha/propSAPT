@@ -104,11 +104,11 @@ def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
     energy_output_string = (
         name
         + name_padding
-        + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol\n"
+        + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol  {value* 2625.50: 16.8f} kJ/mol"
     )
 
     if output == "psi4":
-        psi4.core.print_out(energy_output_string)
+        psi4.core.print_out(energy_output_string + "\n")
 
     elif output == "stdout":
         print(energy_output_string)
@@ -120,7 +120,7 @@ def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
             raise ValueError("Output filename must be provided when output is 'file'.")
 
         with open(output_fname, "a", encoding="utf-8") as f:
-            f.write(energy_output_string)
+            f.write(energy_output_string + "\n")
 
     else:
         raise ValueError(
