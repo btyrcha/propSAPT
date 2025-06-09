@@ -20,10 +20,16 @@ def calc_exch1_s2_energy(dimer: Dimer):
     s_sa = dimer.s("sa")
     s_rb = dimer.s("rb")
 
+    _, K1 = dimer.compute_jk(
+        dimer.orbitals["r"],
+        dimer.orbitals["b"],
+        tensor=s_rb,
+    )
+
     ### Exch100_S2
     exch1_s2 = -2 * oe.contract("ab,sa,bs", s_ab, s_sa, dimer.omegaA_bs)
     exch1_s2 -= 2 * oe.contract("ba,rb,ar", s_ba, s_rb, dimer.omegaB_ar)
-    exch1_s2 -= 2 * oe.contract("sa,rb,Qar,Qbs", s_sa, s_rb, dimer.Qar, dimer.Qbs)
+    exch1_s2 -= 2 * np.trace(dimer.orbitals["s"] @ s_sa @ dimer.orbitals["a"].T @ K1)
 
     return exch1_s2
 
