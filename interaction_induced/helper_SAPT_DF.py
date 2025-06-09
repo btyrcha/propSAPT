@@ -441,10 +441,8 @@ class helper_SAPT(object):
             if monomer == "A":
                 if kwargs.get("perturbation", None) is None:
                     # Construct Omega potential
-                    vB_ar = self.V_B_AA[self.slices["a"], self.slices["r"]]
-                    omega_ov = vB_ar + 2 * oe.contract(
-                        "Qar,Qbb->ar", self.df_ints("ar"), self.df_ints("bb")
-                    )
+                    omegaB = self.V_B + 2 * self.J_B
+                    omega_ov = self.orbitals["a"].T @ omegaB @ self.orbitals["r"]
                     pert_ov = omega_ov
                 else:
                     pert_ov = kwargs["perturbation"]
@@ -467,10 +465,8 @@ class helper_SAPT(object):
             elif monomer == "B":
                 if kwargs.get("perturbation", None) is None:
                     # Construct Omega potential
-                    vA_bs = self.V_A_BB[self.slices["b"], self.slices["s"]]
-                    omega_ov = vA_bs + 2 * oe.contract(
-                        "Qaa,Qbs->bs", self.df_ints("aa"), self.df_ints("bs")
-                    )
+                    omegaA = self.V_A + 2 * self.J_A
+                    omega_ov = self.orbitals["b"].T @ omegaA @ self.orbitals["s"]
                     pert_ov = omega_ov
                 else:
                     pert_ov = kwargs["perturbation"]
