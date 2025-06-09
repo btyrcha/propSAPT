@@ -1,4 +1,4 @@
-import opt_einsum as oe
+import numpy as np
 
 from ..molecule import Dimer
 from ..utils import CalcTimer
@@ -16,12 +16,12 @@ def calc_elst1_energy(dimer: Dimer):
 
     with CalcTimer("Electrostatic energy calculation"):
 
-        vA_bb = dimer.potential("bb", "A")
-        vB_aa = dimer.potential("aa", "B")
+        density_A = dimer.orbitals["a"] @ dimer.orbitals["a"].T
+        density_B = dimer.orbitals["b"] @ dimer.orbitals["b"].T
 
         elst1 = dimer.nuc_rep
-        elst1 += 2 * oe.contract("bb", vA_bb)
-        elst1 += 2 * oe.contract("aa", vB_aa)
-        elst1 += 4 * oe.contract("Qaa, Qbb", dimer.Qaa, dimer.Qbb)
+        elst1 += 2 * np.trace(density_B @ dimer.V_A)
+        elst1 += 2 * np.trace(density_A @ dimer.V_B)
+        elst1 += 4 * np.trace(density_A @ dimer.J_B)
 
     return elst1
