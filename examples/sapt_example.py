@@ -1,5 +1,11 @@
+"""
+Example script to calculate SAPT energy using the interaction_induced package.
+"""
+
 import psi4
+
 from interaction_induced import Dimer, calc_sapt_energy
+from interaction_induced.utils import energy_printer
 
 # Define the geometry of the dimer
 GEO = """
@@ -25,10 +31,11 @@ DF_BASIS = "aug-cc-pvqz"
 # specify options
 OPTIONS = {
     # "option": "value",
+    "reference": "RHF",
     "basis": BASIS,
     "DF_BASIS_SCF": DF_BASIS + "-jkfit",
     "DF_BASIS_SAPT": DF_BASIS + "-ri",
-    "scf_type": "df",
+    "scf_type": "direct",
     "save_jk": True,  # necessary option
 }
 
@@ -50,6 +57,25 @@ if __name__ == "__main__":
     sapt_results = calc_sapt_energy(dimer, results=RESULTS_FILE_PATH)
 
     # Print the results
-    print(sapt_results)
+    for term, value in sapt_results.items():
+        energy_printer(term, value, output="stdout")
+
+    # Compare with Psi4's SAPT energy calculation
+    psi4.set_options(
+        {
+            "reference": "RHF",
+            "basis": BASIS,
+            "DF_BASIS_SCF": DF_BASIS + "-jkfit",
+            "DF_BASIS_MP2": DF_BASIS + "-ri",
+            "DF_BASIS_ELST": DF_BASIS + "-jkfit",
+            "DF_BASIS_SAPT": DF_BASIS + "-ri",
+            "scf_type": "direct",
+            "SAPT_DFT_MP2_DISP_ALG": "fisapt",
+            "SAPT_DFT_FUNCTIONAL": "HF",
+            "DO_IND_EXCH_SINF": True,
+            "DO_DISP_EXCH_SINF": True,
+        }
+    )
+    psi4.energy("sapt(dft)")
 
     psi4.core.clean()
