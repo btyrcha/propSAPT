@@ -1,6 +1,7 @@
 import opt_einsum as oe
 
 from ..molecule import Dimer
+from ..utils import CalcTimer
 
 
 def calc_elst1_energy(dimer: Dimer):
@@ -13,12 +14,14 @@ def calc_elst1_energy(dimer: Dimer):
         _type_: First-order SAPT electrostatic interaction energy.
     """
 
-    vA_aa = dimer.potential("aa", "A")
-    vB_bb = dimer.potential("bb", "B")
+    with CalcTimer("Electrostatic energy calculation"):
 
-    elst1 = dimer.nuc_rep
-    elst1 += 2 * oe.contract("aa", vA_aa)
-    elst1 += +2 * oe.contract("bb", vB_bb)
-    elst1 += +4 * oe.contract("Qaa, Qbb", dimer.Qaa, dimer.Qbb)
+        vA_bb = dimer.potential("bb", "A")
+        vB_aa = dimer.potential("aa", "B")
+
+        elst1 = dimer.nuc_rep
+        elst1 += 2 * oe.contract("bb", vA_bb)
+        elst1 += 2 * oe.contract("aa", vB_aa)
+        elst1 += 4 * oe.contract("Qaa, Qbb", dimer.Qaa, dimer.Qbb)
 
     return elst1
