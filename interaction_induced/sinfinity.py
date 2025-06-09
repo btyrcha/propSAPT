@@ -106,14 +106,17 @@ class sinfinity(helper_SAPT):
             self.Qss = self.df_ints("ss")
 
             ### omegaA and omegaB
-            self.omegaA_bs = vA_bs + 2 * oe.contract("Qaa,Qbs->bs", self.Qaa, self.Qbs)
-            self.omegaB_ar = vB_ar + 2 * oe.contract("Qar,Qbb->ar", self.Qar, self.Qbb)
+            omegaA = self.V_A + 2 * self.J_A
+            omegaB = self.V_B + 2 * self.J_B
 
-            self.omegaB_rr = 2 * oe.contract("QrR,Qbb->rR", self.Qrr, self.Qbb) + vB_rr
-            self.omegaB_aa = 2 * oe.contract("QaA,Qbb->aA", self.Qaa, self.Qbb) + vB_aa
+            self.omegaA_bs = self.orbitals["b"].T @ omegaA @ self.orbitals["s"]
+            self.omegaB_ar = self.orbitals["a"].T @ omegaB @ self.orbitals["r"]
 
-            self.omegaA_ss = 2 * oe.contract("Qaa,QsS->sS", self.Qaa, self.Qss) + vA_ss
-            self.omegaA_bb = 2 * oe.contract("Qaa,QbB->bB", self.Qaa, self.Qbb) + vA_bb
+            self.omegaA_bb = self.orbitals["b"].T @ omegaA @ self.orbitals["b"]
+            self.omegaB_aa = self.orbitals["a"].T @ omegaB @ self.orbitals["a"]
+
+            self.omegaA_ss = self.orbitals["s"].T @ omegaA @ self.orbitals["s"]
+            self.omegaB_rr = self.orbitals["r"].T @ omegaB @ self.orbitals["r"]
 
             ### omega_exchA and omega_exchB
             self.omega_exchA_bs_S2 = (
