@@ -87,15 +87,42 @@ class CalcTimer(object):
         psi4.core.print_out(f"...{self.name} took a total of {t: .2f} seconds.\n")
 
 
-def energy_printer(name: str, value: float):
-    """Prints out the energy value in mH and kcal/mol into the output file.
+def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
+    """Prints out the energy value in mH and kcal/mol.
 
     Args:
         name (str): Name of the energy term.
         value (float): Value of the energy term in Hartree.
+        output (str, optional): Output method. Defaults to "psi4" - Psi4's output file.
+
+    Raises:
+        ValueError: If an unknown output type is provided.
+        ValueError: If the output filename is not provided when output is 'file'.
     """
 
-    spacer = " " * (20 - len(name))
-    psi4.core.print_out(
-        name + spacer + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol\n"
+    name_padding = " " * (20 - len(name))
+    energy_output_string = (
+        name
+        + name_padding
+        + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol\n"
     )
+
+    if output == "psi4":
+        psi4.core.print_out(energy_output_string)
+
+    elif output == "stdout":
+        print(energy_output_string)
+
+    elif output == "file":
+        output_fname = kwargs.get("output_fname")
+
+        if output_fname is None:
+            raise ValueError("Output filename must be provided when output is 'file'.")
+
+        with open(output_fname, "a", encoding="utf-8") as f:
+            f.write(energy_output_string)
+
+    else:
+        raise ValueError(
+            f"Unknown output type: {output}. Supported types are 'psi4', 'stdout', and 'file'."
+        )
