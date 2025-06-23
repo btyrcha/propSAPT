@@ -72,6 +72,9 @@ class helper_SAPT(object):
             psi4.core.clean()
             raise ValueError(f"Reference '{reference}' not implemented yet.")
 
+        # Check if the functional is specified for DFT
+        dft_functional = kwargs.get("functional", "pbe0")
+
         # Initialize time
         tinit_start = time.time()
         psi4.core.print_out("\nInitializing SAPT object...\n")
@@ -118,7 +121,7 @@ class helper_SAPT(object):
                     "\n*** WARNING!: GRAC shift for monomer A not specified! ***\n"
                 )
             self.dftA, self.wfnA = psi4.energy(
-                kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerA
+                dft_functional, return_wfn=True, molecule=monomerA
             )
         self.V_A = np.asarray(
             psi4.core.MintsHelper(self.wfnA.basisset()).ao_potential()
@@ -142,7 +145,7 @@ class helper_SAPT(object):
                     "\n*** WARNING!: GRAC shift for monomer B not specified! ***\n"
                 )
             self.dftB, self.wfnB = psi4.energy(
-                kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerB
+                dft_functional, return_wfn=True, molecule=monomerB
             )
         self.V_B = np.asarray(
             psi4.core.MintsHelper(self.wfnB.basisset()).ao_potential()
