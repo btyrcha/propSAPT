@@ -3,15 +3,84 @@ SAPT Driver Module
 This module provides a function to calculate the SAPT energy components for a dimer system.
 """
 
+import psi4
 import pandas as pd
 
 from .molecule import Dimer
-from .utils import trace_memory_peak
+from .utils import trace_memory_peak, CalcTimer, energy_printer
 
 from .sapt_components.elst1 import calc_elst1_energy
 from .sapt_components.exch1 import calc_exch1_energy, calc_exch1_s2_energy
 from .sapt_components.ind2 import calc_ind2_energy, calc_ind2_r_energy
 from .sapt_components.disp2 import calc_disp2_energy
+
+
+def print_sapt_summary(results: pd.Series, **kwargs):
+    """Prints a summary of the SAPT energy components.
+
+    Args:
+        results (pd.Series):  A pandas Series containing the SAPT energy components.
+    """
+
+    line_width = 93
+
+    # Hader
+    psi4.core.print_out("\n")
+    psi4.core.print_out("            |------------------------------------| \n")
+    psi4.core.print_out("            |         SAPT Summary Table         | \n")
+    psi4.core.print_out("            |------------------------------------| \n")
+
+    # Table header
+    psi4.core.print_out("\n")
+    psi4.core.print_out("=" * line_width + "\n")
+    psi4.core.print_out(
+        " Term                        Value (mEh)           Value (kcal/mol)           Value (kJ/mol)\n"
+    )
+    psi4.core.print_out("=" * line_width + "\n")
+
+    # Electrostatics
+    psi4.core.print_out("\n")
+    psi4.core.print_out("Electrostatics\n")
+    psi4.core.print_out("-" * line_width + "\n")
+    energy_printer("ELST1", results["ELST1"], output="psi4")
+
+    # Exchange
+    psi4.core.print_out("\n")
+    psi4.core.print_out("Exchange\n")
+    psi4.core.print_out("-" * line_width + "\n")
+    energy_printer("EXCH1", results["EXCH1"], output="psi4")
+    energy_printer("EXCH1(S^2)", results["EXCH1(S^2)"], output="psi4")
+
+    # Induction
+    psi4.core.print_out("\n")
+    psi4.core.print_out("Induction\n")
+    psi4.core.print_out("-" * line_width + "\n")
+    if kwargs.get("response") is True:
+        energy_printer("IND2,R_A", results["IND2,R_A"], output="psi4")
+        energy_printer("IND2,R_B", results["IND2,R_B"], output="psi4")
+        energy_printer("IND2,R", results["IND2,R"], output="psi4")
+        energy_printer("EXCH-IND2,R_A", results["EXCH-IND2,R_A"], output="psi4")
+        energy_printer("EXCH-IND2,R_B", results["EXCH-IND2,R_B"], output="psi4")
+        energy_printer("EXCH-IND2,R", results["EXCH-IND2,R"], output="psi4")
+    else:
+        energy_printer("IND2_A", results["IND2_A"], output="psi4")
+        energy_printer("IND2_B", results["IND2_B"], output="psi4")
+        energy_printer("IND2", results["IND2"], output="psi4")
+        energy_printer("EXCH-IND2_A", results["EXCH-IND2_A"], output="psi4")
+        energy_printer("EXCH-IND2_B", results["EXCH-IND2_B"], output="psi4")
+        energy_printer("EXCH-IND2", results["EXCH-IND2"], output="psi4")
+
+    # Dispersion
+    psi4.core.print_out("\n")
+    psi4.core.print_out("Dispersion\n")
+    psi4.core.print_out("-" * line_width + "\n")
+    energy_printer("DISP2", results["DISP2"], output="psi4")
+    energy_printer("EXCH-DISP2", results["EXCH-DISP2"], output="psi4")
+
+    # Total energy
+    psi4.core.print_out("\n")
+    energy_printer("TOTAL", results["TOTAL"], output="psi4")
+    psi4.core.print_out("=" * line_width + "\n")
 
 
 @trace_memory_peak
@@ -38,44 +107,72 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
 
     Kwargs:
         results (str): Path to save the results CSV file. Defaults to "results.csv".
+        response (bool): Whether to calculate response induction terms. Defaults to True.
 
     Returns:
         pd.Series: A pandas Series containing the SAPT energy components.
     """
 
-    # TODO: Add printout for each term
-    # TODO: Time the calculations
+    # Print header
+    psi4.core.print_out("\n")
+    psi4.core.print_out("*" * 80)
+    psi4.core.print_out("\n\n")
+    psi4.core.print_out("        |-------------------------------------|        \n")
+    psi4.core.print_out("        |        Second-Quantized SAPT        |        \n")
+    psi4.core.print_out("        |-------------------------------------|        \n")
+    psi4.core.print_out("\n")
+    psi4.core.tstart()
 
-    results = pd.Series()
+    with CalcTimer("SAPT energy calculations"):
 
-    # First-order terms
-    results["ELST1"] = calc_elst1_energy(dimer)
-    results["EXCH1"] = calc_exch1_energy(dimer)
-    results["EXCH1(S^2)"] = calc_exch1_s2_energy(dimer)
+        results = pd.Series()
 
-    # Second-order induction terms
-    ind2_results = calc_ind2_energy(dimer)
-    results = pd.concat([results, ind2_results])
+        # First-order terms
+        results["ELST1"] = calc_elst1_energy(dimer)
+        results["EXCH1"] = calc_exch1_energy(dimer)
+        results["EXCH1(S^2)"] = calc_exch1_s2_energy(dimer)
 
-    ind2_resp_results = calc_ind2_r_energy(dimer)
-    results = pd.concat([results, ind2_resp_results])
+        # Second-order induction terms
+        if kwargs.get("response") is None:
+            kwargs["response"] = True  # Default to True if not specified
 
-    # Second-order dispersion terms
-    disp2_results = calc_disp2_energy(dimer)
-    results = pd.concat([results, disp2_results])
+        if kwargs.get("response") is True:
+            ind2_results = calc_ind2_r_energy(dimer)
+            results = pd.concat([results, ind2_results])
 
-    # Calculate total energy
-    results["TOTAL"] = (
-        results["ELST1"]
-        + results["EXCH1"]
-        + results["IND2,R"]
-        + results["EXCH-IND2,R"]
-        + results["DISP2"]
-        + results["EXCH-DISP2"]
-    )
+        elif kwargs.get("response") is False:
+            ind2_results = calc_ind2_energy(dimer)
+            results = pd.concat([results, ind2_results])
 
-    # Save results to file
-    results_fname = kwargs.get("results", "results.csv")
-    results.to_csv(results_fname)
+        else:
+            raise ValueError("Invalid value for 'response'. Must be True or False.")
+
+        # Second-order dispersion terms
+        disp2_results = calc_disp2_energy(dimer)
+        results = pd.concat([results, disp2_results])
+
+        # Calculate total energy
+        if kwargs.get("response") is True:
+            ind_key = "IND2,R"
+            exch_ind_key = "EXCH-IND2,R"
+        else:
+            ind_key = "IND2"
+            exch_ind_key = "EXCH-IND2"
+
+        results["TOTAL"] = (
+            results["ELST1"]
+            + results["EXCH1"]
+            + results[ind_key]
+            + results[exch_ind_key]
+            + results["DISP2"]
+            + results["EXCH-DISP2"]
+        )
+
+        # Save results to file
+        results_fname = kwargs.get("results", "results.csv")
+        results.to_csv(results_fname)
+
+    # Print results
+    print_sapt_summary(results, response=kwargs.get("response"))
 
     return results
