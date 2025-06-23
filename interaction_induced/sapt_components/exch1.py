@@ -15,21 +15,25 @@ def calc_exch1_s2_energy(dimer: Dimer):
         _type_: First-order SAPT exchange energy in S2 approximation.
     """
 
-    s_ab = dimer.s("ab")
-    s_ba = dimer.s("ba")
-    s_sa = dimer.s("sa")
-    s_rb = dimer.s("rb")
+    with CalcTimer("Exch1_S2 energy calculation"):
 
-    _, K1 = dimer.compute_jk(
-        dimer.orbitals["r"],
-        dimer.orbitals["b"],
-        tensor=s_rb,
-    )
+        s_ab = dimer.s("ab")
+        s_ba = dimer.s("ba")
+        s_sa = dimer.s("sa")
+        s_rb = dimer.s("rb")
 
-    ### Exch100_S2
-    exch1_s2 = -2 * oe.contract("ab,sa,bs", s_ab, s_sa, dimer.omegaA_bs)
-    exch1_s2 -= 2 * oe.contract("ba,rb,ar", s_ba, s_rb, dimer.omegaB_ar)
-    exch1_s2 -= 2 * np.trace(dimer.orbitals["s"] @ s_sa @ dimer.orbitals["a"].T @ K1)
+        _, K1 = dimer.compute_jk(
+            dimer.orbitals["r"],
+            dimer.orbitals["b"],
+            tensor=s_rb,
+        )
+
+        ### Exch100_S2
+        exch1_s2 = -2 * oe.contract("ab,sa,bs", s_ab, s_sa, dimer.omegaA_bs)
+        exch1_s2 -= 2 * oe.contract("ba,rb,ar", s_ba, s_rb, dimer.omegaB_ar)
+        exch1_s2 -= 2 * np.trace(
+            dimer.orbitals["s"] @ s_sa @ dimer.orbitals["a"].T @ K1
+        )
 
     return exch1_s2
 
