@@ -104,7 +104,7 @@ def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
     energy_output_string = (
         name
         + name_padding
-        + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol  {value* 2625.50: 16.8f} kJ/mol"
+        + f"{value* 1000: 16.8f} mEh  {value* 627.509: 16.8f} kcal/mol  {value* 2625.50: 16.8f} kJ/mol"
     )
 
     if output == "psi4":
