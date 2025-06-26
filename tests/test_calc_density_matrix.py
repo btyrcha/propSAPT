@@ -30,7 +30,9 @@ def get_density_matrices(prepare_dimer):
 def test_induction_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
 
     threshold = 1.0e-9
-    excpected_result = 0.0010501236802531397
+    excpected_result = 0.0010500679691781473  # propSAPT calculation
+    # excpected_result = 0.0010501236802531397  # propSAPT before updating to JK
+    # excpected_result = 0.00104248625  # from MOLPRO finite-field SAPT calculation
 
     d_X = prepare_dipole_along_x
 
