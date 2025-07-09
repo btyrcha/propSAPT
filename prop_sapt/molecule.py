@@ -11,7 +11,7 @@ class Dimer(sinfinity):
     Core dimer (molecule-like) class.
 
     Initialises and stores all necessary values
-    for 'interaction_induced' clalculations.
+    for 'propSAPT' clalculations.
     Performs SCF calculations for the monomers.
     """
 

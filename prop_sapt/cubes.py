@@ -169,7 +169,7 @@ def make_cube(
         )
 
         cube_dict = {
-            "comment1": "interaction-induced .cube file",
+            "comment1": "propSAPT .cube file",
             "comment2": f"isovalues for {iso_sum_level*100:.0f}%"
             f" of the {m_type}: ({isovalues[0]:.6E}, {isovalues[1]:.6E})",
             "origin": [grid['x'][0], grid['y'][0], grid['z'][0]],

@@ -1,5 +1,5 @@
 import os
-from interaction_induced.cubes import (
+from prop_sapt.cubes import (
     read_cube_file,
     save_cube_file,
     subtract_cubes,
