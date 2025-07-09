@@ -2,7 +2,7 @@ import pytest
 
 import psi4
 
-from interaction_induced import Dimer
+from prop_sapt import Dimer
 
 
 @pytest.fixture(scope="session")

@@ -1,6 +1,6 @@
 import psi4
-from interaction_induced import Dimer, calc_property, calc_density_matrix
-from interaction_induced.utils import prepare_path
+from prop_sapt import Dimer, calc_property, calc_density_matirx
+from prop_sapt.utils import prepare_path
 
 
 # specify geometry in Psi4 format
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     psi4.core.set_output_file(OUTPUT_FILE_PATH, False)
     psi4.set_options(OPTIONS)
 
-    ### Initalise interaction_induced.Molecule object
+    ### Initalise prop_sapt.Dimer object
     dimer = Dimer(GEO)
 
     ### Calculate interaction-induced dipole moment
