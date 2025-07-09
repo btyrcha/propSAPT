@@ -1,7 +1,7 @@
 import pytest
 
 from prepare_dimer import prepare_dimer
-from interaction_induced import calc_property
+from prop_sapt import calc_property
 
 
 def test_calc_dipole(prepare_dimer):

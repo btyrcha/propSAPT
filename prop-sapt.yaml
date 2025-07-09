@@ -1,4 +1,4 @@
-name: inter-ind
+name: prop-sapt
 channels:
   - psi4/label/qcdb
   - conda-forge

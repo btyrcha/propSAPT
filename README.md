@@ -1,6 +1,6 @@
-# interaction-induced
+# propSAPT
 
-Python package for calculations of first-order interaction-induced properties and changes in monomers density matrices in the spirit of SAPT.
+Python package for calculations of first-order interaction-induced properties and changes in monomers density matrices in the spirit of SAPT. The theoretical work has been published [here](https://doi.org/10.1021/acs.jctc.5c00238).
 
 ## Installation
 
@@ -8,11 +8,11 @@ Python package for calculations of first-order interaction-induced properties an
 2. Go to its root directory.
 3. Create a conda environment with all requirements by running:
    ```
-   conda env create -f inter-ind.yaml
+   conda env create -f prop-sapt.yaml
    ```
 4. Activate the environment.
    ```
-   conda activate inter-ind
+   conda activate prop-sapt
    ```
 5. Install the devolopment package by running:
    ```
