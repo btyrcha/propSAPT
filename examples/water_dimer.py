@@ -1,5 +1,5 @@
 import psi4
-from prop_sapt import Dimer, calc_property, calc_density_matirx
+from prop_sapt import Dimer, calc_property, calc_density_matrix
 from prop_sapt.utils import prepare_path
 
 

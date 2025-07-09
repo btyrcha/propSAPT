@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 
 from prepare_dimer import prepare_dimer
-from prop_sapt import Dimer, calc_density_matirx
+from prop_sapt import Dimer, calc_density_matrix
 
 
 @pytest.fixture(scope="module")
