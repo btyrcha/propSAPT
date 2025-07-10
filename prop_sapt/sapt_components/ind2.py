@@ -74,8 +74,8 @@ def calc_ind2_r_energy(dimer: Dimer) -> pd.Series:
         t_ra = dimer.get_cpscf_ra()
         t_sb = dimer.get_cpscf_sb()
 
-        ind2_r_a = -2 * oe.contract("ra,ar", t_ra, dimer.omegaB_ar)
-        ind2_r_b = -2 * oe.contract("sb,bs", t_sb, dimer.omegaA_bs)
+        ind2_r_a = 2 * oe.contract("ra,ar", t_ra, dimer.omegaB_ar)
+        ind2_r_b = 2 * oe.contract("sb,bs", t_sb, dimer.omegaA_bs)
 
         # Store the results in a pandas Series
         ind_results = pd.Series()
