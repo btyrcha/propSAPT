@@ -4,8 +4,8 @@ Example script to calculate SAPT energy using the interaction_induced package.
 
 import psi4
 
-from interaction_induced import Dimer, calc_sapt_energy
-from interaction_induced.utils import energy_printer
+from prop_sapt import Dimer, calc_sapt_energy
+from prop_sapt.utils import energy_printer
 
 # Define the geometry of the dimer
 GEO = """
