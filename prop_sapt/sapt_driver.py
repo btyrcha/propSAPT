@@ -106,7 +106,8 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
         dimer (Dimer): A dimer system for which to calculate the SAPT energy.
 
     Kwargs:
-        results (str): Path to save the results CSV file. Defaults to "results.csv".
+        results (str | bool): Path to save the results CSV file. Defaults to "results.csv".
+            If `False` results are not saved to CSV, if `True`, results are saved to "results.csv".
         response (bool): Whether to calculate response induction terms. Defaults to True.
 
     Returns:
@@ -125,12 +126,12 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
 
     with CalcTimer("SAPT energy calculations"):
 
-        results = pd.Series()
+        pd_results_series = pd.Series()
 
         # First-order terms
-        results["ELST1"] = calc_elst1_energy(dimer)
-        results["EXCH1"] = calc_exch1_energy(dimer)
-        results["EXCH1(S^2)"] = calc_exch1_s2_energy(dimer)
+        pd_results_series["ELST1"] = calc_elst1_energy(dimer)
+        pd_results_series["EXCH1"] = calc_exch1_energy(dimer)
+        pd_results_series["EXCH1(S^2)"] = calc_exch1_s2_energy(dimer)
 
         # Second-order induction terms
         if kwargs.get("response") is None:
@@ -138,18 +139,18 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
 
         if kwargs.get("response") is True:
             ind2_results = calc_ind2_r_energy(dimer)
-            results = pd.concat([results, ind2_results])
+            pd_results_series = pd.concat([pd_results_series, ind2_results])
 
         elif kwargs.get("response") is False:
             ind2_results = calc_ind2_energy(dimer)
-            results = pd.concat([results, ind2_results])
+            pd_results_series = pd.concat([pd_results_series, ind2_results])
 
         else:
             raise ValueError("Invalid value for 'response'. Must be True or False.")
 
         # Second-order dispersion terms
         disp2_results = calc_disp2_energy(dimer)
-        results = pd.concat([results, disp2_results])
+        pd_results_series = pd.concat([pd_results_series, disp2_results])
 
         # Calculate total energy
         if kwargs.get("response") is True:
@@ -159,20 +160,22 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
             ind_key = "IND2"
             exch_ind_key = "EXCH-IND2"
 
-        results["TOTAL"] = (
-            results["ELST1"]
-            + results["EXCH1"]
-            + results[ind_key]
-            + results[exch_ind_key]
-            + results["DISP2"]
-            + results["EXCH-DISP2"]
+        pd_results_series["TOTAL"] = (
+            pd_results_series["ELST1"]
+            + pd_results_series["EXCH1"]
+            + pd_results_series[ind_key]
+            + pd_results_series[exch_ind_key]
+            + pd_results_series["DISP2"]
+            + pd_results_series["EXCH-DISP2"]
         )
 
-        # Save results to file
-        results_fname = kwargs.get("results", "results.csv")
-        results.to_csv(results_fname)
-
     # Print results
-    print_sapt_summary(results, response=kwargs.get("response"))
+    print_sapt_summary(pd_results_series, response=kwargs.get("response"))
 
-    return results
+    # Save results to file
+    if kwargs.get("results"):
+
+        results_fname = kwargs.get("results", "results.csv")
+        pd_results_series.to_csv(results_fname)
+
+    return pd_results_series
