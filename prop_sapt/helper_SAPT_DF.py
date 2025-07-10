@@ -72,6 +72,9 @@ class helper_SAPT(object):
             psi4.core.clean()
             raise ValueError(f"Reference '{reference}' not implemented yet.")
 
+        # Check if the functional is specified for DFT
+        dft_functional = kwargs.get("functional", "pbe0")
+
         # Initialize time
         tinit_start = time.time()
         psi4.core.print_out("\nInitializing SAPT object...\n")
@@ -118,7 +121,7 @@ class helper_SAPT(object):
                     "\n*** WARNING!: GRAC shift for monomer A not specified! ***\n"
                 )
             self.dftA, self.wfnA = psi4.energy(
-                kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerA
+                dft_functional, return_wfn=True, molecule=monomerA
             )
         self.V_A = np.asarray(
             psi4.core.MintsHelper(self.wfnA.basisset()).ao_potential()
@@ -142,7 +145,7 @@ class helper_SAPT(object):
                     "\n*** WARNING!: GRAC shift for monomer B not specified! ***\n"
                 )
             self.dftB, self.wfnB = psi4.energy(
-                kwargs.get("functional", "pbe0"), return_wfn=True, molecule=monomerB
+                dft_functional, return_wfn=True, molecule=monomerB
             )
         self.V_B = np.asarray(
             psi4.core.MintsHelper(self.wfnB.basisset()).ao_potential()
@@ -160,17 +163,24 @@ class helper_SAPT(object):
         self.nuc_rep_A = monomerA.nuclear_repulsion_energy()
         self.ndocc_A = self.wfnA.doccpi()[0]
         self.nvirt_A = self.nmo - self.ndocc_A
+
         if reference == "ROHF":
             self.idx_A = ["i", "a", "r"]
             self.nsocc_A = self.wfnA.soccpi()[0]
             occA = self.ndocc_A + self.nsocc_A
+
         elif reference == "UHF" or reference == "UKS":
-            # Olaboga co to bedzie!
-            pass
+            psi4.core.clean()
+            raise NotImplementedError(f"Reference {reference} not implemented yet.")
+
         elif reference == "RHF" or reference == "RKS":
             self.idx_A = ["a", "r"]
             self.nsocc_A = 0
             occA = self.ndocc_A
+
+        else:
+            psi4.core.clean()
+            raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_A = np.asarray(self.wfnA.Ca())
         self.Co_A = self.C_A[:, : self.ndocc_A]
@@ -182,17 +192,24 @@ class helper_SAPT(object):
         self.nuc_rep_B = monomerB.nuclear_repulsion_energy()
         self.ndocc_B = self.wfnB.doccpi()[0]
         self.nvirt_B = self.nmo - self.ndocc_B
+
         if reference == "ROHF":
             self.idx_B = ["j", "b", "s"]
             self.nsocc_B = self.wfnB.soccpi()[0]
             occB = self.ndocc_B + self.nsocc_B
+
         elif reference == "UHF" or reference == "UKS":
-            # Olaboga co to bedzie!
-            pass
+            psi4.core.clean()
+            raise NotImplementedError(f"Reference {reference} not implemented yet.")
+
         elif reference == "RHF" or reference == "RKS":
             self.idx_B = ["b", "s"]
             self.nsocc_B = 0
             occB = self.ndocc_B
+
+        else:
+            psi4.core.clean()
+            raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_B = np.asarray(self.wfnB.Ca())
         self.Co_B = self.C_B[:, : self.ndocc_B]
@@ -264,7 +281,7 @@ class helper_SAPT(object):
         psi4.core.print_out("-" * 38 + "\n")
         psi4.core.print_out("".join([f"{dim:>5}" for dim in self.sizes]) + "\n")
         psi4.core.print_out("-" * 38 + "\n")
-        psi4.core.print_out("".join([f"{self.sizes[dim]:5d}" for dim in self.sizes]))
+        psi4.core.print_out("".join([f"{dim:5d}" for _, dim in self.sizes.items()]))
         psi4.core.print_out("\n\n")
 
         ### Compute DF ERIs for dimer basis
@@ -306,6 +323,27 @@ class helper_SAPT(object):
             f"... DF integrals finished in {time.time() - tstart:.2f} seconds.\n"
         )
 
+        # JK object
+        tstart = time.time()
+        aux_basis = psi4.core.BasisSet.build(
+            self.dimer_wfn.molecule(),
+            "DF_BASIS_SCF",
+            psi4.core.get_option("SCF", "DF_BASIS_SCF"),
+            "JKFIT",
+            psi4.core.get_global_option('BASIS'),
+            puream=self.dimer_wfn.basisset().has_puream(),
+        )
+
+        self.jk = psi4.core.JK.build(self.dimer_wfn.basisset(), aux_basis)
+        self.jk.set_memory(int(memory * 1e9))
+        self.jk.initialize()
+        psi4.core.print_out(
+            "\n...initialized JK objects in %5.2f seconds." % (time.time() - tstart)
+        )
+
+        self.J_A, self.K_A = self.compute_jk(self.Co_A, self.Co_A)
+        self.J_B, self.K_B = self.compute_jk(self.Co_B, self.Co_B)
+
         # Overlap matrix in AO
         self.S = np.asarray(self.mints.ao_overlap())
 
@@ -317,8 +355,9 @@ class helper_SAPT(object):
 
         self.S_AB = oe.contract("ui,vj,uv->ij", self.C_A, self.C_B, self.S)
 
+        hsapt_init_time = time.time() - tinit_start
         psi4.core.print_out(
-            f"\n...finished initializing SAPT object in {time.time() - tinit_start:5.2f} seconds.\n\n"
+            f"\n...finished initializing SAPT object in {hsapt_init_time:5.2f} seconds.\n\n"
         )
 
     # Gets transformed DF intergrals in MO
@@ -348,7 +387,6 @@ class helper_SAPT(object):
 
         # Compute on the fly
         return (self.orbitals[string[0]].T).dot(self.S).dot(self.orbitals[string[1]])
-        # return oe.contract('ui,vj,uv->ij', self.orbitals[string[0]], self.orbitals[string[1]], self.S)
 
     # Grab epsilons, reshape if requested
     def eps(self, string, dim=1):
@@ -392,20 +430,12 @@ class helper_SAPT(object):
                 f"helper_SAPT.potential side must be either A or B, not {side}."
             )
 
-    def cpscf(self, monomer, ind=False, **kwargs):
+    def cpscf(
+        self, monomer, ind=False, **kwargs
+    ) -> np.ndarray | tuple[np.ndarray, float]:
         """
         Coupled perturbed HF or KS calculations.
         """
-
-        if monomer not in ["A", "B"]:
-            psi4.core.clean()
-            raise ValueError(f"'{monomer}' is not a valid monomer for CHF.")
-
-        if self.reference in ["ROHF", "UHF", "UKS"]:
-            psi4.core.clean()
-            raise ValueError(
-                f"CPSCF solver for a {self.reference} reference not implemented yet."
-            )
 
         if self.reference == "RHF" or self.reference == "RKS":
 
@@ -414,10 +444,8 @@ class helper_SAPT(object):
             if monomer == "A":
                 if kwargs.get("perturbation", None) is None:
                     # Construct Omega potential
-                    vB_ar = self.V_B_AA[self.slices["a"], self.slices["r"]]
-                    omega_ov = vB_ar + 2 * oe.contract(
-                        "Qar,Qbb->ar", self.df_ints("ar"), self.df_ints("bb")
-                    )
+                    omegaB = self.V_B + 2 * self.J_B
+                    omega_ov = self.orbitals["a"].T @ omegaB @ self.orbitals["r"]
                     pert_ov = omega_ov
                 else:
                     pert_ov = kwargs["perturbation"]
@@ -437,13 +465,11 @@ class helper_SAPT(object):
                     else:
                         return [False]
 
-            if monomer == "B":
+            elif monomer == "B":
                 if kwargs.get("perturbation", None) is None:
                     # Construct Omega potential
-                    vA_bs = self.V_A_BB[self.slices["b"], self.slices["s"]]
-                    omega_ov = vA_bs + 2 * oe.contract(
-                        "Qaa,Qbs->bs", self.df_ints("aa"), self.df_ints("bs")
-                    )
+                    omegaA = self.V_A + 2 * self.J_A
+                    omega_ov = self.orbitals["b"].T @ omegaA @ self.orbitals["s"]
                     pert_ov = omega_ov
                 else:
                     pert_ov = kwargs["perturbation"]
@@ -462,6 +488,10 @@ class helper_SAPT(object):
                         return self.wfnB.cphf_Hx([x_vec[0]])
                     else:
                         return [False]
+
+            else:
+                psi4.core.clean()
+                raise ValueError(f"'{monomer}' is not a valid monomer for CHF.")
 
             # preconditioner - applies denominator (for faster convergence)
             def _apply_precon(x_vec, act_mask):
@@ -489,11 +519,22 @@ class helper_SAPT(object):
             # We want to return a (vo) matrix
             t = t.reshape(no, nv).T
 
-        if ind:
-            e20_ind_r = 2 * np.einsum("vo,ov", t, omega_ov)
-            return t, e20_ind_r
+        elif self.reference in ["ROHF", "UHF", "UKS"]:
+            psi4.core.clean()
+            raise ValueError(
+                f"CPSCF solver for a {self.reference} reference not implemented yet."
+            )
+
         else:
-            return t
+            psi4.core.clean()
+            raise ValueError(f"Unknown reference type: {self.reference}.")
+
+        if ind and kwargs.get("perturbation", None) is None:
+            # if perturbation is not given pert_ov = omega_ov
+            e20_ind_r = 2 * np.einsum("vo,ov", t, pert_ov)
+            return t, e20_ind_r
+
+        return t
 
     def chain_dot(self, *dot_list):
         result = dot_list[0]
@@ -514,39 +555,76 @@ class helper_SAPT(object):
 
         return self.orbitals[string[0]].T.dot(x).dot(self.orbitals[string[1]])
 
+    def compute_jk(self, Cleft, Cright, tensor=None):
 
-# End SAPT helper
+        if self.reference == "ROHF":
+            raise NotImplementedError(
+                "JK generation not yet implemented for ROHF reference."
+            )
 
+        return_single = False
+        if not isinstance(Cleft, (list, tuple)):
+            Cleft = [Cleft]
+            return_single = True
+        if not isinstance(Cright, (list, tuple)):
+            Cright = [Cright]
+            return_single = True
+        if (not isinstance(tensor, (list, tuple))) and (tensor is not None):
+            tensor = [tensor]
+            return_single = True
 
-class sapt_timer(object):
-    """
-    Simple timer object.
-    """
+        if len(Cleft) != len(Cright):
+            raise ValueError("Cleft list is not the same length as Cright list")
 
-    def __init__(self, name):
-        self.name = name
-        self.start = time.time()
-        psi4.core.print_out(f"\nStarting {name}...")
+        zero_append = []
+        num_compute = 0
 
-    def stop(self):
-        """
-        Stops timer.
-        """
+        for num, (Cl, Cr) in enumerate(zip(Cleft, Cright)):
+            if (Cr.shape[1] == 0) or (Cl.shape[1] == 0):
+                zero_append.append(num)
+                continue
 
-        t = time.time() - self.start
-        psi4.core.print_out(f"...{self.name} took a total of {t: .2f} seconds.")
+            if tensor is not None:
+                mol = Cl.shape[1]
+                mor = Cr.shape[1]
 
+                if (tensor[num].shape[0] != mol) or (tensor[num].shape[1] != mor):
+                    psi4.core.clean()
+                    raise ValueError(
+                        f"compute_sapt_JK: Tensor size does not match Cl ({mol}) "
+                        f"/Cr ({mor}) : {tensor[num].shape}"
+                    )
+                if mol < mor:
+                    Cl = np.dot(Cl, tensor[num])
+                else:
+                    Cr = np.dot(Cr, tensor[num].T)
 
-def sapt_printer(line, value):
-    """
-    Prints out 'value' in mH and kcal/mol
-    along a label given in 'line'.
-    """
+            Cl = psi4.core.Matrix.from_array(Cl)
+            Cr = psi4.core.Matrix.from_array(Cr)
 
-    spacer = " " * (20 - len(line))
-    psi4.core.print_out(
-        line + spacer + f"{value* 1000: 16.8f} mH  {value* 627.509: 16.8f} kcal/mol"
-    )
+            self.jk.C_left_add(Cl)
+            self.jk.C_right_add(Cr)
+            num_compute += 1
+
+        self.jk.compute()
+
+        J_list = []
+        K_list = []
+        for num in range(num_compute):
+            J_list.append(np.array(self.jk.J()[num]))
+            K_list.append(np.array(self.jk.K()[num]))
+
+        self.jk.C_clear()
+
+        z = np.zeros((self.nmo, self.nmo))
+        for num in zero_append:
+            J_list.insert(num, z)
+            K_list.insert(num, z)
+
+        if return_single:
+            return J_list[0], K_list[0]
+        else:
+            return J_list, K_list
 
 
 # End SAPT helper

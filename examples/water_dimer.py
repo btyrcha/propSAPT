@@ -1,5 +1,5 @@
 import psi4
-from prop_sapt import Dimer, calc_property, calc_density_matirx
+from prop_sapt import Dimer, calc_property, calc_density_matrix
 from prop_sapt.utils import prepare_path
 
 
@@ -59,8 +59,8 @@ if __name__ == "__main__":
     data = calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
 
     ### Calculate interaction-induced denisty matrix
-    delta_dm_A = calc_density_matirx(dimer, "A")
-    delta_dm_B = calc_density_matirx(dimer, "B")
+    delta_dm_A = calc_density_matrix(dimer, "A")
+    delta_dm_B = calc_density_matrix(dimer, "B")
 
     delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
     delta_dm_pol = delta_dm_A["pol"] + delta_dm_B["pol"]

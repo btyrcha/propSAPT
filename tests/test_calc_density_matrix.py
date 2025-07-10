@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 
 from prepare_dimer import prepare_dimer
-from prop_sapt import Dimer, calc_density_matirx
+from prop_sapt import Dimer, calc_density_matrix
 
 
 @pytest.fixture(scope="module")
@@ -21,16 +21,48 @@ def prepare_dipole_along_x(prepare_dimer):
 def get_density_matrices(prepare_dimer):
     """Get interaction-induced density matrices for monomers A and B."""
 
-    rho_A = calc_density_matirx(prepare_dimer, "A", orbital_basis="AO")
-    rho_B = calc_density_matirx(prepare_dimer, "B", orbital_basis="AO")
+    rho_A = calc_density_matrix(prepare_dimer, "A", orbital_basis="AO")
+    rho_B = calc_density_matrix(prepare_dimer, "B", orbital_basis="AO")
 
     return rho_A, rho_B
+
+
+def test_polarization_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
+
+    threshold = 1.0e-9
+    excpected_result = -0.00036955856060192586  # propSAPT calculation
+
+    d_X = prepare_dipole_along_x
+
+    rho_A, rho_B = get_density_matrices
+    rho_pol = rho_A["pol"] + rho_B["pol"]
+
+    result = 2 * np.trace(rho_pol @ d_X)
+
+    assert excpected_result == pytest.approx(result, abs=threshold)
+
+
+def test_exchange_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
+
+    threshold = 1.0e-9
+    excpected_result = -0.01581687187738625  # propSAPT calculation
+
+    d_X = prepare_dipole_along_x
+
+    rho_A, rho_B = get_density_matrices
+    rho_exch = rho_A["exch"] + rho_B["exch"]
+
+    result = 2 * np.trace(rho_exch @ d_X)
+
+    assert excpected_result == pytest.approx(result, abs=threshold)
 
 
 def test_induction_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
 
     threshold = 1.0e-9
-    excpected_result = 0.0010501236802531397
+    excpected_result = 0.0010500679691781473  # propSAPT calculation
+    # excpected_result = 0.0010501236802531397  # propSAPT before updating to JK
+    # excpected_result = 0.00104248625  # from MOLPRO finite-field SAPT calculation
 
     d_X = prepare_dipole_along_x
 

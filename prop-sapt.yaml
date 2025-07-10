@@ -15,4 +15,6 @@ dependencies:
   - fortecubeview
   - opt_einsum
   - click
+  - pytest
+  - flake8
   
