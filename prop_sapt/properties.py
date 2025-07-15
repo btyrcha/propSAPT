@@ -125,6 +125,8 @@ def perform_property_contractions(
         ]
     )
 
+    results["x2_exch-ind_S2"] = np.array([0.0])  # TODO: Implement exchange-induction
+
     results["x2_disp"] = np.array(
         [
             # 2 Re <R(X)|V R(V)>
@@ -142,6 +144,8 @@ def perform_property_contractions(
         ]
     )
 
+    results["x2_exch-disp_S2"] = np.array([0.0])  # TODO: Implement exchange-dispersion
+
     # sum up first-order contributions
     results["x1_induced"] = results["x1_pol,r"] + results["x1_exch,r"]
 
@@ -150,7 +154,9 @@ def perform_property_contractions(
         results["x1_pol,r"]
         + results["x1_exch,r"]
         + results["x2_ind,r"]
+        + results["x2_exch-ind_S2"]
         + results["x2_disp"]
+        + results["x2_exch-disp_S2"]
     )
 
     return results
