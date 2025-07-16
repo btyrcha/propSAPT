@@ -437,6 +437,9 @@ class helper_SAPT(object):
         Coupled perturbed HF or KS calculations.
         """
 
+        r_conv = kwargs.get("r_convergence", 1.0e-8)
+        maxiter = kwargs.get("maxiter", 20)
+
         if self.reference == "RHF" or self.reference == "RKS":
 
             # NOTE: Changed the monomer naming scheme:
@@ -509,8 +512,8 @@ class helper_SAPT(object):
                 _hess_x,
                 _apply_precon,
                 printlvl=2,
-                maxiter=20,
-                rcond=1.0e-8,
+                maxiter=maxiter,
+                rcond=r_conv,
             )
 
             # unwrap the lists
