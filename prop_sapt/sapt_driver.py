@@ -178,4 +178,6 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
         results_fname = kwargs.get("results", "results.csv")
         pd_results_series.to_csv(results_fname)
 
+    psi4.core.clean()
+
     return pd_results_series

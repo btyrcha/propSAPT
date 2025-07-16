@@ -200,6 +200,7 @@ pyrightconfig.json
 *timer.dat
 *.clean
 *ijk.dat
+*.dat
 
 ### Result files ###
 *.csv
