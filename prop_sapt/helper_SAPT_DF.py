@@ -437,8 +437,8 @@ class helper_SAPT(object):
         Coupled perturbed HF or KS calculations.
         """
 
-        r_conv = kwargs.get("r_convergence", 1.0e-8)
-        maxiter = kwargs.get("maxiter", 20)
+        r_conv = kwargs.get("r_convergence", 1.0e-10)
+        maxiter = kwargs.get("maxiter", 50)
 
         if self.reference == "RHF" or self.reference == "RKS":
 
