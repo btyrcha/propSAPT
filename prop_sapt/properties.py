@@ -2,7 +2,6 @@
 Calculations of SAPT one-electron properties.
 """
 
-from time import time
 import psi4
 import numpy as np
 import pandas as pd

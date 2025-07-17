@@ -9,10 +9,14 @@ import pandas as pd
 from .molecule import Dimer
 from .utils import trace_memory_peak, CalcTimer, energy_printer
 
-from .sapt_components.elst1 import calc_elst1_energy
-from .sapt_components.exch1 import calc_exch1_energy, calc_exch1_s2_energy
-from .sapt_components.ind2 import calc_ind2_energy, calc_ind2_r_energy
-from .sapt_components.disp2 import calc_disp2_energy
+from .sapt_components import (
+    calc_elst1_energy,
+    calc_exch1_energy,
+    calc_exch1_s2_energy,
+    calc_ind2_energy,
+    calc_ind2_r_energy,
+    calc_disp2_energy,
+)
 
 
 def print_sapt_summary(results: pd.Series, **kwargs):
