@@ -21,22 +21,22 @@ MEMORY = "2 GB"
 THREADS = 2
 
 # specify basis sets
-BASIS = "aug-cc-pvdz"
-DF_BASIS = "aug-cc-pvtz"
+BASIS = "aug-cc-pvtz"
+DF_BASIS = "aug-cc-pvqz"
 
 # specify options
 OPTIONS = {
     "basis": BASIS,
     "DF_BASIS_SCF": DF_BASIS + "-jkfit",
     "DF_BASIS_SAPT": DF_BASIS + "-ri",
-    "scf_type": "df",
+    "scf_type": "direct",
     "save_jk": True,  # necessary option
-    "e_convergence": 1e-10,
-    "d_convergence": 1e-10,
+    "e_convergence": 1e-12,
+    "d_convergence": 1e-12,
     # Integral thresholds for higher precision
     "ints_tolerance": 1e-14,
     "screening": "schwarz",
-    "cholesky_tolerance": 1e-8,
+    "cholesky_tolerance": 1e-10,
 }
 
 # specify output filename
