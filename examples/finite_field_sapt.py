@@ -84,7 +84,7 @@ if __name__ == "__main__":
                 'x1_pol,r',
                 'x1_exch,r',
                 'x2_ind,r',
-                'x2_exch-ind_S2',
+                'x2_exch-ind,r_S2',
                 'x2_disp',
                 'x2_exch-disp_S2',
             ]
