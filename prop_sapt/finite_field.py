@@ -5,6 +5,7 @@ import pandas as pd
 import psi4
 
 from prop_sapt import Dimer, calc_sapt_energy
+from .utils import CalcTimer
 
 
 def finite_field_sapt(
@@ -31,31 +32,43 @@ def finite_field_sapt(
         pd.DataFrame: DataFrame containing the results of the finite field SAPT calculation.
     """
 
-    ### Results output file
-    results_fname = kwargs.get("results", "results-ff.csv")
+    # Banner
+    psi4.core.print_out("\n" + "=" * 70 + "\n")
+    psi4.core.print_out("  FINITE FIELD SAPT PROPERTY CALCULATIONS\n")
+    psi4.core.print_out("=" * 70 + "\n")
+    psi4.core.print_out(f"  Property: {prop}\n")
+    psi4.core.print_out(f"  Field strength: {field_strength:.6f} a.u.\n")
+    psi4.core.print_out(f"  Reference: {reference}\n")
+    psi4.core.print_out("=" * 70 + "\n")
 
-    if prop == "dipole":
-        ### Dipole moment calculations
-        results = calc_ff_sapt_dipole(
-            geometry,
-            reference=reference,
-            field_strength=field_strength,
-            sapt_kwargs=sapt_kwargs,
-            **kwargs,
-        )
+    with CalcTimer("Finite field SAPT property calculations"):
+        ### Results output file
+        results_fname = kwargs.get("results", "results-ff.csv")
 
-    elif isinstance(prop, np.ndarray):
-        ### Property matrix is given
-        raise ValueError("Property for general external operator is not implemented.")
+        if prop == "dipole":
+            ### Dipole moment calculations
+            results = calc_ff_sapt_dipole(
+                geometry,
+                reference=reference,
+                field_strength=field_strength,
+                sapt_kwargs=sapt_kwargs,
+                **kwargs,
+            )
 
-    else:
-        raise ValueError(
-            f"Property {prop} is not implemented. "
-            "Please provide a valid property name or a property matrix."
-        )
+        elif isinstance(prop, np.ndarray):
+            ### Property matrix is given
+            raise ValueError(
+                "Property for general external operator is not implemented."
+            )
 
-    ### Results saving to file
-    results.to_csv(results_fname)
+        else:
+            raise ValueError(
+                f"Property {prop} is not implemented. "
+                "Please provide a valid property name or a property matrix."
+            )
+
+        ### Results saving to file
+        results.to_csv(results_fname)
 
     return results
 
@@ -121,6 +134,10 @@ def calculate_ff_sapt_dipole_along_axis(
         pd.Series: Series containing the results of the finite field SAPT calculation.
     """
 
+    psi4.core.print_out(
+        f"\nCalculating finite field SAPT dipole moment along {axis}-axis with field strength {field_strength:.6f} a.u.\n"
+    )
+
     ### Postitive field
     field_vector_positive = {
         "X": [field_strength, 0.0, 0.0],
@@ -133,6 +150,10 @@ def calculate_ff_sapt_dipole_along_axis(
             "PERTURB_H": True,
             "PERTURB_DIPOLE": field_vector_positive[axis],
         }
+    )
+
+    psi4.core.print_out(
+        f"Computing SAPT energy with positive field (+{field_strength:.6f}) along {axis}-axis...\n"
     )
 
     dimer_kwargs = {
@@ -171,6 +192,10 @@ def calculate_ff_sapt_dipole_along_axis(
         }
     )
 
+    psi4.core.print_out(
+        f"Computing SAPT energy with negative field (-{field_strength:.6f}) along {axis}-axis...\n"
+    )
+
     if sapt_kwargs is None:
         sapt_kwargs = {}
 
@@ -188,5 +213,9 @@ def calculate_ff_sapt_dipole_along_axis(
 
     ### Calculate the finite field difference
     data = (data_positive - data_negative) / (2 * field_strength)
+
+    psi4.core.print_out(
+        f"Finite field SAPT dipole moment calculation along {axis}-axis completed.\n"
+    )
 
     return data
