@@ -25,6 +25,9 @@ THREADS = 2
 BASIS = "aug-cc-pvtz"
 DF_BASIS = "aug-cc-pvqz"
 
+# specify field strength for finite field SAPT
+FIELD_STRENGTH = 0.0001
+
 # specify options
 OPTIONS = {
     "basis": BASIS,
@@ -139,7 +142,7 @@ if __name__ == "__main__":
 
     ### Calculate interaction-induced dipole moment with finite field SAPT
     data_ff_sapt = finite_field_sapt(
-        geometry=GEO, prop="dipole", reference="RHF", field_strength=0.001
+        geometry=GEO, prop="dipole", reference="RHF", field_strength=FIELD_STRENGTH
     )
 
     ### Calculate interaction-induced dipole moment with propSAPT
