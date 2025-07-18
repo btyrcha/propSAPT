@@ -161,10 +161,8 @@ def perform_property_contractions(
         xt_A_ra=xt_A_ra,
         xt_B_sb=xt_B_sb,
         prop_A_aa=prop_A_aa,
-        prop_A_ar=prop_A_ar,
         prop_A_rr=prop_A_rr,
         prop_B_bb=prop_B_bb,
-        prop_B_bs=prop_B_bs,
         prop_B_ss=prop_B_ss,
     )
 
