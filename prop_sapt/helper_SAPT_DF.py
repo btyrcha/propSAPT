@@ -50,10 +50,29 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import time
+from typing import overload, Literal, Any
+from functools import wraps
 import numpy as np
 import opt_einsum as oe
 import psi4
 from psi4.driver.p4util import message_box, cg_solver
+
+
+@overload
+def psi4_energy(name: str, return_wfn: Literal[False] = False, **kwargs) -> float: ...
+
+
+@overload
+def psi4_energy(
+    name: str, return_wfn: Literal[True], **kwargs
+) -> tuple[float, psi4.core.Wavefunction]: ...
+
+
+@wraps(psi4.energy)
+def psi4_energy(
+    name: str, return_wfn: bool = False, **kwargs
+) -> float | tuple[float, psi4.core.Wavefunction]:
+    return psi4.energy(name, return_wfn=return_wfn, **kwargs)
 
 
 class helper_SAPT(object):
@@ -110,7 +129,7 @@ class helper_SAPT(object):
         psi4.core.print_out(message_box(f"Monomer A {reference}") + "\n")
         tstart = time.time()
         if reference == "RHF":
-            self.rhfA, self.wfnA = psi4.energy(
+            self.rhfA, self.wfnA = psi4_energy(
                 "SCF", return_wfn=True, molecule=monomerA
             )
         elif reference == "RKS":
@@ -120,7 +139,7 @@ class helper_SAPT(object):
                 psi4.core.print_out(
                     "\n*** WARNING!: GRAC shift for monomer A not specified! ***\n"
                 )
-            self.dftA, self.wfnA = psi4.energy(
+            self.dftA, self.wfnA = psi4_energy(
                 dft_functional, return_wfn=True, molecule=monomerA
             )
         self.V_A = np.asarray(
@@ -134,7 +153,7 @@ class helper_SAPT(object):
         psi4.core.print_out(message_box(f"Monomer B {reference}") + "\n")
         tstart = time.time()
         if reference == "RHF":
-            self.rhfB, self.wfnB = psi4.energy(
+            self.rhfB, self.wfnB = psi4_energy(
                 "SCF", return_wfn=True, molecule=monomerB
             )
         elif reference == "RKS":
@@ -144,7 +163,7 @@ class helper_SAPT(object):
                 psi4.core.print_out(
                     "\n*** WARNING!: GRAC shift for monomer B not specified! ***\n"
                 )
-            self.dftB, self.wfnB = psi4.energy(
+            self.dftB, self.wfnB = psi4_energy(
                 dft_functional, return_wfn=True, molecule=monomerB
             )
         self.V_B = np.asarray(
@@ -430,12 +449,25 @@ class helper_SAPT(object):
                 f"helper_SAPT.potential side must be either A or B, not {side}."
             )
 
+    @overload
+    def cpscf(
+        self, monomer: Any, ind: Literal[False] = False, **kwargs
+    ) -> np.ndarray: ...
+
+    @overload
+    def cpscf(
+        self, monomer: Any, ind: Literal[True], **kwargs
+    ) -> tuple[np.ndarray, float]: ...
+
     def cpscf(
         self, monomer, ind=False, **kwargs
     ) -> np.ndarray | tuple[np.ndarray, float]:
         """
         Coupled perturbed HF or KS calculations.
         """
+
+        r_conv = kwargs.get("r_convergence", 1.0e-10)
+        maxiter = kwargs.get("maxiter", 50)
 
         if self.reference == "RHF" or self.reference == "RKS":
 
@@ -509,8 +541,8 @@ class helper_SAPT(object):
                 _hess_x,
                 _apply_precon,
                 printlvl=2,
-                maxiter=20,
-                rcond=1.0e-8,
+                maxiter=maxiter,
+                rcond=r_conv,
             )
 
             # unwrap the lists

@@ -2,14 +2,18 @@
 Calculations of SAPT one-electron properties.
 """
 
-from time import time
 import psi4
 import numpy as np
 import pandas as pd
 import opt_einsum as oe
 
 from .molecule import Dimer
-from .utils import trace_memory_peak
+from .utils import trace_memory_peak, CalcTimer
+
+from .properties_components import (
+    calc_exch_ind2_resp_s2_property,
+    calc_exch_disp2_s2_property,
+)
 
 
 def perform_property_contractions(
@@ -42,9 +46,7 @@ def perform_property_contractions(
 
     # relaxed amplitudes with dipole moment
     xt_A_ra = mol.cpscf("A", perturbation=prop_A_ar)
-    # xt_A_ar = xt_A_ra.T
     xt_B_sb = mol.cpscf("B", perturbation=prop_B_bs)
-    # xt_B_bs = xt_B_sb.T
 
     # SCF monomers
 
@@ -125,6 +127,18 @@ def perform_property_contractions(
         ]
     )
 
+    results["x2_exch-ind,r_S2"] = calc_exch_ind2_resp_s2_property(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
+        prop_A_aa=prop_A_aa,
+        prop_A_ar=prop_A_ar,
+        prop_A_rr=prop_A_rr,
+        prop_B_bb=prop_B_bb,
+        prop_B_bs=prop_B_bs,
+        prop_B_ss=prop_B_ss,
+    )
+
     results["x2_disp"] = np.array(
         [
             # 2 Re <R(X)|V R(V)>
@@ -142,6 +156,16 @@ def perform_property_contractions(
         ]
     )
 
+    results["x2_exch-disp_S2"] = calc_exch_disp2_s2_property(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
+        prop_A_aa=prop_A_aa,
+        prop_A_rr=prop_A_rr,
+        prop_B_bb=prop_B_bb,
+        prop_B_ss=prop_B_ss,
+    )
+
     # sum up first-order contributions
     results["x1_induced"] = results["x1_pol,r"] + results["x1_exch,r"]
 
@@ -150,7 +174,9 @@ def perform_property_contractions(
         results["x1_pol,r"]
         + results["x1_exch,r"]
         + results["x2_ind,r"]
+        + results["x2_exch-ind,r_S2"]
         + results["x2_disp"]
+        + results["x2_exch-disp_S2"]
     )
 
     return results
@@ -207,33 +233,26 @@ def calc_property(mol: Dimer, prop: str | np.ndarray, **kwargs) -> pd.DataFrame:
         pd.DataFrame: DataFrame with results.
     """
 
-    ### Start total time of calculations
-    total_time = time()
+    with CalcTimer("Interaction-induced property calculations"):
+        ### Results output file
+        results_fname = kwargs.get("results", "results.csv")
 
-    ### Results output file
-    results_fname = kwargs.get("results", "results.csv")
+        if prop == "dipole":
+            ### Dipole moment calculations
+            results = calc_induced_dipole(mol)
 
-    if prop == "dipole":
-        ### Dipole moment calculations
-        results = calc_induced_dipole(mol)
+        elif isinstance(prop, np.ndarray):
+            ### Property matrix is given
+            results = perform_property_contractions(mol, prop)
+        else:
+            raise ValueError(
+                f"Property {prop} is not implemented. "
+                "Please provide a valid property name or a property matrix."
+            )
 
-    elif isinstance(prop, np.ndarray):
-        ### Property matrix is given
-        results = perform_property_contractions(mol, prop)
-    else:
-        raise ValueError(
-            f"Property {prop} is not implemented. "
-            "Please provide a valid property name or a property matrix."
-        )
+        ### Results saving to file
+        results.to_csv(results_fname)
 
-    ### Results saving to file
-    results.to_csv(results_fname)
-
-    ### End of calculations
-    total_time = time() - total_time
-    psi4.core.print_out(
-        f"\nInteraction-induced property calculations took {total_time:.2f} seconds.\n"
-    )
     psi4.core.clean()
 
     return results
