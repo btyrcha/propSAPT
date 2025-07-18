@@ -206,6 +206,7 @@ pyrightconfig.json
 *.csv
 *.cube
 *.png
+*.pdf
 
 ### Archive files ###
 *.zip

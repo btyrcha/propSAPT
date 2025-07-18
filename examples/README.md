@@ -20,6 +20,14 @@ This directory contains example scripts and tutorials demonstrating various feat
 - **`visualise_density.ipynb`** - Density matrix visualization
 - **`visualise_orbital.ipynb`** - Molecular orbital visualization
 
+## Specialized Analysis
+
+### [`finite_field_analysis/`](finite_field_analysis/)
+Advanced finite field stability and convergence analysis:
+- Field strength convergence testing
+- Richardson extrapolation for improved accuracy
+- Comprehensive plotting and error analysis
+
 ## Notes
 
 - All examples use the aug-cc-pVDZ basis set by default for speed
