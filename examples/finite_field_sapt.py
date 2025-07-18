@@ -2,6 +2,7 @@ import pandas as pd
 import psi4
 from prop_sapt import Dimer, calc_property, finite_field_sapt
 
+
 # specify geometry in Psi4 format
 GEO = """
 symmetry c1
@@ -42,6 +43,92 @@ OPTIONS = {
 # specify output filename
 OUTPUT_FILE_PATH = "output.dat"
 
+
+def print_dipole_comparison(ff_sapt_data: pd.DataFrame, prop_sapt_data: pd.DataFrame):
+    """
+    Print a formatted comparison of finite field SAPT and propSAPT dipole moment results.
+
+    Args:
+        ff_sapt_data (pd.DataFrame): Finite field SAPT results
+        prop_sapt_data (pd.DataFrame): propSAPT results
+    """
+
+    # Select relevant columns for comparison
+    ff_columns = [
+        'ELST1',
+        'EXCH1',
+        'IND2,R',
+        'EXCH-IND2,R(S^2)',
+        'DISP2',
+        'EXCH-DISP2(S^2)',
+    ]
+    prop_columns = [
+        'x1_pol,r',
+        'x1_exch,r',
+        'x2_ind,r',
+        'x2_exch-ind,r_S2',
+        'x2_disp',
+        'x2_exch-disp_S2',
+    ]
+
+    table_column_names = [
+        'Elest',
+        'Exch',
+        'Ind,r',
+        'Exch-Ind,r',
+        'Disp',
+        'Exch-Disp',
+    ]
+
+    # Create comparison DataFrames with renamed columns for clarity
+    ff_sapt_data = ff_sapt_data[ff_columns].copy()
+    ff_sapt_data.columns = table_column_names
+    ff_sapt_data = ff_sapt_data * 1000  # scale to 10^{-3} e*a_0
+
+    prop_data = prop_sapt_data[prop_columns].copy()
+    prop_data.columns = table_column_names
+    prop_data = prop_data * 1000  # scale to 10^{-3} e*a_0
+
+    table_width = (max(len(elem) for elem in table_column_names) + 2) * len(
+        table_column_names
+    ) + 10
+
+    # Print formatted comparison
+    print("\n" + "=" * table_width)
+    print("INTERACTION-INDUCED DIPOLE MOMENT COMPARISON (10^{-3} e*a_0)")
+    print("=" * table_width)
+
+    print("\nFinite Field SAPT Results:")
+    print("-" * table_width)
+    print(ff_sapt_data.to_string(float_format=lambda x: f"{x:>12.6f}"))
+
+    print("\n\npropSAPT Results:")
+    print("-" * table_width)
+    print(prop_data.to_string(float_format=lambda x: f"{x:>12.6f}"))
+
+    # Calculate and display differences
+    print("\n\nDifference (FF-SAPT - propSAPT):")
+    print("-" * table_width)
+    diff_data = ff_sapt_data - prop_data
+    print(diff_data.to_string(float_format=lambda x: f"{x:>12.6f}"))
+
+    # Calculate total values for each method
+    ff_total = ff_sapt_data.sum(axis=1)
+    prop_total = prop_data.sum(axis=1)
+
+    print("\n\nTotal Interaction-Induced Dipole Moments:")
+    print("-" * 55)
+    total_comparison = pd.DataFrame(
+        {
+            'FF-SAPT': ff_total,
+            'propSAPT': prop_total,
+            'Difference': ff_total - prop_total,
+        }
+    )
+    print(total_comparison.to_string(float_format=lambda x: f"{x:>16.6f}"))
+    print("=" * table_width)
+
+
 if __name__ == "__main__":
 
     ### Psi4 options
@@ -59,34 +146,5 @@ if __name__ == "__main__":
     dimer = Dimer(GEO)
     data_prop_sapt = calc_property(dimer, "dipole")
 
-    ### Compare results
-    pd.set_option("display.precision", 6)
-    pd.set_option("display.float_format", "{:.6f}".format)
-
-    print("Finite Field SAPT Dipole Moment:")
-    print(
-        data_ff_sapt[
-            [
-                'ELST1',
-                'EXCH1',
-                'IND2,R',
-                'EXCH-IND2,R',
-                'DISP2',
-                'EXCH-DISP2',
-            ]
-        ]
-    )
-
-    print("\npropSAPT Dipole Moment:")
-    print(
-        data_prop_sapt[
-            [
-                'x1_pol,r',
-                'x1_exch,r',
-                'x2_ind,r',
-                'x2_exch-ind,r_S2',
-                'x2_disp',
-                'x2_exch-disp_S2',
-            ]
-        ]
-    )
+    ### Compare and print results
+    print_dipole_comparison(data_ff_sapt, data_prop_sapt)
