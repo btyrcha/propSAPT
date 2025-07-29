@@ -62,25 +62,31 @@ def print_dipole_comparison(ff_sapt_data: pd.DataFrame, prop_sapt_data: pd.DataF
         'EXCH1',
         'IND2,R',
         'EXCH-IND2,R(S^2)',
+        'EXCH-IND2,R',
         'DISP2',
         'EXCH-DISP2(S^2)',
+        'TOTAL',
     ]
     prop_columns = [
         'x1_pol,r',
         'x1_exch,r',
         'x2_ind,r',
         'x2_exch-ind,r_S2',
+        'x2_exch-ind,r',
         'x2_disp',
         'x2_exch-disp_S2',
+        'x_induced',
     ]
 
     table_column_names = [
         'Elest',
         'Exch',
         'Ind,r',
+        'Exch-Ind,r S2',
         'Exch-Ind,r',
         'Disp',
-        'Exch-Disp',
+        'Exch-Disp S2',
+        'Total',
     ]
 
     # Create comparison DataFrames with renamed columns for clarity
@@ -115,17 +121,13 @@ def print_dipole_comparison(ff_sapt_data: pd.DataFrame, prop_sapt_data: pd.DataF
     diff_data = ff_sapt_data - prop_data
     print(diff_data.to_string(float_format=lambda x: f"{x:>12.6f}"))
 
-    # Calculate total values for each method
-    ff_total = ff_sapt_data.sum(axis=1)
-    prop_total = prop_data.sum(axis=1)
-
     print("\n\nTotal Interaction-Induced Dipole Moments:")
     print("-" * 55)
     total_comparison = pd.DataFrame(
         {
-            'FF-SAPT': ff_total,
-            'propSAPT': prop_total,
-            'Difference': ff_total - prop_total,
+            'FF-SAPT': ff_sapt_data['Total'],
+            'propSAPT': prop_data['Total'],
+            'Difference': ff_sapt_data['Total'] - prop_data['Total'],
         }
     )
     print(total_comparison.to_string(float_format=lambda x: f"{x:>16.6f}"))
