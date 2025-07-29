@@ -12,7 +12,9 @@ from .utils import trace_memory_peak, CalcTimer
 
 from .properties_components import (
     calc_exch_ind2_resp_s2_property,
+    calc_exch_ind2_resp_sinf_property,
     calc_exch_disp2_s2_property,
+    calc_exch_disp2_sinf_property,
 )
 
 
@@ -96,21 +98,13 @@ def perform_property_contractions(
 
     results["x2_ind,r"] = np.array(
         [
-            +8
+            +16
             * oe.contract(
                 "ra,Qar,Qbs,sb", xt_A_ra, mol.Qar, mol.Qbs, mol.get_cpscf_sb()
             )
-            + 8
-            * oe.contract(
-                "sb,Qar,Qbs,ra", mol.get_cpscf_sb(), mol.Qar, mol.Qbs, xt_A_ra
-            )
-            + 8
+            + 16
             * oe.contract(
                 "sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra()
-            )
-            + 8
-            * oe.contract(
-                "ra,Qar,Qbs,sb", mol.get_cpscf_ra(), mol.Qar, mol.Qbs, xt_B_sb
             )
             - 4 * oe.contract("ra,ac,rc", mol.get_cpscf_ra(), mol.omegaB_aa, xt_A_ra)
             + 4 * oe.contract("ra,cr,ca", mol.get_cpscf_ra(), mol.omegaB_rr, xt_A_ra)
@@ -137,6 +131,21 @@ def perform_property_contractions(
         prop_B_bb=prop_B_bb,
         prop_B_bs=prop_B_bs,
         prop_B_ss=prop_B_ss,
+    )
+
+    results["x2_exch-ind,r"] = (
+        calc_exch_ind2_resp_sinf_property(
+            mol=mol,
+            xt_A_ra=xt_A_ra,
+            xt_B_sb=xt_B_sb,
+            prop_A_aa=prop_A_aa,
+            prop_A_ar=prop_A_ar,
+            prop_A_rr=prop_A_rr,
+            prop_B_bb=prop_B_bb,
+            prop_B_bs=prop_B_bs,
+            prop_B_ss=prop_B_ss,
+        )
+        - results["x2_ind,r"]
     )
 
     results["x2_disp"] = np.array(
@@ -166,6 +175,19 @@ def perform_property_contractions(
         prop_B_ss=prop_B_ss,
     )
 
+    results["x2_exch-disp"] = (
+        calc_exch_disp2_sinf_property(
+            mol=mol,
+            xt_A_ra=xt_A_ra,
+            xt_B_sb=xt_B_sb,
+            prop_A_aa=prop_A_aa,
+            prop_A_rr=prop_A_rr,
+            prop_B_bb=prop_B_bb,
+            prop_B_ss=prop_B_ss,
+        )
+        - results["x2_disp"]
+    )
+
     # sum up first-order contributions
     results["x1_induced"] = results["x1_pol,r"] + results["x1_exch,r"]
 
@@ -174,9 +196,9 @@ def perform_property_contractions(
         results["x1_pol,r"]
         + results["x1_exch,r"]
         + results["x2_ind,r"]
-        + results["x2_exch-ind,r_S2"]
+        + results["x2_exch-ind,r_S2"]  # TODO: replace with Sinf when implemented
         + results["x2_disp"]
-        + results["x2_exch-disp_S2"]
+        + results["x2_exch-disp_S2"]  # TODO: replace with Sinf when implemented
     )
 
     return results
