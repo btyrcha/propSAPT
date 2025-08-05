@@ -163,7 +163,12 @@ def calc_density_matrix(
         )
 
     # sum up all contributions
-    rho_MO_total = rho_MO_pol + rho_MO_exch + rho_MO_ind + rho_MO_disp
+    rho_MO_total = (
+        rho_MO_pol
+        + rho_MO_exch
+        # + rho_MO_ind
+        # + rho_MO_disp
+    )
 
     if orbital_basis == "AO":
         return {
