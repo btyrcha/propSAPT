@@ -113,14 +113,20 @@ class helper_SAPT(object):
         dimer.fix_com(True)
         dimer.update_geometry()
         nfrags = dimer.nfragments()
-        if nfrags != 2:
+
+        if nfrags < 2:
             psi4.core.clean()
-            raise ValueError(f"Found {nfrags:d} fragments, must be 2.")
+            raise ValueError(f"Found {nfrags:d} fragments, must be at least 2.")
+        elif nfrags > 2:
+            psi4.core.print_out(
+                f"Found {nfrags:d} fragments, using first 2 as monomers, "
+                "and the rest as extra basis functions (ghosts).\n"
+            )
 
         # Grab monomers in DCBS
-        monomerA = dimer.extract_subsets(1, 2)
+        monomerA = dimer.extract_subsets(1, [i for i in range(2, nfrags + 1)])
         monomerA.set_name("monomerA")
-        monomerB = dimer.extract_subsets(2, 1)
+        monomerB = dimer.extract_subsets(2, [1] + [i for i in range(3, nfrags + 1)])
         monomerB.set_name("monomerB")
         self.mult_A = monomerA.multiplicity()
         self.mult_B = monomerB.multiplicity()
