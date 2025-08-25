@@ -171,7 +171,7 @@ def make_cube(
 
     else:
         raise TypeError(
-            "`mol` should be of type `psi4.core.Molecule` was `{type(mol)}`!"
+            f"`mol` should be of type `psi4.core.Molecule` was `{type(mol)}`!"
         )
 
     basisset.print_out()
