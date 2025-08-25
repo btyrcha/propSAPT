@@ -37,18 +37,58 @@ class Cube:
 
     def __init__(self, **kwargs):
 
-        self.comment1 = kwargs.get("comment1", None)
-        self.comment2 = kwargs.get("comment2", None)
-        self.origin = kwargs.get("origin", None)
-        self.n_atoms = kwargs.get("n_atoms", None)
-        self.atoms = kwargs.get("atoms", None)
-        self.n_x = kwargs.get("n_x", None)
-        self.n_y = kwargs.get("n_y", None)
-        self.n_z = kwargs.get("n_z", None)
-        self.x_vector = kwargs.get("x_vector", None)
-        self.y_vector = kwargs.get("y_vector", None)
-        self.z_vector = kwargs.get("z_vector", None)
-        self.volumetric_data = kwargs.get("volumetric_data", None)
+        self.comment1: str = kwargs.get("comment1", "")
+        self.comment2: str = kwargs.get("comment2", "")
+
+        if kwargs.get("origin") is not None:
+            self.origin: list[float] | np.ndarray = kwargs["origin"]
+        else:
+            raise ValueError("`origin` must be provided!")
+
+        if kwargs.get("n_atoms") is not None:
+            self.n_atoms: int = kwargs["n_atoms"]
+        else:
+            raise ValueError("`n_atoms` must be provided!")
+
+        if kwargs.get("atoms") is not None:
+            self.atoms: list[tuple[int, float, np.ndarray]] = kwargs["atoms"]
+        else:
+            raise ValueError("`atoms` must be provided!")
+
+        if kwargs.get("n_x") is not None:
+            self.n_x: int = kwargs["n_x"]
+        else:
+            raise ValueError("`n_x` must be provided!")
+
+        if kwargs.get("n_y") is not None:
+            self.n_y: int = kwargs["n_y"]
+        else:
+            raise ValueError("`n_y` must be provided!")
+
+        if kwargs.get("n_z") is not None:
+            self.n_z: int = kwargs["n_z"]
+        else:
+            raise ValueError("`n_z` must be provided!")
+
+        if kwargs.get("x_vector") is not None:
+            self.x_vector: np.ndarray = kwargs["x_vector"]
+        else:
+            raise ValueError("`x_vector` must be provided!")
+
+        if kwargs.get("y_vector") is not None:
+            self.y_vector: np.ndarray = kwargs["y_vector"]
+        else:
+            raise ValueError("`y_vector` must be provided!")
+
+        if kwargs.get("z_vector") is not None:
+            self.z_vector: np.ndarray = kwargs["z_vector"]
+        else:
+            raise ValueError("`z_vector` must be provided!")
+
+        if kwargs.get("volumetric_data") is not None:
+            self.volumetric_data: np.ndarray = kwargs["volumetric_data"]
+        else:
+            raise ValueError("`volumetric_data` must be provided!")
 
     def from_file(self, filename: str):
         """
