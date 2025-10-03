@@ -81,6 +81,9 @@ class helper_SAPT(object):
         # This is denisty_fitted version of helper_SAPT
         self.is_density_fitted = True
 
+        # Frozen core option
+        self.is_frozen_core = psi4.core.get_global_option("FREEZE_CORE") != "FALSE"
+
         # Verify reference
         if reference not in ["RHF", "ROHF", "UHF", "RKS", "UKS"]:
             psi4.core.clean()
@@ -188,6 +191,7 @@ class helper_SAPT(object):
         self.nuc_rep_A = monomerA.nuclear_repulsion_energy()
         self.ndocc_A = self.wfnA.doccpi()[0]
         self.nvirt_A = self.nmo - self.ndocc_A
+        self.nfrozen_A = self.wfnA.nfrzc() if self.is_frozen_core else 0
 
         if reference == "ROHF":
             self.idx_A = ["i", "a", "r"]
@@ -208,7 +212,7 @@ class helper_SAPT(object):
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_A = np.asarray(self.wfnA.Ca())
-        self.Co_A = self.C_A[:, : self.ndocc_A]
+        self.Co_A = self.C_A[:, self.nfrozen_A : self.ndocc_A]
         self.Ca_A = self.C_A[:, self.ndocc_A : occA]
         self.Cv_A = self.C_A[:, occA:]
         self.eps_A = np.asarray(self.wfnA.epsilon_a())
@@ -217,6 +221,7 @@ class helper_SAPT(object):
         self.nuc_rep_B = monomerB.nuclear_repulsion_energy()
         self.ndocc_B = self.wfnB.doccpi()[0]
         self.nvirt_B = self.nmo - self.ndocc_B
+        self.nfrozen_B = self.wfnB.nfrzc() if self.is_frozen_core else 0
 
         if reference == "ROHF":
             self.idx_B = ["j", "b", "s"]
@@ -237,7 +242,7 @@ class helper_SAPT(object):
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_B = np.asarray(self.wfnB.Ca())
-        self.Co_B = self.C_B[:, : self.ndocc_B]
+        self.Co_B = self.C_B[:, self.nfrozen_B : self.ndocc_B]
         self.Ca_B = self.C_B[:, self.ndocc_B : occB]
         self.Cv_B = self.C_B[:, occB:]
         self.eps_B = np.asarray(self.wfnB.epsilon_a())
@@ -253,10 +258,10 @@ class helper_SAPT(object):
         # Make slice, orbital, and size dictionaries
         if reference == "ROHF":
             self.slices = {
-                "i": slice(0, self.ndocc_A),
+                "i": slice(self.nfrozen_A, self.ndocc_A),
                 "a": slice(self.ndocc_A, occA),
                 "r": slice(occA, None),
-                "j": slice(0, self.ndocc_B),
+                "j": slice(self.nfrozen_B, self.ndocc_B),
                 "b": slice(self.ndocc_B, occB),
                 "s": slice(occB, None),
             }
@@ -271,19 +276,19 @@ class helper_SAPT(object):
             }
 
             self.sizes = {
-                "i": self.ndocc_A,
+                "i": self.ndocc_A - self.nfrozen_A,
                 "a": self.nsocc_A,
                 "r": self.nvirt_A,
-                "j": self.ndocc_B,
+                "j": self.ndocc_B - self.nfrozen_B,
                 "b": self.nsocc_B,
                 "s": self.nvirt_B,
             }
 
         elif reference == "RHF" or reference == "RKS":
             self.slices = {
-                "a": slice(0, self.ndocc_A),
+                "a": slice(self.nfrozen_A, self.ndocc_A),
                 "r": slice(occA, None),
-                "b": slice(0, self.ndocc_B),
+                "b": slice(self.nfrozen_B, self.ndocc_B),
                 "s": slice(occB, None),
             }
 
@@ -295,9 +300,9 @@ class helper_SAPT(object):
             }
 
             self.sizes = {
-                "a": self.ndocc_A,
+                "a": self.ndocc_A - self.nfrozen_A,
                 "r": self.nvirt_A,
-                "b": self.ndocc_B,
+                "b": self.ndocc_B - self.nfrozen_B,
                 "s": self.nvirt_B,
             }
 
@@ -492,11 +497,12 @@ class helper_SAPT(object):
                 eps_ov = self.eps("a", dim=2) - self.eps("r")
 
                 # Set number of electrons
-                no = self.ndocc_A
-                nv = self.nvirt_A
+                no = self.sizes["a"]
+                nv = self.sizes["r"]
 
                 # apply hessian func
                 def _hess_x(x_vec, act_mask):
+                    # FIXME: frozen core does not work - cpscf_Hx expects full vector
                     if act_mask[0]:
                         # monomer A
                         return self.wfnA.cphf_Hx([x_vec[0]])
@@ -516,11 +522,12 @@ class helper_SAPT(object):
                 eps_ov = self.eps("b", dim=2) - self.eps("s")
 
                 # Set number of electrons
-                no = self.ndocc_B
-                nv = self.nvirt_B
+                no = self.sizes["b"]
+                nv = self.sizes["s"]
 
                 # apply hessian func
                 def _hess_x(x_vec, act_mask):
+                    # FIXME: frozen core does not work - cpscf_Hx expects full vector
                     if act_mask[0]:
                         # monomer B
                         return self.wfnB.cphf_Hx([x_vec[0]])
@@ -529,7 +536,7 @@ class helper_SAPT(object):
 
             else:
                 psi4.core.clean()
-                raise ValueError(f"'{monomer}' is not a valid monomer for CHF.")
+                raise ValueError(f"'{monomer}' is not a valid monomer for CPSCF.")
 
             # preconditioner - applies denominator (for faster convergence)
             def _apply_precon(x_vec, act_mask):
