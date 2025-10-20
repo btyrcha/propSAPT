@@ -427,6 +427,63 @@ def subtract_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
     )
 
 
+def add_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
+    """
+    Calculate a sum of volumetric data of two cubes.
+
+    Cube grids have to be the same for this operation.
+    Data about molecule geometry is taken from `cube_1`.
+
+    Args:
+        cube_1 (Cube): Cube serving as first operand.
+        cube_2 (Cube): Cube serving as second operand.
+
+    Returns:
+        Cube: Resulting Cube.
+    """
+
+    if False in np.isclose(cube_1.origin, cube_2.origin):
+        raise ValueError(
+            "Cube grids have different origins!\n"
+            f"cube_1: {cube_1.origin}\n"
+            f"cube_2: {cube_2.origin}"
+        )
+
+    if (
+        False in np.isclose(cube_1.x_vector, cube_2.x_vector)
+        or False in np.isclose(cube_1.y_vector, cube_2.y_vector)
+        or False in np.isclose(cube_1.z_vector, cube_2.z_vector)
+    ):
+        raise ValueError(
+            "Cube grids have different vectors!\n"
+            f"cube_1: {cube_1.x_vector}\n"
+            f"        {cube_1.y_vector}\n"
+            f"        {cube_1.z_vector}\n"
+            f"cube_2: {cube_2.x_vector}\n"
+            f"        {cube_2.y_vector}\n"
+            f"        {cube_2.z_vector}"
+        )
+
+    volumetric_data = cube_1.volumetric_data + cube_2.volumetric_data
+
+    return Cube(
+        **{
+            "comment1": "",
+            "comment2": "",
+            "origin": cube_1.origin,
+            "n_atoms": cube_1.n_atoms,
+            "atoms": cube_1.atoms,
+            "n_x": cube_1.n_x,
+            "n_y": cube_1.n_y,
+            "n_z": cube_1.n_z,
+            "x_vector": cube_1.x_vector,
+            "y_vector": cube_1.y_vector,
+            "z_vector": cube_1.z_vector,
+            "volumetric_data": volumetric_data,
+        }
+    )
+
+
 def prepare_grid(
     geometry: np.ndarray, grid_step: float | tuple, grid_overage: float | tuple
 ) -> dict:
