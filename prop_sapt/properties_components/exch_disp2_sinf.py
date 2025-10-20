@@ -1,9 +1,10 @@
 import numpy as np
-import opt_einsum as oe
 
 from prop_sapt.molecule import Dimer
 
-from .exch_disp2 import get_u_rsab_amplitudes
+from .exch_disp2_sinf_terms.term1 import get_exch_disp2_sinf_property_term1
+from .exch_disp2_sinf_terms.term2 import get_exch_disp2_sinf_property_term2
+from .exch_disp2_sinf_terms.term3 import get_exch_disp2_sinf_property_term3
 
 
 def calc_exch_disp2_sinf_property(
@@ -16,10 +17,14 @@ def calc_exch_disp2_sinf_property(
     prop_B_ss: np.ndarray,
 ) -> np.ndarray:
 
-    xt_A_ar = xt_A_ra.T
-    xt_B_bs = xt_B_sb.T
-
-    u_rsab = get_u_rsab_amplitudes(
+    # < V R(X) | P R(V) >
+    x2_exch_disp_sinf = get_exch_disp2_sinf_property_term1(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
+    )
+    # < V P R([V, R(X)]) > + < V P R([X, R(V)]) >
+    x2_exch_disp_sinf += get_exch_disp2_sinf_property_term2(
         mol=mol,
         xt_A_ra=xt_A_ra,
         xt_B_sb=xt_B_sb,
@@ -28,16 +33,13 @@ def calc_exch_disp2_sinf_property(
         prop_B_bb=prop_B_bb,
         prop_B_ss=prop_B_ss,
     )
-
-    x2_exch_disp_sinf = np.array(
-        [
-            # < R(X) | V P R(V) > TODO
-            0.0
-            # < V P R([V, R(X)]) > + < V P R([X, R(V)]) >
-            + 0.0
-            # < V P R(X) R(V) >
-            + 0.0
-        ]
+    # < V P R(X) R(V) >
+    x2_exch_disp_sinf += get_exch_disp2_sinf_property_term3(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
     )
+
+    x2_exch_disp_sinf = np.array([x2_exch_disp_sinf])
 
     return x2_exch_disp_sinf
