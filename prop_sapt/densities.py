@@ -71,12 +71,12 @@ def calc_density_matrix(
         )
 
         # first-order polarisation
-        rho_MO_pol[mol.ndocc_A :, : mol.ndocc_A] = rho_pol_ra
-        rho_MO_pol[: mol.ndocc_A, mol.ndocc_A :] = rho_pol_ra.T
+        rho_MO_pol[mol.slices["r"], mol.slices["a"]] = rho_pol_ra
+        rho_MO_pol[mol.slices["a"], mol.slices["r"]] = rho_pol_ra.T
 
         # first-order exchange
-        rho_MO_exch[mol.ndocc_A :, : mol.ndocc_A] = rho_exch_ra
-        rho_MO_exch[: mol.ndocc_A, mol.ndocc_A :] = rho_exch_ra.T
+        rho_MO_exch[mol.slices["r"], mol.slices["a"]] = rho_exch_ra
+        rho_MO_exch[mol.slices["a"], mol.slices["r"]] = rho_exch_ra.T
 
         # second-order induction
         rho_MO_ind_ra = (
@@ -87,13 +87,13 @@ def calc_density_matrix(
         )
         rho_MO_ind_ra = mol.cpscf("A", perturbation=rho_MO_ind_ra.T)
 
-        rho_MO_ind[mol.ndocc_A :, : mol.ndocc_A] = rho_MO_ind_ra
-        rho_MO_ind[: mol.ndocc_A, mol.ndocc_A :] = rho_MO_ind_ra.T
+        rho_MO_ind[mol.slices["r"], mol.slices["a"]] = rho_MO_ind_ra
+        rho_MO_ind[mol.slices["a"], mol.slices["r"]] = rho_MO_ind_ra.T
 
-        rho_MO_ind[: mol.ndocc_A, : mol.ndocc_A] = -oe.contract(
+        rho_MO_ind[mol.slices["a"], mol.slices["a"]] = -oe.contract(
             "rA,ra->aA", mol.get_cpscf_ra(), mol.get_cpscf_ra()
         )
-        rho_MO_ind[mol.ndocc_A :, mol.ndocc_A :] = +oe.contract(
+        rho_MO_ind[mol.slices["r"], mol.slices["r"]] = +oe.contract(
             "Ra,ra->Rr", mol.get_cpscf_ra(), mol.get_cpscf_ra()
         )
 
@@ -103,13 +103,13 @@ def calc_density_matrix(
         ) - 2 * oe.contract("rsab,QaA,Qbs->rA", mol.t_rsab, mol.Qaa, mol.Qbs)
         rho_MO_disp_ra = mol.cpscf("A", perturbation=rho_MO_disp_ra.T)
 
-        rho_MO_disp[mol.ndocc_A :, : mol.ndocc_A] = rho_MO_disp_ra
-        rho_MO_disp[: mol.ndocc_A, mol.ndocc_A :] = rho_MO_disp_ra.T
+        rho_MO_disp[mol.slices["r"], mol.slices["a"]] = rho_MO_disp_ra
+        rho_MO_disp[mol.slices["a"], mol.slices["r"]] = rho_MO_disp_ra.T
 
-        rho_MO_disp[: mol.ndocc_A, : mol.ndocc_A] = -2 * oe.contract(
+        rho_MO_disp[mol.slices["a"], mol.slices["a"]] = -2 * oe.contract(
             "rsAb,rsab->aA", mol.t_rsab, mol.t_rsab
         )
-        rho_MO_disp[mol.ndocc_A :, mol.ndocc_A :] = +2 * oe.contract(
+        rho_MO_disp[mol.slices["r"], mol.slices["r"]] = +2 * oe.contract(
             "Rsab,rsab->Rr", mol.t_rsab, mol.t_rsab
         )
 
@@ -120,12 +120,12 @@ def calc_density_matrix(
         )
 
         # first-order polarisation
-        rho_MO_pol[mol.ndocc_B :, : mol.ndocc_B] = rho_pol_sb
-        rho_MO_pol[: mol.ndocc_B, mol.ndocc_B :] = rho_pol_sb.T
+        rho_MO_pol[mol.slices["s"], mol.slices["b"]] = rho_pol_sb
+        rho_MO_pol[mol.slices["b"], mol.slices["s"]] = rho_pol_sb.T
 
         # first-order exchange
-        rho_MO_exch[mol.ndocc_B :, : mol.ndocc_B] = rho_exch_sb
-        rho_MO_exch[: mol.ndocc_B, mol.ndocc_B :] = rho_exch_sb.T
+        rho_MO_exch[mol.slices["s"], mol.slices["b"]] = rho_exch_sb
+        rho_MO_exch[mol.slices["b"], mol.slices["s"]] = rho_exch_sb.T
 
         # second-order induction
         rho_MO_ind_sb = (
@@ -136,13 +136,13 @@ def calc_density_matrix(
         )
         rho_MO_ind_sb = mol.cpscf("B", perturbation=rho_MO_ind_sb.T)
 
-        rho_MO_ind[mol.ndocc_B :, : mol.ndocc_B] = rho_MO_ind_sb
-        rho_MO_ind[: mol.ndocc_B, mol.ndocc_B :] = rho_MO_ind_sb.T
+        rho_MO_ind[mol.slices["s"], mol.slices["b"]] = rho_MO_ind_sb
+        rho_MO_ind[mol.slices["b"], mol.slices["s"]] = rho_MO_ind_sb.T
 
-        rho_MO_ind[: mol.ndocc_B, : mol.ndocc_B] = -oe.contract(
+        rho_MO_ind[mol.slices["b"], mol.slices["b"]] = -oe.contract(
             "sB,sb->bB", mol.get_cpscf_sb(), mol.get_cpscf_sb()
         )
-        rho_MO_ind[mol.ndocc_B :, mol.ndocc_B :] = +oe.contract(
+        rho_MO_ind[mol.slices["s"], mol.slices["s"]] = +oe.contract(
             "Sb,sb->Ss", mol.get_cpscf_sb(), mol.get_cpscf_sb()
         )
 
@@ -152,18 +152,23 @@ def calc_density_matrix(
         ) - 2 * oe.contract("rsab,Qar,QbB->sB", mol.t_rsab, mol.Qar, mol.Qbb)
         rho_MO_disp_sb = mol.cpscf("B", perturbation=rho_MO_disp_sb.T)
 
-        rho_MO_disp[mol.ndocc_B :, : mol.ndocc_B] = rho_MO_disp_sb
-        rho_MO_disp[: mol.ndocc_B, mol.ndocc_B :] = rho_MO_disp_sb.T
+        rho_MO_disp[mol.slices["s"], mol.slices["b"]] = rho_MO_disp_sb
+        rho_MO_disp[mol.slices["b"], mol.slices["s"]] = rho_MO_disp_sb.T
 
-        rho_MO_disp[: mol.ndocc_B, : mol.ndocc_B] = -2 * oe.contract(
+        rho_MO_disp[mol.slices["b"], mol.slices["b"]] = -2 * oe.contract(
             "rsaB,rsab->bB", mol.t_rsab, mol.t_rsab
         )
-        rho_MO_disp[mol.ndocc_B :, mol.ndocc_B :] = +2 * oe.contract(
+        rho_MO_disp[mol.slices["s"], mol.slices["s"]] = +2 * oe.contract(
             "rSab,rsab->Ss", mol.t_rsab, mol.t_rsab
         )
 
     # sum up all contributions
-    rho_MO_total = rho_MO_pol + rho_MO_exch + rho_MO_ind + rho_MO_disp
+    rho_MO_total = (
+        rho_MO_pol
+        + rho_MO_exch
+        # + rho_MO_ind
+        # + rho_MO_disp
+    )
 
     if orbital_basis == "AO":
         return {

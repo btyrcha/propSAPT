@@ -37,18 +37,58 @@ class Cube:
 
     def __init__(self, **kwargs):
 
-        self.comment1 = kwargs.get("comment1", None)
-        self.comment2 = kwargs.get("comment2", None)
-        self.origin = kwargs.get("origin", None)
-        self.n_atoms = kwargs.get("n_atoms", None)
-        self.atoms = kwargs.get("atoms", None)
-        self.n_x = kwargs.get("n_x", None)
-        self.n_y = kwargs.get("n_y", None)
-        self.n_z = kwargs.get("n_z", None)
-        self.x_vector = kwargs.get("x_vector", None)
-        self.y_vector = kwargs.get("y_vector", None)
-        self.z_vector = kwargs.get("z_vector", None)
-        self.volumetric_data = kwargs.get("volumetric_data", None)
+        self.comment1: str = kwargs.get("comment1", "")
+        self.comment2: str = kwargs.get("comment2", "")
+
+        if kwargs.get("origin") is not None:
+            self.origin: list[float] | np.ndarray = kwargs["origin"]
+        else:
+            raise ValueError("`origin` must be provided!")
+
+        if kwargs.get("n_atoms") is not None:
+            self.n_atoms: int = kwargs["n_atoms"]
+        else:
+            raise ValueError("`n_atoms` must be provided!")
+
+        if kwargs.get("atoms") is not None:
+            self.atoms: list[tuple[int, float, np.ndarray]] = kwargs["atoms"]
+        else:
+            raise ValueError("`atoms` must be provided!")
+
+        if kwargs.get("n_x") is not None:
+            self.n_x: int = kwargs["n_x"]
+        else:
+            raise ValueError("`n_x` must be provided!")
+
+        if kwargs.get("n_y") is not None:
+            self.n_y: int = kwargs["n_y"]
+        else:
+            raise ValueError("`n_y` must be provided!")
+
+        if kwargs.get("n_z") is not None:
+            self.n_z: int = kwargs["n_z"]
+        else:
+            raise ValueError("`n_z` must be provided!")
+
+        if kwargs.get("x_vector") is not None:
+            self.x_vector: np.ndarray = kwargs["x_vector"]
+        else:
+            raise ValueError("`x_vector` must be provided!")
+
+        if kwargs.get("y_vector") is not None:
+            self.y_vector: np.ndarray = kwargs["y_vector"]
+        else:
+            raise ValueError("`y_vector` must be provided!")
+
+        if kwargs.get("z_vector") is not None:
+            self.z_vector: np.ndarray = kwargs["z_vector"]
+        else:
+            raise ValueError("`z_vector` must be provided!")
+
+        if kwargs.get("volumetric_data") is not None:
+            self.volumetric_data: np.ndarray = kwargs["volumetric_data"]
+        else:
+            raise ValueError("`volumetric_data` must be provided!")
 
     def from_file(self, filename: str):
         """
@@ -131,7 +171,7 @@ def make_cube(
 
     else:
         raise TypeError(
-            "`mol` should be of type `psi4.core.Molecule` was `{type(mol)}`!"
+            f"`mol` should be of type `psi4.core.Molecule` was `{type(mol)}`!"
         )
 
     basisset.print_out()
@@ -368,6 +408,63 @@ def subtract_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
         )
 
     volumetric_data = cube_1.volumetric_data - cube_2.volumetric_data
+
+    return Cube(
+        **{
+            "comment1": "",
+            "comment2": "",
+            "origin": cube_1.origin,
+            "n_atoms": cube_1.n_atoms,
+            "atoms": cube_1.atoms,
+            "n_x": cube_1.n_x,
+            "n_y": cube_1.n_y,
+            "n_z": cube_1.n_z,
+            "x_vector": cube_1.x_vector,
+            "y_vector": cube_1.y_vector,
+            "z_vector": cube_1.z_vector,
+            "volumetric_data": volumetric_data,
+        }
+    )
+
+
+def add_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
+    """
+    Calculate a sum of volumetric data of two cubes.
+
+    Cube grids have to be the same for this operation.
+    Data about molecule geometry is taken from `cube_1`.
+
+    Args:
+        cube_1 (Cube): Cube serving as first operand.
+        cube_2 (Cube): Cube serving as second operand.
+
+    Returns:
+        Cube: Resulting Cube.
+    """
+
+    if False in np.isclose(cube_1.origin, cube_2.origin):
+        raise ValueError(
+            "Cube grids have different origins!\n"
+            f"cube_1: {cube_1.origin}\n"
+            f"cube_2: {cube_2.origin}"
+        )
+
+    if (
+        False in np.isclose(cube_1.x_vector, cube_2.x_vector)
+        or False in np.isclose(cube_1.y_vector, cube_2.y_vector)
+        or False in np.isclose(cube_1.z_vector, cube_2.z_vector)
+    ):
+        raise ValueError(
+            "Cube grids have different vectors!\n"
+            f"cube_1: {cube_1.x_vector}\n"
+            f"        {cube_1.y_vector}\n"
+            f"        {cube_1.z_vector}\n"
+            f"cube_2: {cube_2.x_vector}\n"
+            f"        {cube_2.y_vector}\n"
+            f"        {cube_2.z_vector}"
+        )
+
+    volumetric_data = cube_1.volumetric_data + cube_2.volumetric_data
 
     return Cube(
         **{

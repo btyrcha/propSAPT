@@ -7,7 +7,7 @@ requirements = [
 ]
 
 setup(
-    name="propSAPT",
+    name="prop_sapt",
     version="0.2.0",
     author="Bartosz Tyrcha",
     author_email="bartektyrcha123@gmail.com",

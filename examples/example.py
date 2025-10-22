@@ -1,5 +1,6 @@
 import psi4
 from prop_sapt import Dimer, calc_property, calc_density_matrix
+from prop_sapt.utils import CalcTimer
 
 
 # specify geometry in Psi4 format
@@ -33,38 +34,40 @@ OPTIONS = {
     "save_jk": True,  # necessary option
 }
 
-# specify output and resultS filenames
+# specify output and results filenames
 OUTPUT_FILE_PATH = "output.dat"
 RESULTS_FILE_PATH = "results.csv"
 
 if __name__ == "__main__":
 
-    ### Psi4 options
-    psi4.set_memory(MEMORY)
-    psi4.set_num_threads(THREADS)
-    psi4.core.set_output_file(OUTPUT_FILE_PATH, False)
-    psi4.set_options(OPTIONS)
+    with CalcTimer("Example propSAPT calculations"):
 
-    ### Initalise prop_sapt.Dimer object
-    dimer = Dimer(GEO)
+        ### Psi4 options
+        psi4.set_memory(MEMORY)
+        psi4.set_num_threads(THREADS)
+        psi4.core.set_output_file(OUTPUT_FILE_PATH, False)
+        psi4.set_options(OPTIONS)
 
-    ### Calculate interaction-induced dipole moment
-    data = calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
+        ### Initalise prop_sapt.Dimer object
+        dimer = Dimer(GEO)
 
-    ### Calculate interaction-induced denisty matrix
-    delta_dm_A = calc_density_matrix(dimer, "A")
-    delta_dm_B = calc_density_matrix(dimer, "B")
+        ### Calculate interaction-induced dipole moment
+        data = calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
 
-    delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
+        ### Calculate interaction-induced denisty matrix
+        delta_dm_A = calc_density_matrix(dimer, "A")
+        delta_dm_B = calc_density_matrix(dimer, "B")
 
-    ### Store densities to .cube files
-    dimer.save_cube(2 * delta_dm_A["total"], filename="delta_dm_A.cube")
-    dimer.save_cube(2 * delta_dm_B["total"], filename="delta_dm_B.cube")
-    dimer.save_cube(2 * delta_dm, filename="delta_dm.cube")
+        delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
 
-    ### Use Psi4 to perform other calculations
-    dimer_psi4 = dimer.get_psi4_molecule()
-    psi4.energy("mp2", molecule=dimer_psi4)
+        ### Store densities to .cube files
+        dimer.save_cube(2 * delta_dm_A["total"], filename="delta_dm_A.cube")
+        dimer.save_cube(2 * delta_dm_B["total"], filename="delta_dm_B.cube")
+        dimer.save_cube(2 * delta_dm, filename="delta_dm.cube")
 
-    ### End calculations
-    psi4.core.clean()
+        ### Use Psi4 to perform other calculations
+        dimer_psi4 = dimer.get_psi4_molecule()
+        psi4.energy("mp2", molecule=dimer_psi4)
+
+        ### End calculations
+        psi4.core.clean()

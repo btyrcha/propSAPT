@@ -81,6 +81,16 @@ class helper_SAPT(object):
         # This is denisty_fitted version of helper_SAPT
         self.is_density_fitted = True
 
+        # Frozen core option
+        self.is_frozen_core = psi4.core.get_global_option("FREEZE_CORE") != "FALSE"
+
+        if self.is_frozen_core:
+            # NOTE: Frozen core implementation should follow:
+            # K. Patkowski, and K. Szalewicz, “Frozen core and effective core potentials
+            # in symmetry-adapted perturbation theory,” J. Chem. Phys. 127(16), 164103 (2007).
+            psi4.core.clean()
+            raise NotImplementedError("Frozen core not implemented yet in propSAPT.")
+
         # Verify reference
         if reference not in ["RHF", "ROHF", "UHF", "RKS", "UKS"]:
             psi4.core.clean()
@@ -113,14 +123,20 @@ class helper_SAPT(object):
         dimer.fix_com(True)
         dimer.update_geometry()
         nfrags = dimer.nfragments()
-        if nfrags != 2:
+
+        if nfrags < 2:
             psi4.core.clean()
-            raise ValueError(f"Found {nfrags:d} fragments, must be 2.")
+            raise ValueError(f"Found {nfrags:d} fragments, must be at least 2.")
+        elif nfrags > 2:
+            psi4.core.print_out(
+                f"Found {nfrags:d} fragments, using first 2 as monomers, "
+                "and the rest as extra basis functions (ghosts).\n"
+            )
 
         # Grab monomers in DCBS
-        monomerA = dimer.extract_subsets(1, 2)
+        monomerA = dimer.extract_subsets(1, [i for i in range(2, nfrags + 1)])
         monomerA.set_name("monomerA")
-        monomerB = dimer.extract_subsets(2, 1)
+        monomerB = dimer.extract_subsets(2, [1] + [i for i in range(3, nfrags + 1)])
         monomerB.set_name("monomerB")
         self.mult_A = monomerA.multiplicity()
         self.mult_B = monomerB.multiplicity()
@@ -182,6 +198,7 @@ class helper_SAPT(object):
         self.nuc_rep_A = monomerA.nuclear_repulsion_energy()
         self.ndocc_A = self.wfnA.doccpi()[0]
         self.nvirt_A = self.nmo - self.ndocc_A
+        self.nfrozen_A = self.wfnA.nfrzc() if self.is_frozen_core else 0
 
         if reference == "ROHF":
             self.idx_A = ["i", "a", "r"]
@@ -211,6 +228,7 @@ class helper_SAPT(object):
         self.nuc_rep_B = monomerB.nuclear_repulsion_energy()
         self.ndocc_B = self.wfnB.doccpi()[0]
         self.nvirt_B = self.nmo - self.ndocc_B
+        self.nfrozen_B = self.wfnB.nfrzc() if self.is_frozen_core else 0
 
         if reference == "ROHF":
             self.idx_B = ["j", "b", "s"]
@@ -486,11 +504,12 @@ class helper_SAPT(object):
                 eps_ov = self.eps("a", dim=2) - self.eps("r")
 
                 # Set number of electrons
-                no = self.ndocc_A
-                nv = self.nvirt_A
+                no = self.sizes["a"]
+                nv = self.sizes["r"]
 
                 # apply hessian func
                 def _hess_x(x_vec, act_mask):
+                    # FIXME: frozen core does not work - cpscf_Hx expects full vector
                     if act_mask[0]:
                         # monomer A
                         return self.wfnA.cphf_Hx([x_vec[0]])
@@ -510,11 +529,12 @@ class helper_SAPT(object):
                 eps_ov = self.eps("b", dim=2) - self.eps("s")
 
                 # Set number of electrons
-                no = self.ndocc_B
-                nv = self.nvirt_B
+                no = self.sizes["b"]
+                nv = self.sizes["s"]
 
                 # apply hessian func
                 def _hess_x(x_vec, act_mask):
+                    # FIXME: frozen core does not work - cpscf_Hx expects full vector
                     if act_mask[0]:
                         # monomer B
                         return self.wfnB.cphf_Hx([x_vec[0]])
@@ -523,7 +543,7 @@ class helper_SAPT(object):
 
             else:
                 psi4.core.clean()
-                raise ValueError(f"'{monomer}' is not a valid monomer for CHF.")
+                raise ValueError(f"'{monomer}' is not a valid monomer for CPSCF.")
 
             # preconditioner - applies denominator (for faster convergence)
             def _apply_precon(x_vec, act_mask):
