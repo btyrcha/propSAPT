@@ -196,9 +196,18 @@ def perform_property_contractions(
         results["x1_pol,r"]
         + results["x1_exch,r"]
         + results["x2_ind,r"]
-        + results["x2_exch-ind,r_S2"]  # TODO: replace with Sinf when implemented
+        + results["x2_exch-ind,r"]
         + results["x2_disp"]
-        + results["x2_exch-disp_S2"]  # TODO: replace with Sinf when implemented
+        + results["x2_exch-disp"]
+    )
+    # sum up all contributions with S^2 exchange terms
+    results["x_induced_S2"] = (
+        results["x1_pol,r"]
+        + results["x1_exch,r"]
+        + results["x2_ind,r"]
+        + results["x2_exch-ind,r_S2"]
+        + results["x2_disp"]
+        + results["x2_exch-disp_S2"]
     )
 
     return results

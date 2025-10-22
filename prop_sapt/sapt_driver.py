@@ -173,6 +173,15 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
             + pd_results_series["EXCH-DISP2"]
         )
 
+        pd_results_series["TOTAL(S^2)"] = (
+            pd_results_series["ELST1"]
+            + pd_results_series["EXCH1"]
+            + pd_results_series[ind_key]
+            + pd_results_series[exch_ind_key + "(S^2)"]
+            + pd_results_series["DISP2"]
+            + pd_results_series["EXCH-DISP2(S^2)"]
+        )
+
     # Print results
     print_sapt_summary(pd_results_series, response=kwargs.get("response"))
 
