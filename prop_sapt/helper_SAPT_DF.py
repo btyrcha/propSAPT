@@ -84,6 +84,13 @@ class helper_SAPT(object):
         # Frozen core option
         self.is_frozen_core = psi4.core.get_global_option("FREEZE_CORE") != "FALSE"
 
+        if self.is_frozen_core:
+            # NOTE: Frozen core implementation should follow:
+            # K. Patkowski, and K. Szalewicz, “Frozen core and effective core potentials
+            # in symmetry-adapted perturbation theory,” J. Chem. Phys. 127(16), 164103 (2007).
+            psi4.core.clean()
+            raise NotImplementedError("Frozen core not implemented yet in propSAPT.")
+
         # Verify reference
         if reference not in ["RHF", "ROHF", "UHF", "RKS", "UKS"]:
             psi4.core.clean()
@@ -212,7 +219,7 @@ class helper_SAPT(object):
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_A = np.asarray(self.wfnA.Ca())
-        self.Co_A = self.C_A[:, self.nfrozen_A : self.ndocc_A]
+        self.Co_A = self.C_A[:, : self.ndocc_A]
         self.Ca_A = self.C_A[:, self.ndocc_A : occA]
         self.Cv_A = self.C_A[:, occA:]
         self.eps_A = np.asarray(self.wfnA.epsilon_a())
@@ -242,7 +249,7 @@ class helper_SAPT(object):
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_B = np.asarray(self.wfnB.Ca())
-        self.Co_B = self.C_B[:, self.nfrozen_B : self.ndocc_B]
+        self.Co_B = self.C_B[:, : self.ndocc_B]
         self.Ca_B = self.C_B[:, self.ndocc_B : occB]
         self.Cv_B = self.C_B[:, occB:]
         self.eps_B = np.asarray(self.wfnB.epsilon_a())
@@ -258,10 +265,10 @@ class helper_SAPT(object):
         # Make slice, orbital, and size dictionaries
         if reference == "ROHF":
             self.slices = {
-                "i": slice(self.nfrozen_A, self.ndocc_A),
+                "i": slice(0, self.ndocc_A),
                 "a": slice(self.ndocc_A, occA),
                 "r": slice(occA, None),
-                "j": slice(self.nfrozen_B, self.ndocc_B),
+                "j": slice(0, self.ndocc_B),
                 "b": slice(self.ndocc_B, occB),
                 "s": slice(occB, None),
             }
@@ -276,19 +283,19 @@ class helper_SAPT(object):
             }
 
             self.sizes = {
-                "i": self.ndocc_A - self.nfrozen_A,
+                "i": self.ndocc_A,
                 "a": self.nsocc_A,
                 "r": self.nvirt_A,
-                "j": self.ndocc_B - self.nfrozen_B,
+                "j": self.ndocc_B,
                 "b": self.nsocc_B,
                 "s": self.nvirt_B,
             }
 
         elif reference == "RHF" or reference == "RKS":
             self.slices = {
-                "a": slice(self.nfrozen_A, self.ndocc_A),
+                "a": slice(0, self.ndocc_A),
                 "r": slice(occA, None),
-                "b": slice(self.nfrozen_B, self.ndocc_B),
+                "b": slice(0, self.ndocc_B),
                 "s": slice(occB, None),
             }
 
@@ -300,9 +307,9 @@ class helper_SAPT(object):
             }
 
             self.sizes = {
-                "a": self.ndocc_A - self.nfrozen_A,
+                "a": self.ndocc_A,
                 "r": self.nvirt_A,
-                "b": self.ndocc_B - self.nfrozen_B,
+                "b": self.ndocc_B,
                 "s": self.nvirt_B,
             }
 
