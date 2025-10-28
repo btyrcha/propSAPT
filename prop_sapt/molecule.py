@@ -1,5 +1,10 @@
+"""
+Definition of a core Dimer (molecule-like) class.
+"""
+
 from time import time
 from collections.abc import Iterable
+from typing import Sequence
 import numpy as np
 import psi4
 from .sinfinity import sinfinity
@@ -20,7 +25,7 @@ class Dimer(sinfinity):
         # starting initialisation
         t_start = time()
         psi4.core.print_out("*" * 80)
-        psi4.core.print_out("\nInitializing Molecule object...\n\n")
+        psi4.core.print_out("\nInitializing Dimer object...\n\n")
         psi4.core.tstart()
 
         # create Psi4 Molecule object
@@ -36,7 +41,7 @@ class Dimer(sinfinity):
 
         # print time
         psi4.core.print_out(
-            f"...finished initializing Molecule object in {(time() - t_start):5.2f} seconds.\n"
+            f"...finished initializing Dimer object in {(time() - t_start):5.2f} seconds.\n"
         )
         psi4.core.tstop()
         psi4.core.print_out("\n")
@@ -105,7 +110,7 @@ class Dimer(sinfinity):
 
     def make_cube(
         self,
-        matrix: np.ndarray | Iterable[np.ndarray],
+        matrix: np.ndarray | Sequence[np.ndarray],
         obj_type: str | Iterable[str] = "density",
         **kwargs,
     ) -> Cube | list[Cube]:
@@ -127,7 +132,7 @@ class Dimer(sinfinity):
 
     def save_cube(
         self,
-        matrix: np.ndarray | Iterable[np.ndarray],
+        matrix: np.ndarray | Sequence[np.ndarray],
         obj_type: str | Iterable[str] = "density",
         filename: str | Iterable[str] = "density.cube",
         **kwargs,
@@ -144,9 +149,14 @@ class Dimer(sinfinity):
 
         cubes = self.make_cube(matrix, obj_type=obj_type, **kwargs)
 
-        if isinstance(cubes, Iterable):
+        if isinstance(cubes, Iterable) and isinstance(filename, Iterable):
             for cube, fname in zip(cubes, filename):
                 cube.save(fname)
 
-        else:
+        elif isinstance(cubes, Cube) and isinstance(filename, str):
             cubes.save(filename)
+
+        else:
+            raise ValueError(
+                "If 'matrix' is an iterable, 'filename' must be an iterable of the same length."
+            )

@@ -54,14 +54,6 @@ class sinfinity(helper_SAPT):
         s_rs = self.s("rs")
         s_br = self.s("br")
 
-        vA_bb = self.potential("bb", "A")
-        vA_bs = self.potential("bs", "A")
-        vA_ss = self.potential("ss", "A")
-
-        vB_aa = self.potential("aa", "B")
-        vB_ar = self.potential("ar", "B")
-        vB_rr = self.potential("rr", "B")
-
         ### Calculating A and B matrices
         self.A_bb = get_A_bb(s_ba, s_ab)
         self.B_aa = get_B_aa(s_ba, s_ab)
