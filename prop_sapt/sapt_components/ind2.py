@@ -23,7 +23,7 @@ def calc_ind2_energy(dimer: Dimer) -> pd.Series:
         pd.Series: A pandas Series containing the calculated induction energies.
     """
 
-    with CalcTimer("Second-order induction energy calculations"):
+    with CalcTimer("Second-order Induction energy calculations"):
 
         # Calculate the second-order induction energies
         ind2_a = 2 * oe.contract("ra,ar", dimer.tB_ra, dimer.omegaB_ar)
@@ -68,7 +68,7 @@ def calc_ind2_r_energy(dimer: Dimer) -> pd.Series:
         pd.Series: A pandas Series containing the calculated induction energies.
     """
 
-    with CalcTimer("Second-order induction energy calculations"):
+    with CalcTimer("Second-order Induction energy calculations"):
 
         # CPSCF calculations for the induction terms
         t_ra = dimer.get_cpscf_ra()
@@ -84,6 +84,7 @@ def calc_ind2_r_energy(dimer: Dimer) -> pd.Series:
         ind_results["IND2,R_B"] = ind2_r_b
         ind_results["IND2,R"] = ind_results["IND2,R_A"] + ind_results["IND2,R_B"]
 
+    with CalcTimer("Second-order Exchange-Induction (Sinf) energy calculations"):
         # Calculate the exchange-induction energy with Sinfinity
         ind_results["EXCH-IND2,R_A"] = calc_exch_ind2_a_energy(dimer)
         ind_results["EXCH-IND2,R_B"] = calc_exch_ind2_b_energy(dimer)
@@ -91,6 +92,7 @@ def calc_ind2_r_energy(dimer: Dimer) -> pd.Series:
             ind_results["EXCH-IND2,R_A"] + ind_results["EXCH-IND2,R_B"]
         )
 
+    with CalcTimer("Second-order Exchange-Induction (S^2) energy calculations"):
         # Calculate the exchange-induction energy with S^2
         ind_results["EXCH-IND2,R(S^2)_A"] = calc_exch_ind2_s2_a_energy(dimer)
         ind_results["EXCH-IND2,R(S^2)_B"] = calc_exch_ind2_s2_b_energy(dimer)
