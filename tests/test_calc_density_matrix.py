@@ -3,7 +3,7 @@ import pytest
 import numpy as np
 
 from prepare_dimer import prepare_dimer
-from prop_sapt import Dimer, calc_density_matrix
+from prop_sapt import calc_density_matrix
 
 
 @pytest.fixture(scope="module")
@@ -85,5 +85,36 @@ def test_dispersion_from_density_matrix(get_density_matrices, prepare_dipole_alo
     rho_disp = rho_A["disp"] + rho_B["disp"]
 
     result = 2 * np.trace(rho_disp @ d_X)
+
+    assert excpected_result == pytest.approx(result, abs=threshold)
+
+
+def test_exch_ind_s2_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
+
+    threshold = 1.0e-9
+    excpected_result = -0.0020955309351026385
+
+    d_X = prepare_dipole_along_x
+
+    rho_A, rho_B = get_density_matrices
+    rho_exch_ind_s2 = rho_A["exch-ind_S2"] + rho_B["exch-ind_S2"]
+
+    result = 2 * np.trace(rho_exch_ind_s2 @ d_X)
+
+    assert excpected_result == pytest.approx(result, abs=threshold)
+
+
+@pytest.mark.xfail
+def test_exch_disp_s2_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
+
+    threshold = 1.0e-9
+    excpected_result = -0.00040088163332375364
+
+    d_X = prepare_dipole_along_x
+
+    rho_A, rho_B = get_density_matrices
+    rho_exch_ind_s2 = rho_A["exch-disp_S2"] + rho_B["exch-disp_S2"]
+
+    result = 2 * np.trace(rho_exch_ind_s2 @ d_X)
 
     assert excpected_result == pytest.approx(result, abs=threshold)

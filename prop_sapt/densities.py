@@ -3,6 +3,10 @@ import numpy as np
 import opt_einsum as oe
 from .molecule import Dimer
 from .utils import trace_memory_peak
+from .densities_components import (
+    get_exch_disp_s2_density,
+    get_exch_ind_s2_density,
+)
 
 
 def density_mo_to_ao(
@@ -63,6 +67,8 @@ def calc_density_matrix(
     rho_MO_exch = np.zeros((mol.nmo, mol.nmo))
     rho_MO_ind = np.zeros((mol.nmo, mol.nmo))
     rho_MO_disp = np.zeros((mol.nmo, mol.nmo))
+    rho_MO_exch_ind_s2 = get_exch_ind_s2_density(mol, monomer)
+    rho_MO_exch_disp_s2 = get_exch_disp_s2_density(mol, monomer)
 
     if monomer == "A":
         rho_pol_ra = mol.get_cpscf_ra()
@@ -166,8 +172,10 @@ def calc_density_matrix(
     rho_MO_total = (
         rho_MO_pol
         + rho_MO_exch
-        # + rho_MO_ind
-        # + rho_MO_disp
+        + rho_MO_ind
+        + rho_MO_exch_ind_s2  # NOTE: change into Sinf version when ready
+        + rho_MO_disp
+        + rho_MO_exch_disp_s2  # NOTE: change into Sinf version when ready
     )
 
     if orbital_basis == "AO":
@@ -175,7 +183,9 @@ def calc_density_matrix(
             "pol": density_mo_to_ao(mol, monomer, rho_MO_pol),
             "exch": density_mo_to_ao(mol, monomer, rho_MO_exch),
             "ind": density_mo_to_ao(mol, monomer, rho_MO_ind),
+            "exch-ind_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_ind_s2),
             "disp": density_mo_to_ao(mol, monomer, rho_MO_disp),
+            "exch-disp_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_disp_s2),
             "total": density_mo_to_ao(mol, monomer, rho_MO_total),
         }
     elif orbital_basis == "MO":
@@ -183,7 +193,9 @@ def calc_density_matrix(
             "pol": rho_MO_pol,
             "exch": rho_MO_exch,
             "ind": rho_MO_ind,
+            "exch-ind_S2": rho_MO_exch_ind_s2,
             "disp": rho_MO_disp,
+            "exch-disp_S2": rho_MO_exch_disp_s2,
             "total": rho_MO_total,
         }
     else:
