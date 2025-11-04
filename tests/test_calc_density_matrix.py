@@ -104,7 +104,6 @@ def test_exch_ind_s2_from_density_matrix(get_density_matrices, prepare_dipole_al
     assert excpected_result == pytest.approx(result, abs=threshold)
 
 
-@pytest.mark.xfail
 def test_exch_disp_s2_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
 
     threshold = 1.0e-9
