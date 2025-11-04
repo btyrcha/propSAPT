@@ -70,6 +70,9 @@ if __name__ == "__main__":
     delta_dm_disp = delta_dm_A["disp"] + delta_dm_B["disp"]
     delta_dm_exch_disp = delta_dm_A["exch-disp_S2"] + delta_dm_B["exch-disp_S2"]
 
+    delta_dm_Ind = delta_dm_ind + delta_dm_exch_ind
+    delta_dm_Disp = delta_dm_disp + delta_dm_exch_disp
+
     ### Store densities to .cube files
     densities_to_save = [2 * rho for rho in delta_dm_A.values()]
     densities_to_save += [2 * rho for rho in delta_dm_B.values()]
@@ -83,6 +86,8 @@ if __name__ == "__main__":
             delta_dm_exch_ind,
             delta_dm_disp,
             delta_dm_exch_disp,
+            delta_dm_Ind,
+            delta_dm_Disp,
         ]
     ]
 
@@ -100,6 +105,8 @@ if __name__ == "__main__":
             "_exch-ind_S2",
             "_disp",
             "_exch-disp_S2",
+            "_Ind",
+            "_Disp",
         ]
     ]
 
