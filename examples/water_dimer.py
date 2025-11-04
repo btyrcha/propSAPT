@@ -66,14 +66,24 @@ if __name__ == "__main__":
     delta_dm_pol = delta_dm_A["pol"] + delta_dm_B["pol"]
     delta_dm_exch = delta_dm_A["exch"] + delta_dm_B["exch"]
     delta_dm_ind = delta_dm_A["ind"] + delta_dm_B["ind"]
+    delta_dm_exch_ind = delta_dm_A["exch-ind_S2"] + delta_dm_B["exch-ind_S2"]
     delta_dm_disp = delta_dm_A["disp"] + delta_dm_B["disp"]
+    delta_dm_exch_disp = delta_dm_A["exch-disp_S2"] + delta_dm_B["exch-disp_S2"]
 
     ### Store densities to .cube files
     densities_to_save = [2 * rho for rho in delta_dm_A.values()]
     densities_to_save += [2 * rho for rho in delta_dm_B.values()]
     densities_to_save += [
         2 * rho
-        for rho in [delta_dm, delta_dm_pol, delta_dm_exch, delta_dm_ind, delta_dm_disp]
+        for rho in [
+            delta_dm,
+            delta_dm_pol,
+            delta_dm_exch,
+            delta_dm_ind,
+            delta_dm_exch_ind,
+            delta_dm_disp,
+            delta_dm_exch_disp,
+        ]
     ]
 
     cube_filenames = [CUBES_DIR + f"delta_dm_{key}_A.cube" for key in delta_dm_A.keys()]
@@ -82,7 +92,15 @@ if __name__ == "__main__":
     ]
     cube_filenames += [
         CUBES_DIR + f"delta_dm{key}.cube"
-        for key in ["", "_pol", "_exch", "_ind", "_disp"]
+        for key in [
+            "",
+            "_pol",
+            "_exch",
+            "_ind",
+            "_exch-ind_S2",
+            "_disp",
+            "_exch-disp_S2",
+        ]
     ]
 
     dimer.save_cube(
