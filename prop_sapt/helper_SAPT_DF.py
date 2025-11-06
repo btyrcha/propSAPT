@@ -610,6 +610,7 @@ class helper_SAPT(object):
     def compute_jk(self, Cleft, Cright, tensor=None):
 
         if self.reference == "ROHF":
+            psi4.core.clean()
             raise NotImplementedError(
                 "JK generation not yet implemented for ROHF reference."
             )
@@ -626,6 +627,7 @@ class helper_SAPT(object):
             return_single = True
 
         if len(Cleft) != len(Cright):
+            psi4.core.clean()
             raise ValueError("Cleft list is not the same length as Cright list")
 
         zero_append = []

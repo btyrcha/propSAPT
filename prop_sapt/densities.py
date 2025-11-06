@@ -29,6 +29,7 @@ def density_mo_to_ao(
     elif monomer == "B":
         return mol.C_B.dot(density_matrix).dot(mol.C_B.T)
     else:
+        psi4.core.clean()
         raise ValueError(f"Invalid monomer: {monomer}")
 
 

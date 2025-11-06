@@ -359,6 +359,7 @@ class sinfinity(helper_SAPT):
             )
 
         else:
+            psi4.core.clean()
             raise NotImplementedError(
                 "Second-quantized SAPT S^infinity is not implemented for non-density-fitted calculations."
             )

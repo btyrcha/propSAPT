@@ -157,6 +157,7 @@ class Dimer(sinfinity):
             cubes.save(filename)
 
         else:
+            psi4.core.clean()
             raise ValueError(
                 "If 'matrix' is an iterable, 'filename' must be an iterable of the same length."
             )

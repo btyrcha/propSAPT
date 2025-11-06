@@ -150,6 +150,7 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
             pd_results_series = pd.concat([pd_results_series, ind2_results])
 
         else:
+            psi4.core.clean()
             raise ValueError("Invalid value for 'response'. Must be True or False.")
 
         # Second-order dispersion terms
