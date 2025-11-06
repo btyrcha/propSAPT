@@ -375,7 +375,7 @@ class helper_SAPT(object):
         self.jk.set_memory(int(memory * 1e9))
         self.jk.initialize()
         psi4.core.print_out(
-            "\n...initialized JK objects in %5.2f seconds." % (time.time() - tstart)
+            f"\n...initialized JK objects in {time.time() - tstart:.2f} seconds."
         )
 
         self.J_A, self.K_A = self.compute_jk(self.Co_A, self.Co_A)
