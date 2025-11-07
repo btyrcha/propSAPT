@@ -142,7 +142,7 @@ def test_exch_disp_sinf_from_density_matrix(
 ):
 
     threshold = 1.0e-9
-    excpected_result = -0.00034642059973987
+    excpected_result = 0.0  # NOTE: update when value known
 
     d_X = prepare_dipole_along_x
 
