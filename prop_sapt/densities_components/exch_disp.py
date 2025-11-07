@@ -4,30 +4,238 @@ import opt_einsum as oe
 from prop_sapt import Dimer
 
 from .exch_disp_sinf_terms import (
-    get_exch_disp_density_aa,
     get_exch_disp_density_ra,
-    get_exch_disp_density_rr,
-    get_exch_disp_density_bb,
     get_exch_disp_density_sb,
-    get_exch_disp_density_ss,
 )
 
 
 def get_exch_disp_density(mol: Dimer, monomer: str) -> np.ndarray:
 
+    theta_sinf_t_abrs = (
+        -2
+        * oe.contract("cd,eb,sf,bs->dfce", mol.E_ar, mol.A_bb, mol.D_ss, mol.omegaA_bs)
+        - 2
+        * oe.contract("ca,rd,ef,ar->dfce", mol.B_aa, mol.C_rr, mol.F_bs, mol.omegaB_ar)
+        - oe.contract("cd,ea,rf,ar->dfec", mol.I_br, mol.B_aa, mol.G_rs, mol.omegaB_ar)
+        - oe.contract("cb,sd,ef,bs->dfec", mol.A_bb, mol.G_sr, mol.J_as, mol.omegaA_bs)
+        + oe.contract("cd,se,fb,bs->defc", mol.I_br, mol.D_ss, mol.H_ab, mol.omegaA_bs)
+        + oe.contract("rc,da,ef,ar->cfed", mol.C_rr, mol.H_ba, mol.J_as, mol.omegaB_ar)
+        + 2
+        * oe.contract("cd,re,fa,ar->decf", mol.E_ar, mol.G_rs, mol.H_ba, mol.omegaB_ar)
+        + 2
+        * oe.contract("cd,se,fb,bs->edfc", mol.F_bs, mol.G_sr, mol.H_ab, mol.omegaA_bs)
+        - 4
+        * oe.contract(
+            "cd,sb,re,fa,Qar,Qbs->decf",
+            mol.E_ar,
+            mol.F_sb,
+            mol.G_rs,
+            mol.H_ba,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - 4
+        * oe.contract(
+            "ra,cd,se,fb,Qar,Qbs->edfc",
+            mol.E_ra,
+            mol.F_bs,
+            mol.G_sr,
+            mol.H_ab,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - 2
+        * oe.contract(
+            "cd,rb,se,fa,Qar,Qbs->decf",
+            mol.E_ar,
+            mol.I_rb,
+            mol.D_ss,
+            mol.H_ba,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - 2
+        * oe.contract(
+            "ra,cd,se,fb,Qar,Qbs->defc",
+            mol.E_ra,
+            mol.I_br,
+            mol.D_ss,
+            mol.H_ab,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - 2
+        * oe.contract(
+            "rc,de,fb,sa,Qar,Qbs->cefd",
+            mol.C_rr,
+            mol.F_bs,
+            mol.H_ab,
+            mol.J_sa,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - 2
+        * oe.contract(
+            "rc,sb,da,ef,Qar,Qbs->cfed",
+            mol.C_rr,
+            mol.F_sb,
+            mol.H_ba,
+            mol.J_as,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - oe.contract(
+            "cd,re,fb,sa,Qar,Qbs->defc",
+            mol.I_br,
+            mol.G_rs,
+            mol.H_ab,
+            mol.J_sa,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - oe.contract(
+            "rb,sc,da,ef,Qar,Qbs->cfed",
+            mol.I_rb,
+            mol.G_sr,
+            mol.H_ba,
+            mol.J_as,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - oe.contract(
+            "cb,da,se,rf,Qar,Qbs->efdc",
+            mol.A_bb,
+            mol.B_aa,
+            mol.G_sr,
+            mol.G_rs,
+            mol.Qar,
+            mol.Qbs,
+        )
+        - oe.contract(
+            "rc,sd,ea,fb,Qar,Qbs->cdfe",
+            mol.C_rr,
+            mol.D_ss,
+            mol.H_ba,
+            mol.H_ab,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + oe.contract(
+            "cd,rb,ea,sf,Qar,Qbs->dfec",
+            mol.I_br,
+            mol.I_rb,
+            mol.B_aa,
+            mol.D_ss,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + oe.contract(
+            "cb,rd,ef,sa,Qar,Qbs->dfec",
+            mol.A_bb,
+            mol.C_rr,
+            mol.J_as,
+            mol.J_sa,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 2
+        * oe.contract(
+            "cd,eb,rf,sa,Qar,Qbs->dfce",
+            mol.E_ar,
+            mol.A_bb,
+            mol.G_rs,
+            mol.J_sa,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 2
+        * oe.contract(
+            "ra,cb,sd,ef,Qar,Qbs->dfec",
+            mol.E_ra,
+            mol.A_bb,
+            mol.G_sr,
+            mol.J_as,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 2
+        * oe.contract(
+            "cd,ea,sb,rf,Qar,Qbs->dfec",
+            mol.I_br,
+            mol.B_aa,
+            mol.F_sb,
+            mol.G_rs,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 2
+        * oe.contract(
+            "rb,ca,de,sf,Qar,Qbs->fecd",
+            mol.I_rb,
+            mol.B_aa,
+            mol.F_bs,
+            mol.G_sr,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 2
+        * oe.contract(
+            "cb,da,re,sf,Qar,Qbs->efdc",
+            mol.A_bb,
+            mol.B_aa,
+            mol.C_rr,
+            mol.D_ss,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 2
+        * oe.contract(
+            "sc,rd,ea,fb,Qar,Qbs->cdfe",
+            mol.G_sr,
+            mol.G_rs,
+            mol.H_ba,
+            mol.H_ab,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 4
+        * oe.contract(
+            "cd,ra,eb,sf,Qar,Qbs->dfce",
+            mol.E_ar,
+            mol.E_ra,
+            mol.A_bb,
+            mol.D_ss,
+            mol.Qar,
+            mol.Qbs,
+        )
+        + 4
+        * oe.contract(
+            "ca,rd,ef,sb,Qar,Qbs->dfce",
+            mol.B_aa,
+            mol.C_rr,
+            mol.F_bs,
+            mol.F_sb,
+            mol.Qar,
+            mol.Qbs,
+        )
+    )
+    # right now theta_t_abrs is rsab
+    # but we make it abrs here
+    theta_sinf_t_abrs = oe.contract("rsab,rsab->abrs", theta_sinf_t_abrs, mol.e_rsab)
+
     rho_MO_exch_disp = np.zeros((mol.nmo, mol.nmo))
 
     if monomer == "A":
 
-        rho_MO_exch_disp_ra = get_exch_disp_density_ra(mol)
+        rho_MO_exch_disp_ra = get_exch_disp_density_ra(mol, theta_sinf_t_abrs)
         rho_MO_exch_disp[mol.slices["r"], mol.slices["a"]] = rho_MO_exch_disp_ra
         rho_MO_exch_disp[mol.slices["a"], mol.slices["r"]] = rho_MO_exch_disp_ra.T
 
-        rho_MO_exch_disp[mol.slices["a"], mol.slices["a"]] = get_exch_disp_density_aa(
-            mol
+        rho_MO_exch_disp[mol.slices["a"], mol.slices["a"]] = -oe.contract(
+            "rsAb,abrs->aA", mol.t_rsab, theta_sinf_t_abrs
         )
-        rho_MO_exch_disp[mol.slices["r"], mol.slices["r"]] = get_exch_disp_density_rr(
-            mol
+        rho_MO_exch_disp[mol.slices["r"], mol.slices["r"]] = oe.contract(
+            "Rsab,abrs->Rr", mol.t_rsab, theta_sinf_t_abrs
         )
 
     if monomer == "B":
@@ -36,11 +244,11 @@ def get_exch_disp_density(mol: Dimer, monomer: str) -> np.ndarray:
         rho_MO_exch_disp[mol.slices["s"], mol.slices["b"]] = rho_MO_exch_disp_sb
         rho_MO_exch_disp[mol.slices["b"], mol.slices["s"]] = rho_MO_exch_disp_sb.T
 
-        rho_MO_exch_disp[mol.slices["b"], mol.slices["b"]] = get_exch_disp_density_bb(
-            mol
+        rho_MO_exch_disp[mol.slices["b"], mol.slices["b"]] = -oe.contract(
+            "rsaB,abrs->bB", mol.t_rsab, theta_sinf_t_abrs
         )
-        rho_MO_exch_disp[mol.slices["s"], mol.slices["s"]] = get_exch_disp_density_ss(
-            mol
+        rho_MO_exch_disp[mol.slices["s"], mol.slices["s"]] = oe.contract(
+            "rSab,abrs->Ss", mol.t_rsab, theta_sinf_t_abrs
         )
 
     return rho_MO_exch_disp
