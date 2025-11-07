@@ -104,6 +104,23 @@ def test_exch_ind_s2_from_density_matrix(get_density_matrices, prepare_dipole_al
     assert excpected_result == pytest.approx(result, abs=threshold)
 
 
+def test_exch_ind_sinf_from_density_matrix(
+    get_density_matrices, prepare_dipole_along_x
+):
+
+    threshold = 1.0e-9
+    excpected_result = -0.002014582241925037
+
+    d_X = prepare_dipole_along_x
+
+    rho_A, rho_B = get_density_matrices
+    rho_exch_ind = rho_A["exch-ind"] + rho_B["exch-ind"]
+
+    result = 2 * np.trace(rho_exch_ind @ d_X)
+
+    assert excpected_result == pytest.approx(result, abs=threshold)
+
+
 def test_exch_disp_s2_from_density_matrix(get_density_matrices, prepare_dipole_along_x):
 
     threshold = 1.0e-9
@@ -115,5 +132,23 @@ def test_exch_disp_s2_from_density_matrix(get_density_matrices, prepare_dipole_a
     rho_exch_ind_s2 = rho_A["exch-disp_S2"] + rho_B["exch-disp_S2"]
 
     result = 2 * np.trace(rho_exch_ind_s2 @ d_X)
+
+    assert excpected_result == pytest.approx(result, abs=threshold)
+
+
+@pytest.mark.xfail(reason="Exch-disp S^inf density not yet implemented")
+def test_exch_disp_sinf_from_density_matrix(
+    get_density_matrices, prepare_dipole_along_x
+):
+
+    threshold = 1.0e-9
+    excpected_result = -0.00034642059973987
+
+    d_X = prepare_dipole_along_x
+
+    rho_A, rho_B = get_density_matrices
+    rho_exch_disp = rho_A["exch-disp"] + rho_B["exch-disp"]
+
+    result = 2 * np.trace(rho_exch_disp @ d_X)
 
     assert excpected_result == pytest.approx(result, abs=threshold)
