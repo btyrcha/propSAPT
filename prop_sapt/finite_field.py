@@ -57,11 +57,13 @@ def finite_field_sapt(
 
         elif isinstance(prop, np.ndarray):
             ### Property matrix is given
+            psi4.core.clean()
             raise ValueError(
                 "Property for general external operator is not implemented."
             )
 
         else:
+            psi4.core.clean()
             raise ValueError(
                 f"Property {prop} is not implemented. "
                 "Please provide a valid property name or a property matrix."

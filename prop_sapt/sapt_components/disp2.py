@@ -4,6 +4,7 @@ import opt_einsum as oe
 from .exch_disp2 import calc_exch_disp2_energy, calc_exch_disp2_s2_energy
 
 from ..molecule import Dimer
+from ..utils import CalcTimer
 
 
 def calc_disp2_energy(dimer: Dimer) -> pd.Series:
@@ -17,17 +18,21 @@ def calc_disp2_energy(dimer: Dimer) -> pd.Series:
         pd.Series: A pandas Series containing the calculated dispersion energy.
     """
 
-    # Calculate the second-order dispersion energy
-    disp2 = 4 * oe.contract("rsab,Qar,Qbs", dimer.t_rsab, dimer.Qar, dimer.Qbs)
+    with CalcTimer("Second-order dispersion energy calculation"):
 
-    # Combine the results into a pandas Series
-    results = pd.Series()
-    results["DISP2"] = disp2
+        # Calculate the second-order dispersion energy
+        disp2 = 4 * oe.contract("rsab,Qar,Qbs", dimer.t_rsab, dimer.Qar, dimer.Qbs)
 
-    # Calculate the exchange-dispersion energy with Sinfinity
-    results["EXCH-DISP2"] = calc_exch_disp2_energy(dimer)
+        # Combine the results into a pandas Series
+        results = pd.Series()
+        results["DISP2"] = disp2
 
-    # Calculate the exchange-dispersion energy with S^2
-    results["EXCH-DISP2(S^2)"] = calc_exch_disp2_s2_energy(dimer)
+    with CalcTimer("Second-order Exchange-Dispersion (Sinf) energy calculation"):
+        # Calculate the exchange-dispersion energy with Sinfinity
+        results["EXCH-DISP2"] = calc_exch_disp2_energy(dimer)
+
+    with CalcTimer("Second-order Exchange-Dispersion (S^2) energy calculation"):
+        # Calculate the exchange-dispersion energy with S^2
+        results["EXCH-DISP2(S^2)"] = calc_exch_disp2_s2_energy(dimer)
 
     return results

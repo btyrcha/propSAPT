@@ -195,12 +195,14 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python
 
 ### Psi4 ###
-
 *output.dat
 *timer.dat
 *.clean
 *ijk.dat
 *.dat
+
+### VESTA ###
+*.vesta
 
 ### Result files ###
 *.csv
@@ -209,3 +211,5 @@ pyrightconfig.json
 
 ### Archive files ###
 *.zip
+
+

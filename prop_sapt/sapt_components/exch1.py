@@ -15,7 +15,7 @@ def calc_exch1_s2_energy(dimer: Dimer):
         _type_: First-order SAPT exchange energy in S2 approximation.
     """
 
-    with CalcTimer("Exch1_S2 energy calculation"):
+    with CalcTimer("Exchange (S^2) energy calculation"):
 
         s_ab = dimer.s("ab")
         s_ba = dimer.s("ba")
@@ -49,7 +49,7 @@ def calc_exch1_energy(dimer: Dimer):
     """
 
     ### Exch100_Sinfinity
-    with CalcTimer("Exch1_Sinf energy calculation"):
+    with CalcTimer("Exchange (Sinf) energy calculation"):
 
         _, K1 = dimer.compute_jk(
             dimer.orbitals["r"],

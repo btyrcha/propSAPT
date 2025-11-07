@@ -7,6 +7,7 @@ https://paulbourke.net/dataformats/cube/
 
 from time import time
 from collections.abc import Iterable
+from typing import Sequence
 import numpy as np
 import psi4
 
@@ -116,14 +117,14 @@ class Cube:
 
 def make_cube(
     mol: psi4.core.Molecule,
-    matrix: np.ndarray | Iterable[np.ndarray],
+    matrix: np.ndarray | Sequence[np.ndarray],
     obj_type: str | Iterable[str] = "density",
     **kwargs,
 ) -> Cube | list[Cube]:
     """
     Create a `Cube` object with volumetric data of the given `matrix`
     calculated on a grid for a psi4 `Molecule` object. If iterables with matrices and types
-        are given as `matrix` and `obj_type` returns a list with a Cube for each element of the list.
+    are given as `matrix` and `obj_type` returns a list with a Cube for each element of the list.
 
     Args:
         mol (psi4.core.Molecule): A corresponding molecule.
@@ -573,7 +574,7 @@ def calculate_isocontour(
     volumetric_data: np.ndarray | Cube,
     threshold: float = 0.85,
     obj_type: str = "density",
-) -> tuple[float]:
+) -> tuple[float, float]:
     """
     Calculate isocontour values for a given `threshlod`,
     assumed as the density fraction.
@@ -586,7 +587,7 @@ def calculate_isocontour(
             either "density" or "orbital". Defaults to "density".
 
     Returns:
-        tuple[float]: Isovalues tuple.
+        tuple[float, float]: Isovalues tuple.
     """
 
     if obj_type == "density":
@@ -636,4 +637,4 @@ def calculate_isocontour(
                 negative_isoval = flatened_vals[i]
                 do_negative = False
 
-    return (positive_isoval, negative_isoval)
+    return (positive_isoval, negative_isoval)  # pyright: ignore reportReturnType

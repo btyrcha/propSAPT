@@ -30,39 +30,39 @@ def get_exch_disp2_sinf_property_term2(
     x2_exch_disp_sinf_term2 = (
         -4
         * oe.contract(
-            "cd,eb,sf,bs,dfce", mol.E_ar, mol.A_bb, mol.D_ss, mol.omegaA_bs, u_rsab
+            "ar,cb,sd,bs,rdac", mol.E_ar, mol.A_bb, mol.D_ss, mol.omegaA_bs, u_rsab
         )
         - 4
         * oe.contract(
-            "ca,rd,ef,ar,dfce", mol.B_aa, mol.C_rr, mol.F_bs, mol.omegaB_ar, u_rsab
+            "ca,rd,bs,ar,dscb", mol.B_aa, mol.C_rr, mol.F_bs, mol.omegaB_ar, u_rsab
         )
         - 2
         * oe.contract(
-            "cd,ea,rf,ar,dfec", mol.I_br, mol.B_aa, mol.G_rs, mol.omegaB_ar, u_rsab
+            "bc,da,rs,ar,csdb", mol.I_br, mol.B_aa, mol.G_rs, mol.omegaB_ar, u_rsab
         )
         - 2
         * oe.contract(
-            "cb,sd,ef,bs,dfec", mol.A_bb, mol.G_sr, mol.J_as, mol.omegaA_bs, u_rsab
+            "cb,sr,ad,bs,rdac", mol.A_bb, mol.G_sr, mol.J_as, mol.omegaA_bs, u_rsab
         )
         + 2
         * oe.contract(
-            "cd,se,fb,bs,defc", mol.I_br, mol.D_ss, mol.H_ab, mol.omegaA_bs, u_rsab
+            "cr,sd,ab,bs,rdac", mol.I_br, mol.D_ss, mol.H_ab, mol.omegaA_bs, u_rsab
         )
         + 2
         * oe.contract(
-            "rc,da,ef,ar,cfed", mol.C_rr, mol.H_ba, mol.J_as, mol.omegaB_ar, u_rsab
+            "rc,ba,ds,ar,csdb", mol.C_rr, mol.H_ba, mol.J_as, mol.omegaB_ar, u_rsab
         )
         + 4
         * oe.contract(
-            "cd,re,fa,ar,decf", mol.E_ar, mol.G_rs, mol.H_ba, mol.omegaB_ar, u_rsab
+            "ar,cs,bd,dc,rsab", mol.E_ar, mol.G_rs, mol.H_ba, mol.omegaB_ar, u_rsab
         )
         + 4
         * oe.contract(
-            "cd,se,fb,bs,edfc", mol.F_bs, mol.G_sr, mol.H_ab, mol.omegaA_bs, u_rsab
+            "bs,cr,ad,dc,rsab", mol.F_bs, mol.G_sr, mol.H_ab, mol.omegaA_bs, u_rsab
         )
         - 8
         * oe.contract(
-            "cd,sb,re,fa,decf,Qar,Qbs",
+            "ar,sb,cd,ef,rdae,Qfc,Qbs",
             mol.E_ar,
             mol.F_sb,
             mol.G_rs,
@@ -73,7 +73,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 8
         * oe.contract(
-            "ra,cd,se,fb,edfc,Qar,Qbs",
+            "ra,bs,cd,ef,dseb,Qar,Qfc",
             mol.E_ra,
             mol.F_bs,
             mol.G_sr,
@@ -84,7 +84,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 4
         * oe.contract(
-            "cd,rb,se,fa,decf,Qar,Qbs",
+            "ar,cd,es,bf,rsab,Qfc,Qde",
             mol.E_ar,
             mol.I_rb,
             mol.D_ss,
@@ -95,7 +95,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 4
         * oe.contract(
-            "ra,cd,se,fb,defc,Qar,Qbs",
+            "ra,cd,es,fb,dsfc,Qar,Qbe",
             mol.E_ra,
             mol.I_br,
             mol.D_ss,
@@ -106,7 +106,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 4
         * oe.contract(
-            "rc,de,fb,sa,cefd,Qar,Qbs",
+            "cr,bs,ad,ef,rsab,Qfc,Qde",
             mol.C_rr,
             mol.F_bs,
             mol.H_ab,
@@ -117,7 +117,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 4
         * oe.contract(
-            "rc,sb,da,ef,cfed,Qar,Qbs",
+            "cr,sb,da,ef,rfed,Qac,Qbs",
             mol.C_rr,
             mol.F_sb,
             mol.H_ba,
@@ -128,7 +128,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 2
         * oe.contract(
-            "cd,re,fb,sa,defc,Qar,Qbs",
+            "cd,rs,ab,ef,dsac,Qfr,Qbe",
             mol.I_br,
             mol.G_rs,
             mol.H_ab,
@@ -139,7 +139,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 2
         * oe.contract(
-            "rb,sc,da,ef,cfed,Qar,Qbs",
+            "cd,sr,ba,ef,rfeb,Qac,Qds",
             mol.I_rb,
             mol.G_sr,
             mol.H_ba,
@@ -150,7 +150,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 2
         * oe.contract(
-            "cb,da,se,rf,efdc,Qar,Qbs",
+            "bc,ad,sr,ef,rfab,Qde,Qcs",
             mol.A_bb,
             mol.B_aa,
             mol.G_sr,
@@ -161,7 +161,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         - 2
         * oe.contract(
-            "rc,sd,ea,fb,cdfe,Qar,Qbs",
+            "cr,ds,ba,ef,rseb,Qac,Qfd",
             mol.C_rr,
             mol.D_ss,
             mol.H_ba,
@@ -172,7 +172,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 2
         * oe.contract(
-            "cd,rb,ea,sf,dfec,Qar,Qbs",
+            "br,cd,ae,fs,rsab,Qec,Qdf",
             mol.I_br,
             mol.I_rb,
             mol.B_aa,
@@ -183,7 +183,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 2
         * oe.contract(
-            "cb,rd,ef,sa,dfec,Qar,Qbs",
+            "bc,dr,as,ef,rsab,Qfd,Qce",
             mol.A_bb,
             mol.C_rr,
             mol.J_as,
@@ -194,7 +194,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 4
         * oe.contract(
-            "cd,eb,rf,sa,dfce,Qar,Qbs",
+            "ar,bc,ds,ef,rsab,Qfd,Qce",
             mol.E_ar,
             mol.A_bb,
             mol.G_rs,
@@ -205,7 +205,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 4
         * oe.contract(
-            "ra,cb,sd,ef,dfec,Qar,Qbs",
+            "ra,bc,sd,ef,dfeb,Qar,Qcs",
             mol.E_ra,
             mol.A_bb,
             mol.G_sr,
@@ -216,7 +216,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 4
         * oe.contract(
-            "cd,ea,sb,rf,dfec,Qar,Qbs",
+            "cd,ae,sb,rf,dfac,Qer,Qbs",
             mol.I_br,
             mol.B_aa,
             mol.F_sb,
@@ -227,7 +227,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 4
         * oe.contract(
-            "rb,ca,de,sf,fecd,Qar,Qbs",
+            "cd,ae,bs,fr,rsab,Qec,Qdf",
             mol.I_rb,
             mol.B_aa,
             mol.F_bs,
@@ -238,7 +238,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 4
         * oe.contract(
-            "cb,da,re,sf,efdc,Qar,Qbs",
+            "bc,ad,er,fs,rsab,Qde,Qcf",
             mol.A_bb,
             mol.B_aa,
             mol.C_rr,
@@ -249,7 +249,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 4
         * oe.contract(
-            "sc,rd,ea,fb,cdfe,Qar,Qbs",
+            "sr,cd,ba,ef,rdeb,Qac,Qfs",
             mol.G_sr,
             mol.G_rs,
             mol.H_ba,
@@ -260,7 +260,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 8
         * oe.contract(
-            "cd,ra,eb,sf,dfce,Qar,Qbs",
+            "ar,cd,be,fs,rsab,Qdc,Qef",
             mol.E_ar,
             mol.E_ra,
             mol.A_bb,
@@ -271,7 +271,7 @@ def get_exch_disp2_sinf_property_term2(
         )
         + 8
         * oe.contract(
-            "ca,rd,ef,sb,dfce,Qar,Qbs",
+            "ac,dr,bs,ef,rsab,Qcd,Qfe",
             mol.B_aa,
             mol.C_rr,
             mol.F_bs,

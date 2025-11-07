@@ -276,6 +276,7 @@ def calc_property(mol: Dimer, prop: str | np.ndarray, **kwargs) -> pd.DataFrame:
             ### Property matrix is given
             results = perform_property_contractions(mol, prop)
         else:
+            psi4.core.clean()
             raise ValueError(
                 f"Property {prop} is not implemented. "
                 "Please provide a valid property name or a property matrix."
