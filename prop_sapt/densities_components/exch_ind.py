@@ -4,36 +4,88 @@ import opt_einsum as oe
 from prop_sapt import Dimer
 
 from .exch_ind_sinf_terms import (
-    get_exch_ind_density_aa,
     get_exch_ind_density_ra,
-    get_exch_ind_density_rr,
-    get_exch_ind_density_bb,
     get_exch_ind_density_sb,
-    get_exch_ind_density_ss,
 )
 
 
 def get_exch_ind_density(mol: Dimer, monomer: str) -> np.ndarray:
 
+    theta_sinf_t_ra = (
+        -oe.contract("sc,db,bs->cd", mol.G_sr, mol.H_ab, mol.omegaA_bs)
+        + oe.contract("ca,rd,ar->dc", mol.B_aa, mol.C_rr, mol.omegaB_ar)
+        - 2
+        * oe.contract(
+            "ca,rd,sb,Qar,Qbs->dc", mol.B_aa, mol.C_rr, mol.F_sb, mol.Qar, mol.Qbs
+        )
+        - oe.contract(
+            "rb,ca,sd,Qar,Qbs->dc", mol.I_rb, mol.B_aa, mol.G_sr, mol.Qar, mol.Qbs
+        )
+        + oe.contract(
+            "rc,db,sa,Qar,Qbs->cd", mol.C_rr, mol.H_ab, mol.J_sa, mol.Qar, mol.Qbs
+        )
+        + 2
+        * oe.contract(
+            "ra,sc,db,Qar,Qbs->cd", mol.E_ra, mol.G_sr, mol.H_ab, mol.Qar, mol.Qbs
+        )
+    )
+    theta_sinf_t_ra = mol.cpscf("A", perturbation=theta_sinf_t_ra.T)
+
+    theta_sinf_t_sb = (
+        -oe.contract("rc,da,ar->cd", mol.G_rs, mol.H_ba, mol.omegaB_ar)
+        + oe.contract("cb,sd,bs->dc", mol.A_bb, mol.D_ss, mol.omegaA_bs)
+        - 2
+        * oe.contract(
+            "ra,cb,sd,Qar,Qbs->dc", mol.E_ra, mol.A_bb, mol.D_ss, mol.Qar, mol.Qbs
+        )
+        - oe.contract(
+            "cb,rd,sa,Qar,Qbs->dc", mol.A_bb, mol.G_rs, mol.J_sa, mol.Qar, mol.Qbs
+        )
+        + oe.contract(
+            "rb,sc,da,Qar,Qbs->cd", mol.I_rb, mol.D_ss, mol.H_ba, mol.Qar, mol.Qbs
+        )
+        + 2
+        * oe.contract(
+            "sb,rc,da,Qar,Qbs->cd", mol.F_sb, mol.G_rs, mol.H_ba, mol.Qar, mol.Qbs
+        )
+    )
+    theta_sinf_t_sb = mol.cpscf("B", perturbation=theta_sinf_t_sb.T)
+
     rho_MO_exch_ind = np.zeros((mol.nmo, mol.nmo))
 
     if monomer == "A":
 
-        rho_MO_exch_ind_ra = get_exch_ind_density_ra(mol)
+        rho_MO_exch_ind_ra = get_exch_ind_density_ra(
+            mol,
+            theta_sinf_t_ra,
+            theta_sinf_t_sb,
+        )
         rho_MO_exch_ind[mol.slices["r"], mol.slices["a"]] = rho_MO_exch_ind_ra
         rho_MO_exch_ind[mol.slices["a"], mol.slices["r"]] = rho_MO_exch_ind_ra.T
 
-        rho_MO_exch_ind[mol.slices["a"], mol.slices["a"]] = get_exch_ind_density_aa(mol)
-        rho_MO_exch_ind[mol.slices["r"], mol.slices["r"]] = get_exch_ind_density_rr(mol)
+        rho_MO_exch_ind[mol.slices["a"], mol.slices["a"]] = -oe.contract(
+            "rA,ar->aA", mol.get_cpscf_ra(), theta_sinf_t_ra.T
+        )
+        rho_MO_exch_ind[mol.slices["r"], mol.slices["r"]] = oe.contract(
+            "ra,aR->rR", mol.get_cpscf_ra(), theta_sinf_t_ra.T
+        )
 
     if monomer == "B":
 
-        rho_MO_exch_ind_sb = get_exch_ind_density_sb(mol)
+        rho_MO_exch_ind_sb = get_exch_ind_density_sb(
+            mol,
+            theta_sinf_t_ra,
+            theta_sinf_t_sb,
+        )
         rho_MO_exch_ind[mol.slices["s"], mol.slices["b"]] = rho_MO_exch_ind_sb
         rho_MO_exch_ind[mol.slices["b"], mol.slices["s"]] = rho_MO_exch_ind_sb.T
 
-        rho_MO_exch_ind[mol.slices["b"], mol.slices["b"]] = get_exch_ind_density_bb(mol)
-        rho_MO_exch_ind[mol.slices["s"], mol.slices["s"]] = get_exch_ind_density_ss(mol)
+        rho_MO_exch_ind[mol.slices["b"], mol.slices["b"]] = -oe.contract(
+            "sB,bs->bB", mol.get_cpscf_sb(), theta_sinf_t_sb.T
+        )
+        rho_MO_exch_ind[mol.slices["s"], mol.slices["s"]] = oe.contract(
+            "sb,bS->sS", mol.get_cpscf_sb(), theta_sinf_t_sb.T
+        )
 
     return rho_MO_exch_ind
 

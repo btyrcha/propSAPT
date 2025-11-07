@@ -4,8 +4,9 @@ import opt_einsum as oe
 from .molecule import Dimer
 from .utils import trace_memory_peak, CalcTimer
 from .densities_components import (
-    get_exch_disp_s2_density,
     get_exch_ind_s2_density,
+    get_exch_ind_density,
+    get_exch_disp_s2_density,
 )
 
 
@@ -185,6 +186,9 @@ def calc_density_matrix(
     with CalcTimer("Second-order Exchange-Induction (S^2) density calculation"):
         rho_MO_exch_ind_s2 = get_exch_ind_s2_density(mol, monomer)
 
+    with CalcTimer("Second-order Exchange-Induction (S^inf) density calculation"):
+        rho_MO_exch_ind = get_exch_ind_density(mol, monomer) - rho_MO_ind
+
     with CalcTimer("Second-order Exchange-Dispersion (S^2) density calculation"):
         rho_MO_exch_disp_s2 = get_exch_disp_s2_density(mol, monomer)
 
@@ -204,6 +208,7 @@ def calc_density_matrix(
             "exch": density_mo_to_ao(mol, monomer, rho_MO_exch),
             "ind": density_mo_to_ao(mol, monomer, rho_MO_ind),
             "exch-ind_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_ind_s2),
+            "exch-ind": density_mo_to_ao(mol, monomer, rho_MO_exch_ind),
             "disp": density_mo_to_ao(mol, monomer, rho_MO_disp),
             "exch-disp_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_disp_s2),
             "total": density_mo_to_ao(mol, monomer, rho_MO_total),
@@ -214,6 +219,7 @@ def calc_density_matrix(
             "exch": rho_MO_exch,
             "ind": rho_MO_ind,
             "exch-ind_S2": rho_MO_exch_ind_s2,
+            "exch-ind": rho_MO_exch_ind,
             "disp": rho_MO_disp,
             "exch-disp_S2": rho_MO_exch_disp_s2,
             "total": rho_MO_total,
