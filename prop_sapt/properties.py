@@ -96,30 +96,37 @@ def perform_property_contractions(
 
     ### Second-order
 
-    results["x2_ind,r"] = np.array(
+    results["x2_ind,r_A"] = np.array(
         [
             +16
             * oe.contract(
                 "ra,Qar,Qbs,sb", xt_A_ra, mol.Qar, mol.Qbs, mol.get_cpscf_sb()
             )
-            + 16
-            * oe.contract(
-                "sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra()
-            )
             - 4 * oe.contract("ra,ac,rc", mol.get_cpscf_ra(), mol.omegaB_aa, xt_A_ra)
             + 4 * oe.contract("ra,cr,ca", mol.get_cpscf_ra(), mol.omegaB_rr, xt_A_ra)
-            - 4 * oe.contract("sb,bc,sc", mol.get_cpscf_sb(), mol.omegaA_bb, xt_B_sb)
-            + 4 * oe.contract("sb,cs,cb", mol.get_cpscf_sb(), mol.omegaA_ss, xt_B_sb)
             - 2
             * oe.contract("ac,rc,ra", prop_A_aa, mol.get_cpscf_ra(), mol.get_cpscf_ra())
             + 2
             * oe.contract("cr,ca,ra", prop_A_rr, mol.get_cpscf_ra(), mol.get_cpscf_ra())
+        ]
+    )
+
+    results["x2_ind,r_B"] = np.array(
+        [
+            +16
+            * oe.contract(
+                "sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra()
+            )
+            - 4 * oe.contract("sb,bc,sc", mol.get_cpscf_sb(), mol.omegaA_bb, xt_B_sb)
+            + 4 * oe.contract("sb,cs,cb", mol.get_cpscf_sb(), mol.omegaA_ss, xt_B_sb)
             - 2
             * oe.contract("bc,sc,sb", prop_B_bb, mol.get_cpscf_sb(), mol.get_cpscf_sb())
             + 2
             * oe.contract("cs,cb,sb", prop_B_ss, mol.get_cpscf_sb(), mol.get_cpscf_sb())
         ]
     )
+
+    results["x2_ind,r"] = results["x2_ind,r_A"] + results["x2_ind,r_B"]
 
     results["x2_exch-ind,r_S2"] = calc_exch_ind2_resp_s2_property(
         mol=mol,
@@ -148,22 +155,33 @@ def perform_property_contractions(
         - results["x2_ind,r"]
     )
 
-    results["x2_disp"] = np.array(
+    results["x2_disp_A"] = np.array(
         [
             # 2 Re <R(X)|V R(V)>
             # NOTE some response not coupled
             8 * oe.contract("rsab,Qcr,Qbs,ca", mol.t_rsab, mol.Qrr, mol.Qbs, xt_A_ra)
             - 8 * oe.contract("rsab,Qac,Qbs,rc", mol.t_rsab, mol.Qaa, mol.Qbs, xt_A_ra)
-            + 8 * oe.contract("rsab,Qar,Qcs,cb", mol.t_rsab, mol.Qar, mol.Qss, xt_B_sb)
-            - 8 * oe.contract("rsab,Qar,Qbc,sc", mol.t_rsab, mol.Qar, mol.Qbb, xt_B_sb)
             # <R(V)|d R(V)>
             # NOTE not coupled no response
             - 4 * oe.contract("ac,rscb,rsab", prop_A_aa, mol.t_rsab, mol.t_rsab)
-            - 4 * oe.contract("bc,rsac,rsab", prop_B_bb, mol.t_rsab, mol.t_rsab)
             + 4 * oe.contract("cr,csab,rsab", prop_A_rr, mol.t_rsab, mol.t_rsab)
+        ]
+    )
+
+    results["x2_disp_B"] = np.array(
+        [
+            # 2 Re <R(X)|V R(V)>
+            # NOTE some response not coupled
+            8 * oe.contract("rsab,Qar,Qcs,cb", mol.t_rsab, mol.Qar, mol.Qss, xt_B_sb)
+            - 8 * oe.contract("rsab,Qar,Qbc,sc", mol.t_rsab, mol.Qar, mol.Qbb, xt_B_sb)
+            # <R(V)|d R(V)>
+            # NOTE not coupled no response
+            - 4 * oe.contract("bc,rsac,rsab", prop_B_bb, mol.t_rsab, mol.t_rsab)
             + 4 * oe.contract("cs,rcab,rsab", prop_B_ss, mol.t_rsab, mol.t_rsab)
         ]
     )
+
+    results["x2_disp"] = results["x2_disp_A"] + results["x2_disp_B"]
 
     results["x2_exch-disp_S2"] = calc_exch_disp2_s2_property(
         mol=mol,
