@@ -173,7 +173,7 @@ def calculate_ff_sapt_dipole_along_axis(
             geometry,
             **{key: value for key, value in dimer_kwargs.items() if value is not None},
         ),
-        results=f"results-{axis}.csv",
+        results=f"results-{axis}-{field_strength}.csv",
         **sapt_kwargs,
     )
 
@@ -206,7 +206,7 @@ def calculate_ff_sapt_dipole_along_axis(
             geometry,
             **{key: value for key, value in dimer_kwargs.items() if value is not None},
         ),
-        results=f"results-{axis}.csv",
+        results=f"results-{axis}-{-field_strength}.csv",
         **sapt_kwargs,
     )
 
