@@ -240,7 +240,7 @@ def get_exch_disp_density(mol: Dimer, monomer: str) -> np.ndarray:
 
     if monomer == "B":
 
-        rho_MO_exch_disp_sb = get_exch_disp_density_sb(mol)
+        rho_MO_exch_disp_sb = get_exch_disp_density_sb(mol, theta_sinf_t_abrs)
         rho_MO_exch_disp[mol.slices["s"], mol.slices["b"]] = rho_MO_exch_disp_sb
         rho_MO_exch_disp[mol.slices["b"], mol.slices["s"]] = rho_MO_exch_disp_sb.T
 

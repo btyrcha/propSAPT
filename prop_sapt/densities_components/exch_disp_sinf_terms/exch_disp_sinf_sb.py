@@ -1,4 +1,5 @@
 import numpy as np
+import opt_einsum as oe
 
 from prop_sapt import Dimer
 
