@@ -16,6 +16,10 @@ from .properties_components import (
     calc_exch_disp2_s2_property,
     calc_exch_disp2_sinf_property,
 )
+from .properties_components.exch_ind2 import (
+    get_u_ra_amplitudes,
+    get_u_sb_amplitudes,
+)
 
 # from .densities import density_mo_to_ao
 # from .densities_components import get_exch_ind_s2_density, get_exch_disp_s2_density
@@ -135,16 +139,29 @@ def perform_property_contractions(
     ## Exchange-Induction S^2
 
     # NOTE: Unsplitable version
-    results["x2_exch-ind,r_S2"] = calc_exch_ind2_resp_s2_property(
+    u_ra = get_u_ra_amplitudes(
         mol=mol,
         xt_A_ra=xt_A_ra,
         xt_B_sb=xt_B_sb,
         prop_A_aa=prop_A_aa,
-        prop_A_ar=prop_A_ar,
         prop_A_rr=prop_A_rr,
-        prop_B_bb=prop_B_bb,
         prop_B_bs=prop_B_bs,
+    )
+    u_sb = get_u_sb_amplitudes(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
+        prop_A_ar=prop_A_ar,
+        prop_B_bb=prop_B_bb,
         prop_B_ss=prop_B_ss,
+    )
+
+    results["x2_exch-ind,r_S2"] = calc_exch_ind2_resp_s2_property(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
+        u_ra=u_ra,
+        u_sb=u_sb,
     )
 
     # NOTE: Splitable code through densities
@@ -178,12 +195,8 @@ def perform_property_contractions(
             mol=mol,
             xt_A_ra=xt_A_ra,
             xt_B_sb=xt_B_sb,
-            prop_A_aa=prop_A_aa,
-            prop_A_ar=prop_A_ar,
-            prop_A_rr=prop_A_rr,
-            prop_B_bb=prop_B_bb,
-            prop_B_bs=prop_B_bs,
-            prop_B_ss=prop_B_ss,
+            u_ra=u_ra,
+            u_sb=u_sb,
         )
         - results["x2_ind,r"]
     )
