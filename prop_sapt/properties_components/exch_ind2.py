@@ -52,12 +52,8 @@ def calc_exch_ind2_resp_s2_property(
     mol: Dimer,
     xt_A_ra: np.ndarray,
     xt_B_sb: np.ndarray,
-    prop_A_aa: np.ndarray,
-    prop_A_ar: np.ndarray,
-    prop_A_rr: np.ndarray,
-    prop_B_bb: np.ndarray,
-    prop_B_bs: np.ndarray,
-    prop_B_ss: np.ndarray,
+    u_ra: np.ndarray,
+    u_sb: np.ndarray,
 ) -> np.ndarray:
 
     xt_A_ar = xt_A_ra.T
@@ -71,23 +67,6 @@ def calc_exch_ind2_resp_s2_property(
     s_sr = s_rs.T
     s_rb = mol.s("rb")
     s_br = s_rb.T
-
-    u_ra = get_u_ra_amplitudes(
-        mol=mol,
-        xt_A_ra=xt_A_ra,
-        xt_B_sb=xt_B_sb,
-        prop_A_aa=prop_A_aa,
-        prop_A_rr=prop_A_rr,
-        prop_B_bs=prop_B_bs,
-    )
-    u_sb = get_u_sb_amplitudes(
-        mol=mol,
-        xt_A_ra=xt_A_ra,
-        xt_B_sb=xt_B_sb,
-        prop_A_ar=prop_A_ar,
-        prop_B_bb=prop_B_bb,
-        prop_B_ss=prop_B_ss,
-    )
 
     x2_exch_ind_resp_s2 = np.array(
         [

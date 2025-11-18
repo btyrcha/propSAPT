@@ -16,6 +16,13 @@ from .properties_components import (
     calc_exch_disp2_s2_property,
     calc_exch_disp2_sinf_property,
 )
+from .properties_components.exch_ind2 import (
+    get_u_ra_amplitudes,
+    get_u_sb_amplitudes,
+)
+
+# from .densities import density_mo_to_ao
+# from .densities_components import get_exch_ind_s2_density, get_exch_disp_s2_density
 
 
 def perform_property_contractions(
@@ -55,7 +62,7 @@ def perform_property_contractions(
     results["x0_A"] = np.array([2 * oe.contract("aa", prop_A_aa)])
     results["x0_B"] = np.array([2 * oe.contract("bb", prop_B_bb)])
 
-    # First-order
+    ### First-order
 
     results["x1_pol,r_A"] = np.array([4 * oe.contract("ra,ar", xt_A_ra, mol.omegaB_ar)])
     results["x1_pol,r_B"] = np.array([4 * oe.contract("sb,bs", xt_B_sb, mol.omegaA_bs)])
@@ -96,24 +103,30 @@ def perform_property_contractions(
 
     ### Second-order
 
-    results["x2_ind,r"] = np.array(
+    ## Induction
+    results["x2_ind,r_A"] = np.array(
         [
             +16
             * oe.contract(
                 "ra,Qar,Qbs,sb", xt_A_ra, mol.Qar, mol.Qbs, mol.get_cpscf_sb()
             )
-            + 16
-            * oe.contract(
-                "sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra()
-            )
             - 4 * oe.contract("ra,ac,rc", mol.get_cpscf_ra(), mol.omegaB_aa, xt_A_ra)
             + 4 * oe.contract("ra,cr,ca", mol.get_cpscf_ra(), mol.omegaB_rr, xt_A_ra)
-            - 4 * oe.contract("sb,bc,sc", mol.get_cpscf_sb(), mol.omegaA_bb, xt_B_sb)
-            + 4 * oe.contract("sb,cs,cb", mol.get_cpscf_sb(), mol.omegaA_ss, xt_B_sb)
             - 2
             * oe.contract("ac,rc,ra", prop_A_aa, mol.get_cpscf_ra(), mol.get_cpscf_ra())
             + 2
             * oe.contract("cr,ca,ra", prop_A_rr, mol.get_cpscf_ra(), mol.get_cpscf_ra())
+        ]
+    )
+
+    results["x2_ind,r_B"] = np.array(
+        [
+            +16
+            * oe.contract(
+                "sb,Qar,Qbs,ra", xt_B_sb, mol.Qar, mol.Qbs, mol.get_cpscf_ra()
+            )
+            - 4 * oe.contract("sb,bc,sc", mol.get_cpscf_sb(), mol.omegaA_bb, xt_B_sb)
+            + 4 * oe.contract("sb,cs,cb", mol.get_cpscf_sb(), mol.omegaA_ss, xt_B_sb)
             - 2
             * oe.contract("bc,sc,sb", prop_B_bb, mol.get_cpscf_sb(), mol.get_cpscf_sb())
             + 2
@@ -121,50 +134,105 @@ def perform_property_contractions(
         ]
     )
 
-    results["x2_exch-ind,r_S2"] = calc_exch_ind2_resp_s2_property(
+    results["x2_ind,r"] = results["x2_ind,r_A"] + results["x2_ind,r_B"]
+
+    ## Exchange-Induction S^2
+
+    # NOTE: Unsplitable version
+    u_ra = get_u_ra_amplitudes(
         mol=mol,
         xt_A_ra=xt_A_ra,
         xt_B_sb=xt_B_sb,
         prop_A_aa=prop_A_aa,
-        prop_A_ar=prop_A_ar,
         prop_A_rr=prop_A_rr,
-        prop_B_bb=prop_B_bb,
         prop_B_bs=prop_B_bs,
+    )
+    u_sb = get_u_sb_amplitudes(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
+        prop_A_ar=prop_A_ar,
+        prop_B_bb=prop_B_bb,
         prop_B_ss=prop_B_ss,
     )
 
+    results["x2_exch-ind,r_S2"] = calc_exch_ind2_resp_s2_property(
+        mol=mol,
+        xt_A_ra=xt_A_ra,
+        xt_B_sb=xt_B_sb,
+        u_ra=u_ra,
+        u_sb=u_sb,
+    )
+
+    # NOTE: Splitable code through densities
+    # rho_exch_ind_s2_A = get_exch_ind_s2_density(mol=mol, monomer="A")
+    # rho_exch_ind_s2_A = density_mo_to_ao(
+    #     mol=mol,
+    #     monomer="A",
+    #     density_matrix=rho_exch_ind_s2_A,
+    # )
+    # results["x2_exch-ind,r_S2_A"] = np.array(
+    #     [2 * np.trace(rho_exch_ind_s2_A @ property_matix)]
+    # )
+
+    # rho_exch_ind_s2_B = get_exch_ind_s2_density(mol=mol, monomer="B")
+    # rho_exch_ind_s2_B = density_mo_to_ao(
+    #     mol=mol,
+    #     monomer="B",
+    #     density_matrix=rho_exch_ind_s2_B,
+    # )
+    # results["x2_exch-ind,r_S2_B"] = np.array(
+    #     [2 * np.trace(rho_exch_ind_s2_B @ property_matix)]
+    # )
+
+    # results["x2_exch-ind,r_S2"] = (
+    #     results["x2_exch-ind,r_S2_A"] + results["x2_exch-ind,r_S2_B"]
+    # )
+
+    ## Exchange-Induction S^inf
     results["x2_exch-ind,r"] = (
         calc_exch_ind2_resp_sinf_property(
             mol=mol,
             xt_A_ra=xt_A_ra,
             xt_B_sb=xt_B_sb,
-            prop_A_aa=prop_A_aa,
-            prop_A_ar=prop_A_ar,
-            prop_A_rr=prop_A_rr,
-            prop_B_bb=prop_B_bb,
-            prop_B_bs=prop_B_bs,
-            prop_B_ss=prop_B_ss,
+            u_ra=u_ra,
+            u_sb=u_sb,
         )
         - results["x2_ind,r"]
     )
 
-    results["x2_disp"] = np.array(
+    ## Dispersion
+    results["x2_disp_A"] = np.array(
         [
             # 2 Re <R(X)|V R(V)>
             # NOTE some response not coupled
             8 * oe.contract("rsab,Qcr,Qbs,ca", mol.t_rsab, mol.Qrr, mol.Qbs, xt_A_ra)
             - 8 * oe.contract("rsab,Qac,Qbs,rc", mol.t_rsab, mol.Qaa, mol.Qbs, xt_A_ra)
-            + 8 * oe.contract("rsab,Qar,Qcs,cb", mol.t_rsab, mol.Qar, mol.Qss, xt_B_sb)
-            - 8 * oe.contract("rsab,Qar,Qbc,sc", mol.t_rsab, mol.Qar, mol.Qbb, xt_B_sb)
             # <R(V)|d R(V)>
             # NOTE not coupled no response
             - 4 * oe.contract("ac,rscb,rsab", prop_A_aa, mol.t_rsab, mol.t_rsab)
-            - 4 * oe.contract("bc,rsac,rsab", prop_B_bb, mol.t_rsab, mol.t_rsab)
             + 4 * oe.contract("cr,csab,rsab", prop_A_rr, mol.t_rsab, mol.t_rsab)
+        ]
+    )
+
+    results["x2_disp_B"] = np.array(
+        [
+            # 2 Re <R(X)|V R(V)>
+            # NOTE some response not coupled
+            8 * oe.contract("rsab,Qar,Qcs,cb", mol.t_rsab, mol.Qar, mol.Qss, xt_B_sb)
+            - 8 * oe.contract("rsab,Qar,Qbc,sc", mol.t_rsab, mol.Qar, mol.Qbb, xt_B_sb)
+            # <R(V)|d R(V)>
+            # NOTE not coupled no response
+            - 4 * oe.contract("bc,rsac,rsab", prop_B_bb, mol.t_rsab, mol.t_rsab)
             + 4 * oe.contract("cs,rcab,rsab", prop_B_ss, mol.t_rsab, mol.t_rsab)
         ]
     )
 
+    results["x2_disp"] = results["x2_disp_A"] + results["x2_disp_B"]
+
+    ## Exchange-Dispersion S^2
+
+    # NOTE: Unsplitable version
     results["x2_exch-disp_S2"] = calc_exch_disp2_s2_property(
         mol=mol,
         xt_A_ra=xt_A_ra,
@@ -175,6 +243,32 @@ def perform_property_contractions(
         prop_B_ss=prop_B_ss,
     )
 
+    # NOTE: Splitable code through densities
+    # rho_exch_disp_s2_A = get_exch_disp_s2_density(mol=mol, monomer="A")
+    # rho_exch_disp_s2_A = density_mo_to_ao(
+    #     mol=mol,
+    #     monomer="A",
+    #     density_matrix=rho_exch_disp_s2_A,
+    # )
+    # results["x2_exch-disp_S2_A"] = np.array(
+    #     [2 * np.trace(rho_exch_disp_s2_A @ property_matix)]
+    # )
+
+    # rho_exch_disp_s2_B = get_exch_disp_s2_density(mol=mol, monomer="B")
+    # rho_exch_disp_s2_B = density_mo_to_ao(
+    #     mol=mol,
+    #     monomer="B",
+    #     density_matrix=rho_exch_disp_s2_B,
+    # )
+    # results["x2_exch-disp_S2_B"] = np.array(
+    #     [2 * np.trace(rho_exch_disp_s2_B @ property_matix)]
+    # )
+
+    # results["x2_exch-disp_S2"] = (
+    #     results["x2_exch-disp_S2_A"] + results["x2_exch-disp_S2_B"]
+    # )
+
+    ## Exchange-Dispersion S^inf
     results["x2_exch-disp"] = (
         calc_exch_disp2_sinf_property(
             mol=mol,
@@ -187,6 +281,8 @@ def perform_property_contractions(
         )
         - results["x2_disp"]
     )
+
+    ### Summing up contributions
 
     # sum up first-order contributions
     results["x1_induced"] = results["x1_pol,r"] + results["x1_exch,r"]
