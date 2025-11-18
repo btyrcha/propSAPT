@@ -10,19 +10,20 @@ no_com
 no_reorient
 units bohr
 0 1
-He  0.000000000  0.000000000 -2.800000000
+Ne  -2.500000000   0.000000000   0.000000000
 --
 0 1
-He  0.000000000  0.000000000  2.800000000
+H    1.775500000   0.000000000   0.000000000
+H    3.224500000   0.000000000   0.000000000
 """
 
 # specify memory and threads
-MEMORY = "2 GB"
-THREADS = 2
+MEMORY = "4 GB"
+THREADS = 4
 
 # specify basis sets
 BASIS = "aug-cc-pvdz"
-DF_BASIS = "aug-cc-pvtz"
+DF_BASIS = "aug-cc-pvdz"
 
 # specify options
 OPTIONS = {
@@ -60,14 +61,16 @@ if __name__ == "__main__":
 
         delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
 
-        ### Store densities to .cube files
-        dimer.save_cube(2 * delta_dm_A["total"], filename="delta_dm_A.cube")
-        dimer.save_cube(2 * delta_dm_B["total"], filename="delta_dm_B.cube")
-        dimer.save_cube(2 * delta_dm, filename="delta_dm.cube")
+        ## Store densities to .cube files
+        cubes_to_save = [2 * delta_dm_A["total"], 2 * delta_dm_B["total"], 2 * delta_dm]
+        cube_types = ["density"] * len(cubes_to_save)
+        cubes_fnames = ["delta_dm_A.cube", "delta_dm_B.cube", "delta_dm.cube"]
 
-        ### Use Psi4 to perform other calculations
-        dimer_psi4 = dimer.get_psi4_molecule()
-        psi4.energy("mp2", molecule=dimer_psi4)
+        dimer.save_cube(cubes_to_save, obj_type=cube_types, filename=cubes_fnames)
+
+        ### NOTE: You can use Psi4 to perform other calculations
+        # dimer_psi4 = dimer.get_psi4_molecule()
+        # psi4.energy("mp2", molecule=dimer_psi4, bsse_type="cp")
 
         ### End calculations
         psi4.core.clean()
