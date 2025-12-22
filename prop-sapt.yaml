@@ -12,9 +12,13 @@ dependencies:
   - pandas
   - matplotlib
   - seaborn
-  - fortecubeview
   - opt_einsum
   - click
   - pytest
   - flake8
-  
+  - pip
+  - pip:
+      - fortecubeview
+      - ipywidgets
+      - scikit-image
+      - pythreejs
