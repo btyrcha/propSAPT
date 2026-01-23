@@ -34,12 +34,57 @@ def density_mo_to_ao(
         raise ValueError(f"Invalid monomer: {monomer}")
 
 
+def calc_densities(
+    mol: Dimer, orbital_basis="AO", save_cubes=False, cubes_dir="."
+) -> dict[str, np.ndarray]:
+    """
+    Calculate interaction-induced changes in the density matrix of dimer (and both monomers).
+
+    Args:
+        mol (Dimer): A dimer system.
+        orbital_basis (str, optional): Select orbital basis of the returned density matrix, either
+            "AO" or "MO". Defaults to "AO".
+        save_cubes (bool, optional): Whether to save density cubes. Defaults to False.
+        cubes_dir (str, optional): Directory to save density cubes. Defaults to ".".
+
+    Returns:
+        dict[str, np.ndarray]: Dictionary of density matrices.
+    """
+
+    rho_A = calc_density_matrix(mol, monomer="A", orbital_basis=orbital_basis)
+    rho_B = calc_density_matrix(mol, monomer="B", orbital_basis=orbital_basis)
+
+    kyes = rho_A.keys()
+    rho_dict = {}
+    for key in kyes:
+        rho_dict[f"{key}_A"] = rho_A[key]
+        rho_dict[f"{key}_B"] = rho_B[key]
+        rho_dict[f"{key}"] = rho_A[key] + rho_B[key]
+
+    if save_cubes:
+
+        psi4.core.print_out("\nSaving density cubes...\n")
+
+        rho_to_save = [2 * rho for rho in rho_dict.values()]  # factor 2 for RHF spin
+        cube_filenames = [f"{cubes_dir}/delta_dm_{key}.cube" for key in rho_dict]
+
+        mol.save_cube(
+            rho_to_save,
+            ["density"] * len(rho_to_save),  # type of objects for cube generation
+            cube_filenames,
+        )
+
+        psi4.core.print_out("Density cubes saved.\n")
+
+    return rho_dict
+
+
 @trace_memory_peak
 def calc_density_matrix(
     mol: Dimer, monomer: str, orbital_basis="AO"
 ) -> dict[str, np.ndarray]:
     """
-    Calculate first-order induced chagne in the density matrix of the 'monomer'.
+    Calculate interaction-induced change in the density matrix of the 'monomer'.
 
     Args:
         mol (Dimer): A dimer system.
