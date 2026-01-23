@@ -1,5 +1,5 @@
 import psi4
-from prop_sapt import Dimer, calc_property, calc_density_matrix
+from prop_sapt import Dimer, calc_property, calc_densities
 from prop_sapt.utils import prepare_path
 
 
@@ -59,62 +59,7 @@ if __name__ == "__main__":
     data = calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
 
     ### Calculate interaction-induced denisty matrix
-    delta_dm_A = calc_density_matrix(dimer, "A")
-    delta_dm_B = calc_density_matrix(dimer, "B")
-
-    delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
-    delta_dm_pol = delta_dm_A["pol"] + delta_dm_B["pol"]
-    delta_dm_exch = delta_dm_A["exch"] + delta_dm_B["exch"]
-    delta_dm_ind = delta_dm_A["ind"] + delta_dm_B["ind"]
-    delta_dm_exch_ind = delta_dm_A["exch-ind_S2"] + delta_dm_B["exch-ind_S2"]
-    delta_dm_disp = delta_dm_A["disp"] + delta_dm_B["disp"]
-    delta_dm_exch_disp = delta_dm_A["exch-disp_S2"] + delta_dm_B["exch-disp_S2"]
-
-    delta_dm_Ind = delta_dm_ind + delta_dm_exch_ind
-    delta_dm_Disp = delta_dm_disp + delta_dm_exch_disp
-
-    ### Store densities to .cube files
-    densities_to_save = [2 * rho for rho in delta_dm_A.values()]
-    densities_to_save += [2 * rho for rho in delta_dm_B.values()]
-    densities_to_save += [
-        2 * rho
-        for rho in [
-            delta_dm,
-            delta_dm_pol,
-            delta_dm_exch,
-            delta_dm_ind,
-            delta_dm_exch_ind,
-            delta_dm_disp,
-            delta_dm_exch_disp,
-            delta_dm_Ind,
-            delta_dm_Disp,
-        ]
-    ]
-
-    cube_filenames = [CUBES_DIR + f"delta_dm_{key}_A.cube" for key in delta_dm_A.keys()]
-    cube_filenames += [
-        CUBES_DIR + f"delta_dm_{key}_B.cube" for key in delta_dm_B.keys()
-    ]
-    cube_filenames += [
-        CUBES_DIR + f"delta_dm{key}.cube"
-        for key in [
-            "",
-            "_pol",
-            "_exch",
-            "_ind",
-            "_exch-ind_S2",
-            "_disp",
-            "_exch-disp_S2",
-            "_Ind",
-            "_Disp",
-        ]
-    ]
-
-    dimer.save_cube(
-        densities_to_save,
-        ["density"] * len(densities_to_save),
-        cube_filenames,
-    )
+    delta_dm = calc_densities(dimer, save_cubes=True, cubes_dir=CUBES_DIR)
 
     ### End calculations
     psi4.core.clean()

@@ -1,5 +1,10 @@
+"""
+Minimal example of using propSAPT to calculate interaction-induced properties
+and densities for a Ne-H2 dimer.
+"""
+
 import psi4
-from prop_sapt import Dimer, calc_property, calc_density_matrix
+from prop_sapt import Dimer, calc_property, calc_densities
 from prop_sapt.utils import CalcTimer
 
 
@@ -56,17 +61,7 @@ if __name__ == "__main__":
         data = calc_property(dimer, "dipole", results=RESULTS_FILE_PATH)
 
         ### Calculate interaction-induced denisty matrix
-        delta_dm_A = calc_density_matrix(dimer, "A")
-        delta_dm_B = calc_density_matrix(dimer, "B")
-
-        delta_dm = delta_dm_A["total"] + delta_dm_B["total"]
-
-        ## Store densities to .cube files
-        cubes_to_save = [2 * delta_dm_A["total"], 2 * delta_dm_B["total"], 2 * delta_dm]
-        cube_types = ["density"] * len(cubes_to_save)
-        cubes_fnames = ["delta_dm_A.cube", "delta_dm_B.cube", "delta_dm.cube"]
-
-        dimer.save_cube(cubes_to_save, obj_type=cube_types, filename=cubes_fnames)
+        delta_dm = calc_densities(dimer, save_cubes=True)
 
         ### NOTE: You can use Psi4 to perform other calculations
         # dimer_psi4 = dimer.get_psi4_molecule()
