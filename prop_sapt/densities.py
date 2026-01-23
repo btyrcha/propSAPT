@@ -202,29 +202,40 @@ def calc_density_matrix(
         + rho_MO_exch_disp_s2  # NOTE: change into Sinf version when ready
     )
 
+    # prepare total Induction and Dispersion densities
+    rho_MO_IND = (
+        rho_MO_ind + rho_MO_exch_ind_s2
+    )  # NOTE: change into Sinf version when ready
+    rho_MO_DISP = (
+        rho_MO_disp + rho_MO_exch_disp_s2
+    )  # NOTE: change into Sinf version when ready
+
+    rho_dict = {
+        "pol": rho_MO_pol,
+        "exch": rho_MO_exch,
+        "ind": rho_MO_ind,
+        "exch-ind_S2": rho_MO_exch_ind_s2,
+        "exch-ind": rho_MO_exch_ind,
+        "disp": rho_MO_disp,
+        "exch-disp_S2": rho_MO_exch_disp_s2,
+        "Ind": rho_MO_IND,
+        "Disp": rho_MO_DISP,
+        "total": rho_MO_total,
+    }
+
     if orbital_basis == "AO":
-        return {
-            "pol": density_mo_to_ao(mol, monomer, rho_MO_pol),
-            "exch": density_mo_to_ao(mol, monomer, rho_MO_exch),
-            "ind": density_mo_to_ao(mol, monomer, rho_MO_ind),
-            "exch-ind_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_ind_s2),
-            "exch-ind": density_mo_to_ao(mol, monomer, rho_MO_exch_ind),
-            "disp": density_mo_to_ao(mol, monomer, rho_MO_disp),
-            "exch-disp_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_disp_s2),
-            "total": density_mo_to_ao(mol, monomer, rho_MO_total),
-        }
+
+        for key in rho_dict:
+            rho_dict[key] = density_mo_to_ao(mol, monomer, rho_dict[key])
+
+        return rho_dict
+
     elif orbital_basis == "MO":
-        return {
-            "pol": rho_MO_pol,
-            "exch": rho_MO_exch,
-            "ind": rho_MO_ind,
-            "exch-ind_S2": rho_MO_exch_ind_s2,
-            "exch-ind": rho_MO_exch_ind,
-            "disp": rho_MO_disp,
-            "exch-disp_S2": rho_MO_exch_disp_s2,
-            "total": rho_MO_total,
-        }
+
+        return rho_dict
+
     else:
+
         psi4.core.clean()
         raise ValueError(
             f"Argument 'orbital_basis' should be either 'MO' or 'AO' but was '{orbital_basis}'!"
