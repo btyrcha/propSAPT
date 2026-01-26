@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 requirements = [
-    "numpy<2.0",
+    "numpy",
     "pandas",
     "opt_einsum",
 ]
