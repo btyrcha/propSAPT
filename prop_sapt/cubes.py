@@ -137,6 +137,22 @@ class Cube:
             volumetric_data=np.copy(self.volumetric_data),
         )
 
+    def moved_charge(self) -> float:
+        """
+        Calculate the total charge moved by the density described by the cube.
+
+        Returns:
+            float: Total charge moved.
+        """
+
+        return (
+            0.5
+            * np.sum(np.abs(self.volumetric_data))
+            * np.linalg.norm(
+                np.dot(np.cross(self.x_vector, self.y_vector), self.z_vector)
+            )
+        )
+
 
 def make_cube(
     mol: psi4.core.Molecule,
