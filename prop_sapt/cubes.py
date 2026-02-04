@@ -91,7 +91,7 @@ class Cube:
         else:
             raise ValueError("`volumetric_data` must be provided!")
 
-    def from_file(self, filename: str):
+    def from_file(self, filename: str) -> "Cube":
         """
         Read cube data form `filename`.
 
@@ -113,6 +113,45 @@ class Cube:
         """
 
         save_cube_file(self, filename)
+
+    def copy(self) -> "Cube":
+        """
+        Create a copy of the `Cube` object.
+
+        Returns:
+            Cube: Copied cube.
+        """
+
+        return Cube(
+            comment1=self.comment1,
+            comment2=self.comment2,
+            origin=np.copy(self.origin),
+            n_atoms=self.n_atoms,
+            atoms=[(atom[0], atom[1], np.copy(atom[2])) for atom in self.atoms],
+            n_x=self.n_x,
+            n_y=self.n_y,
+            n_z=self.n_z,
+            x_vector=np.copy(self.x_vector),
+            y_vector=np.copy(self.y_vector),
+            z_vector=np.copy(self.z_vector),
+            volumetric_data=np.copy(self.volumetric_data),
+        )
+
+    def moved_charge(self) -> float:
+        """
+        Calculate the total charge moved by the density described by the cube.
+
+        Returns:
+            float: Total charge moved.
+        """
+
+        return (
+            0.5
+            * np.sum(np.abs(self.volumetric_data))
+            * np.linalg.norm(
+                np.dot(np.cross(self.x_vector, self.y_vector), self.z_vector)
+            )
+        )
 
 
 def make_cube(
@@ -428,19 +467,93 @@ def subtract_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
     )
 
 
-def add_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
+def add_cubes(cubes: list[Cube] | tuple[Cube, ...]) -> Cube:
     """
-    Calculate a sum of volumetric data of two cubes.
+    Calculate a sum of volumetric data of multiple cubes.
 
     Cube grids have to be the same for this operation.
-    Data about molecule geometry is taken from `cube_1`.
+    Data about molecule geometry is taken from the first cube.
 
     Args:
-        cube_1 (Cube): Cube serving as first operand.
-        cube_2 (Cube): Cube serving as second operand.
+        cubes (list[Cube] | tuple[Cube, ...]): List or tuple of cubes to add together.
 
     Returns:
         Cube: Resulting Cube.
+    """
+
+    if not cubes:
+        raise ValueError("Cannot add an empty list of cubes!")
+
+    if len(cubes) == 1:
+        return cubes[0].copy()
+
+    # Use first cube as reference
+    reference_cube = cubes[0]
+
+    # Validate all cubes have the same grid
+    for i, cube in enumerate(cubes[1:], start=1):
+        if False in np.isclose(reference_cube.origin, cube.origin):
+            raise ValueError(
+                f"Cube grids have different origins!\n"
+                f"cube_0: {reference_cube.origin}\n"
+                f"cube_{i}: {cube.origin}"
+            )
+
+        if (
+            False in np.isclose(reference_cube.x_vector, cube.x_vector)
+            or False in np.isclose(reference_cube.y_vector, cube.y_vector)
+            or False in np.isclose(reference_cube.z_vector, cube.z_vector)
+        ):
+            raise ValueError(
+                f"Cube grids have different vectors!\n"
+                f"cube_0: {reference_cube.x_vector}\n"
+                f"        {reference_cube.y_vector}\n"
+                f"        {reference_cube.z_vector}\n"
+                f"cube_{i}: {cube.x_vector}\n"
+                f"        {cube.y_vector}\n"
+                f"        {cube.z_vector}"
+            )
+
+    # Sum all volumetric data
+    volumetric_data = sum(cube.volumetric_data for cube in cubes)
+
+    return Cube(
+        **{
+            "comment1": "",
+            "comment2": "",
+            "origin": reference_cube.origin,
+            "n_atoms": reference_cube.n_atoms,
+            "atoms": reference_cube.atoms,
+            "n_x": reference_cube.n_x,
+            "n_y": reference_cube.n_y,
+            "n_z": reference_cube.n_z,
+            "x_vector": reference_cube.x_vector,
+            "y_vector": reference_cube.y_vector,
+            "z_vector": reference_cube.z_vector,
+            "volumetric_data": volumetric_data,
+        }
+    )
+
+
+def cosine_similarity(cube_1: Cube, cube_2: Cube) -> float:
+    """Calculate cosine similarity between two cubes. Assumes the cubes have the same grid.
+
+    The cosine similarity is calculated as:
+
+        cosine_similarity = (A . B) / (||A|| ||B||)
+
+    utilizing the L2 norm.
+
+    Args:
+        cube_1 (Cube): First cube.
+        cube_2 (Cube): Second cube.
+
+    Raises:
+        ValueError: If the cubes have different origins.
+        ValueError: If the cubes have different grid vectors.
+
+    Returns:
+        float: Cosine similarity between the two cubes.
     """
 
     if False in np.isclose(cube_1.origin, cube_2.origin):
@@ -465,24 +578,10 @@ def add_cubes(cube_1: Cube, cube_2: Cube) -> Cube:
             f"        {cube_2.z_vector}"
         )
 
-    volumetric_data = cube_1.volumetric_data + cube_2.volumetric_data
+    flat_1 = cube_1.volumetric_data.flatten()
+    flat_2 = cube_2.volumetric_data.flatten()
 
-    return Cube(
-        **{
-            "comment1": "",
-            "comment2": "",
-            "origin": cube_1.origin,
-            "n_atoms": cube_1.n_atoms,
-            "atoms": cube_1.atoms,
-            "n_x": cube_1.n_x,
-            "n_y": cube_1.n_y,
-            "n_z": cube_1.n_z,
-            "x_vector": cube_1.x_vector,
-            "y_vector": cube_1.y_vector,
-            "z_vector": cube_1.z_vector,
-            "volumetric_data": volumetric_data,
-        }
-    )
+    return np.sum(flat_1 * flat_2) / (np.linalg.norm(flat_1) * np.linalg.norm(flat_2))
 
 
 def prepare_grid(

@@ -361,6 +361,7 @@ class helper_SAPT(object):
         )
 
         # JK object
+        psi4.core.print_out("\nInitialize JK objects...\n")
         tstart = time.time()
         aux_basis = psi4.core.BasisSet.build(
             self.dimer_wfn.molecule(),
@@ -509,7 +510,7 @@ class helper_SAPT(object):
 
                 # apply hessian func
                 def _hess_x(x_vec, act_mask):
-                    # FIXME: frozen core does not work - cpscf_Hx expects full vector
+                    # NOTE: frozen core won't work like that - cpscf_Hx expects full vector
                     if act_mask[0]:
                         # monomer A
                         return self.wfnA.cphf_Hx([x_vec[0]])
@@ -534,7 +535,7 @@ class helper_SAPT(object):
 
                 # apply hessian func
                 def _hess_x(x_vec, act_mask):
-                    # FIXME: frozen core does not work - cpscf_Hx expects full vector
+                    # NOTE: frozen core won't work like that - cpscf_Hx expects full vector
                     if act_mask[0]:
                         # monomer B
                         return self.wfnB.cphf_Hx([x_vec[0]])

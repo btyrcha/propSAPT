@@ -1,6 +1,6 @@
 from .molecule import Dimer
 from .properties import calc_property
-from .densities import calc_density_matrix
+from .densities import calc_density_matrix, calc_densities
 from .sapt_driver import calc_sapt_energy
 from .finite_field import finite_field_sapt
 
@@ -8,6 +8,7 @@ __all__ = [
     "Dimer",
     "calc_property",
     "calc_density_matrix",
+    "calc_densities",
     "calc_sapt_energy",
     "finite_field_sapt",
 ]

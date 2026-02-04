@@ -5,16 +5,18 @@ channels:
   - defaults
 dependencies:
   - python=3.12
-  - psi4=1.9
+  - psi4=1.10
   - qcdb
   - jupyterlab
-  - numpy<2.0
+  - numpy
   - pandas
   - matplotlib
-  - seaborn
-  - fortecubeview
   - opt_einsum
-  - click
   - pytest
   - flake8
-  
+  - pip
+  - pip:
+      - fortecubeview
+      - ipywidgets
+      - scikit-image
+      - pythreejs

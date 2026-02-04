@@ -34,12 +34,57 @@ def density_mo_to_ao(
         raise ValueError(f"Invalid monomer: {monomer}")
 
 
+def calc_densities(
+    mol: Dimer, orbital_basis="AO", save_cubes=False, cubes_dir="."
+) -> dict[str, np.ndarray]:
+    """
+    Calculate interaction-induced changes in the density matrix of dimer (and both monomers).
+
+    Args:
+        mol (Dimer): A dimer system.
+        orbital_basis (str, optional): Select orbital basis of the returned density matrix, either
+            "AO" or "MO". Defaults to "AO".
+        save_cubes (bool, optional): Whether to save density cubes. Defaults to False.
+        cubes_dir (str, optional): Directory to save density cubes. Defaults to ".".
+
+    Returns:
+        dict[str, np.ndarray]: Dictionary of density matrices.
+    """
+
+    rho_A = calc_density_matrix(mol, monomer="A", orbital_basis=orbital_basis)
+    rho_B = calc_density_matrix(mol, monomer="B", orbital_basis=orbital_basis)
+
+    kyes = rho_A.keys()
+    rho_dict = {}
+    for key in kyes:
+        rho_dict[f"{key}_A"] = rho_A[key]
+        rho_dict[f"{key}_B"] = rho_B[key]
+        rho_dict[f"{key}"] = rho_A[key] + rho_B[key]
+
+    if save_cubes:
+
+        psi4.core.print_out("\nSaving density cubes...\n")
+
+        rho_to_save = [2 * rho for rho in rho_dict.values()]  # factor 2 for RHF spin
+        cube_filenames = [f"{cubes_dir}/delta_dm_{key}.cube" for key in rho_dict]
+
+        mol.save_cube(
+            rho_to_save,
+            ["density"] * len(rho_to_save),  # type of objects for cube generation
+            cube_filenames,
+        )
+
+        psi4.core.print_out("Density cubes saved.\n")
+
+    return rho_dict
+
+
 @trace_memory_peak
 def calc_density_matrix(
     mol: Dimer, monomer: str, orbital_basis="AO"
 ) -> dict[str, np.ndarray]:
     """
-    Calculate first-order induced chagne in the density matrix of the 'monomer'.
+    Calculate interaction-induced change in the density matrix of the 'monomer'.
 
     Args:
         mol (Dimer): A dimer system.
@@ -202,29 +247,40 @@ def calc_density_matrix(
         + rho_MO_exch_disp_s2  # NOTE: change into Sinf version when ready
     )
 
+    # prepare total Induction and Dispersion densities
+    rho_MO_IND = (
+        rho_MO_ind + rho_MO_exch_ind_s2
+    )  # NOTE: change into Sinf version when ready
+    rho_MO_DISP = (
+        rho_MO_disp + rho_MO_exch_disp_s2
+    )  # NOTE: change into Sinf version when ready
+
+    rho_dict = {
+        "pol": rho_MO_pol,
+        "exch": rho_MO_exch,
+        "ind": rho_MO_ind,
+        "exch-ind_S2": rho_MO_exch_ind_s2,
+        "exch-ind": rho_MO_exch_ind,
+        "disp": rho_MO_disp,
+        "exch-disp_S2": rho_MO_exch_disp_s2,
+        "Ind": rho_MO_IND,
+        "Disp": rho_MO_DISP,
+        "total": rho_MO_total,
+    }
+
     if orbital_basis == "AO":
-        return {
-            "pol": density_mo_to_ao(mol, monomer, rho_MO_pol),
-            "exch": density_mo_to_ao(mol, monomer, rho_MO_exch),
-            "ind": density_mo_to_ao(mol, monomer, rho_MO_ind),
-            "exch-ind_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_ind_s2),
-            "exch-ind": density_mo_to_ao(mol, monomer, rho_MO_exch_ind),
-            "disp": density_mo_to_ao(mol, monomer, rho_MO_disp),
-            "exch-disp_S2": density_mo_to_ao(mol, monomer, rho_MO_exch_disp_s2),
-            "total": density_mo_to_ao(mol, monomer, rho_MO_total),
-        }
+
+        for key in rho_dict:
+            rho_dict[key] = density_mo_to_ao(mol, monomer, rho_dict[key])
+
+        return rho_dict
+
     elif orbital_basis == "MO":
-        return {
-            "pol": rho_MO_pol,
-            "exch": rho_MO_exch,
-            "ind": rho_MO_ind,
-            "exch-ind_S2": rho_MO_exch_ind_s2,
-            "exch-ind": rho_MO_exch_ind,
-            "disp": rho_MO_disp,
-            "exch-disp_S2": rho_MO_exch_disp_s2,
-            "total": rho_MO_total,
-        }
+
+        return rho_dict
+
     else:
+
         psi4.core.clean()
         raise ValueError(
             f"Argument 'orbital_basis' should be either 'MO' or 'AO' but was '{orbital_basis}'!"
