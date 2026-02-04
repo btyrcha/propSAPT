@@ -535,6 +535,55 @@ def add_cubes(cubes: list[Cube] | tuple[Cube, ...]) -> Cube:
     )
 
 
+def cosine_similarity(cube_1: Cube, cube_2: Cube) -> float:
+    """Calculate cosine similarity between two cubes. Assumes the cubes have the same grid.
+
+    The cosine similarity is calculated as:
+
+        cosine_similarity = (A . B) / (||A|| ||B||)
+
+    utilizing the L2 norm.
+
+    Args:
+        cube_1 (Cube): First cube.
+        cube_2 (Cube): Second cube.
+
+    Raises:
+        ValueError: If the cubes have different origins.
+        ValueError: If the cubes have different grid vectors.
+
+    Returns:
+        float: Cosine similarity between the two cubes.
+    """
+
+    if False in np.isclose(cube_1.origin, cube_2.origin):
+        raise ValueError(
+            "Cube grids have different origins!\n"
+            f"cube_1: {cube_1.origin}\n"
+            f"cube_2: {cube_2.origin}"
+        )
+
+    if (
+        False in np.isclose(cube_1.x_vector, cube_2.x_vector)
+        or False in np.isclose(cube_1.y_vector, cube_2.y_vector)
+        or False in np.isclose(cube_1.z_vector, cube_2.z_vector)
+    ):
+        raise ValueError(
+            "Cube grids have different vectors!\n"
+            f"cube_1: {cube_1.x_vector}\n"
+            f"        {cube_1.y_vector}\n"
+            f"        {cube_1.z_vector}\n"
+            f"cube_2: {cube_2.x_vector}\n"
+            f"        {cube_2.y_vector}\n"
+            f"        {cube_2.z_vector}"
+        )
+
+    flat_1 = cube_1.volumetric_data.flatten()
+    flat_2 = cube_2.volumetric_data.flatten()
+
+    return np.sum(flat_1 * flat_2) / (np.linalg.norm(flat_1) * np.linalg.norm(flat_2))
+
+
 def prepare_grid(
     geometry: np.ndarray, grid_step: float | tuple, grid_overage: float | tuple
 ) -> dict:
