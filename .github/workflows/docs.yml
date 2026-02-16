@@ -1,0 +1,23 @@
+name: Build and Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    uses: ./.github/workflows/conda-run.yml
+    with:
+      run-script: |
+        pip install sphinx sphinx-rtd-theme
+        cd docs
+        sphinx-build -b html . _build/html
+      deploy-pages: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
+      publish-dir: ./docs/_build/html
