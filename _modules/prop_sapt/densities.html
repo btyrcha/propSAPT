@@ -1,0 +1,562 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.densities &mdash; prop-sapt 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#conda-environment">Conda Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finite-field-sapt">Finite Field SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#example-scripts">Example Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#core-functionality">Core Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#property-calculations">Property Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#jupyter-notebooks">Jupyter Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#orbital-visualization">Orbital Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#density-visualization">Density Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.finite_field">Finite Field SAPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.densities</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.densities</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">opt_einsum</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oe</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_memory_peak</span><span class="p">,</span> <span class="n">CalcTimer</span><span class="p">,</span> <span class="n">prepare_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.densities_components</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_exch_ind_s2_density</span><span class="p">,</span>
+    <span class="n">get_exch_ind_density</span><span class="p">,</span>
+    <span class="n">get_exch_disp_s2_density</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="density_mo_to_ao">
+<a class="viewcode-back" href="../../api.html#prop_sapt.densities.density_mo_to_ao">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">density_mo_to_ao</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">monomer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">density_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transform density matrix from MO to AO.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (Dimer): A dimer system.</span>
+<span class="sd">        monomer (str): Select a monomer, either &quot;A&quot; or &quot;B&quot;.</span>
+<span class="sd">        density_matrix (np.ndarray): Density matrix to transform.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: Transformed density matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">monomer</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mol</span><span class="o">.</span><span class="n">C_A</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">density_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">C_A</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">monomer</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mol</span><span class="o">.</span><span class="n">C_B</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">density_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">C_B</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid monomer: </span><span class="si">{</span><span class="n">monomer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="calc_densities">
+<a class="viewcode-back" href="../../api.html#prop_sapt.densities.calc_densities">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_densities</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span>
+    <span class="n">orbital_basis</span><span class="o">=</span><span class="s2">&quot;AO&quot;</span><span class="p">,</span>
+    <span class="n">save_cubes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">cubes_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">save_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">matrices_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate interaction-induced changes in the density matrix of dimer (and both monomers).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (Dimer): A dimer system.</span>
+<span class="sd">        orbital_basis (str, optional): Select orbital basis of the returned density matrix, either</span>
+<span class="sd">            &quot;AO&quot; or &quot;MO&quot;. Defaults to &quot;AO&quot;.</span>
+<span class="sd">        save_cubes (bool, optional): Whether to save density cubes. Defaults to False.</span>
+<span class="sd">        cubes_dir (str, optional): Directory to save density cubes. Defaults to &quot;.&quot;.</span>
+<span class="sd">        save_matrices (bool, optional): Whether to save density matrices. Defaults to False.</span>
+<span class="sd">        matrices_dir (str, optional): Directory to save density matrices. Defaults to &quot;.&quot;.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        dict[str, np.ndarray]: Dictionary of density matrices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">rho_A</span> <span class="o">=</span> <span class="n">calc_density_matrix</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">monomer</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">orbital_basis</span><span class="o">=</span><span class="n">orbital_basis</span><span class="p">)</span>
+    <span class="n">rho_B</span> <span class="o">=</span> <span class="n">calc_density_matrix</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">monomer</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">orbital_basis</span><span class="o">=</span><span class="n">orbital_basis</span><span class="p">)</span>
+
+    <span class="n">kyes</span> <span class="o">=</span> <span class="n">rho_A</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">rho_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">kyes</span><span class="p">:</span>
+        <span class="n">rho_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rho_A</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">rho_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_B&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rho_B</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">orbital_basis</span> <span class="o">==</span> <span class="s2">&quot;AO&quot;</span><span class="p">:</span>
+            <span class="n">rho_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rho_A</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="n">rho_B</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="n">rho_transformed</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">orbital_basis</span> <span class="o">!=</span> <span class="s2">&quot;AO&quot;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">save_cubes</span> <span class="ow">or</span> <span class="n">save_matrices</span><span class="p">):</span>
+
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Warning: Density matrices are in </span><span class="si">{</span><span class="n">orbital_basis</span><span class="si">}</span><span class="s2"> basis,&quot;</span>
+            <span class="s2">&quot;attempting MO -&gt; AO transformation, for saving...</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">rho_transformed</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">density_mo_to_ao</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">monomer</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">density_matrix</span><span class="o">=</span><span class="n">rho</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">rho</span> <span class="ow">in</span> <span class="n">rho_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;MO -&gt; AO transformation complete.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_matrices</span><span class="p">:</span>
+
+        <span class="c1"># Save density matrices in numpy format</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saving density matrices...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">prepare_path</span><span class="p">(</span><span class="n">matrices_dir</span> <span class="o">+</span> <span class="s2">&quot;/dummy&quot;</span><span class="p">)</span>  <span class="c1"># create matrices_dir if it doesn&#39;t exist</span>
+
+        <span class="k">if</span> <span class="n">orbital_basis</span> <span class="o">!=</span> <span class="s2">&quot;AO&quot;</span> <span class="ow">and</span> <span class="n">rho_transformed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">matrices_to_save</span> <span class="o">=</span> <span class="n">rho_transformed</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">matrices_to_save</span> <span class="o">=</span> <span class="n">rho_dict</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="n">matrices_to_save</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">matrices_dir</span><span class="si">}</span><span class="s2">/delta_dm_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.npy&quot;</span><span class="p">,</span> <span class="n">matrix</span><span class="p">)</span>
+
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Density matrices saved.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Save wavefunction information</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saving monomer Wfn objects...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">mol</span><span class="o">.</span><span class="n">wfnA</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">matrices_dir</span><span class="si">}</span><span class="s2">/wfn_mon_A.npy&quot;</span><span class="p">)</span>
+        <span class="n">mol</span><span class="o">.</span><span class="n">wfnB</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">matrices_dir</span><span class="si">}</span><span class="s2">/wfn_mon_B.npy&quot;</span><span class="p">)</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+            <span class="s2">&quot;Monomer Wfn objects saved. To load use `psi4.core.Wavefunction.from_file`</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save_cubes</span><span class="p">:</span>
+
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Saving density cubes...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">orbital_basis</span> <span class="o">!=</span> <span class="s2">&quot;AO&quot;</span> <span class="ow">and</span> <span class="n">rho_transformed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rho_to_save</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho</span> <span class="k">for</span> <span class="n">rho</span> <span class="ow">in</span> <span class="n">rho_transformed</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rho_to_save</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="n">rho</span> <span class="k">for</span> <span class="n">rho</span> <span class="ow">in</span> <span class="n">rho_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>  <span class="c1"># factor 2 for RHF spin</span>
+            <span class="p">]</span>
+
+        <span class="n">prepare_path</span><span class="p">(</span><span class="n">cubes_dir</span> <span class="o">+</span> <span class="s2">&quot;/dummy&quot;</span><span class="p">)</span>  <span class="c1"># create cubes_dir if it doesn&#39;t exist</span>
+        <span class="n">cube_filenames</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cubes_dir</span><span class="si">}</span><span class="s2">/delta_dm_</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.cube&quot;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">rho_dict</span><span class="p">]</span>
+
+        <span class="n">mol</span><span class="o">.</span><span class="n">save_cube</span><span class="p">(</span>
+            <span class="n">rho_to_save</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">&quot;density&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rho_to_save</span><span class="p">),</span>  <span class="c1"># type of objects for cube generation</span>
+            <span class="n">cube_filenames</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Density cubes saved.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">rho_dict</span></div>
+
+
+
+<div class="viewcode-block" id="calc_density_matrix">
+<a class="viewcode-back" href="../../api.html#prop_sapt.densities.calc_density_matrix">[docs]</a>
+<span class="nd">@trace_memory_peak</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_density_matrix</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">monomer</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">orbital_basis</span><span class="o">=</span><span class="s2">&quot;AO&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate interaction-induced change in the density matrix of the &#39;monomer&#39;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (Dimer): A dimer system.</span>
+<span class="sd">        monomer (str): Select a monomer, either &quot;A&quot; or &quot;B&quot;.</span>
+<span class="sd">        orbital_basis (str, optional): Select orbital baisi of the returned density matrix, either</span>
+<span class="sd">            &quot;AO&quot; or &quot;MO&quot;. Defaults to &quot;AO&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict[str, np.ndarray]: Dictionary with three matrices, with keys &quot;pol&quot;, &quot;exch&quot; and &quot;total&quot;.</span>
+<span class="sd">            &quot;pol&quot;: First-order polarisation correction to the change in the monomer density matrix.</span>
+<span class="sd">            &quot;exch&quot;: First-order exchange correction to the change in the monomer density matrix.</span>
+<span class="sd">            &quot;total&quot;: Sum of polarisation and exchange corrections.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">monomer</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">monomer</span><span class="si">}</span><span class="s2">&#39; is not a valid monomer for density matrix.&quot;</span><span class="p">)</span>
+
+    <span class="n">orbital_basis</span> <span class="o">=</span> <span class="n">orbital_basis</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">orbital_basis</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MO&quot;</span><span class="p">,</span> <span class="s2">&quot;AO&quot;</span><span class="p">]:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Argument &#39;orbital_basis&#39; should be either &#39;MO&#39; or &#39;AO&#39; but was &#39;</span><span class="si">{</span><span class="n">orbital_basis</span><span class="si">}</span><span class="s2">&#39;!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">rho_MO_pol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">))</span>
+    <span class="n">rho_MO_exch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">))</span>
+    <span class="n">rho_MO_ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">))</span>
+    <span class="n">rho_MO_disp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">nmo</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">monomer</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;First-order Polarisation density calculation&quot;</span><span class="p">):</span>
+            <span class="n">rho_pol_ra</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span>
+
+            <span class="c1"># first-order polarisation</span>
+            <span class="n">rho_MO_pol</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_pol_ra</span>
+            <span class="n">rho_MO_pol</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_pol_ra</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;First-order Exchange density calculation&quot;</span><span class="p">):</span>
+            <span class="n">rho_exch_ra</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span>
+                <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ar</span> <span class="o">+</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ra</span><span class="o">.</span><span class="n">T</span>
+            <span class="p">)</span>
+
+            <span class="c1"># first-order exchange</span>
+            <span class="n">rho_MO_exch</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_exch_ra</span>
+            <span class="n">rho_MO_exch</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_exch_ra</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Second-order Induction density calculation&quot;</span><span class="p">):</span>
+            <span class="c1"># second-order induction</span>
+            <span class="n">rho_MO_ind_ra</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;Qar,Qbs,sb-&gt;ra&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">())</span>
+                <span class="o">+</span> <span class="mi">2</span>
+                <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,Qar,Qbs-&gt;ra&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">)</span>
+                <span class="o">-</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,aA-&gt;rA&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_aa</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,Rr-&gt;Ra&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_rr</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">rho_MO_ind_ra</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">rho_MO_ind_ra</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_ind_ra</span>
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_ind_ra</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;rA,ra-&gt;aA&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">+</span><span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;Ra,ra-&gt;Rr&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Second-order Dispersion density calculation&quot;</span><span class="p">):</span>
+            <span class="c1"># second-order dispersion</span>
+            <span class="n">rho_MO_disp_ra</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;rsab,QRr,Qbs-&gt;Ra&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span>
+            <span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;rsab,QaA,Qbs-&gt;rA&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">)</span>
+            <span class="n">rho_MO_disp_ra</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">rho_MO_disp_ra</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_disp_ra</span>
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_disp_ra</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;rsAb,rsab-&gt;aA&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span>
+            <span class="p">)</span>
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;r&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;Rsab,rsab-&gt;Rr&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span>
+            <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">monomer</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;First-order Polarisation density calculation&quot;</span><span class="p">):</span>
+            <span class="n">rho_pol_sb</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span>
+
+            <span class="c1"># first-order polarisation</span>
+            <span class="n">rho_MO_pol</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_pol_sb</span>
+            <span class="n">rho_MO_pol</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_pol_sb</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;First-order Exchange density calculation&quot;</span><span class="p">):</span>
+            <span class="n">rho_exch_sb</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span>
+                <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_bs</span> <span class="o">+</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_sb</span><span class="o">.</span><span class="n">T</span>
+            <span class="p">)</span>
+
+            <span class="c1"># first-order exchange</span>
+            <span class="n">rho_MO_exch</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_exch_sb</span>
+            <span class="n">rho_MO_exch</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_exch_sb</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Second-order Induction density calculation&quot;</span><span class="p">):</span>
+            <span class="c1"># second-order induction</span>
+            <span class="n">rho_MO_ind_sb</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;Qar,Qbs,ra-&gt;sb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">())</span>
+                <span class="o">+</span> <span class="mi">2</span>
+                <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,Qar,Qbs-&gt;sb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">)</span>
+                <span class="o">-</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,bB-&gt;sB&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_bb</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,Ss-&gt;Sb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_ss</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">rho_MO_ind_sb</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">rho_MO_ind_sb</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_ind_sb</span>
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_ind_sb</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;sB,sb-&gt;bB&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">rho_MO_ind</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">+</span><span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;Sb,sb-&gt;Ss&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Second-order Dispersion density calculation&quot;</span><span class="p">):</span>
+            <span class="c1"># second-order dispersion</span>
+            <span class="n">rho_MO_disp_sb</span> <span class="o">=</span> <span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;rsab,Qar,QSs-&gt;Sb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span>
+            <span class="p">)</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;rsab,Qar,QbB-&gt;sB&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">)</span>
+            <span class="n">rho_MO_disp_sb</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">rho_MO_disp_sb</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_disp_sb</span>
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">rho_MO_disp_sb</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;rsaB,rsab-&gt;bB&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span>
+            <span class="p">)</span>
+            <span class="n">rho_MO_disp</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">],</span> <span class="n">mol</span><span class="o">.</span><span class="n">slices</span><span class="p">[</span><span class="s2">&quot;s&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="o">+</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;rSab,rsab-&gt;Ss&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span>
+            <span class="p">)</span>
+
+    <span class="c1"># second-order exchange corrections in S^2 approximation</span>
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Second-order Exchange-Induction (S^2) density calculation&quot;</span><span class="p">):</span>
+        <span class="n">rho_MO_exch_ind_s2</span> <span class="o">=</span> <span class="n">get_exch_ind_s2_density</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">monomer</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Second-order Exchange-Induction (S^inf) density calculation&quot;</span><span class="p">):</span>
+        <span class="n">rho_MO_exch_ind</span> <span class="o">=</span> <span class="n">get_exch_ind_density</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">monomer</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho_MO_ind</span>
+
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Second-order Exchange-Dispersion (S^2) density calculation&quot;</span><span class="p">):</span>
+        <span class="n">rho_MO_exch_disp_s2</span> <span class="o">=</span> <span class="n">get_exch_disp_s2_density</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">monomer</span><span class="p">)</span>
+
+    <span class="c1"># sum up all contributions</span>
+    <span class="n">rho_MO_total</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">rho_MO_pol</span>
+        <span class="o">+</span> <span class="n">rho_MO_exch</span>
+        <span class="o">+</span> <span class="n">rho_MO_ind</span>
+        <span class="o">+</span> <span class="n">rho_MO_exch_ind_s2</span>  <span class="c1"># NOTE: change into Sinf version when ready</span>
+        <span class="o">+</span> <span class="n">rho_MO_disp</span>
+        <span class="o">+</span> <span class="n">rho_MO_exch_disp_s2</span>  <span class="c1"># NOTE: change into Sinf version when ready</span>
+    <span class="p">)</span>
+
+    <span class="c1"># prepare total Induction and Dispersion densities</span>
+    <span class="n">rho_MO_IND</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">rho_MO_ind</span> <span class="o">+</span> <span class="n">rho_MO_exch_ind_s2</span>
+    <span class="p">)</span>  <span class="c1"># NOTE: change into Sinf version when ready</span>
+    <span class="n">rho_MO_DISP</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">rho_MO_disp</span> <span class="o">+</span> <span class="n">rho_MO_exch_disp_s2</span>
+    <span class="p">)</span>  <span class="c1"># NOTE: change into Sinf version when ready</span>
+
+    <span class="n">rho_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;pol&quot;</span><span class="p">:</span> <span class="n">rho_MO_pol</span><span class="p">,</span>
+        <span class="s2">&quot;exch&quot;</span><span class="p">:</span> <span class="n">rho_MO_exch</span><span class="p">,</span>
+        <span class="s2">&quot;ind&quot;</span><span class="p">:</span> <span class="n">rho_MO_ind</span><span class="p">,</span>
+        <span class="s2">&quot;exch-ind_S2&quot;</span><span class="p">:</span> <span class="n">rho_MO_exch_ind_s2</span><span class="p">,</span>
+        <span class="s2">&quot;exch-ind&quot;</span><span class="p">:</span> <span class="n">rho_MO_exch_ind</span><span class="p">,</span>
+        <span class="s2">&quot;disp&quot;</span><span class="p">:</span> <span class="n">rho_MO_disp</span><span class="p">,</span>
+        <span class="s2">&quot;exch-disp_S2&quot;</span><span class="p">:</span> <span class="n">rho_MO_exch_disp_s2</span><span class="p">,</span>
+        <span class="s2">&quot;Ind&quot;</span><span class="p">:</span> <span class="n">rho_MO_IND</span><span class="p">,</span>
+        <span class="s2">&quot;Disp&quot;</span><span class="p">:</span> <span class="n">rho_MO_DISP</span><span class="p">,</span>
+        <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="n">rho_MO_total</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">orbital_basis</span> <span class="o">==</span> <span class="s2">&quot;AO&quot;</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">rho_dict</span><span class="p">:</span>
+            <span class="n">rho_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">density_mo_to_ao</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">monomer</span><span class="p">,</span> <span class="n">rho_dict</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">rho_dict</span>
+
+    <span class="k">elif</span> <span class="n">orbital_basis</span> <span class="o">==</span> <span class="s2">&quot;MO&quot;</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">rho_dict</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Argument &#39;orbital_basis&#39; should be either &#39;MO&#39; or &#39;AO&#39; but was &#39;</span><span class="si">{</span><span class="n">orbital_basis</span><span class="si">}</span><span class="s2">&#39;!&quot;</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

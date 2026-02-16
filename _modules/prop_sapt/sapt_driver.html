@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.sapt_driver &mdash; prop-sapt 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#conda-environment">Conda Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finite-field-sapt">Finite Field SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#example-scripts">Example Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#core-functionality">Core Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#property-calculations">Property Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#jupyter-notebooks">Jupyter Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#orbital-visualization">Orbital Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#density-visualization">Density Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.finite_field">Finite Field SAPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.sapt_driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.sapt_driver</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SAPT Driver Module</span>
+<span class="sd">This module provides a function to calculate the SAPT energy components for a dimer system.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_memory_peak</span><span class="p">,</span> <span class="n">CalcTimer</span><span class="p">,</span> <span class="n">energy_printer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sapt_components</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calc_elst1_energy</span><span class="p">,</span>
+    <span class="n">calc_exch1_energy</span><span class="p">,</span>
+    <span class="n">calc_exch1_s2_energy</span><span class="p">,</span>
+    <span class="n">calc_ind2_energy</span><span class="p">,</span>
+    <span class="n">calc_ind2_r_energy</span><span class="p">,</span>
+    <span class="n">calc_disp2_energy</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="print_sapt_summary">
+<a class="viewcode-back" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_sapt_summary</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prints a summary of the SAPT energy components.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        results (pd.Series):  A pandas Series containing the SAPT energy components.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">line_width</span> <span class="o">=</span> <span class="mi">93</span>
+
+    <span class="c1"># Hader</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;            |------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;            |         SAPT Summary Table         | </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;            |------------------------------------| </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Table header</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="n">line_width</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="s2">&quot; Term                        Value (mEh)           Value (kcal/mol)           Value (kJ/mol)</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="n">line_width</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Electrostatics</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Electrostatics</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="n">line_width</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;ELST1&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;ELST1&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Exchange</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Exchange</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="n">line_width</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH1&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH1&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+    <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH1(S^2)&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH1(S^2)&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Induction</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Induction</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="n">line_width</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;IND2,R_A&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;IND2,R_A&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;IND2,R_B&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;IND2,R_B&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;IND2,R&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;IND2,R&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH-IND2,R_A&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH-IND2,R_A&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH-IND2,R_B&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH-IND2,R_B&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH-IND2,R&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH-IND2,R&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;IND2_A&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;IND2_A&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;IND2_B&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;IND2_B&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;IND2&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;IND2&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH-IND2_A&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH-IND2_A&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH-IND2_B&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH-IND2_B&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+        <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH-IND2&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH-IND2&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Dispersion</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;Dispersion</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="n">line_width</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;DISP2&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;DISP2&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+    <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;EXCH-DISP2&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;EXCH-DISP2&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Total energy</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">energy_printer</span><span class="p">(</span><span class="s2">&quot;TOTAL&quot;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;TOTAL&quot;</span><span class="p">],</span> <span class="n">output</span><span class="o">=</span><span class="s2">&quot;psi4&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="n">line_width</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="calc_sapt_energy">
+<a class="viewcode-back" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy">[docs]</a>
+<span class="nd">@trace_memory_peak</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_sapt_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate SAPT energy for a given dimer.</span>
+
+<span class="sd">    This function computes the SAPT energy components for a dimer system,</span>
+<span class="sd">    for now only SAPT0 of SAPT(DFT) levels (with uncoupled dispersion) are implemented.</span>
+<span class="sd">    The results are stored in a pandas Series and saved</span>
+<span class="sd">    to a CSV file specified in the `kwargs`.</span>
+
+<span class="sd">    The SAPT energy components are calculated as follows:</span>
+<span class="sd">    - ELST1: First-order electrostatic energy</span>
+<span class="sd">    - EXCH1: First-order exchange energy</span>
+<span class="sd">    - EXCH1(S^2): First-order exchange energy with S^2 correction</span>
+<span class="sd">    - IND2,R: Second-order induction energy (response)</span>
+<span class="sd">    - EXCH-IND2,R: Exchange-induction energy (response)</span>
+<span class="sd">    - DISP2: Second-order dispersion energy</span>
+<span class="sd">    - EXCH-DISP2: Exchange-dispersion energy</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        dimer (Dimer): A dimer system for which to calculate the SAPT energy.</span>
+
+<span class="sd">    Kwargs:</span>
+<span class="sd">        results (str | bool): Path to save the results CSV file. Defaults to &quot;results.csv&quot;.</span>
+<span class="sd">            If `False` results are not saved to CSV, if `True`, results are saved to &quot;results.csv&quot;.</span>
+<span class="sd">        response (bool): Whether to calculate response induction terms. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series: A pandas Series containing the SAPT energy components.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Print header</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        |-------------------------------------|        </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        |        Second-Quantized SAPT        |        </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        |-------------------------------------|        </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">tstart</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;SAPT energy calculations&quot;</span><span class="p">):</span>
+
+        <span class="n">pd_results_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">()</span>
+
+        <span class="c1"># First-order terms</span>
+        <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;ELST1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_elst1_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+        <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;EXCH1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_exch1_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+        <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;EXCH1(S^2)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_exch1_s2_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+
+        <span class="c1"># Second-order induction terms</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Default to True if not specified</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">ind2_results</span> <span class="o">=</span> <span class="n">calc_ind2_r_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+            <span class="n">pd_results_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd_results_series</span><span class="p">,</span> <span class="n">ind2_results</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">ind2_results</span> <span class="o">=</span> <span class="n">calc_ind2_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+            <span class="n">pd_results_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd_results_series</span><span class="p">,</span> <span class="n">ind2_results</span><span class="p">])</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid value for &#39;response&#39;. Must be True or False.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Second-order dispersion terms</span>
+        <span class="n">disp2_results</span> <span class="o">=</span> <span class="n">calc_disp2_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+        <span class="n">pd_results_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd_results_series</span><span class="p">,</span> <span class="n">disp2_results</span><span class="p">])</span>
+
+        <span class="c1"># Calculate total energy</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">ind_key</span> <span class="o">=</span> <span class="s2">&quot;IND2,R&quot;</span>
+            <span class="n">exch_ind_key</span> <span class="o">=</span> <span class="s2">&quot;EXCH-IND2,R&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ind_key</span> <span class="o">=</span> <span class="s2">&quot;IND2&quot;</span>
+            <span class="n">exch_ind_key</span> <span class="o">=</span> <span class="s2">&quot;EXCH-IND2&quot;</span>
+
+        <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;TOTAL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;ELST1&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;EXCH1&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="n">ind_key</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="n">exch_ind_key</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;DISP2&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;EXCH-DISP2&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;TOTAL(S^2)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;ELST1&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;EXCH1&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="n">ind_key</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="n">exch_ind_key</span> <span class="o">+</span> <span class="s2">&quot;(S^2)&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;DISP2&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">pd_results_series</span><span class="p">[</span><span class="s2">&quot;EXCH-DISP2(S^2)&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Print results</span>
+    <span class="n">print_sapt_summary</span><span class="p">(</span><span class="n">pd_results_series</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">))</span>
+
+    <span class="c1"># Save results to file</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">):</span>
+
+        <span class="n">results_fname</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="s2">&quot;results.csv&quot;</span><span class="p">)</span>
+        <span class="n">pd_results_series</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">results_fname</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">pd_results_series</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1036 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; prop-sapt 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#conda-environment">Conda Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#finite-field-sapt">Finite Field SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#customizing-calculations">Customizing Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-scripts">Example Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#core-functionality">Core Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#property-calculations">Property Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#jupyter-notebooks">Jupyter Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#orbital-visualization">Orbital Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#density-visualization">Density Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-prop_sapt.finite_field">Finite Field SAPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<p>This page contains the API reference for the prop_sapt package.</p>
+<section id="module-prop_sapt.molecule">
+<span id="dimer-class"></span><h2>Dimer Class<a class="headerlink" href="#module-prop_sapt.molecule" title="Link to this heading"></a></h2>
+<p>Definition of a core Dimer (molecule-like) class.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">prop_sapt.molecule.</span></span><span class="sig-name descname"><span class="pre">Dimer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RHF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sinfinity</span></code></p>
+<p>Core dimer (molecule-like) class.</p>
+<p>Initialises and stores all necessary values
+for ‘propSAPT’ clalculations.
+Performs SCF calculations for the monomers.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer.get_cpscf_ra">
+<span class="sig-name descname"><span class="pre">get_cpscf_ra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer.get_cpscf_ra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer.get_cpscf_ra" title="Link to this definition"></a></dt>
+<dd><p>Grab CPSCF response amplitudes for monomer A or calculate them if they haven’t been
+calculated already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response amplitudes for monomer A.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer.get_cpscf_sb">
+<span class="sig-name descname"><span class="pre">get_cpscf_sb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer.get_cpscf_sb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer.get_cpscf_sb" title="Link to this definition"></a></dt>
+<dd><p>Grab CPSCF response amplitudes for monomer B or calculate them if they haven’t been
+calculated already.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Response amplitudes for monomer B.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer.get_psi4_basisset">
+<span class="sig-name descname"><span class="pre">get_psi4_basisset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BasisSet</span></span></span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer.get_psi4_basisset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer.get_psi4_basisset" title="Link to this definition"></a></dt>
+<dd><p>Get ‘psi4.core.BasisSet’ object of the molecule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Psi4 basis set object of the dimer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>psi4.core.BasisSet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer.get_psi4_molecule">
+<span class="sig-name descname"><span class="pre">get_psi4_molecule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Molecule</span></span></span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer.get_psi4_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer.get_psi4_molecule" title="Link to this definition"></a></dt>
+<dd><p>Get ‘psi4.core.Molecule’ object of the dimer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Psi4 molecule object of the dimer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>psi4.core.Molecule</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer.get_psi4_wavefunction">
+<span class="sig-name descname"><span class="pre">get_psi4_wavefunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Wavefunction</span></span></span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer.get_psi4_wavefunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer.get_psi4_wavefunction" title="Link to this definition"></a></dt>
+<dd><p>Get ‘psi4.core.Wavefunction’ object of the dimer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Psi4 wavefunction object of the dimer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>psi4.core.Wavefunction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer.make_cube">
+<span class="sig-name descname"><span class="pre">make_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.14)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'density'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer.make_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer.make_cube" title="Link to this definition"></a></dt>
+<dd><p>Create a <cite>Cube</cite> object with volumetric data of the given <cite>matrix</cite> calculated on a grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrix</strong> (<em>np.ndarray</em>) – Either density matrix or orbital coefficients vector.</p></li>
+<li><p><strong>obj_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Specifies the <cite>matrix</cite> argument type, either “density” or
+“orbital”. Defaults to “density”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Resulting Cube.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.molecule.Dimer.save_cube">
+<span class="sig-name descname"><span class="pre">save_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.14)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'density'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'density.cube'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/molecule.html#Dimer.save_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.molecule.Dimer.save_cube" title="Link to this definition"></a></dt>
+<dd><p>Evaluate <cite>matrix</cite> values on a grid and save to a .cube file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrix</strong> (<em>np.ndarray</em>) – Either density matrix or orbital coefficients vector.</p></li>
+<li><p><strong>obj_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Specifies the <cite>matrix</cite> argument type, either “density” or
+“orbital”. Defaults to “density”.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – File path to save resulting cube. Defaults to “density.cube”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-prop_sapt.properties">
+<span id="properties"></span><h2>Properties<a class="headerlink" href="#module-prop_sapt.properties" title="Link to this heading"></a></h2>
+<p>Calculations of SAPT one-electron properties.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.properties.calc_induced_dipole">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.properties.</span></span><span class="sig-name descname"><span class="pre">calc_induced_dipole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><span class="pre">Dimer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/properties.html#calc_induced_dipole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.properties.calc_induced_dipole" title="Link to this definition"></a></dt>
+<dd><p>Calculate interaction-induced dipole moment along X, Y and Z axes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mol</strong> (<a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><em>Dimer</em></a>) – A dimer system.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.properties.calc_property">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.properties.</span></span><span class="sig-name descname"><span class="pre">calc_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><span class="pre">Dimer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/properties.html#calc_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.properties.calc_property" title="Link to this definition"></a></dt>
+<dd><p>Calculation of interaction-induced property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><em>Dimer</em></a>) – A dimer system.</p></li>
+<li><p><strong>prop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>np.ndarray</em>) – Property to calculate. Either name of already implemented
+property, e.g. dipole moment (prop=”dipole”) or an array with matrix representation,
+in AO basis, of the operator corresponding to a property to calculate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.properties.perform_property_contractions">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.properties.</span></span><span class="sig-name descname"><span class="pre">perform_property_contractions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><span class="pre">Dimer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_matix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/properties.html#perform_property_contractions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.properties.perform_property_contractions" title="Link to this definition"></a></dt>
+<dd><p>Calculates property contributions. Returns pandas.DataFrame with values of separate
+contributions and sumed up total.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><em>Dimer</em></a>) – A dimer system.</p></li>
+<li><p><strong>property_matix</strong> (<em>np.ndarray</em>) – A matrix representation of the operator corresponding
+to a property to calculate, in AO basis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame with results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-prop_sapt.densities">
+<span id="densities"></span><h2>Densities<a class="headerlink" href="#module-prop_sapt.densities" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.densities.calc_densities">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.densities.</span></span><span class="sig-name descname"><span class="pre">calc_densities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><span class="pre">Dimer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbital_basis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AO'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_cubes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubes_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_matrices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrices_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/prop_sapt/densities.html#calc_densities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.densities.calc_densities" title="Link to this definition"></a></dt>
+<dd><p>Calculate interaction-induced changes in the density matrix of dimer (and both monomers).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><em>Dimer</em></a>) – A dimer system.</p></li>
+<li><p><strong>orbital_basis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Select orbital basis of the returned density matrix, either
+“AO” or “MO”. Defaults to “AO”.</p></li>
+<li><p><strong>save_cubes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to save density cubes. Defaults to False.</p></li>
+<li><p><strong>cubes_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Directory to save density cubes. Defaults to “.”.</p></li>
+<li><p><strong>save_matrices</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to save density matrices. Defaults to False.</p></li>
+<li><p><strong>matrices_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Directory to save density matrices. Defaults to “.”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of density matrices.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.densities.calc_density_matrix">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.densities.</span></span><span class="sig-name descname"><span class="pre">calc_density_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><span class="pre">Dimer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">monomer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbital_basis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AO'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/prop_sapt/densities.html#calc_density_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.densities.calc_density_matrix" title="Link to this definition"></a></dt>
+<dd><p>Calculate interaction-induced change in the density matrix of the ‘monomer’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><em>Dimer</em></a>) – A dimer system.</p></li>
+<li><p><strong>monomer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Select a monomer, either “A” or “B”.</p></li>
+<li><p><strong>orbital_basis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Select orbital baisi of the returned density matrix, either
+“AO” or “MO”. Defaults to “AO”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionary with three matrices, with keys “pol”, “exch” and “total”.</dt><dd><p>”pol”: First-order polarisation correction to the change in the monomer density matrix.
+“exch”: First-order exchange correction to the change in the monomer density matrix.
+“total”: Sum of polarisation and exchange corrections.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, np.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.densities.density_mo_to_ao">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.densities.</span></span><span class="sig-name descname"><span class="pre">density_mo_to_ao</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><span class="pre">Dimer</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">monomer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">density_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/densities.html#density_mo_to_ao"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.densities.density_mo_to_ao" title="Link to this definition"></a></dt>
+<dd><p>Transform density matrix from MO to AO.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><em>Dimer</em></a>) – A dimer system.</p></li>
+<li><p><strong>monomer</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Select a monomer, either “A” or “B”.</p></li>
+<li><p><strong>density_matrix</strong> (<em>np.ndarray</em>) – Density matrix to transform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed density matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-prop_sapt.sapt_driver">
+<span id="sapt-driver"></span><h2>SAPT Driver<a class="headerlink" href="#module-prop_sapt.sapt_driver" title="Link to this heading"></a></h2>
+<p>SAPT Driver Module
+This module provides a function to calculate the SAPT energy components for a dimer system.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.sapt_driver.calc_sapt_energy">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.sapt_driver.</span></span><span class="sig-name descname"><span class="pre">calc_sapt_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><span class="pre">Dimer</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.0)"><span class="pre">Series</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/sapt_driver.html#calc_sapt_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.sapt_driver.calc_sapt_energy" title="Link to this definition"></a></dt>
+<dd><p>Calculate SAPT energy for a given dimer.</p>
+<p>This function computes the SAPT energy components for a dimer system,
+for now only SAPT0 of SAPT(DFT) levels (with uncoupled dispersion) are implemented.
+The results are stored in a pandas Series and saved
+to a CSV file specified in the <cite>kwargs</cite>.</p>
+<p>The SAPT energy components are calculated as follows:
+- ELST1: First-order electrostatic energy
+- EXCH1: First-order exchange energy
+- EXCH1(S^2): First-order exchange energy with S^2 correction
+- IND2,R: Second-order induction energy (response)
+- EXCH-IND2,R: Exchange-induction energy (response)
+- DISP2: Second-order dispersion energy
+- EXCH-DISP2: Exchange-dispersion energy</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dimer</strong> (<a class="reference internal" href="#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><em>Dimer</em></a>) – A dimer system for which to calculate the SAPT energy.</p>
+</dd>
+</dl>
+<dl>
+<dt>Kwargs:</dt><dd><dl class="simple">
+<dt>results (str | bool): Path to save the results CSV file. Defaults to “results.csv”.</dt><dd><p>If <cite>False</cite> results are not saved to CSV, if <cite>True</cite>, results are saved to “results.csv”.</p>
+</dd>
+</dl>
+<p>response (bool): Whether to calculate response induction terms. Defaults to True.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A pandas Series containing the SAPT energy components.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.sapt_driver.print_sapt_summary">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.sapt_driver.</span></span><span class="sig-name descname"><span class="pre">print_sapt_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.0)"><span class="pre">Series</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/sapt_driver.html#print_sapt_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.sapt_driver.print_sapt_summary" title="Link to this definition"></a></dt>
+<dd><p>Prints a summary of the SAPT energy components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>results</strong> (<em>pd.Series</em>) – A pandas Series containing the SAPT energy components.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-prop_sapt.finite_field">
+<span id="finite-field-sapt"></span><h2>Finite Field SAPT<a class="headerlink" href="#module-prop_sapt.finite_field" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.finite_field.calc_ff_dipole">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.finite_field.</span></span><span class="sig-name descname"><span class="pre">calc_ff_dipole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'two_point'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/finite_field/core.html#calc_ff_dipole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.finite_field.calc_ff_dipole" title="Link to this definition"></a></dt>
+<dd><p>Calculate the finite field dipole moment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Geometry of the molecule in Psi4 format.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Electronic structure method to use (e.g., “HF”, “DFT”).</p></li>
+<li><p><strong>prop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>np.ndarray</em>) – Property to calculate (e.g., “dipole”).</p></li>
+<li><p><strong>cp_correction</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to apply counterpoise correction. Defaults to False.</p></li>
+<li><p><strong>field_strength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Strength of the external electric field in atomic units. Defaults to 0.001.</p></li>
+<li><p><strong>formula</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Finite difference formula to use (“two_point” or “four_point”). Defaults to “two_point”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame containing the finite field dipole moment results.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.finite_field.calc_ff_sapt_dipole">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.finite_field.</span></span><span class="sig-name descname"><span class="pre">calc_ff_sapt_dipole</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'RHF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sapt_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/finite_field/core.html#calc_ff_sapt_dipole"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.finite_field.calc_ff_sapt_dipole" title="Link to this definition"></a></dt>
+<dd><p>Calculate the finite field SAPT dipole moment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Geometry of the dimer in Psi4 format.</p></li>
+<li><p><strong>reference</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Reference wavefunction type. Defaults to “RHF”.</p></li>
+<li><p><strong>field_strength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Strength of the external electric field. Defaults to 0.001.</p></li>
+<li><p><strong>sapt_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>optional</em>) – Additional arguments for SAPT calculations. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame containing the results of the finite field SAPT calculation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.finite_field.calculate_ff_dipole_along_axis">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.finite_field.</span></span><span class="sig-name descname"><span class="pre">calculate_ff_dipole_along_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'two_point'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.0)"><span class="pre">Series</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/finite_field/core.html#calculate_ff_dipole_along_axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.finite_field.calculate_ff_dipole_along_axis" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.finite_field.</span></span><span class="sig-name descname"><span class="pre">calculate_ff_sapt_dipole_along_axis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'RHF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sapt_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series" title="(in pandas v3.0.0)"><span class="pre">Series</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/finite_field/core.html#calculate_ff_sapt_dipole_along_axis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis" title="Link to this definition"></a></dt>
+<dd><p>Calculate the finite field SAPT dipole moment along a specified axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Geometry of the dimer in Psi4 format.</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Axis along which to calculate the dipole moment (e.g., “X”, “Y”, “Z”).</p></li>
+<li><p><strong>reference</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Reference wavefunction type. Defaults to “RHF”.</p></li>
+<li><p><strong>field_strength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Strength of the external electric field. Defaults to 0.001.</p></li>
+<li><p><strong>sapt_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>optional</em>) – Additional arguments for SAPT calculations. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Series containing the results of the finite field SAPT calculation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.finite_field.finite_field_property">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.finite_field.</span></span><span class="sig-name descname"><span class="pre">finite_field_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cp_correction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'two_point'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/finite_field/core.html#finite_field_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.finite_field.finite_field_property" title="Link to this definition"></a></dt>
+<dd><p>Calculate the interaction-induced property using finite field method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Geometry of the molecule in Psi4 format.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Electronic structure method to use (e.g., “HF”, “DFT”).</p></li>
+<li><p><strong>prop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>np.ndarray</em>) – Property to calculate (e.g., “dipole”).</p></li>
+<li><p><strong>field_strength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Strength of the external electric field in atomic units. Defaults to 0.001.</p></li>
+<li><p><strong>formula</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Finite difference formula to use (“two_point” or “four_point”). Defaults to “two_point”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the property is not implemented.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the calculation fails.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing the results of the finite field property calculation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.finite_field.finite_field_sapt">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.finite_field.</span></span><span class="sig-name descname"><span class="pre">finite_field_sapt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'RHF'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_strength</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sapt_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/finite_field/core.html#finite_field_sapt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.finite_field.finite_field_sapt" title="Link to this definition"></a></dt>
+<dd><p>Calculate the interaction-induced property using finite field SAPT.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Geometry of the dimer in Psi4 format.</p></li>
+<li><p><strong>prop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>np.ndarray</em>) – Property to calculate (e.g., “dipole”).</p></li>
+<li><p><strong>field_strength</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Strength of the external electric field. Defaults to 0.001.</p></li>
+<li><p><strong>sapt_kwargs</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>optional</em>) – Additional arguments for SAPT calculations. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the property is not implemented.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the SAPT calculation fails.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame containing the results of the finite field SAPT calculation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-prop_sapt.utils">
+<span id="utility-functions"></span><h2>Utility Functions<a class="headerlink" href="#module-prop_sapt.utils" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="prop_sapt.utils.CalcTimer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">prop_sapt.utils.</span></span><span class="sig-name descname"><span class="pre">CalcTimer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/utils.html#CalcTimer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.utils.CalcTimer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class to time calculations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.utils.CalcTimer.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/utils.html#CalcTimer.__enter__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.utils.CalcTimer.__enter__" title="Link to this definition"></a></dt>
+<dd><p>Starts the timer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns the CalcTimer instance to allow for use in a <cite>with</cite> statement.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#prop_sapt.utils.CalcTimer" title="prop_sapt.utils.CalcTimer">CalcTimer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.utils.CalcTimer.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/utils.html#CalcTimer.__exit__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.utils.CalcTimer.__exit__" title="Link to this definition"></a></dt>
+<dd><p>Stops the timer. And prints out the time taken for the operation into the output file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.utils.CalcTimer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/utils.html#CalcTimer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.utils.CalcTimer.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initializes timer with a name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the timed operation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.utils.energy_printer">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.utils.</span></span><span class="sig-name descname"><span class="pre">energy_printer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'psi4'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/utils.html#energy_printer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.utils.energy_printer" title="Link to this definition"></a></dt>
+<dd><p>Prints out the energy value in mH and kcal/mol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the energy term.</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Value of the energy term in Hartree.</p></li>
+<li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Output method. Defaults to “psi4” - Psi4’s output file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If an unknown output type is provided.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the output filename is not provided when output is ‘file’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.utils.prepare_path">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.utils.</span></span><span class="sig-name descname"><span class="pre">prepare_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/utils.html#prepare_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.utils.prepare_path" title="Link to this definition"></a></dt>
+<dd><p>Create directories (and subdirectories) from <cite>file_path</cite> if they don’t exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to check or create.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The <cite>file_path</cite> given.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.utils.trace_memory_peak">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.utils.</span></span><span class="sig-name descname"><span class="pre">trace_memory_peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.14)"><span class="pre">Callable</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/utils.html#trace_memory_peak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.utils.trace_memory_peak" title="Link to this definition"></a></dt>
+<dd><p>Decorator. Trace peak memory usage of ‘func’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>Callable</em>) – A function to trace peak memory usage.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-prop_sapt.cubes">
+<span id="cube-files"></span><h2>Cube Files<a class="headerlink" href="#module-prop_sapt.cubes" title="Link to this heading"></a></h2>
+<p>Cube files related things.</p>
+<p>Cube file refefence:
+<a class="reference external" href="https://paulbourke.net/dataformats/cube/">https://paulbourke.net/dataformats/cube/</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="prop_sapt.cubes.Cube">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">Cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/cubes.html#Cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.Cube" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class for storing cube files.</p>
+<dl>
+<dt>Params:</dt><dd><p>comment1 (str): First comment line of <cite>.cube</cite> file.
+comment2 (str): Second comment line of <cite>.cube</cite> file.
+origin (list[float]): Origin of the grid.
+n_atoms (int): Number of atoms.
+atoms (list): List of tuples describing molecule.</p>
+<blockquote>
+<div><p>Should look like: (atomic_number, charge, xyz_coordinates).
+Coordinates should be in bohr.</p>
+</div></blockquote>
+<p>n_x (int): Number of grid points in x direction.
+n_y (int): Number of grid points in y direction.
+n_z (int): Number of grid points in z direction.
+x_vector (np.ndarray): Grid step in x direction.
+y_vector (np.ndarray): Grid step in y direction.
+z_vector (np.ndarray): Grid step in z direction.
+volumetric_data (np.ndarray): Array with values at the grid points.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Initialised cube object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a></p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.cubes.Cube.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#Cube.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.Cube.copy" title="Link to this definition"></a></dt>
+<dd><p>Create a copy of the <cite>Cube</cite> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Copied cube.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.cubes.Cube.from_file">
+<span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#Cube.from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.Cube.from_file" title="Link to this definition"></a></dt>
+<dd><p>Read cube data form <cite>filename</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Loaded cube.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.cubes.Cube.moved_charge">
+<span class="sig-name descname"><span class="pre">moved_charge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#Cube.moved_charge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.Cube.moved_charge" title="Link to this definition"></a></dt>
+<dd><p>Calculate the total charge moved by the density described by the cube.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total charge moved.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="prop_sapt.cubes.Cube.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/cubes.html#Cube.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.Cube.save" title="Link to this definition"></a></dt>
+<dd><p>“Save a <cite>Cuve</cite> object inot <cite>filename</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – File path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.add_cubes">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">add_cubes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cubes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#add_cubes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.add_cubes" title="Link to this definition"></a></dt>
+<dd><p>Calculate a sum of volumetric data of multiple cubes.</p>
+<p>Cube grids have to be the same for this operation.
+Data about molecule geometry is taken from the first cube.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cubes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a><em>] </em><em>| </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a><em>, </em><em>...</em><em>]</em>) – List or tuple of cubes to add together.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Resulting Cube.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.calculate_isocontour">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">calculate_isocontour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volumetric_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'density'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#calculate_isocontour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.calculate_isocontour" title="Link to this definition"></a></dt>
+<dd><p>Calculate isocontour values for a given <cite>threshlod</cite>,
+assumed as the density fraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>volumetric_data</strong> (<em>np.ndarray</em><em> | </em><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a>) – Data for isovale calculations.</p></li>
+<li><p><strong>threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Fraction of the density to be inside of the isosurface
+described by isovalues. Defaults to 0.85.</p></li>
+<li><p><strong>obj_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – Specifies the type of volumetric data,
+either “density” or “orbital”. Defaults to “density”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Isovalues tuple.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.cosine_similarity">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">cosine_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#cosine_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.cosine_similarity" title="Link to this definition"></a></dt>
+<dd><p>Calculate cosine similarity between two cubes. Assumes the cubes have the same grid.</p>
+<p>The cosine similarity is calculated as:</p>
+<blockquote>
+<div><p>cosine_similarity = (A . B) / (||A|| ||B||)</p>
+</div></blockquote>
+<p>utilizing the L2 norm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cube_1</strong> (<a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a>) – First cube.</p></li>
+<li><p><strong>cube_2</strong> (<a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a>) – Second cube.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the cubes have different origins.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the cubes have different grid vectors.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cosine similarity between the two cubes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.make_cube">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">make_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Molecule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.14)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.14)"><span class="pre">Iterable</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'density'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#make_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.make_cube" title="Link to this definition"></a></dt>
+<dd><p>Create a <cite>Cube</cite> object with volumetric data of the given <cite>matrix</cite>
+calculated on a grid for a psi4 <cite>Molecule</cite> object. If iterables with matrices and types
+are given as <cite>matrix</cite> and <cite>obj_type</cite> returns a list with a Cube for each element of the list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mol</strong> (<em>psi4.core.Molecule</em>) – A corresponding molecule.</p></li>
+<li><p><strong>matrices</strong> (<em>np.ndarray</em><em> | </em><em>Iterable</em><em>[</em><em>np.ndarray</em><em>]</em>) – Either density matrix,
+orbital coefficients vector, or list of such objects.</p></li>
+<li><p><strong>obj_types</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Specifies the <cite>matrices</cite> argument type(s),
+must be either “density”, “orbital” or a list with such strings. Defaults to “density”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Resulting cube(s).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.prepare_grid">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">prepare_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_overage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#prepare_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.prepare_grid" title="Link to this definition"></a></dt>
+<dd><p>Prepares a simple scalar grid in 3D space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>geometry</strong> (<em>np.ndarray</em>) – Molecule geometry. Shloud have shape (N_atom, 3).</p></li>
+<li><p><strong>grid_step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a>) – Step size of the grid (in bohr). If float then the same step
+is applied in all directions. If tuple, should have length 3, specifies step size
+for x, y and z directions separately.</p></li>
+<li><p><strong>grid_overage</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a>) – Overage of the grid (in bohr). If float then the same overage
+in all directions. If tuple, should have length 3, specifies grid overage
+for x, y and z directions separately.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Grid info.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.read_cube_file">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">read_cube_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#read_cube_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.read_cube_file" title="Link to this definition"></a></dt>
+<dd><p>Reads the data form .cube file <cite>filename</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Path to file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Loaded cube.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.save_cube_file">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">save_cube_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/prop_sapt/cubes.html#save_cube_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.save_cube_file" title="Link to this definition"></a></dt>
+<dd><p>Saves a <cite>Cube</cite> object, into the cube file: <cite>filename</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cube</strong> (<a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a>) – Cube object to be saved.</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – File path.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="prop_sapt.cubes.subtract_cubes">
+<span class="sig-prename descclassname"><span class="pre">prop_sapt.cubes.</span></span><span class="sig-name descname"><span class="pre">subtract_cubes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cube_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">cube_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><span class="pre">Cube</span></a></span></span><a class="reference internal" href="_modules/prop_sapt/cubes.html#subtract_cubes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#prop_sapt.cubes.subtract_cubes" title="Link to this definition"></a></dt>
+<dd><p>Calculate a difference between volumetric data of two cubes.</p>
+<p>Cube grids have to be the same for this operation.
+Data about molecule geometry is taken from <cite>cube_1</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cube_1</strong> (<a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a>) – Cube serving as minuend.</p></li>
+<li><p><strong>cube_2</strong> (<a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><em>Cube</em></a>) – Cube serving as subtrahend.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Resulting Cube.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube">Cube</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

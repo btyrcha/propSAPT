@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Guide &mdash; prop-sapt 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#conda-environment">Conda Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finite-field-sapt">Finite Field SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-calculations">Customizing Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#example-scripts">Example Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#core-functionality">Core Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#property-calculations">Property Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#jupyter-notebooks">Jupyter Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#orbital-visualization">Orbital Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples.html#density-visualization">Density Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.finite_field">Finite Field SAPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-guide">
+<h1>Usage Guide<a class="headerlink" href="#usage-guide" title="Link to this heading"></a></h1>
+<p>This guide provides an overview of how to use prop-sapt for your calculations.</p>
+<section id="basic-workflow">
+<h2>Basic Workflow<a class="headerlink" href="#basic-workflow" title="Link to this heading"></a></h2>
+<p>The typical workflow for using prop-sapt involves:</p>
+<ol class="arabic simple">
+<li><p>Define your dimer geometry</p></li>
+<li><p>Create a Dimer object</p></li>
+<li><p>Calculate SAPT energy decomposition</p></li>
+<li><p>Compute interaction-induced properties and/or density matrices</p></li>
+<li><p>Analyze and visualize results</p></li>
+</ol>
+</section>
+<section id="creating-a-dimer">
+<h2>Creating a Dimer<a class="headerlink" href="#creating-a-dimer" title="Link to this heading"></a></h2>
+<p>The fundamental object in prop-sapt is the <code class="docutils literal notranslate"><span class="pre">Dimer</span></code> class.
+It is created by providing a geometry string in Psi4 format, which should include two fragments (for both monomers) separated by <code class="docutils literal notranslate"><span class="pre">--</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span>
+
+<span class="c1"># Define geometry in Psi4 format</span>
+<span class="n">geometry</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">0 1</span>
+<span class="s2">O  0.000000  0.000000  0.000000</span>
+<span class="s2">H  0.758602  0.000000  0.504284</span>
+<span class="s2">H  0.260455  0.000000 -0.872893</span>
+<span class="s2">--</span>
+<span class="s2">0 1</span>
+<span class="s2">O  3.000000  0.000000  0.000000</span>
+<span class="s2">H  3.758602  0.000000  0.504284</span>
+<span class="s2">H  3.260455  0.000000 -0.872893</span>
+<span class="s2">units angstrom</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Create dimer with optional parameters</span>
+<span class="n">dimer</span> <span class="o">=</span> <span class="n">Dimer</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;RHF&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If your geometry string will include more fragments, they will be treated as ghost atoms.
+You can specify midbonds and farbonds in this way.</p>
+</section>
+<section id="sapt-energy-calculations">
+<h2>SAPT Energy Calculations<a class="headerlink" href="#sapt-energy-calculations" title="Link to this heading"></a></h2>
+<p>To perform SAPT energy decomposition at the SAPT0 level:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_sapt_energy</span>
+
+<span class="c1"># Calculate all SAPT components</span>
+<span class="n">energy_result</span> <span class="o">=</span> <span class="n">calc_sapt_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">energy_result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result is a pandas DataFrame containing all SAPT energy components.</p>
+</section>
+<section id="property-calculations">
+<h2>Property Calculations<a class="headerlink" href="#property-calculations" title="Link to this heading"></a></h2>
+<p>To calculate interaction-induced properties for a general one-electron operator:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_property</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Define property operator (e.g., dipole moment in z-direction) in AO basis</span>
+<span class="n">property_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">...</span><span class="p">])</span>
+
+<span class="c1"># Calculate property contributions</span>
+<span class="n">property_result</span> <span class="o">=</span> <span class="n">calc_property</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="n">property_matrix</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">property_result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For predefined properties, you can use the convenience functions, e.g., to calculate the dipole moment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_property</span>
+
+<span class="n">dipole_result</span> <span class="o">=</span> <span class="n">calc_property</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="s2">&quot;dipole&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="density-matrix-calculations">
+<h2>Density Matrix Calculations<a class="headerlink" href="#density-matrix-calculations" title="Link to this heading"></a></h2>
+<p>To compute interaction-induced density matrix components from propSAPT:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_densities</span>
+
+<span class="n">density_matrices</span> <span class="o">=</span> <span class="n">calc_densities</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result is a dictionary containing density matrices for each SAPT component.
+They can also be saved in <code class="file docutils literal notranslate"><span class="pre">.cube</span></code> format for visualization (add parameter <code class="code highlight python docutils literal highlight-python"><span class="n">save_cubes</span><span class="o">=</span><span class="kc">True</span></code>)
+or in <code class="file docutils literal notranslate"><span class="pre">.npy</span></code> format for further analysis (add parameter <code class="code highlight python docutils literal highlight-python"><span class="n">save_matrices</span><span class="o">=</span><span class="kc">True</span></code>).</p>
+</section>
+<section id="finite-field-sapt">
+<h2>Finite Field SAPT<a class="headerlink" href="#finite-field-sapt" title="Link to this heading"></a></h2>
+<p>For finite field SAPT calculations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">finite_field_sapt</span>
+
+<span class="c1"># Perform finite field calculation</span>
+<span class="n">ff_result</span> <span class="o">=</span> <span class="n">finite_field_sapt</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span>
+    <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;Z&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-options">
+<h2>Advanced Options<a class="headerlink" href="#advanced-options" title="Link to this heading"></a></h2>
+<section id="customizing-calculations">
+<h3>Customizing Calculations<a class="headerlink" href="#customizing-calculations" title="Link to this heading"></a></h3>
+<p>You can customize various aspects of the calculation using Psi4 options before creating the Dimer object and running calculations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;basis&quot;</span><span class="p">:</span> <span class="s2">&quot;aug-cc-pvtz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DF_BASIS_SCF&quot;</span><span class="p">:</span> <span class="s2">&quot;aug-cc-pvtz-jkfit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DF_BASIS_SAPT&quot;</span><span class="p">:</span> <span class="s2">&quot;aug-cc-pvtz-ri&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;scf_type&quot;</span><span class="p">:</span> <span class="s2">&quot;direct&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;save_jk&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># necessary option</span>
+        <span class="s2">&quot;e_convergence&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span>
+        <span class="s2">&quot;d_convergence&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span>
+        <span class="c1"># Integral thresholds for higher precision</span>
+        <span class="s2">&quot;ints_tolerance&quot;</span><span class="p">:</span> <span class="mf">1e-14</span><span class="p">,</span>
+        <span class="s2">&quot;screening&quot;</span><span class="p">:</span> <span class="s2">&quot;schwarz&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cholesky_tolerance&quot;</span><span class="p">:</span> <span class="mf">1e-10</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="visualization">
+<h3>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h3>
+<p>The package includes utilities for visualizing orbitals and densities.
+See the Jupyter notebooks in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">visualise_orbital.ipynb</span></code> - Visualize molecular orbitals</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">visualise_density.ipynb</span></code> - Visualize density matrices</p></li>
+</ul>
+<p>For more examples, see the <a class="reference internal" href="examples.html"><span class="doc">Examples</span></a> section.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

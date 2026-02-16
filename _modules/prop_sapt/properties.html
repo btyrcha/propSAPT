@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.properties &mdash; prop-sapt 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#conda-environment">Conda Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finite-field-sapt">Finite Field SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#example-scripts">Example Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#core-functionality">Core Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#property-calculations">Property Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#jupyter-notebooks">Jupyter Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#orbital-visualization">Orbital Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#density-visualization">Density Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.finite_field">Finite Field SAPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.properties</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.properties</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Calculations of SAPT one-electron properties.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">opt_einsum</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oe</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_memory_peak</span><span class="p">,</span> <span class="n">CalcTimer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.properties_components</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calc_exch_ind2_resp_s2_property</span><span class="p">,</span>
+    <span class="n">calc_exch_ind2_resp_sinf_property</span><span class="p">,</span>
+    <span class="n">calc_exch_disp2_s2_property</span><span class="p">,</span>
+    <span class="n">calc_exch_disp2_sinf_property</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.properties_components.exch_ind2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_u_ra_amplitudes</span><span class="p">,</span>
+    <span class="n">get_u_sb_amplitudes</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># from .densities import density_mo_to_ao</span>
+<span class="c1"># from .densities_components import get_exch_ind_s2_density, get_exch_disp_s2_density</span>
+
+
+<div class="viewcode-block" id="perform_property_contractions">
+<a class="viewcode-back" href="../../api.html#prop_sapt.properties.perform_property_contractions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perform_property_contractions</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">property_matix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates property contributions. Returns pandas.DataFrame with values of separate</span>
+<span class="sd">    contributions and sumed up total.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (Dimer): A dimer system.</span>
+<span class="sd">        property_matix (np.ndarray): A matrix representation of the operator corresponding</span>
+<span class="sd">            to a property to calculate, in AO basis.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame with results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># prepare results DataFrame</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="c1"># variables for each axis</span>
+    <span class="n">prop_A_aa</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matix</span><span class="p">,</span> <span class="s2">&quot;aa&quot;</span><span class="p">)</span>
+    <span class="n">prop_A_ar</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matix</span><span class="p">,</span> <span class="s2">&quot;ar&quot;</span><span class="p">)</span>
+    <span class="n">prop_A_rr</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matix</span><span class="p">,</span> <span class="s2">&quot;rr&quot;</span><span class="p">)</span>
+
+    <span class="n">prop_B_bb</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matix</span><span class="p">,</span> <span class="s2">&quot;bb&quot;</span><span class="p">)</span>
+    <span class="n">prop_B_bs</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matix</span><span class="p">,</span> <span class="s2">&quot;bs&quot;</span><span class="p">)</span>
+    <span class="n">prop_B_ss</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matix</span><span class="p">,</span> <span class="s2">&quot;ss&quot;</span><span class="p">)</span>
+
+    <span class="c1"># relaxed amplitudes with dipole moment</span>
+    <span class="n">xt_A_ra</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">prop_A_ar</span><span class="p">)</span>
+    <span class="n">xt_B_sb</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">cpscf</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">prop_B_bs</span><span class="p">)</span>
+
+    <span class="c1"># SCF monomers</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x0_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;aa&quot;</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">)])</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x0_B&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;bb&quot;</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">)])</span>
+
+    <span class="c1">### First-order</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,ar&quot;</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_ar</span><span class="p">)])</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r_B&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,bs&quot;</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_bs</span><span class="p">)])</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r_A&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r_B&quot;</span><span class="p">]</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_S2_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,ar&quot;</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ar_S2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,ra&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ra_S2</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_S2_B&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,bs&quot;</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_bs_S2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,sb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_sb_S2</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_S2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_S2_A&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_S2_B&quot;</span><span class="p">]</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,ar&quot;</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ar</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,ra&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ra</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_B&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,bs&quot;</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_bs</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,sb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_sb</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_A&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r_B&quot;</span><span class="p">]</span>
+
+    <span class="c1">### Second-order</span>
+
+    <span class="c1">## Induction</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">+</span><span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;ra,Qar,Qbs,sb&quot;</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,ac,rc&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_aa</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ra,cr,ca&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_rr</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ac,rc,ra&quot;</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">())</span>
+            <span class="o">+</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;cr,ca,ra&quot;</span><span class="p">,</span> <span class="n">prop_A_rr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">())</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r_B&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">+</span><span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">&quot;sb,Qar,Qbs,ra&quot;</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,bc,sc&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_bb</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;sb,cs,cb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_ss</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;bc,sc,sb&quot;</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">())</span>
+            <span class="o">+</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;cs,cb,sb&quot;</span><span class="p">,</span> <span class="n">prop_B_ss</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">())</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r_A&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r_B&quot;</span><span class="p">]</span>
+
+    <span class="c1">## Exchange-Induction S^2</span>
+
+    <span class="c1"># NOTE: Unsplitable version</span>
+    <span class="n">u_ra</span> <span class="o">=</span> <span class="n">get_u_ra_amplitudes</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">prop_A_aa</span><span class="o">=</span><span class="n">prop_A_aa</span><span class="p">,</span>
+        <span class="n">prop_A_rr</span><span class="o">=</span><span class="n">prop_A_rr</span><span class="p">,</span>
+        <span class="n">prop_B_bs</span><span class="o">=</span><span class="n">prop_B_bs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">u_sb</span> <span class="o">=</span> <span class="n">get_u_sb_amplitudes</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">prop_A_ar</span><span class="o">=</span><span class="n">prop_A_ar</span><span class="p">,</span>
+        <span class="n">prop_B_bb</span><span class="o">=</span><span class="n">prop_B_bb</span><span class="p">,</span>
+        <span class="n">prop_B_ss</span><span class="o">=</span><span class="n">prop_B_ss</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-ind,r_S2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_exch_ind2_resp_s2_property</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">u_ra</span><span class="o">=</span><span class="n">u_ra</span><span class="p">,</span>
+        <span class="n">u_sb</span><span class="o">=</span><span class="n">u_sb</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># NOTE: Splitable code through densities</span>
+    <span class="c1"># rho_exch_ind_s2_A = get_exch_ind_s2_density(mol=mol, monomer=&quot;A&quot;)</span>
+    <span class="c1"># rho_exch_ind_s2_A = density_mo_to_ao(</span>
+    <span class="c1">#     mol=mol,</span>
+    <span class="c1">#     monomer=&quot;A&quot;,</span>
+    <span class="c1">#     density_matrix=rho_exch_ind_s2_A,</span>
+    <span class="c1"># )</span>
+    <span class="c1"># results[&quot;x2_exch-ind,r_S2_A&quot;] = np.array(</span>
+    <span class="c1">#     [2 * np.trace(rho_exch_ind_s2_A @ property_matix)]</span>
+    <span class="c1"># )</span>
+
+    <span class="c1"># rho_exch_ind_s2_B = get_exch_ind_s2_density(mol=mol, monomer=&quot;B&quot;)</span>
+    <span class="c1"># rho_exch_ind_s2_B = density_mo_to_ao(</span>
+    <span class="c1">#     mol=mol,</span>
+    <span class="c1">#     monomer=&quot;B&quot;,</span>
+    <span class="c1">#     density_matrix=rho_exch_ind_s2_B,</span>
+    <span class="c1"># )</span>
+    <span class="c1"># results[&quot;x2_exch-ind,r_S2_B&quot;] = np.array(</span>
+    <span class="c1">#     [2 * np.trace(rho_exch_ind_s2_B @ property_matix)]</span>
+    <span class="c1"># )</span>
+
+    <span class="c1"># results[&quot;x2_exch-ind,r_S2&quot;] = (</span>
+    <span class="c1">#     results[&quot;x2_exch-ind,r_S2_A&quot;] + results[&quot;x2_exch-ind,r_S2_B&quot;]</span>
+    <span class="c1"># )</span>
+
+    <span class="c1">## Exchange-Induction S^inf</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-ind,r&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">calc_exch_ind2_resp_sinf_property</span><span class="p">(</span>
+            <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+            <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+            <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+            <span class="n">u_ra</span><span class="o">=</span><span class="n">u_ra</span><span class="p">,</span>
+            <span class="n">u_sb</span><span class="o">=</span><span class="n">u_sb</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1">## Dispersion</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="c1"># 2 Re &lt;R(X)|V R(V)&gt;</span>
+            <span class="c1"># NOTE some response not coupled</span>
+            <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;rsab,Qcr,Qbs,ca&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;rsab,Qac,Qbs,rc&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="c1"># &lt;R(V)|d R(V)&gt;</span>
+            <span class="c1"># NOTE not coupled no response</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;ac,rscb,rsab&quot;</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;cr,csab,rsab&quot;</span><span class="p">,</span> <span class="n">prop_A_rr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp_B&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="c1"># 2 Re &lt;R(X)|V R(V)&gt;</span>
+            <span class="c1"># NOTE some response not coupled</span>
+            <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;rsab,Qar,Qcs,cb&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;rsab,Qar,Qbc,sc&quot;</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="c1"># &lt;R(V)|d R(V)&gt;</span>
+            <span class="c1"># NOTE not coupled no response</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;bc,rsac,rsab&quot;</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">&quot;cs,rcab,rsab&quot;</span><span class="p">,</span> <span class="n">prop_B_ss</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp_A&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp_B&quot;</span><span class="p">]</span>
+
+    <span class="c1">## Exchange-Dispersion S^2</span>
+
+    <span class="c1"># NOTE: Unsplitable version</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-disp_S2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_exch_disp2_s2_property</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">prop_A_aa</span><span class="o">=</span><span class="n">prop_A_aa</span><span class="p">,</span>
+        <span class="n">prop_A_rr</span><span class="o">=</span><span class="n">prop_A_rr</span><span class="p">,</span>
+        <span class="n">prop_B_bb</span><span class="o">=</span><span class="n">prop_B_bb</span><span class="p">,</span>
+        <span class="n">prop_B_ss</span><span class="o">=</span><span class="n">prop_B_ss</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># NOTE: Splitable code through densities</span>
+    <span class="c1"># rho_exch_disp_s2_A = get_exch_disp_s2_density(mol=mol, monomer=&quot;A&quot;)</span>
+    <span class="c1"># rho_exch_disp_s2_A = density_mo_to_ao(</span>
+    <span class="c1">#     mol=mol,</span>
+    <span class="c1">#     monomer=&quot;A&quot;,</span>
+    <span class="c1">#     density_matrix=rho_exch_disp_s2_A,</span>
+    <span class="c1"># )</span>
+    <span class="c1"># results[&quot;x2_exch-disp_S2_A&quot;] = np.array(</span>
+    <span class="c1">#     [2 * np.trace(rho_exch_disp_s2_A @ property_matix)]</span>
+    <span class="c1"># )</span>
+
+    <span class="c1"># rho_exch_disp_s2_B = get_exch_disp_s2_density(mol=mol, monomer=&quot;B&quot;)</span>
+    <span class="c1"># rho_exch_disp_s2_B = density_mo_to_ao(</span>
+    <span class="c1">#     mol=mol,</span>
+    <span class="c1">#     monomer=&quot;B&quot;,</span>
+    <span class="c1">#     density_matrix=rho_exch_disp_s2_B,</span>
+    <span class="c1"># )</span>
+    <span class="c1"># results[&quot;x2_exch-disp_S2_B&quot;] = np.array(</span>
+    <span class="c1">#     [2 * np.trace(rho_exch_disp_s2_B @ property_matix)]</span>
+    <span class="c1"># )</span>
+
+    <span class="c1"># results[&quot;x2_exch-disp_S2&quot;] = (</span>
+    <span class="c1">#     results[&quot;x2_exch-disp_S2_A&quot;] + results[&quot;x2_exch-disp_S2_B&quot;]</span>
+    <span class="c1"># )</span>
+
+    <span class="c1">## Exchange-Dispersion S^inf</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-disp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">calc_exch_disp2_sinf_property</span><span class="p">(</span>
+            <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+            <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+            <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+            <span class="n">prop_A_aa</span><span class="o">=</span><span class="n">prop_A_aa</span><span class="p">,</span>
+            <span class="n">prop_A_rr</span><span class="o">=</span><span class="n">prop_A_rr</span><span class="p">,</span>
+            <span class="n">prop_B_bb</span><span class="o">=</span><span class="n">prop_B_bb</span><span class="p">,</span>
+            <span class="n">prop_B_ss</span><span class="o">=</span><span class="n">prop_B_ss</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1">### Summing up contributions</span>
+
+    <span class="c1"># sum up first-order contributions</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_induced&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r&quot;</span><span class="p">]</span>
+
+    <span class="c1"># sum up all contributions</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_induced&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-ind,r&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-disp&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># sum up all contributions with S^2 exchange terms</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x_induced_S2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_pol,r&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x1_exch,r&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_ind,r&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-ind,r_S2&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_disp&quot;</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;x2_exch-disp_S2&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="calc_induced_dipole">
+<a class="viewcode-back" href="../../api.html#prop_sapt.properties.calc_induced_dipole">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_induced_dipole</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate interaction-induced dipole moment along X, Y and Z axes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (Dimer): A dimer system.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame with results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># grab nuclear dipole moment</span>
+    <span class="n">nuc_dipole</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">dimer</span><span class="o">.</span><span class="n">nuclear_dipole</span><span class="p">()</span>
+    <span class="n">nuc_dipole</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">nuc_dipole</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nuc_dipole</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nuc_dipole</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+
+    <span class="c1"># grab AO dipole moment matrices</span>
+    <span class="n">d_vec</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">mints</span><span class="o">.</span><span class="n">ao_dipole</span><span class="p">()</span>
+    <span class="n">d_vec</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">d_vec</span><span class="p">]</span>
+
+    <span class="c1"># prepare results</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="c1"># calculate for each axis</span>
+    <span class="k">for</span> <span class="n">d_i</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">d_vec</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]):</span>
+        <span class="n">res_i</span> <span class="o">=</span> <span class="n">perform_property_contractions</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">d_i</span><span class="p">)</span>
+        <span class="n">res_i</span><span class="p">[</span><span class="s2">&quot;axis&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">results</span><span class="p">,</span> <span class="n">res_i</span><span class="p">])</span>
+
+    <span class="k">del</span> <span class="n">d_vec</span>
+
+    <span class="n">results</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;axis&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;nuc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nuc_dipole</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="calc_property">
+<a class="viewcode-back" href="../../api.html#prop_sapt.properties.calc_property">[docs]</a>
+<span class="nd">@trace_memory_peak</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_property</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculation of interaction-induced property.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (Dimer): A dimer system.</span>
+<span class="sd">        prop (str | np.ndarray): Property to calculate. Either name of already implemented</span>
+<span class="sd">            property, e.g. dipole moment (prop=&quot;dipole&quot;) or an array with matrix representation,</span>
+<span class="sd">            in AO basis, of the operator corresponding to a property to calculate.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame with results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Interaction-induced property calculations&quot;</span><span class="p">):</span>
+        <span class="c1">### Results output file</span>
+        <span class="n">results_fname</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="s2">&quot;results.csv&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;dipole&quot;</span><span class="p">:</span>
+            <span class="c1">### Dipole moment calculations</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">calc_induced_dipole</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c1">### Property matrix is given</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">perform_property_contractions</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Property </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> is not implemented. &quot;</span>
+                <span class="s2">&quot;Please provide a valid property name or a property matrix.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1">### Results saving to file</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">results_fname</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

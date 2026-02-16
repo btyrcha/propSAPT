@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.finite_field.core &mdash; prop-sapt 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#conda-environment">Conda Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#finite-field-sapt">Finite Field SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#example-scripts">Example Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.html#core-functionality">Core Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.html#property-calculations">Property Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#jupyter-notebooks">Jupyter Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.html#orbital-visualization">Orbital Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../examples.html#density-visualization">Density Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api.html#module-prop_sapt.finite_field">Finite Field SAPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.finite_field.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.finite_field.core</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Finite field property calculations and finite field SAPT.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">calc_sapt_energy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalcTimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_field_vector</span><span class="p">,</span>
+    <span class="n">calculate_perturbed_energy</span><span class="p">,</span>
+    <span class="n">apply_finite_difference_formula</span><span class="p">,</span>
+    <span class="n">build_result_series</span><span class="p">,</span>
+    <span class="n">print_finite_field_banner</span><span class="p">,</span>
+    <span class="n">apply_to_cartesian_axes</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_property</span><span class="p">(</span><span class="n">prop</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate that the requested property is supported.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prop (str | np.ndarray): Property to validate.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the property is not supported.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Property for general external operator is not implemented.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">prop</span> <span class="o">!=</span> <span class="s2">&quot;dipole&quot;</span><span class="p">:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Property </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> is not implemented. &quot;</span>
+            <span class="s2">&quot;Please provide a valid property name or a property matrix.&quot;</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="finite_field_property">
+<a class="viewcode-back" href="../../../api.html#prop_sapt.finite_field.finite_field_property">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">finite_field_property</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">cp_correction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">formula</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;two_point&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the interaction-induced property using finite field method.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        geometry (str): Geometry of the molecule in Psi4 format.</span>
+<span class="sd">        method (str): Electronic structure method to use (e.g., &quot;HF&quot;, &quot;DFT&quot;).</span>
+<span class="sd">        prop (str | np.ndarray): Property to calculate (e.g., &quot;dipole&quot;).</span>
+<span class="sd">        field_strength (float, optional): Strength of the external electric field in atomic units. Defaults to 0.001.</span>
+<span class="sd">        formula (str, optional): Finite difference formula to use (&quot;two_point&quot; or &quot;four_point&quot;). Defaults to &quot;two_point&quot;.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the property is not implemented.</span>
+<span class="sd">        ValueError: If the calculation fails.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame containing the results of the finite field property calculation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Banner</span>
+    <span class="n">print_finite_field_banner</span><span class="p">(</span>
+        <span class="s2">&quot;FINITE FIELD PROPERTY CALCULATIONS&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+            <span class="s2">&quot;Property&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">),</span>
+            <span class="s2">&quot;Field strength&quot;</span><span class="p">:</span> <span class="n">field_strength</span><span class="p">,</span>
+            <span class="s2">&quot;Formula&quot;</span><span class="p">:</span> <span class="n">formula</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Finite field property calculations&quot;</span><span class="p">):</span>
+        <span class="c1">### Validate property</span>
+        <span class="n">validate_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="c1">### Results output file</span>
+        <span class="n">results_fname</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;results-ff-</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+
+        <span class="c1">### Dipole moment calculations</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">calc_ff_dipole</span><span class="p">(</span>
+            <span class="n">geometry</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+            <span class="n">cp_correction</span><span class="o">=</span><span class="n">cp_correction</span><span class="p">,</span>
+            <span class="n">field_strength</span><span class="o">=</span><span class="n">field_strength</span><span class="p">,</span>
+            <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1">### Results saving to file</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">results_fname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="calc_ff_dipole">
+<a class="viewcode-back" href="../../../api.html#prop_sapt.finite_field.calc_ff_dipole">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_ff_dipole</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">cp_correction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">formula</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;two_point&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the finite field dipole moment.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        geometry (str): Geometry of the molecule in Psi4 format.</span>
+<span class="sd">        method (str): Electronic structure method to use (e.g., &quot;HF&quot;, &quot;DFT&quot;).</span>
+<span class="sd">        prop (str | np.ndarray): Property to calculate (e.g., &quot;dipole&quot;).</span>
+<span class="sd">        cp_correction (bool, optional): Whether to apply counterpoise correction. Defaults to False.</span>
+<span class="sd">        field_strength (float, optional): Strength of the external electric field in atomic units. Defaults to 0.001.</span>
+<span class="sd">        formula (str, optional): Finite difference formula to use (&quot;two_point&quot; or &quot;four_point&quot;). Defaults to &quot;two_point&quot;.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame containing the finite field dipole moment results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># prepare results</span>
+    <span class="k">return</span> <span class="n">apply_to_cartesian_axes</span><span class="p">(</span>
+        <span class="n">calculate_ff_dipole_along_axis</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">,</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+        <span class="n">cp_correction</span><span class="o">=</span><span class="n">cp_correction</span><span class="p">,</span>
+        <span class="n">field_strength</span><span class="o">=</span><span class="n">field_strength</span><span class="p">,</span>
+        <span class="n">formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_ff_dipole_along_axis">
+<a class="viewcode-back" href="../../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_ff_dipole_along_axis</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">cp_correction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">formula</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;two_point&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+
+    <span class="c1"># Validate formula</span>
+    <span class="k">if</span> <span class="n">formula</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;two_point&quot;</span><span class="p">,</span> <span class="s2">&quot;four_point&quot;</span><span class="p">]:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown finite difference formula: </span><span class="si">{</span><span class="n">formula</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="n">psi4_energy_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">cp_correction</span><span class="p">:</span>
+        <span class="n">psi4_energy_kwargs</span><span class="p">[</span><span class="s2">&quot;bsse_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cp&quot;</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Calculating finite field dipole moment along </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-axis with field strength </span><span class="si">{</span><span class="n">field_strength</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> a.u.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Build energies dict using helper utilities</span>
+    <span class="n">energies</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">formula</span> <span class="o">==</span> <span class="s2">&quot;four_point&quot;</span><span class="p">:</span>
+        <span class="n">energies</span><span class="p">[</span><span class="s2">&quot;plus_2h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_perturbed_energy</span><span class="p">(</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">molecule</span><span class="p">,</span>
+            <span class="n">get_field_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">field_strength</span><span class="p">),</span>
+            <span class="n">axis</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">psi4_energy_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">energies</span><span class="p">[</span><span class="s2">&quot;plus_h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_perturbed_energy</span><span class="p">(</span>
+        <span class="n">method</span><span class="p">,</span>
+        <span class="n">molecule</span><span class="p">,</span>
+        <span class="n">get_field_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">field_strength</span><span class="p">),</span>
+        <span class="n">axis</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">psi4_energy_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">energies</span><span class="p">[</span><span class="s2">&quot;minus_h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_perturbed_energy</span><span class="p">(</span>
+        <span class="n">method</span><span class="p">,</span>
+        <span class="n">molecule</span><span class="p">,</span>
+        <span class="n">get_field_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="o">-</span><span class="n">field_strength</span><span class="p">),</span>
+        <span class="n">axis</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">psi4_energy_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">formula</span> <span class="o">==</span> <span class="s2">&quot;four_point&quot;</span><span class="p">:</span>
+        <span class="n">energies</span><span class="p">[</span><span class="s2">&quot;minus_2h&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_perturbed_energy</span><span class="p">(</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">molecule</span><span class="p">,</span>
+            <span class="n">get_field_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">field_strength</span><span class="p">),</span>
+            <span class="n">axis</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">psi4_energy_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Compute derivative and build results Series</span>
+    <span class="n">dipole_moment</span> <span class="o">=</span> <span class="n">apply_finite_difference_formula</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">field_strength</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">build_result_series</span><span class="p">(</span>
+        <span class="n">dipole_moment</span><span class="p">,</span> <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">energies</span><span class="p">,</span> <span class="n">formula</span><span class="p">,</span> <span class="n">field_strength</span>
+    <span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Finite field dipole moment calculation along </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-axis completed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="finite_field_sapt">
+<a class="viewcode-back" href="../../../api.html#prop_sapt.finite_field.finite_field_sapt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">finite_field_sapt</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RHF&quot;</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">sapt_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the interaction-induced property using finite field SAPT.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        geometry (str): Geometry of the dimer in Psi4 format.</span>
+<span class="sd">        prop (str | np.ndarray): Property to calculate (e.g., &quot;dipole&quot;).</span>
+<span class="sd">        field_strength (float, optional): Strength of the external electric field. Defaults to 0.001.</span>
+<span class="sd">        sapt_kwargs (Optional[Dict], optional): Additional arguments for SAPT calculations. Defaults to None.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the property is not implemented.</span>
+<span class="sd">        ValueError: If the SAPT calculation fails.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame containing the results of the finite field SAPT calculation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Banner</span>
+    <span class="n">print_finite_field_banner</span><span class="p">(</span>
+        <span class="s2">&quot;FINITE FIELD SAPT PROPERTY CALCULATIONS&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Property&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">),</span>
+            <span class="s2">&quot;Field strength&quot;</span><span class="p">:</span> <span class="n">field_strength</span><span class="p">,</span>
+            <span class="s2">&quot;Reference&quot;</span><span class="p">:</span> <span class="n">reference</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">&quot;Finite field SAPT property calculations&quot;</span><span class="p">):</span>
+        <span class="c1">### Validate property</span>
+        <span class="n">validate_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="c1">### Results output file</span>
+        <span class="n">results_fname</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="s2">&quot;results-ff.csv&quot;</span><span class="p">)</span>
+
+        <span class="c1">### Dipole moment calculations</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">calc_ff_sapt_dipole</span><span class="p">(</span>
+            <span class="n">geometry</span><span class="p">,</span>
+            <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+            <span class="n">field_strength</span><span class="o">=</span><span class="n">field_strength</span><span class="p">,</span>
+            <span class="n">sapt_kwargs</span><span class="o">=</span><span class="n">sapt_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1">### Results saving to file</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">results_fname</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="calc_ff_sapt_dipole">
+<a class="viewcode-back" href="../../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_ff_sapt_dipole</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RHF&quot;</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">sapt_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the finite field SAPT dipole moment.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        geometry (str): Geometry of the dimer in Psi4 format.</span>
+<span class="sd">        reference (str, optional): Reference wavefunction type. Defaults to &quot;RHF&quot;.</span>
+<span class="sd">        field_strength (float, optional): Strength of the external electric field. Defaults to 0.001.</span>
+<span class="sd">        sapt_kwargs (Optional[Dict], optional): Additional arguments for SAPT calculations. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame containing the results of the finite field SAPT calculation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># prepare results</span>
+    <span class="k">return</span> <span class="n">apply_to_cartesian_axes</span><span class="p">(</span>
+        <span class="n">calculate_ff_sapt_dipole_along_axis</span><span class="p">,</span>
+        <span class="n">geometry</span><span class="p">,</span>
+        <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+        <span class="n">field_strength</span><span class="o">=</span><span class="n">field_strength</span><span class="p">,</span>
+        <span class="n">sapt_kwargs</span><span class="o">=</span><span class="n">sapt_kwargs</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_ff_sapt_dipole_along_axis">
+<a class="viewcode-back" href="../../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_ff_sapt_dipole_along_axis</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">axis</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;RHF&quot;</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">sapt_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the finite field SAPT dipole moment along a specified axis.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        geometry (str): Geometry of the dimer in Psi4 format.</span>
+<span class="sd">        axis (str): Axis along which to calculate the dipole moment (e.g., &quot;X&quot;, &quot;Y&quot;, &quot;Z&quot;).</span>
+<span class="sd">        reference (str, optional): Reference wavefunction type. Defaults to &quot;RHF&quot;.</span>
+<span class="sd">        field_strength (float, optional): Strength of the external electric field. Defaults to 0.001.</span>
+<span class="sd">        sapt_kwargs (Optional[Dict], optional): Additional arguments for SAPT calculations. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.Series: Series containing the results of the finite field SAPT calculation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Calculating finite field SAPT dipole moment along </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-axis with field strength </span><span class="si">{</span><span class="n">field_strength</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> a.u.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Prepare dimer kwargs</span>
+    <span class="n">dimer_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="n">reference</span><span class="p">,</span>
+        <span class="s2">&quot;functional&quot;</span><span class="p">:</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;functional&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;grac_A&quot;</span><span class="p">:</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grac_A&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;grac_B&quot;</span><span class="p">:</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grac_B&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">sapt_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sapt_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1">### Positive field</span>
+    <span class="n">field_vector_positive</span> <span class="o">=</span> <span class="n">get_field_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">field_strength</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;PERTURB_H&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;PERTURB_DIPOLE&quot;</span><span class="p">:</span> <span class="n">field_vector_positive</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Computing SAPT energy with positive field (+</span><span class="si">{</span><span class="n">field_strength</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">) along </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-axis...</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">data_positive</span> <span class="o">=</span> <span class="n">calc_sapt_energy</span><span class="p">(</span>
+        <span class="n">Dimer</span><span class="p">(</span>
+            <span class="n">geometry</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dimer_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">},</span>
+        <span class="p">),</span>
+        <span class="n">results</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;results-</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">field_strength</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">sapt_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">revoke_global_option_changed</span><span class="p">(</span><span class="s2">&quot;PERTURB_H&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">revoke_global_option_changed</span><span class="p">(</span><span class="s2">&quot;PERTURB_DIPOLE&quot;</span><span class="p">)</span>
+
+    <span class="c1">### Negative field</span>
+    <span class="n">field_vector_negative</span> <span class="o">=</span> <span class="n">get_field_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="o">-</span><span class="n">field_strength</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;PERTURB_H&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;PERTURB_DIPOLE&quot;</span><span class="p">:</span> <span class="n">field_vector_negative</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Computing SAPT energy with negative field (-</span><span class="si">{</span><span class="n">field_strength</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">) along </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-axis...</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">data_negative</span> <span class="o">=</span> <span class="n">calc_sapt_energy</span><span class="p">(</span>
+        <span class="n">Dimer</span><span class="p">(</span>
+            <span class="n">geometry</span><span class="p">,</span>
+            <span class="o">**</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dimer_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">},</span>
+        <span class="p">),</span>
+        <span class="n">results</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;results-</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="o">-</span><span class="n">field_strength</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">sapt_kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">revoke_global_option_changed</span><span class="p">(</span><span class="s2">&quot;PERTURB_H&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">revoke_global_option_changed</span><span class="p">(</span><span class="s2">&quot;PERTURB_DIPOLE&quot;</span><span class="p">)</span>
+
+    <span class="c1">### Calculate the finite field difference</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_positive</span> <span class="o">-</span> <span class="n">data_negative</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">field_strength</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Finite field SAPT dipole moment calculation along </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">-axis completed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

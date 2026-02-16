@@ -1,0 +1,990 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.cubes &mdash; prop-sapt 0.2.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#conda-environment">Conda Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-installation">Verifying Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finite-field-sapt">Finite Field SAPT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#example-scripts">Example Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#core-functionality">Core Functionality</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#property-calculations">Property Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#jupyter-notebooks">Jupyter Notebooks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#orbital-visualization">Orbital Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../examples.html#density-visualization">Density Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#running-examples">Running Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.finite_field">Finite Field SAPT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.cubes</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.cubes</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Cube files related things.</span>
+
+<span class="sd">Cube file refefence:</span>
+<span class="sd">https://paulbourke.net/dataformats/cube/</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+
+
+<div class="viewcode-block" id="Cube">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.Cube">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Cube</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for storing cube files.</span>
+
+<span class="sd">    Params:</span>
+<span class="sd">        comment1 (str): First comment line of `.cube` file.</span>
+<span class="sd">        comment2 (str): Second comment line of `.cube` file.</span>
+<span class="sd">        origin (list[float]): Origin of the grid.</span>
+<span class="sd">        n_atoms (int): Number of atoms.</span>
+<span class="sd">        atoms (list): List of tuples describing molecule.</span>
+<span class="sd">            Should look like: (atomic_number, charge, xyz_coordinates).</span>
+<span class="sd">            Coordinates should be in bohr.</span>
+<span class="sd">        n_x (int): Number of grid points in x direction.</span>
+<span class="sd">        n_y (int): Number of grid points in y direction.</span>
+<span class="sd">        n_z (int): Number of grid points in z direction.</span>
+<span class="sd">        x_vector (np.ndarray): Grid step in x direction.</span>
+<span class="sd">        y_vector (np.ndarray): Grid step in y direction.</span>
+<span class="sd">        z_vector (np.ndarray): Grid step in z direction.</span>
+<span class="sd">        volumetric_data (np.ndarray): Array with values at the grid points.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Cube: Initialised cube object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment1</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment1&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comment2</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;comment2&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`origin` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_atoms&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;n_atoms&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`n_atoms` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;atoms&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;atoms&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`atoms` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_x&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_x</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;n_x&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`n_x` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_y&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_y</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;n_y&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`n_y` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_z&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;n_z&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`n_z` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;x_vector&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;x_vector&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`x_vector` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;y_vector&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;y_vector&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`y_vector` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;z_vector&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">z_vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;z_vector&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`z_vector` must be provided!&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;volumetric_data&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">volumetric_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;volumetric_data&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`volumetric_data` must be provided!&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Cube.from_file">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.Cube.from_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Cube&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read cube data form `filename`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): Path to file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Cube: Loaded cube.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">read_cube_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cube.save">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.Cube.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;Save a `Cuve` object inot `filename`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): File path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">save_cube_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cube.copy">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.Cube.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Cube&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a copy of the `Cube` object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Cube: Copied cube.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">Cube</span><span class="p">(</span>
+            <span class="n">comment1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">comment1</span><span class="p">,</span>
+            <span class="n">comment2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">comment2</span><span class="p">,</span>
+            <span class="n">origin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">),</span>
+            <span class="n">n_atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">,</span>
+            <span class="n">atoms</span><span class="o">=</span><span class="p">[(</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">],</span>
+            <span class="n">n_x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_x</span><span class="p">,</span>
+            <span class="n">n_y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_y</span><span class="p">,</span>
+            <span class="n">n_z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_z</span><span class="p">,</span>
+            <span class="n">x_vector</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_vector</span><span class="p">),</span>
+            <span class="n">y_vector</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_vector</span><span class="p">),</span>
+            <span class="n">z_vector</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_vector</span><span class="p">),</span>
+            <span class="n">volumetric_data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volumetric_data</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Cube.moved_charge">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.Cube.moved_charge">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">moved_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the total charge moved by the density described by the cube.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Total charge moved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="mf">0.5</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volumetric_data</span><span class="p">))</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_vector</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_vector</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="make_cube">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.make_cube">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_cube</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span>
+    <span class="n">matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;density&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Cube</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Cube</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a `Cube` object with volumetric data of the given `matrix`</span>
+<span class="sd">    calculated on a grid for a psi4 `Molecule` object. If iterables with matrices and types</span>
+<span class="sd">    are given as `matrix` and `obj_type` returns a list with a Cube for each element of the list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mol (psi4.core.Molecule): A corresponding molecule.</span>
+<span class="sd">        matrices (np.ndarray | Iterable[np.ndarray]): Either density matrix,</span>
+<span class="sd">            orbital coefficients vector, or list of such objects.</span>
+<span class="sd">        obj_types (str | Iterable[str], optional): Specifies the `matrices` argument type(s),</span>
+<span class="sd">            must be either &quot;density&quot;, &quot;orbital&quot; or a list with such strings. Defaults to &quot;density&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Cube | list[Cube]: Resulting cube(s).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrix</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">obj_type</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj_type</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">m_type</span> <span class="ow">in</span> <span class="n">obj_type</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="s2">&quot;orbital&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Element of `obj_type` should be either </span><span class="se">\&quot;</span><span class="s2">density</span><span class="se">\&quot;</span><span class="s2"> or </span><span class="se">\&quot;</span><span class="s2">orbital</span><span class="se">\&quot;</span><span class="s2">, got </span><span class="si">{</span><span class="n">m_type</span><span class="si">}</span><span class="s2">!&quot;</span>
+            <span class="p">)</span>
+
+    <span class="c1"># initialize</span>
+    <span class="n">t_start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        |------------------------------------|        </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        |            `make_cube`             |        </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;        |------------------------------------|        </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">tstart</span><span class="p">()</span>
+
+    <span class="c1"># get basis set and geometry</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;basisset&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;basisset&quot;</span><span class="p">],</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span>
+        <span class="p">):</span>
+            <span class="n">basisset</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;basisset&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">basisset</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="o">.</span><span class="n">basisset</span><span class="p">()</span>
+        <span class="n">geo_matrix</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">elez</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">to_arrays</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;`mol` should be of type `psi4.core.Molecule` was `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="si">}</span><span class="s2">`!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">basisset</span><span class="o">.</span><span class="n">print_out</span><span class="p">()</span>
+
+    <span class="c1"># default grid parameters in bohr</span>
+    <span class="n">grid_step</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grid_step&quot;</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">grid_overage</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grid_overage&quot;</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">)</span>
+
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">prepare_grid</span><span class="p">(</span><span class="n">geo_matrix</span><span class="p">,</span> <span class="n">grid_step</span><span class="p">,</span> <span class="n">grid_overage</span><span class="p">)</span>
+
+    <span class="c1"># compute values on the grid on the fly</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">),</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_x&quot;</span><span class="p">],</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_y&quot;</span><span class="p">],</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_z&quot;</span><span class="p">]))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]):</span>
+                <span class="n">basis_vals</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">.</span><span class="n">compute_phi</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">m_idx</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">m_type</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)),</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">):</span>
+
+                    <span class="k">if</span> <span class="n">m_type</span> <span class="o">==</span> <span class="s2">&quot;density&quot;</span><span class="p">:</span>
+                        <span class="n">values</span><span class="p">[</span><span class="n">m_idx</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">basis_vals</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">basis_vals</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+                    <span class="k">elif</span> <span class="n">m_type</span> <span class="o">==</span> <span class="s2">&quot;orbital&quot;</span><span class="p">:</span>
+                        <span class="n">values</span><span class="p">[</span><span class="n">m_idx</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">basis_vals</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+    <span class="c1"># get isocontour values</span>
+    <span class="n">iso_sum_level</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;iso_sum_level&quot;</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">)</span>
+
+    <span class="n">cubes_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m_idx</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">m_type</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">)),</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">):</span>
+
+        <span class="n">isovalues</span> <span class="o">=</span> <span class="n">calculate_isocontour</span><span class="p">(</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">m_idx</span><span class="p">],</span> <span class="n">threshold</span><span class="o">=</span><span class="n">iso_sum_level</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="n">m_type</span>
+        <span class="p">)</span>
+
+        <span class="n">cube_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;comment1&quot;</span><span class="p">:</span> <span class="s2">&quot;propSAPT .cube file&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;comment2&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;isovalues for </span><span class="si">{</span><span class="n">iso_sum_level</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">%&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; of the </span><span class="si">{</span><span class="n">m_type</span><span class="si">}</span><span class="s2">: (</span><span class="si">{</span><span class="n">isovalues</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.6E</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">isovalues</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.6E</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">grid</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">grid</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="s2">&quot;n_atoms&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">elez</span><span class="p">),</span>
+            <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">atom_num</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span> <span class="n">atom_xyz</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">atom_xyz</span><span class="p">,</span> <span class="n">atom_num</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">geo_matrix</span><span class="p">,</span> <span class="n">elez</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;n_x&quot;</span><span class="p">:</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_x&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;n_y&quot;</span><span class="p">:</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_y&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;n_z&quot;</span><span class="p">:</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_z&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;x_vector&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;step_x&quot;</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+            <span class="s2">&quot;y_vector&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;step_y&quot;</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]),</span>
+            <span class="s2">&quot;z_vector&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;step_z&quot;</span><span class="p">]]),</span>
+            <span class="s2">&quot;volumetric_data&quot;</span><span class="p">:</span> <span class="n">values</span><span class="p">[</span><span class="n">m_idx</span><span class="p">],</span>
+        <span class="p">}</span>
+
+        <span class="n">cubes_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Cube</span><span class="p">(</span><span class="o">**</span><span class="n">cube_dict</span><span class="p">))</span>
+
+    <span class="c1"># finilize</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;...finished evaluating values on the grid in </span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t_start</span><span class="p">)</span><span class="si">:</span><span class="s2">5.2f</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">tstop</span><span class="p">()</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;*&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">print_out</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cubes_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cubes_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cubes_list</span></div>
+
+
+
+<div class="viewcode-block" id="read_cube_file">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.read_cube_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_cube_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Cube</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads the data form .cube file `filename`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str): Path to file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Cube: Loaded cube.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="c1"># Read the comment lines</span>
+        <span class="n">comment1</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">comment2</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># Read the number of atoms and the origin</span>
+        <span class="n">n_atoms</span><span class="p">,</span> <span class="n">x_origin</span><span class="p">,</span> <span class="n">y_origin</span><span class="p">,</span> <span class="n">z_origin</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="n">n_atoms</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_origin</span><span class="p">,</span> <span class="n">y_origin</span><span class="p">,</span> <span class="n">z_origin</span><span class="p">])</span>
+
+        <span class="c1"># Read the number of voxels and the axis vectors</span>
+        <span class="n">x_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">y_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+        <span class="n">z_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+
+        <span class="n">n_x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y_info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">n_z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">z_info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">x_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_info</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">y_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_info</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">z_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z_info</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+        <span class="c1"># Read the atomic information</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">):</span>
+            <span class="n">atom_info</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+            <span class="n">atomic_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom_info</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">charge</span> <span class="o">=</span> <span class="n">atom_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">atom_info</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+            <span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">atomic_number</span><span class="p">,</span> <span class="n">charge</span><span class="p">,</span> <span class="n">position</span><span class="p">))</span>
+
+        <span class="c1"># Read the volumetric data</span>
+        <span class="n">volumetric_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_x</span> <span class="o">*</span> <span class="n">n_y</span> <span class="o">*</span> <span class="n">n_z</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">volumetric_data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+
+        <span class="n">volumetric_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">volumetric_data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_x</span><span class="p">,</span> <span class="n">n_y</span><span class="p">,</span> <span class="n">n_z</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">Cube</span><span class="p">(</span>
+        <span class="o">**</span><span class="p">{</span>
+            <span class="s2">&quot;comment1&quot;</span><span class="p">:</span> <span class="n">comment1</span><span class="p">,</span>
+            <span class="s2">&quot;comment2&quot;</span><span class="p">:</span> <span class="n">comment2</span><span class="p">,</span>
+            <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="n">origin</span><span class="p">,</span>
+            <span class="s2">&quot;n_atoms&quot;</span><span class="p">:</span> <span class="n">n_atoms</span><span class="p">,</span>
+            <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="n">atoms</span><span class="p">,</span>
+            <span class="s2">&quot;n_x&quot;</span><span class="p">:</span> <span class="n">n_x</span><span class="p">,</span>
+            <span class="s2">&quot;n_y&quot;</span><span class="p">:</span> <span class="n">n_y</span><span class="p">,</span>
+            <span class="s2">&quot;n_z&quot;</span><span class="p">:</span> <span class="n">n_z</span><span class="p">,</span>
+            <span class="s2">&quot;x_vector&quot;</span><span class="p">:</span> <span class="n">x_vector</span><span class="p">,</span>
+            <span class="s2">&quot;y_vector&quot;</span><span class="p">:</span> <span class="n">y_vector</span><span class="p">,</span>
+            <span class="s2">&quot;z_vector&quot;</span><span class="p">:</span> <span class="n">z_vector</span><span class="p">,</span>
+            <span class="s2">&quot;volumetric_data&quot;</span><span class="p">:</span> <span class="n">volumetric_data</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="save_cube_file">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.save_cube_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_cube_file</span><span class="p">(</span><span class="n">cube</span><span class="p">:</span> <span class="n">Cube</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Saves a `Cube` object, into the cube file: `filename`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cube (Cube): Cube object to be saved.</span>
+<span class="sd">        filename (str): File path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># create and save cube string</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+
+        <span class="c1"># write a header</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">comment1</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">comment2</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># wirte number of atoms and begining of the grid</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">n_atoms</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">  &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">  &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># write grid details</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">n_x</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  &quot;</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">x_vector</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">n_y</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  &quot;</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">y_vector</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">n_z</span><span class="si">:</span><span class="s2">6d</span><span class="si">}</span><span class="s2">  &quot;</span> <span class="o">+</span> <span class="s2">&quot;  &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">z_vector</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># write geometry</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2">  &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">  &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">  &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="s2">  &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2"> .6f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># write volumetric information</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">volumetric_data</span><span class="o">.</span><span class="n">flatten</span><span class="p">():</span>
+
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2"> .5E</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">6</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="subtract_cubes">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.subtract_cubes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">subtract_cubes</span><span class="p">(</span><span class="n">cube_1</span><span class="p">:</span> <span class="n">Cube</span><span class="p">,</span> <span class="n">cube_2</span><span class="p">:</span> <span class="n">Cube</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Cube</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a difference between volumetric data of two cubes.</span>
+
+<span class="sd">    Cube grids have to be the same for this operation.</span>
+<span class="sd">    Data about molecule geometry is taken from `cube_1`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cube_1 (Cube): Cube serving as minuend.</span>
+<span class="sd">        cube_2 (Cube): Cube serving as subtrahend.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Cube: Resulting Cube.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">origin</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cube grids have different origins!</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_1: </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">origin</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_2: </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">x_vector</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">x_vector</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">y_vector</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">y_vector</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">z_vector</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">z_vector</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cube grids have different vectors!</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_1: </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">x_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">y_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">z_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_2: </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">x_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">y_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">z_vector</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">volumetric_data</span> <span class="o">=</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">volumetric_data</span> <span class="o">-</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">volumetric_data</span>
+
+    <span class="k">return</span> <span class="n">Cube</span><span class="p">(</span>
+        <span class="o">**</span><span class="p">{</span>
+            <span class="s2">&quot;comment1&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;comment2&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+            <span class="s2">&quot;n_atoms&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">,</span>
+            <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span>
+            <span class="s2">&quot;n_x&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">n_x</span><span class="p">,</span>
+            <span class="s2">&quot;n_y&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">n_y</span><span class="p">,</span>
+            <span class="s2">&quot;n_z&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">n_z</span><span class="p">,</span>
+            <span class="s2">&quot;x_vector&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">x_vector</span><span class="p">,</span>
+            <span class="s2">&quot;y_vector&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">y_vector</span><span class="p">,</span>
+            <span class="s2">&quot;z_vector&quot;</span><span class="p">:</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">z_vector</span><span class="p">,</span>
+            <span class="s2">&quot;volumetric_data&quot;</span><span class="p">:</span> <span class="n">volumetric_data</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="add_cubes">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.add_cubes">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_cubes</span><span class="p">(</span><span class="n">cubes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Cube</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Cube</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Cube</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a sum of volumetric data of multiple cubes.</span>
+
+<span class="sd">    Cube grids have to be the same for this operation.</span>
+<span class="sd">    Data about molecule geometry is taken from the first cube.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cubes (list[Cube] | tuple[Cube, ...]): List or tuple of cubes to add together.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Cube: Resulting Cube.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cubes</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot add an empty list of cubes!&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cubes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cubes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Use first cube as reference</span>
+    <span class="n">reference_cube</span> <span class="o">=</span> <span class="n">cubes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Validate all cubes have the same grid</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cube</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cubes</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">origin</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cube grids have different origins!</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;cube_0: </span><span class="si">{</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">origin</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;cube_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">x_vector</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">x_vector</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">y_vector</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">y_vector</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">z_vector</span><span class="p">,</span> <span class="n">cube</span><span class="o">.</span><span class="n">z_vector</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cube grids have different vectors!</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;cube_0: </span><span class="si">{</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">x_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">y_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">reference_cube</span><span class="o">.</span><span class="n">z_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;cube_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">x_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">y_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube</span><span class="o">.</span><span class="n">z_vector</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Sum all volumetric data</span>
+    <span class="n">volumetric_data</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">volumetric_data</span> <span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cubes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Cube</span><span class="p">(</span>
+        <span class="o">**</span><span class="p">{</span>
+            <span class="s2">&quot;comment1&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;comment2&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+            <span class="s2">&quot;n_atoms&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">n_atoms</span><span class="p">,</span>
+            <span class="s2">&quot;atoms&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span>
+            <span class="s2">&quot;n_x&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">n_x</span><span class="p">,</span>
+            <span class="s2">&quot;n_y&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">n_y</span><span class="p">,</span>
+            <span class="s2">&quot;n_z&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">n_z</span><span class="p">,</span>
+            <span class="s2">&quot;x_vector&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">x_vector</span><span class="p">,</span>
+            <span class="s2">&quot;y_vector&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">y_vector</span><span class="p">,</span>
+            <span class="s2">&quot;z_vector&quot;</span><span class="p">:</span> <span class="n">reference_cube</span><span class="o">.</span><span class="n">z_vector</span><span class="p">,</span>
+            <span class="s2">&quot;volumetric_data&quot;</span><span class="p">:</span> <span class="n">volumetric_data</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="cosine_similarity">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.cosine_similarity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">cube_1</span><span class="p">:</span> <span class="n">Cube</span><span class="p">,</span> <span class="n">cube_2</span><span class="p">:</span> <span class="n">Cube</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate cosine similarity between two cubes. Assumes the cubes have the same grid.</span>
+
+<span class="sd">    The cosine similarity is calculated as:</span>
+
+<span class="sd">        cosine_similarity = (A . B) / (||A|| ||B||)</span>
+
+<span class="sd">    utilizing the L2 norm.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cube_1 (Cube): First cube.</span>
+<span class="sd">        cube_2 (Cube): Second cube.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the cubes have different origins.</span>
+<span class="sd">        ValueError: If the cubes have different grid vectors.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Cosine similarity between the two cubes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">origin</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cube grids have different origins!</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_1: </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">origin</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_2: </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">origin</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">x_vector</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">x_vector</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">y_vector</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">y_vector</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="kc">False</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">cube_1</span><span class="o">.</span><span class="n">z_vector</span><span class="p">,</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">z_vector</span><span class="p">)</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cube grids have different vectors!</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_1: </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">x_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">y_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_1</span><span class="o">.</span><span class="n">z_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;cube_2: </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">x_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">y_vector</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">cube_2</span><span class="o">.</span><span class="n">z_vector</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">flat_1</span> <span class="o">=</span> <span class="n">cube_1</span><span class="o">.</span><span class="n">volumetric_data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">flat_2</span> <span class="o">=</span> <span class="n">cube_2</span><span class="o">.</span><span class="n">volumetric_data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">flat_1</span> <span class="o">*</span> <span class="n">flat_2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">flat_1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">flat_2</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="prepare_grid">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.prepare_grid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">prepare_grid</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">grid_step</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">grid_overage</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">tuple</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepares a simple scalar grid in 3D space.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        geometry (np.ndarray): Molecule geometry. Shloud have shape (N_atom, 3).</span>
+<span class="sd">        grid_step (float | tuple): Step size of the grid (in bohr). If float then the same step</span>
+<span class="sd">            is applied in all directions. If tuple, should have length 3, specifies step size</span>
+<span class="sd">            for x, y and z directions separately.</span>
+<span class="sd">        grid_overage (float | tuple): Overage of the grid (in bohr). If float then the same overage</span>
+<span class="sd">            in all directions. If tuple, should have length 3, specifies grid overage</span>
+<span class="sd">            for x, y and z directions separately.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Grid info.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;`geometry` shloud have shape (N_atom, 3) was </span><span class="si">{</span><span class="n">geometry</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># figure out grid sizes</span>
+    <span class="n">grid_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">grid_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">grid_overage</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
+            <span class="n">grid_min</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">-</span> <span class="n">grid_overage</span>
+            <span class="n">grid_max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">+</span> <span class="n">grid_overage</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">grid_overage</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid_overage</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;`grid_overage` has to be float or tuple of length 3, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;was length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">grid_overage</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
+            <span class="n">grid_min</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">-</span> <span class="n">grid_overage</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">grid_max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">+</span> <span class="n">grid_overage</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;`grid_overage` has to be float or tuple but was </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">grid_overage</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># figure out grid points</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">grid_step</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">]):</span>
+            <span class="n">grid</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">grid_min</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">grid_max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">grid_step</span><span class="p">,</span> <span class="n">grid_step</span><span class="p">)</span>
+            <span class="n">grid</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;step_</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_step</span>
+
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">grid_step</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid_step</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;`grid_step` has to be float or tuple of length 3, was length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">grid_step</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">]):</span>
+            <span class="n">grid</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+                <span class="n">grid_min</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">grid_max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">grid_step</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">grid_step</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">grid</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;step_</span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_step</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;`grid_step&#39; has to be float or tuple but was </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">grid_step</span><span class="p">)</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;n_z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="k">return</span> <span class="n">grid</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_isocontour">
+<a class="viewcode-back" href="../../api.html#prop_sapt.cubes.calculate_isocontour">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_isocontour</span><span class="p">(</span>
+    <span class="n">volumetric_data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">Cube</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">,</span>
+    <span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;density&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate isocontour values for a given `threshlod`,</span>
+<span class="sd">    assumed as the density fraction.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        volumetric_data (np.ndarray | Cube): Data for isovale calculations.</span>
+<span class="sd">        threshold (float, optional): Fraction of the density to be inside of the isosurface</span>
+<span class="sd">            described by isovalues. Defaults to 0.85.</span>
+<span class="sd">        obj_type (str, optional): Specifies the type of volumetric data,</span>
+<span class="sd">            either &quot;density&quot; or &quot;orbital&quot;. Defaults to &quot;density&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[float, float]: Isovalues tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s2">&quot;density&quot;</span><span class="p">:</span>
+        <span class="n">power</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s2">&quot;orbital&quot;</span><span class="p">:</span>
+        <span class="n">power</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;`obj_type` should be </span><span class="se">\&quot;</span><span class="s2">density</span><span class="se">\&quot;</span><span class="s2"> or </span><span class="se">\&quot;</span><span class="s2">orbital</span><span class="se">\&quot;</span><span class="s2">, was </span><span class="si">{</span><span class="n">obj_type</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">volumetric_data</span><span class="p">,</span> <span class="n">Cube</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">volumetric_data</span><span class="o">.</span><span class="n">volumetric_data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">volumetric_data</span>
+
+    <span class="k">if</span> <span class="n">threshold</span> <span class="o">&lt;=</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">threshold</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;`threshold` must be within range (0.0, 1.0), was </span><span class="si">{</span><span class="n">threshold</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">flatened_vals</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">positive_target</span> <span class="o">=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">flatened_vals</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">flatened_vals</span><span class="p">)</span> <span class="o">**</span> <span class="n">power</span>
+    <span class="p">)</span>
+    <span class="n">negative_target</span> <span class="o">=</span> <span class="n">threshold</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+        <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">flatened_vals</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">flatened_vals</span><span class="p">)</span> <span class="o">**</span> <span class="n">power</span>
+    <span class="p">)</span>
+
+    <span class="n">positive_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">negative_sum</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">positive_isoval</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">negative_isoval</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">do_positive</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">do_negative</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">flatened_vals</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+
+        <span class="k">if</span> <span class="n">do_positive</span> <span class="ow">and</span> <span class="n">flatened_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">positive_sum</span> <span class="o">+=</span> <span class="n">flatened_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="n">power</span>
+            <span class="k">if</span> <span class="n">positive_sum</span> <span class="o">&gt;=</span> <span class="n">positive_target</span><span class="p">:</span>
+                <span class="n">positive_isoval</span> <span class="o">=</span> <span class="n">flatened_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">do_positive</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="n">do_negative</span> <span class="ow">and</span> <span class="n">flatened_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">negative_sum</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">flatened_vals</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">**</span> <span class="n">power</span>
+            <span class="k">if</span> <span class="n">negative_sum</span> <span class="o">&lt;=</span> <span class="n">negative_target</span><span class="p">:</span>
+                <span class="n">negative_isoval</span> <span class="o">=</span> <span class="n">flatened_vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">do_negative</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">positive_isoval</span><span class="p">,</span> <span class="n">negative_isoval</span><span class="p">)</span>  <span class="c1"># pyright: ignore reportReturnType</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
