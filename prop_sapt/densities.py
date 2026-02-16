@@ -2,7 +2,7 @@ import psi4
 import numpy as np
 import opt_einsum as oe
 from .molecule import Dimer
-from .utils import trace_memory_peak, CalcTimer
+from .utils import trace_memory_peak, CalcTimer, prepare_path
 from .densities_components import (
     get_exch_ind_s2_density,
     get_exch_ind_density,
@@ -35,7 +35,12 @@ def density_mo_to_ao(
 
 
 def calc_densities(
-    mol: Dimer, orbital_basis="AO", save_cubes=False, cubes_dir="."
+    mol: Dimer,
+    orbital_basis="AO",
+    save_cubes=False,
+    cubes_dir=".",
+    save_matrices=False,
+    matrices_dir=".",
 ) -> dict[str, np.ndarray]:
     """
     Calculate interaction-induced changes in the density matrix of dimer (and both monomers).
@@ -46,7 +51,8 @@ def calc_densities(
             "AO" or "MO". Defaults to "AO".
         save_cubes (bool, optional): Whether to save density cubes. Defaults to False.
         cubes_dir (str, optional): Directory to save density cubes. Defaults to ".".
-
+        save_matrices (bool, optional): Whether to save density matrices. Defaults to False.
+        matrices_dir (str, optional): Directory to save density matrices. Defaults to ".".
     Returns:
         dict[str, np.ndarray]: Dictionary of density matrices.
     """
@@ -59,13 +65,61 @@ def calc_densities(
     for key in kyes:
         rho_dict[f"{key}_A"] = rho_A[key]
         rho_dict[f"{key}_B"] = rho_B[key]
-        rho_dict[f"{key}"] = rho_A[key] + rho_B[key]
+        if orbital_basis == "AO":
+            rho_dict[f"{key}"] = rho_A[key] + rho_B[key]
+
+    rho_transformed = None
+    if orbital_basis != "AO" and (save_cubes or save_matrices):
+
+        psi4.core.print_out(
+            f"\nWarning: Density matrices are in {orbital_basis} basis,"
+            "attempting MO -> AO transformation, for saving...\n"
+        )
+
+        rho_transformed = {
+            key: density_mo_to_ao(mol, monomer=key.split("_")[-1], density_matrix=rho)
+            for key, rho in rho_dict.items()
+        }
+
+        psi4.core.print_out("MO -> AO transformation complete.\n")
+
+    if save_matrices:
+
+        # Save density matrices in numpy format
+        psi4.core.print_out("\nSaving density matrices...\n")
+        prepare_path(matrices_dir + "/dummy")  # create matrices_dir if it doesn't exist
+
+        if orbital_basis != "AO" and rho_transformed is not None:
+            matrices_to_save = rho_transformed
+        else:
+            matrices_to_save = rho_dict
+
+        for key, matrix in matrices_to_save.items():
+            np.save(f"{matrices_dir}/delta_dm_{key}.npy", matrix)
+
+        psi4.core.print_out("Density matrices saved.\n")
+
+        # Save wavefunction information
+        psi4.core.print_out("\nSaving monomer Wfn objects...\n")
+        mol.wfnA.to_file(f"{matrices_dir}/wfn_mon_A.npy")
+        mol.wfnB.to_file(f"{matrices_dir}/wfn_mon_B.npy")
+        psi4.core.print_out(
+            "Monomer Wfn objects saved. To load use `psi4.core.Wavefunction.from_file`\n"
+        )
 
     if save_cubes:
 
         psi4.core.print_out("\nSaving density cubes...\n")
 
-        rho_to_save = [2 * rho for rho in rho_dict.values()]  # factor 2 for RHF spin
+        if orbital_basis != "AO" and rho_transformed is not None:
+            rho_to_save = [2 * rho for rho in rho_transformed.values()]
+
+        else:
+            rho_to_save = [
+                2 * rho for rho in rho_dict.values()  # factor 2 for RHF spin
+            ]
+
+        prepare_path(cubes_dir + "/dummy")  # create cubes_dir if it doesn't exist
         cube_filenames = [f"{cubes_dir}/delta_dm_{key}.cube" for key in rho_dict]
 
         mol.save_cube(

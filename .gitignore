@@ -208,6 +208,8 @@ pyrightconfig.json
 *.csv
 *.cube
 *.png
+*.npy
+*.fchk
 
 ### Archive files ###
 *.zip

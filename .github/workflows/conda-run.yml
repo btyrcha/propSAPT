@@ -1,0 +1,59 @@
+name: Conda Run
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        type: string
+        default: '3.12'
+      environment-file:
+        type: string
+        default: prop-sapt.yaml
+      activate-environment:
+        type: string
+        default: prop-sapt
+      run-script:
+        type: string
+        required: true
+      deploy-pages:
+        type: boolean
+        default: false
+      publish-dir:
+        type: string
+        default: ''
+
+jobs:
+  conda-run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        auto-update-conda: true
+        python-version: ${{ inputs.python-version }}
+        environment-file: ${{ inputs.environment-file }}
+        activate-environment: ${{ inputs.activate-environment }}
+
+    - name: Install package
+      shell: bash -l {0}
+      run: |
+        pip install -e .
+
+    - name: Run workflow script
+      shell: bash -l {0}
+      run: |
+        ${{ inputs.run-script }}
+
+    - name: Deploy to GitHub Pages
+      if: inputs.deploy-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ${{ inputs.publish-dir }}
+        force_orphan: true

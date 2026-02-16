@@ -2,6 +2,12 @@
 
 Python package for calculations of first-order interaction-induced properties and changes in monomers density matrices in the spirit of SAPT. The theoretical work has been published [here](https://doi.org/10.1021/acs.jctc.5c00238).
 
+[![Documentation Status](https://img.shields.io/badge/docs-latest-blue.svg)](https://yourusername.github.io/propSAPT/)
+
+## Documentation
+
+Full documentation is available at: **https://yourusername.github.io/propSAPT/**
+
 ## Installation
 
 1. Clone the repository.
@@ -14,12 +20,12 @@ Python package for calculations of first-order interaction-induced properties an
    ```
    conda activate prop-sapt
    ```
-5. Install the devolopment package by running:
+5. Install the development package by running:
    ```
    pip install -e . --config-settings editable_mode=compat
    ```
-   while being in the repos root directory.
-6. Check it out by running some scripts form `examples/`!
+   while being in the repo's root directory.
+6. Check it out by running some scripts from `examples/`!
 
 
 ## Implementation
