@@ -73,7 +73,7 @@ class CalcTimer(object):
             CalcTimer: Returns the CalcTimer instance to allow for use in a `with` statement.
         """
 
-        self.start = time.process_time()
+        self.start = time.time()
         psi4.core.print_out(f"\nStarting {self.name}...\n")
 
         return self
@@ -83,7 +83,7 @@ class CalcTimer(object):
         Stops the timer. And prints out the time taken for the operation into the output file.
         """
 
-        t = time.process_time() - self.start
+        t = time.time() - self.start
         psi4.core.print_out(f"...{self.name} took a total of {t: .2f} seconds.\n")
 
 
