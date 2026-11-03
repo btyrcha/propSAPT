@@ -49,9 +49,12 @@ psi4_options:
   s_tolerance: 1.0e-10
   s_cholesky_tolerance: 1.0e-10
 
-# Passed to prop_sapt.set_propsapt_options.
+# Passed to prop_sapt.set_propsapt_options. cpscf_type: DF solves the CPSCF equations of
+# the densities and properties with density fitting (the energies keep scf_type).
 # propsapt_options:
 #   r_convergence: 1.0e-10
+#   cpscf_type: DF
+#   df_basis_cpscf: aug-cc-pvqz-jkfit
 
 # Every file goes into `dir`, relative to the working directory; "{geometry}" expands to
 # the geometry file name without its extension. The Psi4 output file defaults to

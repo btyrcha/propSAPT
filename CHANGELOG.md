@@ -14,6 +14,16 @@ requests of the private repository propSAPT was developed in before it was publi
 
 - The Zenodo DOI of the software in `CITATION.cff`, and a DOI badge and the DOIs in the
   README.
+- The `cpscf_type` and `df_basis_cpscf` options choose how the CPSCF solves of the
+  density matrices and the properties build their J and K matrices: None (the default,
+  the monomer SCF's J/K object, which follows `SCF_TYPE`), "DIRECT", or "DF", density
+  fitted with `df_basis_cpscf` (default: `DF_BASIS_SCF`, or else the JKFIT basis). The
+  SAPT energies always use the monomer SCF's J/K object, so they stay consistent with
+  Psi4's SAPT; with another type, the densities and properties solve their own induction
+  amplitudes. The density and property calculations run in the context
+  `Dimer.use_cpscf_type`, whose J/K object `Dimer.build_cpscf_jk` builds, one for both
+  monomers. Invalid values of the two options are rejected when they are set, and by the
+  run configuration (`prop_sapt.options.check_option_value`).
 
 ## [0.4.0] - 2026-11-04
 
