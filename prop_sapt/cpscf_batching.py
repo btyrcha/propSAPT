@@ -7,22 +7,33 @@ sent back the (vo) amplitudes, in the same order. Its return value is its result
 
 `solve_batched` runs several builders side by side and solves the requests they have
 pending at the same time with one `Dimer.cpscf_batch` call per monomer, which costs much
-less than a solve per request. `solve_now` runs one builder alone.
+less than a solve per request. `solve_now` runs one builder alone. Both solve them with
+the CPSCF type of the options, see `options_cpscf_type`.
 """
 
 import inspect
 import time
 from collections.abc import Callable, Generator, Mapping
-from contextlib import nullcontext
+from contextlib import AbstractContextManager, nullcontext
 
 import numpy as np
 import psi4
 
 from .molecule import Dimer
+from .options import PROPSAPT_OPTIONS
 from .utils import CalcTimer
 
 CPSCFRequest = tuple[str, np.ndarray]
 DensityBuilder = Generator[list[CPSCFRequest], list[np.ndarray], np.ndarray]
+
+
+def options_cpscf_type(mol: Dimer) -> AbstractContextManager[None]:
+    """The context of the CPSCF type of the density matrices and the properties:
+    `Dimer.use_cpscf_type` with the `cpscf_type` and `df_basis_cpscf` options."""
+
+    return mol.use_cpscf_type(
+        PROPSAPT_OPTIONS["cpscf_type"], PROPSAPT_OPTIONS["df_basis_cpscf"]
+    )
 
 
 def solve_batched(
@@ -33,7 +44,9 @@ def solve_batched(
     Every builder runs up to its next request. The requests then pending are solved
     with one `Dimer.cpscf_batch` call per monomer, and the amplitudes are sent back to
     the builders, which run on to their next requests or finish. The time each builder
-    takes, without the solves, is printed under its name.
+    takes, without the solves, is printed under its name. The builders run in the
+    context of `options_cpscf_type`, so all their CPSCF solves, including those of
+    `Dimer.get_cpscf_ra` and `Dimer.get_cpscf_sb`, are of the `cpscf_type` option.
 
     Args:
         mol (Dimer): The dimer.
@@ -45,6 +58,13 @@ def solve_batched(
     Returns:
         dict: The return value of each builder, keyed as `builders`.
     """
+
+    with options_cpscf_type(mol):
+        return _solve_batched(mol, builders, report)
+
+
+def _solve_batched(mol: Dimer, builders: Mapping[str, Generator], report: bool) -> dict:
+    """`solve_batched` in the context of the CPSCF type in use."""
 
     results = {}
     pending = {}

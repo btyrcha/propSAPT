@@ -57,7 +57,7 @@ import opt_einsum as oe
 import psi4
 from psi4.driver.p4util import message_box, cg_solver, OptionsState, OptionsStateCM
 
-from .options import PROPSAPT_OPTIONS
+from .options import PROPSAPT_OPTIONS, check_cpscf_type, check_df_basis_cpscf
 
 
 @overload
@@ -427,6 +427,9 @@ class helper_SAPT(object):
         self.J_A, self.K_A = self.compute_jk(self.Co_A, self.Co_A)
         self.J_B, self.K_B = self.compute_jk(self.Co_B, self.Co_B)
 
+        # J/K object of the CPSCF solves, see `build_cpscf_jk`; None uses the monomer SCF's
+        self.cpscf_jk = None
+
         # Overlap matrix in AO
         self.S = np.asarray(self.mints.ao_overlap())
 
@@ -575,6 +578,9 @@ class helper_SAPT(object):
         unconverged vectors with one J/K call, which costs much less than a call per
         vector. Each vector converges on its own, to the same amplitudes as `cpscf`.
 
+        The J and K matrices come from the J/K object of the monomer SCF, or from
+        `cpscf_jk` if it is set (see `build_cpscf_jk`).
+
         Args:
             monomer (str): "A" or "B".
             perturbations (list[np.ndarray]): (ov) perturbation matrices.
@@ -626,18 +632,103 @@ class helper_SAPT(object):
                     preconditioned.append(False)
             return preconditioned
 
+        # `cphf_Hx` takes the J and K matrices from the wavefunction's J/K object
+        swap_jk = self.cpscf_jk is not None
+        if swap_jk:
+            scf_jk = wfn.jk()
+            wfn.set_jk(self.cpscf_jk)
+
         # solve cpscf
-        x_vec, _ = cg_solver(
-            [psi4.core.Matrix.from_array(pert_ov) for pert_ov in perturbations],
-            _hess_x,
-            _apply_precon,
-            printlvl=2,
-            maxiter=maxiter,
-            rcond=r_convergence,
-        )
+        try:
+            x_vec, _ = cg_solver(
+                [psi4.core.Matrix.from_array(pert_ov) for pert_ov in perturbations],
+                _hess_x,
+                _apply_precon,
+                printlvl=2,
+                maxiter=maxiter,
+                rcond=r_convergence,
+            )
+        finally:
+            if swap_jk:
+                wfn.set_jk(scf_jk)
 
         # We want to return (vo) matrices
         return [np.array(x).reshape(no, nv).T for x in x_vec]
+
+    def build_cpscf_jk(
+        self, cpscf_type: str | None, df_basis: str | None = None
+    ) -> psi4.core.JK | None:
+        """
+        J/K object for CPSCF solves of type `cpscf_type`, shared by both monomers.
+
+        It is set up as Psi4's SCF sets up its own (`initialize_jk`), with the memory of
+        propSAPT's J/K object, `jk_memory`. `cpscf_batch` uses it in place of the
+        monomer SCF's J/K object while it is `cpscf_jk`. The "DF" one is MemDFJK if it
+        fits in that memory and DiskDFJK otherwise, as for Psi4's `SCF_TYPE` "DF".
+
+        Args:
+            cpscf_type (str | None): "DIRECT" or "DF", case-insensitive, see the
+                `cpscf_type` option; None stands for the monomer SCF's J/K objects.
+            df_basis (str | None, optional): Fitting basis of "DF". Defaults to Psi4's
+                `DF_BASIS_SCF`, or else the JKFIT basis of the orbital basis.
+
+        Returns:
+            psi4.core.JK | None: The J/K object, or None if the monomer SCF's J/K
+                objects are of this type already ("DF" only without `df_basis`).
+        """
+
+        cpscf_type = check_cpscf_type(cpscf_type)
+        df_basis = check_df_basis_cpscf(df_basis)
+
+        if cpscf_type is None:
+            return None
+
+        scf_jk_names = {self.wfnA.jk().name(), self.wfnB.jk().name()}
+        if cpscf_type == "DIRECT" and scf_jk_names == {"DirectJK"}:
+            return None
+        if (
+            cpscf_type == "DF"
+            and df_basis is None
+            and scf_jk_names <= {"MemDFJK", "DiskDFJK"}
+        ):
+            return None
+
+        # the monomers share the dimer basis set (ghost atoms), as in Psi4's SAPT
+        wfn = self.wfnA
+        aux = None
+        if cpscf_type == "DF":
+            aux = psi4.core.BasisSet.build(
+                wfn.molecule(),
+                "DF_BASIS_SCF",
+                df_basis or psi4.core.get_option("SCF", "DF_BASIS_SCF"),
+                "JKFIT",
+                psi4.core.get_global_option("BASIS"),
+                puream=wfn.basisset().has_puream(),
+            )
+
+        tstart = time.time()
+        psi4.core.print_out(f"\nInitialize the {cpscf_type} J/K object of CPSCF...\n")
+        jk = psi4.core.JK.build(
+            wfn.basisset(),
+            aux=aux,
+            jk_type=cpscf_type,
+            do_wK=wfn.functional().is_x_lrc(),
+            memory=self.jk_memory,
+        )
+
+        # `initialize_jk` also puts the J/K object on the wavefunction
+        scf_jk = wfn.jk()
+        try:
+            wfn.initialize_jk(self.jk_memory, jk=jk)
+        finally:
+            wfn.set_jk(scf_jk)
+
+        fitting = f", fitting basis {aux.name()} ({aux.nbf()} functions)" if aux else ""
+        psi4.core.print_out(
+            f"...initialized {jk.name()}{fitting} in {time.time() - tstart:.2f} seconds.\n"
+        )
+
+        return jk
 
     def _check_cpscf(self, monomer):
         """Raises ValueError unless CPSCF is implemented for this reference and `monomer`."""
