@@ -362,6 +362,10 @@ def test_basis_dirs_are_resolved_against_the_config_directory(tmp_path):
             {"propsapt_options": {"r_conv": 1e-8}, "tasks": ["sapt_energy"]},
             "propsapt_options",
         ),
+        (
+            {"propsapt_options": {"cpscf_type": "PK"}, "tasks": ["sapt_energy"]},
+            "Invalid 'propsapt_options': Invalid `cpscf_type`",
+        ),
         ({"memory": "lots", "tasks": ["sapt_energy"]}, "Invalid memory"),
         ({"memory": 0, "tasks": ["sapt_energy"]}, "Memory must be positive"),
         ({"threads": 0, "tasks": ["sapt_energy"]}, "threads"),
