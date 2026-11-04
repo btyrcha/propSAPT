@@ -1,6 +1,7 @@
 # propSAPT
 
 [![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://btyrcha.github.io/propSAPT/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23951143.svg)](https://doi.org/10.5281/zenodo.23951143)
 
 propSAPT computes first-order interaction-induced properties and density matrices of molecular
 dimers in the spirit of symmetry-adapted perturbation theory (SAPT). The properties, such as the
@@ -54,6 +55,10 @@ If you use propSAPT, please cite B. Tyrcha, T. Gupta, K. Patkowski, P. S. Żucho
 Interaction-Induced Properties*, J. Chem. Theory Comput. **21**, 4562–4578 (2025),
 [doi:10.1021/acs.jctc.5c00238](https://doi.org/10.1021/acs.jctc.5c00238). GitHub's "Cite this
 repository" gives the same, from [`CITATION.cff`](CITATION.cff).
+
+The software itself is archived on Zenodo:
+[doi:10.5281/zenodo.23951143](https://doi.org/10.5281/zenodo.23951143) always points to the latest version, and each
+version has its own DOI, e.g. v0.4.0 is [doi:10.5281/zenodo.23951144](https://doi.org/10.5281/zenodo.23951144).
 
 ## License
 
