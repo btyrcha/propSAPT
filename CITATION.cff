@@ -12,6 +12,7 @@ authors:
     orcid: "https://orcid.org/0009-0007-5969-945X"
     affiliation: "Institute of Physics, Faculty of Physics, Astronomy and Informatics, Nicolaus Copernicus University in Toruń"
 version: 0.4.0
+doi: 10.5281/zenodo.23951143
 license: BSD-3-Clause
 repository-code: "https://github.com/btyrcha/propSAPT"
 url: "https://btyrcha.github.io/propSAPT/"

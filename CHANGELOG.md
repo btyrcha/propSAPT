@@ -8,6 +8,13 @@ version may change the API and the numerical results.
 The version is defined in `prop_sapt/_version.py`. Numbers in parentheses are pull
 requests of the private repository propSAPT was developed in before it was published.
 
+## [Unreleased]
+
+### Added
+
+- The Zenodo DOI of the software in `CITATION.cff`, and a DOI badge and the DOIs in the
+  README.
+
 ## [0.4.0] - 2026-11-04
 
 The first public release. Highlights since 0.3.1:
