@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use propSAPT in your work, please cite the paper below."
+type: software
+title: propSAPT
+abstract: >-
+  Python package for first-order interaction-induced properties and density
+  matrices of molecular dimers in the spirit of symmetry-adapted perturbation
+  theory (SAPT), built on Psi4.
+authors:
+  - family-names: Tyrcha
+    given-names: Bartosz
+    orcid: "https://orcid.org/0009-0007-5969-945X"
+    affiliation: "Institute of Physics, Faculty of Physics, Astronomy and Informatics, Nicolaus Copernicus University in Toruń"
+version: 0.4.0
+license: BSD-3-Clause
+repository-code: "https://github.com/btyrcha/propSAPT"
+url: "https://btyrcha.github.io/propSAPT/"
+keywords:
+  - SAPT
+  - symmetry-adapted perturbation theory
+  - intermolecular interactions
+  - interaction-induced properties
+  - density matrices
+  - quantum chemistry
+preferred-citation:
+  type: article
+  title: "Analytical Derivatives of Symmetry-Adapted Perturbation Theory Corrections for Interaction-Induced Properties"
+  authors:
+    - family-names: Tyrcha
+      given-names: Bartosz
+      orcid: "https://orcid.org/0009-0007-5969-945X"
+    - family-names: Gupta
+      given-names: Tarun
+    - family-names: Patkowski
+      given-names: Konrad
+      orcid: "https://orcid.org/0000-0002-4468-207X"
+    - family-names: Żuchowski
+      given-names: Piotr S.
+      orcid: "https://orcid.org/0000-0001-9267-3090"
+  journal: "Journal of Chemical Theory and Computation"
+  volume: 21
+  issue: 9
+  start: 4562
+  end: 4578
+  year: 2025
+  doi: 10.1021/acs.jctc.5c00238

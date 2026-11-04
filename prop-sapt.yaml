@@ -1,0 +1,23 @@
+name: prop-sapt
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - psi4
+  - jupyterlab
+  - numpy
+  - pandas
+  - matplotlib
+  - opt_einsum
+  - pyyaml
+  - pytest
+  - pytest-cov
+  - flake8
+  - pip
+  - pip:
+      - build
+      - fortecubeview
+      - ipywidgets
+      - scikit-image
+      - pythreejs

@@ -1,0 +1,73 @@
+# Example configuration for the propSAPT runner:
+#
+#   prop-sapt run run_config.yaml geometry.p4m [--memory 32 --threads 8]
+#
+# Command-line flags (--memory, --threads, --reference, --functional, --grac-a, --grac-b,
+# --basis, --df-basis, --output-dir) override the values below. Add --dry-run to print
+# the resolved configuration without calculating anything.
+
+# "RHF" or "RKS". For RKS also set `functional` and, optionally, the GRAC shifts
+# (in Hartree), usually per geometry with --grac-a / --grac-b:
+reference: RHF
+# functional: pbe0
+# grac: {A: 0.0851, B: 0.0999}
+
+# Orbital basis, and the stem of the density-fitting bases:
+# DF_BASIS_SCF = <df_basis>-jkfit, DF_BASIS_SAPT = <df_basis>-ri.
+# `df_basis_scf` / `df_basis_sapt` give either one by its full name instead.
+basis: aug-cc-pvtz
+df_basis: aug-cc-pvtz
+
+# Per-element substitutes for elements missing a basis set, as a JSON file (relative to
+# this file) or inline. Entries for basis options this calculation does not set are skipped.
+# basis_overrides: basis_overrides.json
+# basis_overrides:
+#   Zn: {DF_BASIS_SCF: def2-tzvpd-ri, DF_BASIS_SAPT: def2-tzvpd-ri}
+
+# Directories (relative to this file) holding extra basis sets as <basis name>.gbs files,
+# for basis sets missing from Psi4's library. Write them once from ccRepo or the Basis Set
+# Exchange with `prop-sapt basis fetch` (needs ccrepo_utility or basis_set_exchange, see
+# the docs), e.g.
+#   prop-sapt basis fetch ccrepo aug-cc-pVTZ_MP2FIT --elements Zn --dir basis
+# and use the printed name ("ccrepo-aug-cc-pVTZ_MP2FIT") anywhere a basis set is named,
+# typically in `basis_overrides` for the elements the file holds.
+# basis_dirs: [basis]
+
+# Resources: memory in GB (or e.g. "500 MB"), used for Psi4 and for propSAPT's JK builds.
+memory: 2
+threads: 2
+
+# Passed to psi4.set_options as they are. The basis options and `save_jk` are set by the
+# runner from the keys above.
+psi4_options:
+  scf_type: direct
+  e_convergence: 1.0e-10
+  d_convergence: 1.0e-10
+  ints_tolerance: 1.0e-12
+  screening: schwarz
+  cholesky_tolerance: 1.0e-10
+  s_tolerance: 1.0e-10
+  s_cholesky_tolerance: 1.0e-10
+
+# Passed to prop_sapt.set_propsapt_options.
+# propsapt_options:
+#   r_convergence: 1.0e-10
+
+# Every file goes into `dir`, relative to the working directory; "{geometry}" expands to
+# the geometry file name without its extension. The Psi4 output file defaults to
+# output_hf.dat (RHF) or output_propsapt_dft_<functional>.dat (RKS).
+output:
+  dir: "."
+
+# Tasks run in this order; remove a task or set it to false to skip it, or give `true`
+# for the default settings shown here.
+tasks:
+  # monomer densities (dm_hf_A.cube, dm_hf_B.cube) and wavefunctions (monomer_a.fchk, ...)
+  monomer_references: {cubes: true, fchk: true}
+  # SAPT energy components; response: true, false or "both" (induction with/without response)
+  sapt_energy: {results: sapt_results.csv, response: true}
+  # interaction-induced dipole moment
+  # property: {prop: dipole, results: property_results.csv}
+  # interaction-induced density matrices (one densities.npz bundle, see
+  # prop_sapt.load_densities) and their total-density cubes (delta_dm_*.cube)
+  densities: {orbital_basis: AO, save_cubes: true, save_matrices: true, matrix_format: npz}

@@ -1,0 +1,56 @@
+name: Python Package using Conda
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-linux:
+    uses: ./.github/workflows/conda-run.yml
+    with:
+      run-script: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        pytest --cov=prop_sapt --cov-report=term-missing:skip-covered --cov-report=xml
+        {
+          echo "### Coverage: $(coverage report --format=total)%"
+          echo
+          echo "<details><summary>Per module</summary>"
+          echo
+          coverage report --format=markdown
+          echo
+          echo "</details>"
+        } >> "$GITHUB_STEP_SUMMARY"
+      artifact-name: coverage
+      artifact-path: coverage.xml
+
+  # The package as built and installed normally, not the editable checkout.
+  packaging:
+    uses: ./.github/workflows/conda-run.yml
+    with:
+      run-script: |
+        python -m build --outdir dist .
+        python - <<'EOF'
+        import glob, zipfile
+        names = zipfile.ZipFile(glob.glob("dist/*.whl")[0]).namelist()
+        stray = [n for n in names if not n.startswith("prop_sapt")]
+        assert not stray, f"files outside prop_sapt in the wheel: {stray}"
+        print(len(names), "files in the wheel")
+        EOF
+        pip uninstall -y prop_sapt
+        pip install dist/*.whl
+        cd "$RUNNER_TEMP"
+        python -c "import prop_sapt; print(prop_sapt.__version__, prop_sapt.__file__); assert 'site-packages' in prop_sapt.__file__"
+        prop-sapt --help
+      artifact-name: dist
+      artifact-path: dist/

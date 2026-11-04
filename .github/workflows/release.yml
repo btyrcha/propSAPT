@@ -1,0 +1,105 @@
+name: Release
+
+# Pushing a tag vX.Y.Z creates the GitHub release: the sdist and wheel attached, and the
+# notes taken from that version's section of CHANGELOG.md. Running the workflow by hand is
+# a dry run: it builds and prints the notes (from [Unreleased] if the version has no
+# section yet), and creates no release.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      DRY_RUN: ${{ github.event_name != 'push' }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: '3.12'
+
+    - name: Read the version
+      id: version
+      run: |
+        # read the file, not the package: importing prop_sapt needs Psi4
+        version=$(python -c "exec(open('prop_sapt/_version.py').read()); print(__version__)")
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+        echo "Version $version"
+
+    - name: Check the tag
+      if: env.DRY_RUN != 'true'
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        if [ "$GITHUB_REF_NAME" != "v$VERSION" ]; then
+          echo "::error::the tag $GITHUB_REF_NAME does not match the version in prop_sapt/_version.py ($VERSION)"
+          exit 1
+        fi
+
+    - name: Release notes from CHANGELOG.md
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        section="$VERSION"
+        if ! grep -qF "## [$VERSION]" CHANGELOG.md; then
+          if [ "$DRY_RUN" != true ]; then
+            echo "::error::CHANGELOG.md has no section for $VERSION"
+            exit 1
+          fi
+          echo "::notice::CHANGELOG.md has no section for $VERSION yet; the dry run uses [Unreleased]"
+          section=Unreleased
+        fi
+        # the lines after "## [<section>]" up to the next "## [", without leading blank lines
+        awk -v head="## [$section]" '
+          index($0, head) == 1 { found = 1; next }
+          found && /^## \[/ { exit }
+          found && (started || NF) { started = 1; print }
+        ' CHANGELOG.md > notes.md
+        if ! grep -q '[^[:space:]]' notes.md; then
+          echo "::error::the CHANGELOG.md section [$section] is empty"
+          exit 1
+        fi
+        {
+          echo "### Release notes ([$section])"
+          echo
+          cat notes.md
+        } >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Build the sdist and wheel
+      run: |
+        pip install build
+        python -m build
+
+    - name: Upload the build (dry run)
+      if: env.DRY_RUN == 'true'
+      uses: actions/upload-artifact@v7
+      with:
+        name: dist
+        path: dist/
+
+    - name: Create the GitHub release
+      if: env.DRY_RUN != 'true'
+      env:
+        GH_TOKEN: ${{ github.token }}
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        # versions such as 0.5.0rc1 or 0.5.0.dev0 are marked as pre-releases
+        prerelease=""
+        if echo "$VERSION" | grep -qE '(a|b|rc|dev)[0-9]*$'; then
+          prerelease="--prerelease"
+        fi
+        gh release create "$GITHUB_REF_NAME" dist/* \
+          --title "propSAPT $VERSION" \
+          --notes-file notes.md \
+          --verify-tag $prerelease

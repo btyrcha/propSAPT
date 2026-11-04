@@ -1,0 +1,7 @@
+# Documentation Build Directory
+_build/
+_static/
+_templates/
+
+# Sphinx auto-generated files
+*.doctree

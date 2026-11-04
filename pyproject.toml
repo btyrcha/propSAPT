@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prop_sapt"
+dynamic = ["version"]
+description = "First-order interaction-induced properties and density matrices in the spirit of SAPT."
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+authors = [{ name = "Bartosz Tyrcha", email = "bartektyrcha123@gmail.com" }]
+keywords = [
+    "SAPT",
+    "symmetry-adapted perturbation theory",
+    "intermolecular interactions",
+    "interaction-induced properties",
+    "density matrices",
+    "quantum chemistry",
+    "Psi4",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+]
+# The version CI tests and prop-sapt.yaml installs. The code itself needs 3.10 (PEP 604
+# unions evaluated at import), so the floor can be lowered once older versions are tested.
+requires-python = ">=3.12"
+# Psi4 is required too, but it can't be installed from PyPI: it comes from conda
+# (conda-forge), see prop-sapt.yaml and docs/installation.rst.
+dependencies = [
+    "numpy",
+    "pandas",
+    "opt_einsum",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov"]
+docs = ["sphinx>=5.0", "sphinx-rtd-theme>=1.0"]
+# `prop-sapt basis fetch bse`; the ccrepo source is installed from git, see prop_sapt/basis_fetch.py.
+bse = ["basis_set_exchange"]
+
+[project.scripts]
+prop-sapt = "prop_sapt.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/btyrcha/propSAPT"
+Documentation = "https://btyrcha.github.io/propSAPT/"
+Changelog = "https://github.com/btyrcha/propSAPT/blob/main/CHANGELOG.md"
+Issues = "https://github.com/btyrcha/propSAPT/issues"
+
+[tool.setuptools.dynamic]
+# The version is defined once, in prop_sapt/_version.py.
+version = { attr = "prop_sapt._version.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["prop_sapt*"]
