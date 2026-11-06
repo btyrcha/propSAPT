@@ -212,14 +212,12 @@ consistent with Psi4's SAPT:
 ``cpscf_type`` is ``None`` (the default, the monomer SCF's J/K object), ``"DIRECT"`` or
 ``"DF"``. ``df_basis_cpscf`` is the fitting basis of ``"DF"``; it defaults to
 ``DF_BASIS_SCF``, or else the JKFIT basis of the orbital basis. With ``"DF"`` the
-densities and properties solve their own induction amplitudes, and differ from the
-``DIRECT`` ones by the fitting error. For the water dimer in aug-cc-pVTZ (HF, monomer SCFs
-``DIRECT``), aug-cc-pVTZ-JKFIT cut the CPSCF time from minutes to seconds and changed the
-density matrices by about 1e-5 (relative, weighted by the overlap) and the
-Hellmann-Feynman forces of their changes by about 1e-4 (relative); aug-cc-pVQZ-JKFIT
-lowered both errors about tenfold. With DFT the exchange-correlation kernel takes a large
-part of the CPSCF time, so the gain is smaller. In a run configuration, set the options
-under ``propsapt_options``.
+densities and properties solve their own induction amplitudes and differ from the
+``DIRECT`` ones by a small fitting error, which a larger fitting basis such as
+aug-cc-pVQZ-JKFIT lowers further. The gain is largest with ``SCF_TYPE DIRECT`` and HF,
+where the density matrices become several times faster. With DFT the
+exchange-correlation kernel takes a large part of the CPSCF time, so the gain is smaller.
+In a run configuration, set the options under ``propsapt_options``.
 
 Every matrix is symmetric. :func:`~prop_sapt.densities.calc_density_matrix` and
 :func:`~prop_sapt.artifacts.save_densities` check this and warn with

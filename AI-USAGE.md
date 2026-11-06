@@ -139,3 +139,4 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-06
 
 - Black check in CI and CONTRIBUTING and black in `prop-sapt.yaml`; black formatting of the five files on `main` that were not, and LF line endings everywhere (`helper_SAPT_DF.py` was CRLF) kept by a `.gitattributes`.
+- Analysed the cluster benchmark of `cpscf_type` (HF energy plus densities 68-70% shorter, densities within about 1e-5); shortened its changelog entry and usage guide paragraph to the user-facing change; marked the default fitting basis being read from the global options at solve time with a TODO.
