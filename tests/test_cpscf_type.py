@@ -128,7 +128,9 @@ def test_df_cpscf_batch(prepare_dimer, monomer):
     mol = prepare_dimer
     occ, vir = ("a", "r") if monomer == "A" else ("b", "s")
     rng = np.random.default_rng(5)
-    perturbations = [rng.standard_normal((mol.sizes[occ], mol.sizes[vir])) for _ in range(2)]
+    perturbations = [
+        rng.standard_normal((mol.sizes[occ], mol.sizes[vir])) for _ in range(2)
+    ]
 
     direct = mol.cpscf_batch(monomer, perturbations)
 

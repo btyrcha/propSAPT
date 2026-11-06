@@ -509,7 +509,9 @@ def _resolve_propsapt_options(options) -> dict:
         except (KeyError, TypeError) as err:
             raise ConfigError(f"Invalid 'propsapt_options': {err.args[0]}") from err
 
-    resolved = {key.lower(): _coerce_scientific(value) for key, value in options.items()}
+    resolved = {
+        key.lower(): _coerce_scientific(value) for key, value in options.items()
+    }
 
     for key, value in resolved.items():
         try:
