@@ -34,6 +34,25 @@ jobs:
       artifact-name: coverage
       artifact-path: coverage.xml
 
+  # Formatting only: black needs neither Psi4 nor the conda environment.
+  black:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: '3.12'
+
+    - name: Check formatting with black
+      run: |
+        # black's style is fixed within a major version; bump the pin with prop-sapt.yaml
+        pip install "black==26.*"
+        black --check --diff .
+
   # The package as built and installed normally, not the editable checkout.
   packaging:
     uses: ./.github/workflows/conda-run.yml

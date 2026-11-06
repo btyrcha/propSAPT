@@ -61,3 +61,8 @@ version = { attr = "prop_sapt._version.__version__" }
 
 [tool.setuptools.packages.find]
 include = ["prop_sapt*"]
+
+[tool.black]
+# The oldest Python of requires-python. Otherwise black targets every version up to the
+# newest and can't run its safety check under Python 3.12; the formatting is the same.
+target-version = ["py312"]

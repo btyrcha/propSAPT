@@ -28,7 +28,6 @@ from prop_sapt.artifacts import (
 )
 from prop_sapt.checks import InvariantWarning
 
-
 # The default JKFIT basis of aug-cc-pVTZ, which has no He set: Psi4 fills in from
 # def2-universal-JKFIT
 JKFIT_BLEND = {"AUG-CC-PVTZ-JKFIT", "DEF2-UNIVERSAL-JKFIT"}
@@ -410,13 +409,18 @@ def cached_components(monkeypatch, component_matrices):
 @pytest.fixture()
 def cached_mo_components(monkeypatch, prepare_dimer, component_matrices):
     """Makes `calc_densities` in the MO basis reuse the components, transformed into the
-    MO basis of their monomer: C^T S rho S C, the inverse of C rho C^T as C^T S C = 1."""
+    MO basis of their monomer: C^T S rho S C, the inverse of C rho C^T as C^T S C = 1.
+    """
 
     overlap = np.asarray(prepare_dimer.mints.ao_overlap())
     coefficients = {"A": prepare_dimer.C_A, "B": prepare_dimer.C_B}
     mo_components = {
         monomer: {
-            key: coefficients[monomer].T @ overlap @ rho @ overlap @ coefficients[monomer]
+            key: coefficients[monomer].T
+            @ overlap
+            @ rho
+            @ overlap
+            @ coefficients[monomer]
             for key, rho in components.items()
         }
         for monomer, components in component_matrices.items()
@@ -437,7 +441,9 @@ ALL_KEYS = {
     for suffix in ("_A", "_B", "")
 }
 MONOMER_KEYS = {
-    f"{component}{suffix}" for component in DENSITY_COMPONENTS for suffix in ("_A", "_B")
+    f"{component}{suffix}"
+    for component in DENSITY_COMPONENTS
+    for suffix in ("_A", "_B")
 }
 
 

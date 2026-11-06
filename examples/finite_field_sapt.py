@@ -130,7 +130,9 @@ def print_dipole_comparison(ff_sapt_data: pd.DataFrame, prop_sapt_data: pd.DataF
     print(diff_data.to_string(float_format=lambda x: f"{x:> 14.6f}"))
 
     # Calculate and display relative error
-    print("\n\nRelative error (propSAPT - FF-SAPT) / FF-SAPT (%), \"-\" where the dipole is zero:")
+    print(
+        '\n\nRelative error (propSAPT - FF-SAPT) / FF-SAPT (%), "-" where the dipole is zero:'
+    )
     print("-" * table_width)
     # components zero by symmetry are only numerical noise, ~1e-13 here
     nonzero_ff = ff_sapt_data.where(ff_sapt_data.abs() > 1e-6)
