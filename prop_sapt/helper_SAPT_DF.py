@@ -697,6 +697,9 @@ class helper_SAPT(object):
         wfn = self.wfnA
         aux = None
         if cpscf_type == "DF":
+            # TODO: when `df_basis_cpscf` isn't set, the fitting basis comes from the
+            # global BASIS option at the time of the solve, not from the basis the
+            # dimer was built with. DF_BASIS_SCF is read at the solve too.
             aux = psi4.core.BasisSet.build(
                 wfn.molecule(),
                 "DF_BASIS_SCF",
