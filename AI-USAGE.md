@@ -129,3 +129,7 @@ The short version, for disclosures; the log below has the detail.
 - Simplified this log to one line per PR or task.
 - Release PR for 0.4.0: the version, the changelog section with a highlights summary, and the roadmap's release items moved to Completed.
 - Public release of 0.4.0: the one-commit export of the development repository and its checks, the launch checklist, and the Zenodo DOI in `CITATION.cff` and the README.
+
+### 2026-11-06
+
+- Black check in CI and CONTRIBUTING and black in `prop-sapt.yaml`; black formatting of the five files on `main` that were not, and LF line endings everywhere (`helper_SAPT_DF.py` was CRLF) kept by a `.gitattributes`.

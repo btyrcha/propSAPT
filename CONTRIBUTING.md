@@ -13,17 +13,20 @@ Thanks for your interest in contributing! Bug reports and questions are welcome 
 3. Add or update tests in `tests/` for what you change. The tests run real Psi4
    calculations; reference values are checked against Psi4's own SAPT or finite field,
    to `1e-8` Eh for energies.
-4. Before opening a pull request, run from the repository root:
+4. Format the Python files you add or change with [black](https://black.readthedocs.io)
+   (`black <files>`; it comes with `prop-sapt.yaml`). Before opening a pull request, run
+   from the repository root:
 
    ```bash
+   black --check .
    pytest
    flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
    ```
 
    and, if you changed the docs or docstrings, `sphinx-build -W -b html docs docs/_build/html`.
 5. Add an entry under `[Unreleased]` in `CHANGELOG.md` for any change users will notice.
-6. Open a pull request against `main`. CI runs the tests, the packaging check and the
-   docs build.
+6. Open a pull request against `main`. CI runs the tests, the black check, the
+   packaging check and the docs build.
 
 ## Logging AI-assisted work
 
