@@ -1,0 +1,1147 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.partition &mdash; prop-sapt 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=6c02275b"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-a-release">Installing a release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#development-install">Development install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#optional-packages">Optional packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-the-installation">Verifying the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finite-field-properties">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#sapt">SAPT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#any-psi4-energy-method">Any Psi4 energy method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-runner">Command-Line Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#basis-sets-missing-from-psi4">Basis sets missing from Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#hellmann-feynman-forces">Hellmann-Feynman Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#evaluating-at-arbitrary-points">Evaluating at Arbitrary Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#fragment-populations">Fragment Populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#cube-file-utilities">Cube File Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#generating-cube-files">Generating cube files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#working-with-cubes">Working with cubes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#known-limitations">Known limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#scripts">Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#notebooks">Notebooks</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.clear_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.clear_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_density"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_density()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_esp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_orbital()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.fragment_operators"><code class="docutils literal notranslate"><span class="pre">Dimer.fragment_operators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.get_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.store_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.store_theta_amplitudes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.BATCHED_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">BATCHED_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.DENSITY_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">DENSITY_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.MATRIX_FORMATS"><code class="docutils literal notranslate"><span class="pre">MATRIX_FORMATS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.artifacts">Density Artifacts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.ArtifactError"><code class="docutils literal notranslate"><span class="pre">ArtifactError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.CONVENTIONS"><code class="docutils literal notranslate"><span class="pre">CONVENTIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DENSITIES_FILENAME"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FILENAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DENSITIES_FORMAT"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FORMAT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet"><code class="docutils literal notranslate"><span class="pre">DensitySet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.check"><code class="docutils literal notranslate"><span class="pre">DensitySet.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.components"><code class="docutils literal notranslate"><span class="pre">DensitySet.components</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.fragments"><code class="docutils literal notranslate"><span class="pre">DensitySet.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.matrices"><code class="docutils literal notranslate"><span class="pre">DensitySet.matrices</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.metadata"><code class="docutils literal notranslate"><span class="pre">DensitySet.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.path"><code class="docutils literal notranslate"><span class="pre">DensitySet.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.total"><code class="docutils literal notranslate"><span class="pre">DensitySet.total()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.wavefunction"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.wavefunction_data"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.FORMAT_VERSION"><code class="docutils literal notranslate"><span class="pre">FORMAT_VERSION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.artifact_metadata"><code class="docutils literal notranslate"><span class="pre">artifact_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.load_densities"><code class="docutils literal notranslate"><span class="pre">load_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.save_densities"><code class="docutils literal notranslate"><span class="pre">save_densities()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.checks">Invariant Checks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id1">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id2">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.InvariantWarning"><code class="docutils literal notranslate"><span class="pre">InvariantWarning</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_charge_closure"><code class="docutils literal notranslate"><span class="pre">check_charge_closure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_partition_of_unity"><code class="docutils literal notranslate"><span class="pre">check_partition_of_unity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_symmetric"><code class="docutils literal notranslate"><span class="pre">check_symmetric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.fragments">Fragments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id3">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id4">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.A"><code class="docutils literal notranslate"><span class="pre">DimerFragments.A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.B"><code class="docutils literal notranslate"><span class="pre">DimerFragments.B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.atomic_numbers"><code class="docutils literal notranslate"><span class="pre">DimerFragments.atomic_numbers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.check_same_system"><code class="docutils literal notranslate"><span class="pre">DimerFragments.check_same_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.coordinates"><code class="docutils literal notranslate"><span class="pre">DimerFragments.coordinates</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.extra"><code class="docutils literal notranslate"><span class="pre">DimerFragments.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.fragment_of"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragment_of()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.fragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.from_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.from_molecule"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.natom"><code class="docutils literal notranslate"><span class="pre">DimerFragments.natom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.real"><code class="docutils literal notranslate"><span class="pre">DimerFragments.real</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.symbols"><code class="docutils literal notranslate"><span class="pre">DimerFragments.symbols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.to_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.atoms"><code class="docutils literal notranslate"><span class="pre">Fragment.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.charge"><code class="docutils literal notranslate"><span class="pre">Fragment.charge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.label"><code class="docutils literal notranslate"><span class="pre">Fragment.label</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.multiplicity"><code class="docutils literal notranslate"><span class="pre">Fragment.multiplicity</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.parse_fragments"><code class="docutils literal notranslate"><span class="pre">parse_fragments()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.finite_field">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.runner">Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.add_basis_dirs"><code class="docutils literal notranslate"><span class="pre">add_basis_dirs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.as_run_config"><code class="docutils literal notranslate"><span class="pre">as_run_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.build_dimer"><code class="docutils literal notranslate"><span class="pre">build_dimer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.setup_psi4"><code class="docutils literal notranslate"><span class="pre">setup_psi4()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.config">Run Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.ConfigError"><code class="docutils literal notranslate"><span class="pre">ConfigError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig"><code class="docutils literal notranslate"><span class="pre">RunConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.applied_basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.applied_basis_overrides()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis_dirs"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_dirs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_overrides</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.df_basis_sapt"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_sapt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.df_basis_scf"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_scf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.effective_psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.effective_psi4_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.functional"><code class="docutils literal notranslate"><span class="pre">RunConfig.functional</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.grac_A"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.grac_B"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.memory_gb"><code class="docutils literal notranslate"><span class="pre">RunConfig.memory_gb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.method_tag"><code class="docutils literal notranslate"><span class="pre">RunConfig.method_tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.output_dir"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.output_dir_template"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.propsapt_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.propsapt_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.psi4_output"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.reference"><code class="docutils literal notranslate"><span class="pre">RunConfig.reference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.source"><code class="docutils literal notranslate"><span class="pre">RunConfig.source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.tasks"><code class="docutils literal notranslate"><span class="pre">RunConfig.tasks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.threads"><code class="docutils literal notranslate"><span class="pre">RunConfig.threads</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">RunConfig.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.resolve_config"><code class="docutils literal notranslate"><span class="pre">resolve_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.basis_overrides">Basis Set Overrides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_overrides.apply_basis_overrides"><code class="docutils literal notranslate"><span class="pre">apply_basis_overrides()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_overrides.load_basis_overrides"><code class="docutils literal notranslate"><span class="pre">load_basis_overrides()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.basis_fetch">Fetching Basis Sets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_fetch.BasisFetchError"><code class="docutils literal notranslate"><span class="pre">BasisFetchError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_fetch.fetch_basis_file"><code class="docutils literal notranslate"><span class="pre">fetch_basis_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cli">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cli.build_parser"><code class="docutils literal notranslate"><span class="pre">build_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.options">propSAPT Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__contains__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__contains__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__getitem__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__getitem__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__iter__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__len__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__len__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.get_options_dict"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.get_options_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_if_valid_option"><code class="docutils literal notranslate"><span class="pre">check_if_valid_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.get_propsapt_options"><code class="docutils literal notranslate"><span class="pre">get_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.reset_propsapt_options"><code class="docutils literal notranslate"><span class="pre">reset_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.set_propsapt_options"><code class="docutils literal notranslate"><span class="pre">set_propsapt_options()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.changed_psi4_options"><code class="docutils literal notranslate"><span class="pre">changed_psi4_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.package_version"><code class="docutils literal notranslate"><span class="pre">package_version()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.evaluate">Point Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id5">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_basis_functions"><code class="docutils literal notranslate"><span class="pre">evaluate_basis_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_density"><code class="docutils literal notranslate"><span class="pre">evaluate_density()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">evaluate_esp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">evaluate_orbital()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.partition">Fragment Populations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id6">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id7">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators"><code class="docutils literal notranslate"><span class="pre">FragmentOperators</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.__init__"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.ao_overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.ao_overlap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.charge"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.closure_error"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.closure_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.dipole"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.dipole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.first_moment"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.first_moment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.fragments"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.from_grid"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.from_grid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.nbf"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.nbf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.population"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.population()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.atom_index"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.atom_index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.points"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.points</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.weights"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.becke_fragment_weights"><code class="docutils literal notranslate"><span class="pre">becke_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.hirshfeld_fragment_weights"><code class="docutils literal notranslate"><span class="pre">hirshfeld_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.molecular_grid"><code class="docutils literal notranslate"><span class="pre">molecular_grid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.atoms"><code class="docutils literal notranslate"><span class="pre">Cube.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.comment1"><code class="docutils literal notranslate"><span class="pre">Cube.comment1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.comment2"><code class="docutils literal notranslate"><span class="pre">Cube.comment2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.integrate"><code class="docutils literal notranslate"><span class="pre">Cube.integrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_atoms"><code class="docutils literal notranslate"><span class="pre">Cube.n_atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_x"><code class="docutils literal notranslate"><span class="pre">Cube.n_x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_y"><code class="docutils literal notranslate"><span class="pre">Cube.n_y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_z"><code class="docutils literal notranslate"><span class="pre">Cube.n_z</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.origin"><code class="docutils literal notranslate"><span class="pre">Cube.origin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.volumetric_data"><code class="docutils literal notranslate"><span class="pre">Cube.volumetric_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.voxel_volume"><code class="docutils literal notranslate"><span class="pre">Cube.voxel_volume</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.x_vector"><code class="docutils literal notranslate"><span class="pre">Cube.x_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.y_vector"><code class="docutils literal notranslate"><span class="pre">Cube.y_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.z_vector"><code class="docutils literal notranslate"><span class="pre">Cube.z_vector</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.translate_cube"><code class="docutils literal notranslate"><span class="pre">translate_cube()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.forces">Forces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id8">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.forces.calc_force_at_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_at_nuc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.forces.calc_force_nuc_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_nuc_nuc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.partition</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.partition</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Fragment population operators: weighted-overlap matrices of a partition of space.</span>
+
+<span class="sd">Given a molecular quadrature grid (points r_q, weights w_q) and fragment weights w_X(r_q)</span>
+<span class="sd">at its points, the weighted-overlap matrix of fragment X is</span>
+
+<span class="sd">    W_X[mu,nu] = sum_q w_q w_X(r_q) phi_mu(r_q) phi_nu(r_q),</span>
+
+<span class="sd">computed once per geometry. The number of electrons any AO density matrix D puts on</span>
+<span class="sd">fragment X is then a trace, Tr(D W_X), with no further grid work. The first-moment</span>
+<span class="sd">matrices (r_q times the same weights) give fragment dipoles in the same way.</span>
+
+<span class="sd">Points are in bohr. Matrices are in the AO basis of the given Psi4 basis set, in Psi4 AO</span>
+<span class="sd">order, and no spin factor is applied, as in `prop_sapt.evaluate`: the density matrices</span>
+<span class="sd">of `calc_densities` follow the `Da` convention, pass `2 * D` for the total (RHF) density.</span>
+
+<span class="sd">Fragment weights come from any partitioning: the Becke partition of Psi4's molecular grid</span>
+<span class="sd">(`becke_fragment_weights`), Hirshfeld-like weights from the monomer densities</span>
+<span class="sd">(`hirshfeld_fragment_weights`), or weights computed elsewhere, e.g. LISA or MBIS weights</span>
+<span class="sd">from horton_part on its own grid, passed as arrays with that grid's points and weights.</span>
+
+<span class="sd">Classes</span>
+<span class="sd">-------</span>
+<span class="sd">QuadratureGrid</span>
+<span class="sd">    Points, weights and parent atoms of a molecular quadrature grid.</span>
+<span class="sd">FragmentOperators</span>
+<span class="sd">    Weighted-overlap and first-moment matrices of the fragments, with populations,</span>
+<span class="sd">    charges and dipoles of density matrices.</span>
+
+<span class="sd">Functions</span>
+<span class="sd">---------</span>
+<span class="sd">molecular_grid</span>
+<span class="sd">    Psi4's Becke-partitioned molecular quadrature grid of a basis set's molecule.</span>
+<span class="sd">becke_fragment_weights</span>
+<span class="sd">    Becke fragment weights on a `QuadratureGrid`, from the atoms of each fragment.</span>
+<span class="sd">hirshfeld_fragment_weights</span>
+<span class="sd">    Hirshfeld-like fragment weights from fragment densities, e.g. of the monomers.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">psi4.driver</span><span class="w"> </span><span class="kn">import</span> <span class="n">p4util</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.checks</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_charge_closure</span><span class="p">,</span> <span class="n">check_partition_of_unity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.evaluate</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_check_basisset</span><span class="p">,</span>
+    <span class="n">_get_chunk_size</span><span class="p">,</span>
+    <span class="n">_iter_phi_chunks</span><span class="p">,</span>
+    <span class="n">_prepare_points</span><span class="p">,</span>
+    <span class="n">_stack_matrices</span><span class="p">,</span>
+    <span class="n">evaluate_density</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.options</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROPSAPT_OPTIONS</span>
+
+<span class="c1"># below this total density the Hirshfeld weights are split equally</span>
+<span class="n">_HIRSHFELD_DENSITY_FLOOR</span> <span class="o">=</span> <span class="mf">1.0e-30</span>
+
+
+<div class="viewcode-block" id="QuadratureGrid">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.QuadratureGrid">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">eq</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">QuadratureGrid</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Molecular quadrature grid: the integral of f over space is sum(weights * f(points)).</span>
+<span class="sd">    """</span>
+
+    <span class="c1">#: Points in bohr, shape (n, 3).</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="c1">#: Quadrature weights, shape (n,), with the Becke partition of space between the</span>
+    <span class="c1">#: atoms included.</span>
+    <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="c1">#: Index of the atom whose Becke cell holds each point, shape (n,), in the order of</span>
+    <span class="c1">#: the atoms of the grid's molecule.</span>
+    <span class="n">atom_index</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span></div>
+
+
+
+<div class="viewcode-block" id="molecular_grid">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.molecular_grid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecular_grid</span><span class="p">(</span>
+    <span class="n">basisset</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="p">,</span>
+    <span class="n">radial_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">spherical_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nuclear_scheme</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"TREUTLER"</span><span class="p">,</span>
+    <span class="n">bs_radius_alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuadratureGrid</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Build Psi4's molecular quadrature grid around the atoms of `basisset.molecule()`.</span>
+
+<span class="sd">    Every atom, ghost atoms included, gets a Treutler radial grid times a Lebedev</span>
+<span class="sd">    spherical grid, unpruned, and space is divided between the atoms by `nuclear_scheme`.</span>
+<span class="sd">    The grid options are set here and do not follow the global Psi4 DFT options.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        basisset (psi4.core.BasisSet): Basis set whose molecule carries the grid.</span>
+<span class="sd">        radial_points (int | None, optional): Radial points per atom.</span>
+<span class="sd">            Defaults to the `quadrature_radial_points` option.</span>
+<span class="sd">        spherical_points (int | None, optional): Lebedev points per radial shell, one of</span>
+<span class="sd">            Psi4's Lebedev orders. Defaults to the `quadrature_spherical_points` option.</span>
+<span class="sd">        nuclear_scheme (str, optional): Partition of space between the atoms, Psi4's</span>
+<span class="sd">            `DFT_NUCLEAR_SCHEME` ("TREUTLER", "BECKE", "STRATMANN", ...).</span>
+<span class="sd">            Defaults to "TREUTLER".</span>
+<span class="sd">        bs_radius_alpha (float | None, optional): Scale of the Bragg-Slater radii setting</span>
+<span class="sd">            the radial extent, Psi4's `DFT_BS_RADIUS_ALPHA`.</span>
+<span class="sd">            Defaults to the `quadrature_bs_radius_alpha` option.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        QuadratureGrid: Points, weights and parent atoms of the grid.</span>
+<span class="sd">    """</span>
+
+    <span class="n">_check_basisset</span><span class="p">(</span><span class="n">basisset</span><span class="p">)</span>
+    <span class="n">radial_points</span> <span class="o">=</span> <span class="n">_positive_int</span><span class="p">(</span>
+        <span class="n">radial_points</span><span class="p">,</span> <span class="s2">"quadrature_radial_points"</span><span class="p">,</span> <span class="s2">"radial_points"</span>
+    <span class="p">)</span>
+    <span class="n">spherical_points</span> <span class="o">=</span> <span class="n">_positive_int</span><span class="p">(</span>
+        <span class="n">spherical_points</span><span class="p">,</span> <span class="s2">"quadrature_spherical_points"</span><span class="p">,</span> <span class="s2">"spherical_points"</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">bs_radius_alpha</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bs_radius_alpha</span> <span class="o">=</span> <span class="n">PROPSAPT_OPTIONS</span><span class="p">[</span><span class="s2">"quadrature_bs_radius_alpha"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">bs_radius_alpha</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bs_radius_alpha</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">))</span>
+        <span class="ow">or</span> <span class="ow">not</span> <span class="n">bs_radius_alpha</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"`bs_radius_alpha` should be a positive number, was </span><span class="si">{</span><span class="n">bs_radius_alpha</span><span class="si">}</span><span class="s2">!"</span>
+        <span class="p">)</span>
+
+    <span class="n">int_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"DFT_RADIAL_POINTS"</span><span class="p">:</span> <span class="n">radial_points</span><span class="p">,</span>
+        <span class="s2">"DFT_SPHERICAL_POINTS"</span><span class="p">:</span> <span class="n">spherical_points</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">str_options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"DFT_NUCLEAR_SCHEME"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">nuclear_scheme</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+        <span class="s2">"DFT_RADIAL_SCHEME"</span><span class="p">:</span> <span class="s2">"TREUTLER"</span><span class="p">,</span>
+        <span class="s2">"DFT_PRUNING_SCHEME"</span><span class="p">:</span> <span class="s2">"NONE"</span><span class="p">,</span>
+        <span class="s2">"DFT_BLOCK_SCHEME"</span><span class="p">:</span> <span class="s2">"ATOMIC"</span><span class="p">,</span>  <span class="c1"># every block of points belongs to one atom</span>
+    <span class="p">}</span>
+
+    <span class="c1"># the Python binding takes only integer and string options,</span>
+    <span class="c1"># the radial extent is read from the global options</span>
+    <span class="n">saved_options</span> <span class="o">=</span> <span class="n">p4util</span><span class="o">.</span><span class="n">OptionsState</span><span class="p">([</span><span class="s2">"DFT_BS_RADIUS_ALPHA"</span><span class="p">])</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">"DFT_BS_RADIUS_ALPHA"</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">bs_radius_alpha</span><span class="p">))</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">DFTGrid</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+            <span class="n">basisset</span><span class="o">.</span><span class="n">molecule</span><span class="p">(),</span> <span class="n">basisset</span><span class="p">,</span> <span class="n">int_options</span><span class="p">,</span> <span class="n">str_options</span>
+        <span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">saved_options</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
+
+    <span class="n">points</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">atom_index</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">grid</span><span class="o">.</span><span class="n">blocks</span><span class="p">():</span>
+        <span class="n">n_block</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">npoints</span><span class="p">()</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v</span><span class="p">)[:</span><span class="n">n_block</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">block</span><span class="o">.</span><span class="n">y</span><span class="p">(),</span> <span class="n">block</span><span class="o">.</span><span class="n">z</span><span class="p">())]</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">w</span><span class="p">())[:</span><span class="n">n_block</span><span class="p">])</span>
+        <span class="n">atom_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n_block</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">parent_atom</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">))</span>
+
+    <span class="n">atom_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">atom_index</span><span class="p">)</span>
+    <span class="n">natom</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">natom</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">((</span><span class="n">atom_index</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">atom_index</span> <span class="o">&gt;=</span> <span class="n">natom</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Psi4 returned grid blocks without a parent atom!"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">QuadratureGrid</span><span class="p">(</span>
+        <span class="n">points</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">points</span><span class="p">),</span>
+        <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span>
+        <span class="n">atom_index</span><span class="o">=</span><span class="n">atom_index</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="becke_fragment_weights">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.becke_fragment_weights">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">becke_fragment_weights</span><span class="p">(</span>
+    <span class="n">grid</span><span class="p">:</span> <span class="n">QuadratureGrid</span><span class="p">,</span> <span class="n">fragment_atoms</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Becke fragment weights: 1 at the points in the Becke cells of the fragment's atoms,</span>
+<span class="sd">    0 elsewhere. With the grid's weights they integrate over the fragment's cells.</span>
+
+<span class="sd">    Every atom that carries grid points must belong to one fragment, ghost atoms</span>
+<span class="sd">    included, so that the weights sum to 1 at every point.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        grid (QuadratureGrid): Grid from `molecular_grid`.</span>
+<span class="sd">        fragment_atoms (Mapping[str, Iterable[int]]): Atom indices of each fragment,</span>
+<span class="sd">            e.g. {"A": range(0, 3), "B": range(3, 6)}.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict[str, np.ndarray]: Weights of each fragment, shape (n,).</span>
+<span class="sd">    """</span>
+
+    <span class="n">_check_fragment_names</span><span class="p">(</span><span class="n">fragment_atoms</span><span class="p">)</span>
+
+    <span class="n">atoms_of</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># fragment name -&gt; its atom indices</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># atom index -&gt; its fragment name</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">fragment_atoms</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">atoms_of</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Atom indices should be integers, fragment `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` has </span><span class="si">{</span><span class="n">atom</span><span class="si">!r}</span><span class="s2">!"</span>
+                <span class="p">)</span>
+            <span class="n">atom</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">owner</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Atom </span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s2"> is in fragments `</span><span class="si">{</span><span class="n">owner</span><span class="p">[</span><span class="n">atom</span><span class="p">]</span><span class="si">}</span><span class="s2">` and `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">`!"</span>
+                <span class="p">)</span>
+            <span class="n">owner</span><span class="p">[</span><span class="n">atom</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="n">atoms_of</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+
+    <span class="n">unassigned</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">atom_index</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">owner</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">unassigned</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Atoms </span><span class="si">{</span><span class="n">unassigned</span><span class="si">}</span><span class="s2"> carry grid points but belong to no fragment, so the "</span>
+            <span class="s2">"weights would not sum to 1. Assign them (e.g. ghost atoms of midbond "</span>
+            <span class="s2">"functions) to a fragment, or use Hirshfeld weights."</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">atom_index</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">atoms_of</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="hirshfeld_fragment_weights">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.hirshfeld_fragment_weights">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hirshfeld_fragment_weights</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">densities</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+    <span class="n">basisset</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="p">,</span>
+    <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Hirshfeld-like fragment weights, w_X(r) = rho_X(r) / sum_Y rho_Y(r), from fragment</span>
+<span class="sd">    densities, e.g. the unperturbed monomer densities of a dimer.</span>
+
+<span class="sd">    Negative density values (rounding) count as 0, and where the total density is below</span>
+<span class="sd">    1e-30 the weights are split equally between the fragments.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        points (np.ndarray): Points in bohr, shape (..., 3).</span>
+<span class="sd">        densities (Mapping[str, np.ndarray]): AO density matrix of each fragment,</span>
+<span class="sd">            shape (nbf, nbf), e.g. {"A": 2 * Da_A, "B": 2 * Da_B}.</span>
+<span class="sd">        basisset (psi4.core.BasisSet): Basis set of the density matrices.</span>
+<span class="sd">        chunk_size (int | None, optional): Number of points evaluated at once.</span>
+<span class="sd">            Defaults to the `point_eval_chunk_size` option.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict[str, np.ndarray]: Weights of each fragment, with the shape of `points`</span>
+<span class="sd">            without its last axis.</span>
+<span class="sd">    """</span>
+
+    <span class="n">names</span> <span class="o">=</span> <span class="n">_check_fragment_names</span><span class="p">(</span><span class="n">densities</span><span class="p">)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">evaluate_density</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">densities</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">],</span> <span class="n">points</span><span class="p">,</span> <span class="n">basisset</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span>
+    <span class="p">)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">total</span> <span class="o">=</span> <span class="n">rho</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">empty</span> <span class="o">=</span> <span class="n">total</span> <span class="o">&lt;</span> <span class="n">_HIRSHFELD_DENSITY_FLOOR</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">),</span> <span class="n">rho</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">empty</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">total</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">)}</span></div>
+
+
+
+<div class="viewcode-block" id="FragmentOperators">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FragmentOperators</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Weighted-overlap matrices W_X and first-moment matrices R_X of a set of fragments,</span>
+
+<span class="sd">        W_X[mu,nu] = integral(w_X(r) phi_mu(r) phi_nu(r) dr),</span>
+<span class="sd">        R_X[k,mu,nu] = integral(w_X(r) r_k phi_mu(r) phi_nu(r) dr),</span>
+
+<span class="sd">    with r about the coordinate origin. Build them with `from_grid`; populations, charges</span>
+<span class="sd">    and dipoles of density matrices are then traces.</span>
+
+<span class="sd">    When the fragments cover the whole system, i.e. their weights are a partition of</span>
+<span class="sd">    unity (the default of `from_grid`), the weights are checked to sum to 1, and every</span>
+<span class="sd">    `population` and `charge` call checks that the populations of all fragments add up</span>
+<span class="sd">    to the electrons Tr(dm S), see `closure_error` and `prop_sapt.checks`.</span>
+<span class="sd">    """</span>
+
+<div class="viewcode-block" id="FragmentOperators.__init__">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">overlaps</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+        <span class="n">first_moments</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ao_overlap</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Args:</span>
+<span class="sd">            overlaps (Mapping[str, np.ndarray]): W_X of each fragment, shape (nbf, nbf).</span>
+<span class="sd">            first_moments (Mapping[str, np.ndarray] | None, optional): R_X of each</span>
+<span class="sd">                fragment, shape (3, nbf, nbf). Without them `dipole` is not available.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            ao_overlap (np.ndarray | None, optional): The analytic AO overlap matrix S,</span>
+<span class="sd">                shape (nbf, nbf). Giving it declares that the fragment weights are a</span>
+<span class="sd">                partition of unity, i.e. the fragments cover the whole system:</span>
+<span class="sd">                `population` and `charge` then check that the populations of all</span>
+<span class="sd">                fragments add up to Tr(dm S), and `closure_error` is available.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">        """</span>
+
+        <span class="n">names</span> <span class="o">=</span> <span class="n">_check_fragment_names</span><span class="p">(</span><span class="n">overlaps</span><span class="p">)</span>
+        <span class="n">nbf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">overlaps</span><span class="p">[</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">overlaps</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Every overlap should have the same shape (nbf, nbf), "</span>
+                    <span class="sa">f</span><span class="s2">"fragment `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` has </span><span class="si">{</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">!"</span>
+                <span class="p">)</span>
+            <span class="n">matrix</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_first_moments</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">first_moments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">first_moments</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"`first_moments` should have the same fragments as `overlaps`, "</span>
+                    <span class="sa">f</span><span class="s2">"has </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">first_moments</span><span class="p">)</span><span class="si">}</span><span class="s2"> instead of </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">names</span><span class="p">)</span><span class="si">}</span><span class="s2">!"</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_first_moments</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">first_moments</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Every first moment should have shape (3, </span><span class="si">{</span><span class="n">nbf</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">nbf</span><span class="si">}</span><span class="s2">), "</span>
+                        <span class="sa">f</span><span class="s2">"fragment `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">` has </span><span class="si">{</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">!"</span>
+                    <span class="p">)</span>
+                <span class="n">matrix</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_first_moments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">matrix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ao_overlap</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">ao_overlap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ao_overlap</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"`ao_overlap` should have shape (</span><span class="si">{</span><span class="n">nbf</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">nbf</span><span class="si">}</span><span class="s2">), was </span><span class="si">{</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">!"</span>
+                <span class="p">)</span>
+            <span class="n">matrix</span><span class="o">.</span><span class="n">flags</span><span class="o">.</span><span class="n">writeable</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ao_overlap</span> <span class="o">=</span> <span class="n">matrix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nbf</span> <span class="o">=</span> <span class="n">nbf</span></div>
+
+
+<div class="viewcode-block" id="FragmentOperators.from_grid">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.from_grid">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_grid</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">points</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">fragment_weights</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+        <span class="n">basisset</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="p">,</span>
+        <span class="n">dipole</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">partition_of_unity</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"FragmentOperators"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Compute the fragment operators by quadrature, in one pass over the points.</span>
+
+<span class="sd">        With `partition_of_unity` (the default) the fragment weights are first checked</span>
+<span class="sd">        to sum to 1 wherever the basis functions reach</span>
+<span class="sd">        (`prop_sapt.checks.check_partition_of_unity`), and the operators get the</span>
+<span class="sd">        analytic overlap matrix, so that every population is checked to close</span>
+<span class="sd">        (`closure_error`). A failed check warns, see `prop_sapt.checks`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            points (np.ndarray): Points of the quadrature grid in bohr, shape (..., 3).</span>
+<span class="sd">            weights (np.ndarray): Quadrature weights, with the shape of `points`</span>
+<span class="sd">                without its last axis.</span>
+<span class="sd">            fragment_weights (Mapping[str, np.ndarray]): Weight w_X of each fragment at</span>
+<span class="sd">                the points, with the same shape as `weights`.</span>
+<span class="sd">            basisset (psi4.core.BasisSet): Basis set of the operators.</span>
+<span class="sd">            dipole (bool, optional): Also compute the first-moment matrices, needed for</span>
+<span class="sd">                `dipole`. Defaults to True.</span>
+<span class="sd">            chunk_size (int | None, optional): Number of points evaluated at once.</span>
+<span class="sd">                Defaults to the `point_eval_chunk_size` option.</span>
+<span class="sd">            partition_of_unity (bool, optional): Whether the fragments together cover</span>
+<span class="sd">                the whole system, i.e. `fragment_weights` sum to 1 at every point. If</span>
+<span class="sd">                True, this is checked here, and the operators get the analytic overlap</span>
+<span class="sd">                matrix S, so that every `population` and `charge` call checks that the</span>
+<span class="sd">                populations of all fragments add up to Tr(dm S). Pass False for weights</span>
+<span class="sd">                that do not sum to 1, e.g. only some of the fragments or atoms, or a</span>
+<span class="sd">                grid covering part of space: nothing is checked then, and</span>
+<span class="sd">                `closure_error` is not available. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            FragmentOperators: Operators of the fragments in the basis of `basisset`.</span>
+<span class="sd">        """</span>
+
+        <span class="n">_check_basisset</span><span class="p">(</span><span class="n">basisset</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">_prepare_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">_get_chunk_size</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">_check_fragment_names</span><span class="p">(</span><span class="n">fragment_weights</span><span class="p">)</span>
+
+        <span class="n">points_shape</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">_prepare_point_values</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">points_shape</span><span class="p">,</span> <span class="s2">"`weights`"</span><span class="p">)</span>
+        <span class="n">fragment_weights</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">_prepare_point_values</span><span class="p">(</span>
+                <span class="n">fragment_weights</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">points_shape</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Weights of fragment `</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">`"</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span>
+        <span class="p">}</span>
+        <span class="n">flat_points</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">partition_of_unity</span><span class="p">:</span>
+            <span class="n">check_partition_of_unity</span><span class="p">(</span>
+                <span class="n">flat_points</span><span class="p">,</span>
+                <span class="n">weights</span><span class="p">,</span>
+                <span class="n">fragment_weights</span><span class="p">,</span>
+                <span class="n">basisset</span><span class="p">,</span>
+                <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">nbf</span> <span class="o">=</span> <span class="n">basisset</span><span class="o">.</span><span class="n">nbf</span><span class="p">()</span>
+        <span class="n">overlaps</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">}</span>
+        <span class="n">first_moments</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="n">nbf</span><span class="p">,</span> <span class="n">nbf</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">}</span> <span class="k">if</span> <span class="n">dipole</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">phi</span> <span class="ow">in</span> <span class="n">_iter_phi_chunks</span><span class="p">(</span><span class="n">flat_points</span><span class="p">,</span> <span class="n">basisset</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">):</span>
+            <span class="n">chunk_points</span> <span class="o">=</span> <span class="n">flat_points</span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+                <span class="n">weighted_phi</span> <span class="o">=</span> <span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">chunk</span><span class="p">]</span> <span class="o">*</span> <span class="n">fragment_weights</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">chunk</span><span class="p">])[</span>
+                    <span class="p">:,</span> <span class="kc">None</span>
+                <span class="p">]</span> <span class="o">*</span> <span class="n">phi</span>
+                <span class="n">overlaps</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">phi</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">weighted_phi</span>
+                <span class="k">if</span> <span class="n">dipole</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                        <span class="n">first_moments</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="n">phi</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span>
+                            <span class="n">chunk_points</span><span class="p">[:,</span> <span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">weighted_phi</span>
+                        <span class="p">)</span>
+
+        <span class="c1"># symmetric by construction, remove the rounding of the products</span>
+        <span class="n">overlaps</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">overlaps</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">if</span> <span class="n">dipole</span><span class="p">:</span>
+            <span class="n">first_moments</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">name</span><span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">first_moments</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+
+        <span class="n">ao_overlap</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">partition_of_unity</span><span class="p">:</span>
+            <span class="n">ao_overlap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="n">basisset</span><span class="p">)</span><span class="o">.</span><span class="n">ao_overlap</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">overlaps</span><span class="p">,</span> <span class="n">first_moments</span><span class="p">,</span> <span class="n">ao_overlap</span><span class="o">=</span><span class="n">ao_overlap</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Names of the fragments."""</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">nbf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Number of basis functions of the operators."""</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nbf</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ao_overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The analytic AO overlap matrix S, read-only, if the fragment weights are a</span>
+<span class="sd">        partition of unity; None otherwise."""</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ao_overlap</span>
+
+<div class="viewcode-block" id="FragmentOperators.overlap">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.overlap">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Weighted-overlap matrix W_X of `fragment`, shape (nbf, nbf), read-only.</span>
+<span class="sd">        The sum over fragments that cover the whole system is the overlap matrix, up to</span>
+<span class="sd">        quadrature error.</span>
+<span class="sd">        """</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="p">[</span><span class="n">fragment</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="FragmentOperators.first_moment">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.first_moment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">first_moment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        First-moment matrices R_X of `fragment`, shape (3, nbf, nbf), read-only,</span>
+<span class="sd">        with r about the coordinate origin and no charge sign.</span>
+<span class="sd">        """</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_first_moments</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_moments</span><span class="p">[</span><span class="n">fragment</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="FragmentOperators.population">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.population">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">population</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dm</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Number of electrons of AO density matrix `dm` on `fragment`, Tr(dm W_X).</span>
+<span class="sd">        No spin factor is applied: for the total density of an RHF matrix pass `2 * Da`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fragment (str): Name of the fragment.</span>
+<span class="sd">            dm (np.ndarray | Iterable[np.ndarray]): AO density matrix, shape (nbf, nbf),</span>
+<span class="sd">                or several of them, as a sequence or an array of shape (M, nbf, nbf).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float | np.ndarray: Population, a float for a single matrix</span>
+<span class="sd">                and shape (M,) for several.</span>
+
+<span class="sd">        Warns:</span>
+<span class="sd">            InvariantWarning: For a partition of unity, if the populations of all</span>
+<span class="sd">                fragments miss Tr(dm S) by more than the `check_closure_atol` option,</span>
+<span class="sd">                see `closure_error`.</span>
+<span class="sd">        """</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+        <span class="n">dm_stack</span><span class="p">,</span> <span class="n">single</span> <span class="o">=</span> <span class="n">_stack_matrices</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nbf</span><span class="p">)</span>
+
+        <span class="n">populations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populations</span><span class="p">(</span><span class="n">dm_stack</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ao_overlap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_charge_closure</span><span class="p">(</span><span class="n">populations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_electrons</span><span class="p">(</span><span class="n">dm_stack</span><span class="p">))</span>
+
+        <span class="n">population</span> <span class="o">=</span> <span class="n">populations</span><span class="p">[</span><span class="n">fragment</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">population</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">single</span> <span class="k">else</span> <span class="n">population</span></div>
+
+
+<div class="viewcode-block" id="FragmentOperators.charge">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.charge">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">charge</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dm</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Electronic charge of AO density matrix `dm` on `fragment`, -Tr(dm W_X).</span>
+<span class="sd">        For an interaction-induced density this is the charge moved onto the fragment.</span>
+<span class="sd">        No spin factor is applied: for the total density of an RHF matrix pass `2 * Da`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fragment (str): Name of the fragment.</span>
+<span class="sd">            dm (np.ndarray | Iterable[np.ndarray]): AO density matrix, shape (nbf, nbf),</span>
+<span class="sd">                or several of them, as a sequence or an array of shape (M, nbf, nbf).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float | np.ndarray: Charge, a float for a single matrix</span>
+<span class="sd">                and shape (M,) for several.</span>
+
+<span class="sd">        Warns:</span>
+<span class="sd">            InvariantWarning: As `population`.</span>
+<span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">(</span><span class="n">fragment</span><span class="p">,</span> <span class="n">dm</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FragmentOperators.closure_error">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.closure_error">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">closure_error</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">dm</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Electrons of AO density matrix `dm` that the fragments miss or count twice,</span>
+<span class="sd">        sum_X Tr(dm W_X) - Tr(dm S): the quadrature error of the grid and the defect of</span>
+<span class="sd">        the fragment weights, for this density. No spin factor is applied to `dm`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dm (np.ndarray | Iterable[np.ndarray]): AO density matrix, shape (nbf, nbf),</span>
+<span class="sd">                or several of them, as a sequence or an array of shape (M, nbf, nbf).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the operators have no `ao_overlap`, i.e. the fragment</span>
+<span class="sd">                weights are not a partition of unity.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float | np.ndarray: Closure error in electrons, a float for a single matrix</span>
+<span class="sd">                and shape (M,) for several.</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ao_overlap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"No AO overlap matrix: the closure error needs fragment weights that "</span>
+                <span class="s2">"are a partition of unity, built by `from_grid` with "</span>
+                <span class="s2">"`partition_of_unity=True` or given `ao_overlap`!"</span>
+            <span class="p">)</span>
+        <span class="n">dm_stack</span><span class="p">,</span> <span class="n">single</span> <span class="o">=</span> <span class="n">_stack_matrices</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nbf</span><span class="p">)</span>
+
+        <span class="n">closure</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populations</span><span class="p">(</span><span class="n">dm_stack</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_electrons</span><span class="p">(</span><span class="n">dm_stack</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">closure</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">single</span> <span class="k">else</span> <span class="n">closure</span></div>
+
+
+<div class="viewcode-block" id="FragmentOperators.dipole">
+<a class="viewcode-back" href="../../api.html#prop_sapt.partition.FragmentOperators.dipole">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dipole</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fragment</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dm</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Electronic dipole moment of AO density matrix `dm` on `fragment`,</span>
+<span class="sd">        -integral(w_X(r) (r - origin) rho(r) dr) = -Tr(dm R_X) + origin Tr(dm W_X),</span>
+<span class="sd">        in atomic units. Electrons contribute negatively, as in Psi4's `ao_dipole`, so</span>
+<span class="sd">        at the coordinate origin the dipoles of fragments that cover the whole system</span>
+<span class="sd">        sum to the electronic dipole Tr(dm @ ao_dipole). No spin factor is applied to</span>
+<span class="sd">        `dm`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fragment (str): Name of the fragment.</span>
+<span class="sd">            dm (np.ndarray | Iterable[np.ndarray]): AO density matrix, shape (nbf, nbf),</span>
+<span class="sd">                or several of them, as a sequence or an array of shape (M, nbf, nbf).</span>
+<span class="sd">            origin (np.ndarray | None, optional): Origin of the dipole in bohr,</span>
+<span class="sd">                shape (3,). Defaults to the coordinate origin.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Dipole, shape (3,) for a single matrix and (M, 3) for several.</span>
+<span class="sd">        """</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_fragment</span><span class="p">(</span><span class="n">fragment</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_first_moments</span><span class="p">()</span>
+        <span class="n">dm_stack</span><span class="p">,</span> <span class="n">single</span> <span class="o">=</span> <span class="n">_stack_matrices</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nbf</span><span class="p">)</span>
+
+        <span class="n">dipole</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"mij,kji-&gt;mk"</span><span class="p">,</span> <span class="n">dm_stack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_moments</span><span class="p">[</span><span class="n">fragment</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">origin</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"`origin` should have shape (3,), was </span><span class="si">{</span><span class="n">origin</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">!"</span>
+                <span class="p">)</span>
+            <span class="n">population</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"mij,ji-&gt;m"</span><span class="p">,</span> <span class="n">dm_stack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="p">[</span><span class="n">fragment</span><span class="p">])</span>
+            <span class="n">dipole</span> <span class="o">+=</span> <span class="n">population</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">origin</span>
+
+        <span class="k">return</span> <span class="n">dipole</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">single</span> <span class="k">else</span> <span class="n">dipole</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_populations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dm_stack</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Populations Tr(dm W_X) of every fragment, shape (M,), for stacked matrices."""</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"mij,ji-&gt;m"</span><span class="p">,</span> <span class="n">dm_stack</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">overlap</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_electrons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dm_stack</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Electrons Tr(dm S), shape (M,), for stacked matrices."""</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"mij,ji-&gt;m"</span><span class="p">,</span> <span class="n">dm_stack</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ao_overlap</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_fragment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fragment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Raises `KeyError` if `fragment` is not one of the fragments."""</span>
+
+        <span class="k">if</span> <span class="n">fragment</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Unknown fragment `</span><span class="si">{</span><span class="n">fragment</span><span class="si">}</span><span class="s2">`, the fragments are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_overlaps</span><span class="p">)</span><span class="si">}</span><span class="s2">!"</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_first_moments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Raises `ValueError` if the first moments were not computed."""</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_moments</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"No first moments, build the operators with `dipole=True` for dipoles!"</span>
+            <span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_positive_int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">option_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Returns `value`, or the `option_key` option if None, checking it is a positive int."""</span>
+
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">PROPSAPT_OPTIONS</span><span class="p">[</span><span class="n">option_key</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"`</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">` should be a positive integer, was </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">!"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_fragment_names</span><span class="p">(</span><span class="n">fragments</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Returns the fragment names of a nonempty mapping with string keys."""</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fragments</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Fragments should be given as a mapping of names, e.g. a dict, "</span>
+            <span class="sa">f</span><span class="s2">"was `</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span><span class="si">}</span><span class="s2">`!"</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No fragments given!"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">fragments</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Fragment names should be nonempty strings, was </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">!"</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">fragments</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_prepare_point_values</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">points_shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Returns finite values given at the points, flattened to shape (n,)."""</span>
+
+    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">points_shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> should have the shape </span><span class="si">{</span><span class="n">points_shape</span><span class="si">}</span><span class="s2"> of the points, "</span>
+            <span class="sa">f</span><span class="s2">"was </span><span class="si">{</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">!"</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> should be finite!"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
