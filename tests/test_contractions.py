@@ -33,7 +33,11 @@ def test_summed_indices_are_contracted():
     contractions = explicit_contractions()
     # the pattern still finds the contractions of every component tree
     scanned = {where.split("/")[0] for where, _ in contractions}
-    assert {"sapt_components", "properties_components", "densities_components"} <= scanned
+    assert {
+        "sapt_components",
+        "properties_components",
+        "densities_components",
+    } <= scanned
 
     summed_alone = []
     for where, subscripts in contractions:

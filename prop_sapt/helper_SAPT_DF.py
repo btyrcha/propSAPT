@@ -599,7 +599,9 @@ class helper_SAPT(object):
 
         # NOTE: Changed the monomer naming scheme:
         # 'monomer' refers now to the one that returned amplitudes are for.
-        occ, vir, wfn = ("a", "r", self.wfnA) if monomer == "A" else ("b", "s", self.wfnB)
+        occ, vir, wfn = (
+            ("a", "r", self.wfnA) if monomer == "A" else ("b", "s", self.wfnB)
+        )
         no = self.sizes[occ]
         nv = self.sizes[vir]
 

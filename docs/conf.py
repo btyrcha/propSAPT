@@ -17,7 +17,9 @@ author = "Bartosz Tyrcha"
 
 # The version is defined once, in prop_sapt/_version.py.
 _version = {}
-with open(os.path.join(os.path.dirname(__file__), "..", "prop_sapt", "_version.py")) as f:
+with open(
+    os.path.join(os.path.dirname(__file__), "..", "prop_sapt", "_version.py")
+) as f:
     exec(f.read(), _version)
 release = _version["__version__"]
 
