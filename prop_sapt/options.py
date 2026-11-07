@@ -14,6 +14,16 @@ Available options:
         Defaults to 1.0e-10.
     cpscf_maxiter (int): Maximum number of CPSCF iterations.
         Defaults to 50.
+    cpscf_type (str | None): How the CPSCF solves of the density matrices and the
+        properties build their J and K matrices: "DIRECT" (exact integrals) or "DF"
+        (density fitted with `df_basis_cpscf`), case-insensitive. None, the default,
+        uses the J/K object of the monomer SCF, which follows Psi4's `SCF_TYPE`. The
+        SAPT energies always use the monomer SCF's J/K object, so they stay consistent
+        with Psi4's SAPT; with another type, the densities and properties solve their
+        own induction amplitudes. Defaults to None.
+    df_basis_cpscf (str | None): Fitting basis of the CPSCF solves with `cpscf_type`
+        "DF". None takes Psi4's `DF_BASIS_SCF`, or else the JKFIT basis of the orbital
+        basis. Unused by the other types. Defaults to None.
     cube_grid_step (float): Step size (in bohr) of the grid built by `make_cube`,
         if no `grid` is given. Defaults to 0.2.
     cube_grid_overage (float): Extent (in bohr) of the grid built by `make_cube`
@@ -53,6 +63,8 @@ _OPTION_DEFAULTS = {
     "default_functional": "pbe0",
     "r_convergence": 1.0e-10,  # CPSCF convergence threshold
     "cpscf_maxiter": 50,
+    "cpscf_type": None,  # the monomer SCF's J/K
+    "df_basis_cpscf": None,
     "cube_grid_step": 0.2,  # in bohr
     "cube_grid_overage": 4.0,  # in bohr
     "cube_iso_sum_level": 0.85,
@@ -66,6 +78,61 @@ _OPTION_DEFAULTS = {
 }
 
 _VALID_OPTION_KEYS = frozenset(_OPTION_DEFAULTS.keys())
+
+CPSCF_TYPES = ("DIRECT", "DF")
+
+
+def check_cpscf_type(cpscf_type: str | None) -> str | None:
+    """Checks a value of the `cpscf_type` option.
+
+    Args:
+        cpscf_type (str | None): None, "DIRECT" or "DF", case-insensitive.
+
+    Returns:
+        str | None: The type in upper case, or None.
+
+    Raises:
+        ValueError: Raised for any other value.
+    """
+
+    if cpscf_type is None:
+        return None
+
+    if not isinstance(cpscf_type, str) or cpscf_type.upper() not in CPSCF_TYPES:
+        raise ValueError(
+            f"Invalid `cpscf_type` {cpscf_type!r}! Use None (the monomer SCF's J/K), "
+            f"{' or '.join(repr(t) for t in CPSCF_TYPES)}."
+        )
+
+    return cpscf_type.upper()
+
+
+def check_df_basis_cpscf(df_basis: str | None) -> str | None:
+    """Checks a value of the `df_basis_cpscf` option.
+
+    Args:
+        df_basis (str | None): None or the name of a basis set.
+
+    Returns:
+        str | None: `df_basis`.
+
+    Raises:
+        ValueError: Raised for an empty or non-string name.
+    """
+
+    if df_basis is not None and (not isinstance(df_basis, str) or not df_basis.strip()):
+        raise ValueError(
+            f"Invalid `df_basis_cpscf` {df_basis!r}! Use None or a basis set name."
+        )
+
+    return df_basis
+
+
+# options whose values are checked when they are set
+_VALUE_CHECKS = {
+    "cpscf_type": check_cpscf_type,
+    "df_basis_cpscf": check_df_basis_cpscf,
+}
 
 
 class PropsaptOptions:
@@ -128,6 +195,7 @@ class PropsaptOptions:
         Raises:
             TypeError: Raised when a non-string `option_key` is found in `options`.
             KeyError: Raised when invalid `option_key` is found in `options`.
+            ValueError: Raised when an invalid `cpscf_type` or `df_basis_cpscf` is given.
         """
 
         # check if given option keys are valid
@@ -136,6 +204,10 @@ class PropsaptOptions:
 
         # lowercase all option keys
         options_lower = {key.lower(): value for key, value in options.items()}
+
+        # check the values that can be checked before they are used
+        for key, value in options_lower.items():
+            check_option_value(key, value)
 
         self._options_dict.update(options_lower)
 
@@ -177,6 +249,24 @@ def check_if_valid_option(option_key: str) -> None:
         )
 
 
+def check_option_value(option_key: str, value) -> None:
+    """Checks the value of an option whose values are checked when they are set,
+    `cpscf_type` and `df_basis_cpscf`. The values of the other options are checked where
+    they are used.
+
+    Args:
+        option_key (str): A valid option key (case-insensitive).
+        value: Its value.
+
+    Raises:
+        ValueError: Raised when `value` is invalid.
+    """
+
+    check = _VALUE_CHECKS.get(option_key.lower())
+    if check is not None:
+        check(value)
+
+
 def set_propsapt_options(options: dict) -> None:
     """Sets package-wide propSAPT options.
 
@@ -194,6 +284,7 @@ def set_propsapt_options(options: dict) -> None:
     Raises:
         TypeError: Raised when a non-string `option_key` is found in `options`.
         KeyError: Raised when invalid `option_key` is found in `options`.
+        ValueError: Raised when an invalid `cpscf_type` or `df_basis_cpscf` is given.
     """
 
     # NOTE: this is the ONLY place where `PropsaptOptions._update()` is ok.

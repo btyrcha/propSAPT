@@ -62,7 +62,7 @@ from pathlib import Path
 from collections.abc import Mapping
 
 from .densities import MATRIX_FORMATS
-from .options import _OPTION_DEFAULTS, check_if_valid_option
+from .options import _OPTION_DEFAULTS, check_if_valid_option, check_option_value
 from .basis_overrides import ASSIGNABLE_BASIS_NAME, load_basis_overrides
 
 
@@ -509,7 +509,17 @@ def _resolve_propsapt_options(options) -> dict:
         except (KeyError, TypeError) as err:
             raise ConfigError(f"Invalid 'propsapt_options': {err.args[0]}") from err
 
-    return {key.lower(): _coerce_scientific(value) for key, value in options.items()}
+    resolved = {
+        key.lower(): _coerce_scientific(value) for key, value in options.items()
+    }
+
+    for key, value in resolved.items():
+        try:
+            check_option_value(key, value)
+        except ValueError as err:
+            raise ConfigError(f"Invalid 'propsapt_options': {err.args[0]}") from err
+
+    return resolved
 
 
 def _resolve_output(

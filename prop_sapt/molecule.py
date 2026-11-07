@@ -5,7 +5,8 @@ Definition of a core Dimer (molecule-like) class.
 import os
 import warnings
 from time import time
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Iterator, Mapping
+from contextlib import contextmanager
 from typing import Sequence
 import numpy as np
 import psi4
@@ -13,6 +14,7 @@ from .sinfinity import sinfinity
 from .cubes import Cube, make_cube
 from .fragments import DimerFragments
 from .evaluate import evaluate_density, evaluate_esp, evaluate_orbital
+from .options import check_cpscf_type, check_df_basis_cpscf
 from .partition import (
     FragmentOperators,
     QuadratureGrid,
@@ -86,11 +88,19 @@ class Dimer(sinfinity):
 
         self.fragments = DimerFragments.from_molecule(self.dimer)
 
+        # induction amplitudes with the monomer SCF's J/K objects, as in IND2,r
         self.cpscf_ra = None
         self.cpscf_sb = None
 
+        # the CPSCF type in use, see `use_cpscf_type`; None is the monomer SCF's J/K
+        self._cpscf_key: tuple[str, str | None] | None = None
+        # induction amplitudes of the other CPSCF types, keyed (monomer, type)
+        self._other_cpscf_amplitudes: dict[tuple, np.ndarray] = {}
+
         # theta amplitudes of the exchange density matrices, see `get_theta_amplitudes`
         self.theta_amplitudes: dict[str, np.ndarray | tuple[np.ndarray, ...]] = {}
+        # the CPSCF type they were calculated with
+        self._theta_cpscf_key: tuple[str, str | None] | None = None
 
         # print time
         psi4.core.print_out(
@@ -106,9 +116,15 @@ class Dimer(sinfinity):
         Grab CPSCF response amplitudes for monomer A or calculate them if they haven't been
         calculated already.
 
+        They are solved with the CPSCF type in use (see `use_cpscf_type`), and kept for
+        each type apart; `cpscf_ra` holds those of the monomer SCF's J/K objects.
+
         Returns:
             np.ndarray: Response amplitudes for monomer A.
         """
+
+        if self._cpscf_key is not None:
+            return self._get_other_cpscf_amplitudes("A")
 
         if self.cpscf_ra is None:
             self.cpscf_ra = self.cpscf("A")
@@ -120,14 +136,89 @@ class Dimer(sinfinity):
         Grab CPSCF response amplitudes for monomer B or calculate them if they haven't been
         calculated already.
 
+        They are solved with the CPSCF type in use (see `use_cpscf_type`), and kept for
+        each type apart; `cpscf_sb` holds those of the monomer SCF's J/K objects.
+
         Returns:
             np.ndarray: Response amplitudes for monomer B.
         """
+
+        if self._cpscf_key is not None:
+            return self._get_other_cpscf_amplitudes("B")
 
         if self.cpscf_sb is None:
             self.cpscf_sb = self.cpscf("B")
 
         return self.cpscf_sb
+
+    def _get_other_cpscf_amplitudes(self, monomer: str) -> np.ndarray:
+        """Response amplitudes of `monomer` with the CPSCF type in use, which is not the
+        monomer SCF's J/K objects."""
+
+        key = (monomer, self._cpscf_key)
+        if key not in self._other_cpscf_amplitudes:
+            self._other_cpscf_amplitudes[key] = self.cpscf(monomer)
+
+        return self._other_cpscf_amplitudes[key]
+
+    @contextmanager
+    def use_cpscf_type(
+        self, cpscf_type: str | None, df_basis: str | None = None
+    ) -> Iterator[None]:
+        """
+        Context in which the CPSCF solves of the dimer build their J and K matrices the
+        way `cpscf_type` says, see the `cpscf_type` option.
+
+        The density matrices and the properties run in this context, with the
+        `cpscf_type` and `df_basis_cpscf` options; the SAPT energies do not. Inside,
+        `cpscf`, `cpscf_batch`, `get_cpscf_ra` and `get_cpscf_sb` use the J/K object of
+        `build_cpscf_jk`, built on entering and freed on exit. The response amplitudes
+        of `get_cpscf_ra` and `get_cpscf_sb` are kept for each type apart, and the theta
+        amplitudes (see `get_theta_amplitudes`) are freed on entering if they were
+        calculated with another type. A context of the type already in use, e.g. a
+        nested one, keeps its J/K object.
+
+        Example:
+            >>> with dimer.use_cpscf_type("DF", "aug-cc-pvqz-jkfit"):
+            ...     x = dimer.cpscf_batch("A", perturbations)
+
+        Args:
+            cpscf_type (str | None): "DIRECT" or "DF", case-insensitive, or None for the
+                monomer SCF's J/K objects.
+            df_basis (str | None, optional): Fitting basis of "DF", ignored by the other
+                types. Defaults to Psi4's `DF_BASIS_SCF`, or else the JKFIT basis of the
+                orbital basis.
+
+        Raises:
+            ValueError: Raised for an invalid `cpscf_type` or `df_basis`.
+        """
+
+        cpscf_type = check_cpscf_type(cpscf_type)
+        df_basis = check_df_basis_cpscf(df_basis) if cpscf_type == "DF" else None
+
+        key = None
+        if cpscf_type is not None:
+            key = (cpscf_type, df_basis.lower() if df_basis else None)
+
+        outer = (self._cpscf_key, self.cpscf_jk)
+
+        if key == self._cpscf_key:
+            jk = self.cpscf_jk
+        else:
+            jk = self.build_cpscf_jk(cpscf_type, df_basis)
+            if jk is None:
+                # the monomer SCF's J/K objects are of this type already
+                key = None
+
+        if self.theta_amplitudes and self._theta_cpscf_key != key:
+            self.clear_theta_amplitudes()
+
+        self._cpscf_key, self.cpscf_jk = key, jk
+
+        try:
+            yield
+        finally:
+            self._cpscf_key, self.cpscf_jk = outer
 
     def get_theta_amplitudes(
         self,
@@ -140,7 +231,8 @@ class Dimer(sinfinity):
 
         The density matrix of each monomer needs the amplitudes of both, so they are
         kept for the other monomer's `calc_density_matrix` call. They are read-only.
-        Free them with `clear_theta_amplitudes`.
+        Free them with `clear_theta_amplitudes`. Entering `use_cpscf_type` with a type
+        other than the one they were calculated with frees them too.
 
         Args:
             key (str): Density component, e.g. "exch-ind_S2".
@@ -171,6 +263,7 @@ class Dimer(sinfinity):
         for array in arrays:
             array.flags.writeable = False
         self.theta_amplitudes[key] = amplitudes
+        self._theta_cpscf_key = self._cpscf_key
 
     def clear_theta_amplitudes(self):
         """

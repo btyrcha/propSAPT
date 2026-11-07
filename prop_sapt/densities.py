@@ -10,7 +10,7 @@ from .artifacts import DENSITIES_FILENAME, save_densities
 from .checks import check_symmetric
 from .cubes import Cube
 from .utils import trace_memory_peak, CalcTimer, prepare_path
-from .cpscf_batching import DensityBuilder, solve_batched
+from .cpscf_batching import DensityBuilder, options_cpscf_type, solve_batched
 from .densities_components.exch_disp import exch_disp_s2_density_builder
 from .densities_components.exch_ind import (
     exch_ind_density_builder,
@@ -108,8 +108,10 @@ def calc_densities(
     matrix_format = _resolve_matrix_format(matrix_format, compress_matrices)
 
     try:
-        rho_A = calc_density_matrix(dimer, monomer="A", orbital_basis=orbital_basis)
-        rho_B = calc_density_matrix(dimer, monomer="B", orbital_basis=orbital_basis)
+        # one CPSCF J/K object of the `cpscf_type` option for both monomers
+        with options_cpscf_type(dimer):
+            rho_A = calc_density_matrix(dimer, monomer="A", orbital_basis=orbital_basis)
+            rho_B = calc_density_matrix(dimer, monomer="B", orbital_basis=orbital_basis)
     finally:
         # the theta amplitudes are only shared by the two monomers' densities,
         # and the exchange-dispersion ones are as large as the dispersion amplitudes
@@ -662,32 +664,34 @@ def calc_density_matrix(
             f"Argument 'orbital_basis' should be either 'MO' or 'AO' but was '{orbital_basis}'!"
         )
 
-    rho_MO_pol = np.zeros((dimer.nmo, dimer.nmo))
+    # the CPSCF solves are of the `cpscf_type` option, with one J/K object for them all
+    with options_cpscf_type(dimer):
+        rho_MO_pol = np.zeros((dimer.nmo, dimer.nmo))
 
-    with CalcTimer("First-order Polarisation density calculation"):
-        if monomer == "A":
-            rho_pol_ra = dimer.get_cpscf_ra()
+        with CalcTimer("First-order Polarisation density calculation"):
+            if monomer == "A":
+                rho_pol_ra = dimer.get_cpscf_ra()
 
-            # first-order polarisation
-            rho_MO_pol[dimer.slices["r"], dimer.slices["a"]] = rho_pol_ra
-            rho_MO_pol[dimer.slices["a"], dimer.slices["r"]] = rho_pol_ra.T
+                # first-order polarisation
+                rho_MO_pol[dimer.slices["r"], dimer.slices["a"]] = rho_pol_ra
+                rho_MO_pol[dimer.slices["a"], dimer.slices["r"]] = rho_pol_ra.T
 
-        if monomer == "B":
-            rho_pol_sb = dimer.get_cpscf_sb()
+            if monomer == "B":
+                rho_pol_sb = dimer.get_cpscf_sb()
 
-            # first-order polarisation
-            rho_MO_pol[dimer.slices["s"], dimer.slices["b"]] = rho_pol_sb
-            rho_MO_pol[dimer.slices["b"], dimer.slices["s"]] = rho_pol_sb.T
+                # first-order polarisation
+                rho_MO_pol[dimer.slices["s"], dimer.slices["b"]] = rho_pol_sb
+                rho_MO_pol[dimer.slices["b"], dimer.slices["s"]] = rho_pol_sb.T
 
-    # the CPSCF equations of the other components are solved together, a batch per
-    # monomer at a time, see `solve_batched`
-    solved = solve_batched(
-        dimer,
-        {
-            f"{name} density calculation": build(dimer, monomer)
-            for _, build, name in BATCHED_COMPONENTS
-        },
-    )
+        # the CPSCF equations of the other components are solved together, a batch per
+        # monomer at a time, see `solve_batched`
+        solved = solve_batched(
+            dimer,
+            {
+                f"{name} density calculation": build(dimer, monomer)
+                for _, build, name in BATCHED_COMPONENTS
+            },
+        )
     rho = {
         key: solved[f"{name} density calculation"]
         for key, _, name in BATCHED_COMPONENTS

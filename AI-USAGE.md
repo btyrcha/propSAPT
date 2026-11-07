@@ -121,6 +121,8 @@ The short version, for disclosures; the log below has the detail.
 - Release packaging and CI: `pyproject.toml`, `CITATION.cff`, CI and release workflows, Python 3.12 minimum.
 - Release docs pass: README, installation page, usage guide (known limitations, uncoupled dispersion, finite-field wrappers), examples and CONTRIBUTING.
 - Added the summary to this log and changed it to one line per PR or task.
+- Tested DF CPSCF with DIRECT monomer SCFs on the water dimer (aug-cc-pVTZ HF CPSCF 505 s to 7 s, IND2,r within 2.3e-9 Eh, densities within 7e-6) and prepared a cluster benchmark for production systems.
+- Implemented the `cpscf_type` and `df_basis_cpscf` options (a DF or DIRECT J/K object for the CPSCF of the densities and properties, energies unchanged), with tests, docs, the changelog and the example config.
 
 ### 2026-11-04
 
@@ -130,6 +132,11 @@ The short version, for disclosures; the log below has the detail.
 - Release PR for 0.4.0: the version, the changelog section with a highlights summary, and the roadmap's release items moved to Completed.
 - Public release of 0.4.0: the one-commit export of the development repository and its checks, the launch checklist, and the Zenodo DOI in `CITATION.cff` and the README.
 
+### 2026-11-05
+
+- Ported the `cpscf_type` work from the development repository onto the public `main`.
+
 ### 2026-11-06
 
 - Black check in CI and CONTRIBUTING and black in `prop-sapt.yaml`; black formatting of the five files on `main` that were not, and LF line endings everywhere (`helper_SAPT_DF.py` was CRLF) kept by a `.gitattributes`.
+- Analysed the cluster benchmark of `cpscf_type` (HF energy plus densities 68-70% shorter, densities within about 1e-5); shortened its changelog entry and usage guide paragraph to the user-facing change; marked the default fitting basis being read from the global options at solve time with a TODO.
