@@ -211,7 +211,8 @@ consistent with Psi4's SAPT:
 
 ``cpscf_type`` is ``None`` (the default, the monomer SCF's J/K object), ``"DIRECT"`` or
 ``"DF"``. ``df_basis_cpscf`` is the fitting basis of ``"DF"``; it defaults to
-``DF_BASIS_SCF``, or else the JKFIT basis of the orbital basis. With ``"DF"`` the
+``DF_BASIS_SCF`` as it was when the dimer was built, or else the JKFIT basis of the
+dimer's orbital basis. With ``"DF"`` the
 densities and properties solve their own induction amplitudes and differ from the
 ``DIRECT`` ones by a small fitting error, which a larger fitting basis such as
 aug-cc-pVQZ-JKFIT lowers further. The gain is largest with ``SCF_TYPE DIRECT`` and HF,

@@ -186,8 +186,8 @@ class Dimer(sinfinity):
             cpscf_type (str | None): "DIRECT" or "DF", case-insensitive, or None for the
                 monomer SCF's J/K objects.
             df_basis (str | None, optional): Fitting basis of "DF", ignored by the other
-                types. Defaults to Psi4's `DF_BASIS_SCF`, or else the JKFIT basis of the
-                orbital basis.
+                types. Defaults to the dimer's `DF_BASIS_SCF` fitting basis (see
+                `build_cpscf_jk`).
 
         Raises:
             ValueError: Raised for an invalid `cpscf_type` or `df_basis`.

@@ -22,7 +22,8 @@ Available options:
         with Psi4's SAPT; with another type, the densities and properties solve their
         own induction amplitudes. Defaults to None.
     df_basis_cpscf (str | None): Fitting basis of the CPSCF solves with `cpscf_type`
-        "DF". None takes Psi4's `DF_BASIS_SCF`, or else the JKFIT basis of the orbital
+        "DF". None takes the dimer's `DF_BASIS_SCF` fitting basis, that of Psi4's
+        `DF_BASIS_SCF` when the dimer was built, or else the JKFIT basis of its orbital
         basis. Unused by the other types. Defaults to None.
     cube_grid_step (float): Step size (in bohr) of the grid built by `make_cube`,
         if no `grid` is given. Defaults to 0.2.

@@ -416,6 +416,8 @@ class helper_SAPT(object):
             puream=self.dimer_wfn.basisset().has_puream(),
         )
         self.fitting_bases["DF_BASIS_SCF"] = aux_basis.blend()
+        # also the default fitting basis of the "DF" CPSCF, see `build_cpscf_jk`
+        self._df_basis_scf = aux_basis
 
         self.jk = psi4.core.JK.build(self.dimer_wfn.basisset(), aux_basis)
         self.jk.set_memory(self.jk_memory)
@@ -669,8 +671,10 @@ class helper_SAPT(object):
         Args:
             cpscf_type (str | None): "DIRECT" or "DF", case-insensitive, see the
                 `cpscf_type` option; None stands for the monomer SCF's J/K objects.
-            df_basis (str | None, optional): Fitting basis of "DF". Defaults to Psi4's
-                `DF_BASIS_SCF`, or else the JKFIT basis of the orbital basis.
+            df_basis (str | None, optional): Fitting basis of "DF". Defaults to the
+                dimer's `DF_BASIS_SCF` fitting basis (see `fitting_bases`): the one of
+                Psi4's `DF_BASIS_SCF` when the dimer was built, or else the JKFIT basis
+                of its orbital basis.
 
         Returns:
             psi4.core.JK | None: The J/K object, or None if the monomer SCF's J/K
@@ -696,16 +700,17 @@ class helper_SAPT(object):
         # the monomers share the dimer basis set (ghost atoms), as in Psi4's SAPT
         wfn = self.wfnA
         aux = None
-        if cpscf_type == "DF":
-            # TODO: when `df_basis_cpscf` isn't set, the fitting basis comes from the
-            # global BASIS option at the time of the solve, not from the basis the
-            # dimer was built with. DF_BASIS_SCF is read at the solve too.
+        if cpscf_type == "DF" and df_basis is None:
+            aux = self._df_basis_scf
+        elif cpscf_type == "DF":
+            # a named fitting basis covers every atom; Psi4 only needs a valid orbital
+            # basis name next to it, the dimer's, not the options at this solve
             aux = psi4.core.BasisSet.build(
                 wfn.molecule(),
                 "DF_BASIS_SCF",
-                df_basis or psi4.core.get_option("SCF", "DF_BASIS_SCF"),
+                df_basis,
                 "JKFIT",
-                psi4.core.get_global_option("BASIS"),
+                wfn.basisset().name(),
                 puream=wfn.basisset().has_puream(),
             )
 

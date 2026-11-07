@@ -2,7 +2,9 @@
 on another J/K object, while the SAPT energies keep the monomer SCF's."""
 
 import numpy as np
+import psi4
 import pytest
+from psi4.driver.p4util import OptionsState
 
 import prop_sapt.helper_SAPT_DF as helper_module
 from prop_sapt import (
@@ -142,6 +144,35 @@ def test_df_cpscf_batch(prepare_dimer, monomer):
     assert {mol.wfnA.jk().name(), mol.wfnB.jk().name()} == {"DirectJK"}
     for x_df, x_direct in zip(df, direct):
         assert_close_not_equal(x_df, x_direct)
+
+
+def test_df_basis_from_dimer_build(prepare_dimer):
+    """The "DF" fitting basis does not follow the Psi4 options at the solve: the default
+    is the dimer's DF_BASIS_SCF basis, and a named one needs no BASIS option."""
+
+    mol = prepare_dimer
+    rng = np.random.default_rng(7)
+    perturbations = [rng.standard_normal((mol.sizes["a"], mol.sizes["r"]))]
+
+    def solve(df_basis):
+        with mol.use_cpscf_type("DF", df_basis):
+            return mol.cpscf_batch("A", perturbations)[0]
+
+    default_ref, named_ref = solve(None), solve(DF_BASIS)
+
+    options = OptionsState(["BASIS"], ["DF_BASIS_SCF"], ["SCF", "DF_BASIS_SCF"])
+    try:
+        # options whose default fitting basis is not the dimer's
+        psi4.set_options({"basis": "cc-pvdz", "df_basis_scf": "def2-universal-jkfit"})
+        default = solve(None)
+        psi4.core.set_global_option("BASIS", "")
+        named = solve(DF_BASIS)
+    finally:
+        options.restore()
+
+    for value, reference in ((default, default_ref), (named, named_ref)):
+        scale = np.abs(reference).max()
+        np.testing.assert_allclose(value, reference, rtol=0, atol=1e-10 * scale)
 
 
 def test_scf_jk_restored_after_failed_solve(prepare_dimer, monkeypatch):

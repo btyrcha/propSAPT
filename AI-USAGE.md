@@ -140,3 +140,7 @@ The short version, for disclosures; the log below has the detail.
 
 - Black check in CI and CONTRIBUTING and black in `prop-sapt.yaml`; black formatting of the five files on `main` that were not, and LF line endings everywhere (`helper_SAPT_DF.py` was CRLF) kept by a `.gitattributes`.
 - Analysed the cluster benchmark of `cpscf_type` (HF energy plus densities 68-70% shorter, densities within about 1e-5); shortened its changelog entry and usage guide paragraph to the user-facing change; marked the default fitting basis being read from the global options at solve time with a TODO.
+
+### 2026-11-07
+
+- Rebased the `cpscf_type` PR onto `main` after the black and line-ending PR; compared its DF and DIRECT benchmark results (energies, induced dipoles, densities, Hellmann-Feynman forces); made the default DF fitting basis of `cpscf_type` the one the dimer was built with instead of the options at the solve (the TODO), with a test.
