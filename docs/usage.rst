@@ -197,6 +197,29 @@ solves the equations of a monomer together, in one run of the solver
 (``Dimer.cpscf_batch``). Each iteration then builds the J and K
 matrices of all of them at once, which costs much less than solving them one by one.
 
+Those J and K matrices come from the monomer SCF's J/K object, so they follow
+``SCF_TYPE``: with ``DIRECT``, every iteration recomputes the four-index integrals. The
+``cpscf_type`` option switches the CPSCF solves of the densities and the properties to
+density fitting, while the SAPT energies keep the monomer SCF's J/K object and stay
+consistent with Psi4's SAPT:
+
+.. code-block:: python
+
+   from prop_sapt import set_propsapt_options
+
+   set_propsapt_options({"cpscf_type": "DF", "df_basis_cpscf": "aug-cc-pvqz-jkfit"})
+
+``cpscf_type`` is ``None`` (the default, the monomer SCF's J/K object), ``"DIRECT"`` or
+``"DF"``. ``df_basis_cpscf`` is the fitting basis of ``"DF"``; it defaults to
+``DF_BASIS_SCF`` as it was when the dimer was built, or else the JKFIT basis of the
+dimer's orbital basis. With ``"DF"`` the
+densities and properties solve their own induction amplitudes and differ from the
+``DIRECT`` ones by a small fitting error, which a larger fitting basis such as
+aug-cc-pVQZ-JKFIT lowers further. The gain is largest with ``SCF_TYPE DIRECT`` and HF,
+where the density matrices become several times faster. With DFT the
+exchange-correlation kernel takes a large part of the CPSCF time, so the gain is smaller.
+In a run configuration, set the options under ``propsapt_options``.
+
 Every matrix is symmetric. :func:`~prop_sapt.densities.calc_density_matrix` and
 :func:`~prop_sapt.artifacts.save_densities` check this and warn with
 :class:`~prop_sapt.checks.InvariantWarning` if a matrix is not symmetric within the
