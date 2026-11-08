@@ -144,3 +144,7 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-07
 
 - Rebased the `cpscf_type` PR onto `main` after the black and line-ending PR; compared its DF and DIRECT benchmark results (energies, induced dipoles, densities, Hellmann-Feynman forces); made the default DF fitting basis of `cpscf_type` the one the dimer was built with instead of the options at the solve (the TODO), with a test.
+
+### 2026-11-08
+
+- Explained when the version changes; a release workflow check that `CITATION.cff` and the install commands match the tag, `main` set to `0.5.0.dev0`, and a release checklist in `CONTRIBUTING.md`.

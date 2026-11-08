@@ -28,6 +28,30 @@ Thanks for your interest in contributing! Bug reports and questions are welcome 
 6. Open a pull request against `main`. CI runs the tests, the black check, the
    packaging check and the docs build.
 
+## Releasing
+
+For the maintainer. The version is set in `prop_sapt/_version.py`, and pull requests
+don't change it. Between releases `main` carries the next minor version as a
+development version (e.g. `0.5.0.dev0`), so results saved from `main` don't claim to
+come from a release.
+
+Before 1.0, a patch release (`0.4.1`) only fixes bugs or speeds things up and leaves
+every result unchanged. A new option, an API change or a change in any numerical
+result, even from a bug fix, makes a minor release (`0.5.0`).
+
+To release version X.Y.Z:
+
+1. On a branch, in one commit: set the version in `prop_sapt/_version.py` and
+   `CITATION.cff`, point the install commands in `README.md` and
+   `docs/installation.rst` at `vX.Y.Z`, and turn `[Unreleased]` in `CHANGELOG.md` into
+   `[X.Y.Z] - YYYY-MM-DD` under a new, empty `[Unreleased]`. A dry run of the Release
+   workflow on the branch (`gh workflow run release.yml --ref <branch>`) checks these
+   and prints the release notes.
+2. Merge the pull request, then tag the merge commit on `main` and push the tag
+   (`git tag vX.Y.Z && git push origin vX.Y.Z`). The Release workflow creates the
+   GitHub release, and Zenodo archives it under a new version DOI.
+3. Set `main` to the next development version, e.g. `0.6.0.dev0`.
+
 ## Logging AI-assisted work
 
 This project keeps a running log of AI coding assistance in `AI-USAGE.md`, so that
