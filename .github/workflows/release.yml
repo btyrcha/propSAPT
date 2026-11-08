@@ -1,9 +1,11 @@
 name: Release
 
 # Pushing a tag vX.Y.Z creates the GitHub release: the sdist and wheel attached, and the
-# notes taken from that version's section of CHANGELOG.md. Running the workflow by hand is
-# a dry run: it builds and prints the notes (from [Unreleased] if the version has no
-# section yet), and creates no release.
+# notes taken from that version's section of CHANGELOG.md. The tag, CITATION.cff and the
+# install commands in the README and the docs must match prop_sapt/_version.py. Running
+# the workflow by hand is a dry run: it builds and prints the notes (from [Unreleased] if
+# the version has no section yet), warns about what doesn't match yet, and creates no
+# release.
 
 on:
   push:
@@ -44,6 +46,36 @@ jobs:
       run: |
         if [ "$GITHUB_REF_NAME" != "v$VERSION" ]; then
           echo "::error::the tag $GITHUB_REF_NAME does not match the version in prop_sapt/_version.py ($VERSION)"
+          exit 1
+        fi
+
+    - name: Check CITATION.cff and the install commands
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        # main carries a development version between releases, which these don't name
+        if [ "$DRY_RUN" = true ] && echo "$VERSION" | grep -qE 'dev[0-9]*$'; then
+          echo "::notice::$VERSION is a development version; set the release version to check CITATION.cff and the install commands"
+          exit 0
+        fi
+        # a dry run only warns, listing what the release commit still has to change
+        level=error
+        if [ "$DRY_RUN" = true ]; then level=warning; fi
+        failed=0
+        if ! grep -qxF "version: $VERSION" CITATION.cff; then
+          echo "::$level::CITATION.cff does not have the line 'version: $VERSION'"
+          failed=1
+        fi
+        # the install commands name the newest final release, not a pre-release
+        if ! echo "$VERSION" | grep -qE '(a|b|rc|dev)[0-9]*$'; then
+          for file in README.md docs/installation.rst; do
+            if ! grep -qF "github.com/btyrcha/propSAPT@v$VERSION\"" "$file"; then
+              echo "::$level::the install command in $file does not install v$VERSION"
+              failed=1
+            fi
+          done
+        fi
+        if [ "$failed" = 1 ] && [ "$DRY_RUN" != true ]; then
           exit 1
         fi
 
