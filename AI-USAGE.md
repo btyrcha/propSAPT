@@ -148,3 +148,8 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-08
 
 - Explained when the version changes; a release workflow check that `CITATION.cff` and the install commands match the tag, `main` set to `0.5.0.dev0`, and a release checklist in `CONTRIBUTING.md`.
+
+### 2026-11-09
+
+- Re-audited where the package depends on Psi4 (objects, internal APIs, AO-basis inputs and outputs) for a roadmap item, and compared the integral, response and grid features of two other quantum-chemistry codes; recorded the findings and a staged plan in the development roadmap.
+- propSAPT's own conjugate-gradient CPSCF solver in place of Psi4's internal one, with Psi4 supplying only the orbital-Hessian products; a warning for unconverged solves, solver unit tests and Hessian tests, checked against the old solver to 4e-13.
