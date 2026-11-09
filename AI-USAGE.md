@@ -150,6 +150,11 @@ The short version, for disclosures; the log below has the detail.
 
 - Explained when the version changes; a release workflow check that `CITATION.cff` and the install commands match the tag, `main` set to `0.5.0.dev0`, and a release checklist in `CONTRIBUTING.md`.
 
+### 2026-11-09
+
+- Re-audited where the package depends on Psi4 (objects, internal APIs, AO-basis inputs and outputs) for a roadmap item, and compared the integral, response and grid features of two other quantum-chemistry codes; recorded the findings and a staged plan in the development roadmap.
+- propSAPT's own conjugate-gradient CPSCF solver in place of Psi4's internal one, with Psi4 supplying only the orbital-Hessian products; a warning for unconverged solves, solver unit tests and Hessian tests, checked against the old solver to 4e-13.
+
 ### 2026-11-14
 
 - Added the second-order properties preprint (arXiv:2611.07993) to the citations: `CITATION.cff` (under `references`, schema-validated), the README, and a new Citing section in the docs with BibTeX entries for both papers.
@@ -161,3 +166,7 @@ The short version, for disclosures; the log below has the detail.
 - Fixed density file names that collided on case-insensitive file systems (`Ind`/`ind`, `Disp`/`disp`): a file-name helper with a collision check in `prop_sapt.artifacts`, `Ind`/`Disp` files named `ind-total`/`disp-total`, with tests, an example, docs and a changelog entry.
 - Rebased the TREXIO export PR onto `main` after the 0.5.0 release (its changelog entries moved to the Unreleased section) and after the density file-name fix, naming the TREXIO files like the cubes through `density_file_names`, with a test of the collision check.
 - Addressed the Copilot review of the TREXIO PR: documented that the bundle's cube and TREXIO entries record the files requested, which are written after it, and made `export_trexio` refuse a `relative_cutoff` outside [0, 1), with tests.
+
+### 2026-11-19
+
+- Rebased the CPSCF solver PR onto `main` after the 0.5.0 release and the TREXIO export (its changelog entry moved to the Unreleased section).
