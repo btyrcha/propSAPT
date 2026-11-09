@@ -3,7 +3,7 @@ import psi4
 import pytest
 
 from .he_h2 import HE_H2
-from prop_sapt import Dimer
+from prop_sapt import Dimer, get_propsapt_options
 from prop_sapt.helper_SAPT_DF import jk_memory_doubles
 
 HE_H = """
@@ -190,6 +190,46 @@ def test_cpscf_batch_of_nothing(prepare_dimer):
 def test_cpscf_rejects_unknown_monomer(prepare_dimer):
     with pytest.raises(ValueError, match="not a valid monomer for CPSCF"):
         prepare_dimer.cpscf_batch("C", [])
+
+
+@pytest.mark.parametrize("monomer", ["A", "B"])
+def test_cpscf_amplitudes_solve_their_equations(prepare_dimer, monomer):
+    """The amplitudes t of a perturbation omega solve H t = -omega, with H the orbital
+    Hessian, to the convergence threshold (with room for the difference between the
+    solver's updated residual and the recomputed one)."""
+
+    perturbations = random_perturbations(prepare_dimer, monomer, 2)
+
+    amplitudes = prepare_dimer.cpscf_batch(monomer, perturbations)
+    products = prepare_dimer.orbital_hessian_product(monomer, [t.T for t in amplitudes])
+
+    r_convergence = get_propsapt_options()["r_convergence"]
+    for product, omega in zip(products, perturbations):
+        residual = np.linalg.norm(product + omega) / np.linalg.norm(omega)
+        assert residual < 10 * r_convergence
+
+
+@pytest.mark.parametrize("monomer", ["A", "B"])
+def test_orbital_hessian_symmetric_positive(prepare_dimer, monomer):
+    """The orbital Hessian, the one part of a CPSCF solve that the quantum-chemistry
+    code does, is symmetric and positive: u.Hv = v.Hu and v.Hv > 0."""
+
+    u, v = random_perturbations(prepare_dimer, monomer, 2)
+
+    Hu, Hv = prepare_dimer.orbital_hessian_product(monomer, [u, v])
+
+    assert np.vdot(u, Hv) == pytest.approx(np.vdot(v, Hu), rel=1e-10)
+    assert np.vdot(u, Hu) > 0
+    assert np.vdot(v, Hv) > 0
+
+
+def test_orbital_hessian_product_of_nothing(prepare_dimer):
+    assert prepare_dimer.orbital_hessian_product("A", []) == []
+
+
+def test_cpscf_rejects_wrong_shape(prepare_dimer):
+    with pytest.raises(ValueError, match="right-hand side of shape"):
+        prepare_dimer.cpscf_batch("A", [np.ones((2, 2))])
 
 
 def test_basisset_is_the_dimers(prepare_dimer):
