@@ -55,8 +55,9 @@ from functools import wraps
 import numpy as np
 import opt_einsum as oe
 import psi4
-from psi4.driver.p4util import message_box, cg_solver, OptionsState, OptionsStateCM
+from psi4.driver.p4util import message_box, OptionsState, OptionsStateCM
 
+from .cpscf_solver import conjugate_gradient
 from .options import PROPSAPT_OPTIONS, check_cpscf_type, check_df_basis_cpscf
 
 
@@ -576,23 +577,29 @@ class helper_SAPT(object):
         Coupled perturbed HF or KS calculations for several perturbations of one monomer.
 
         Solves the CPSCF equations of `monomer` for every (ov) matrix in `perturbations`
-        in one conjugate-gradient run. Each iteration builds the Hessian products of all
-        unconverged vectors with one J/K call, which costs much less than a call per
-        vector. Each vector converges on its own, to the same amplitudes as `cpscf`.
+        in one conjugate-gradient run (`prop_sapt.cpscf_solver`). Each iteration builds
+        the Hessian products of all unconverged vectors with one J/K call, which costs
+        much less than a call per vector. Each vector converges on its own, to the same
+        amplitudes as `cpscf`.
 
-        The J and K matrices come from the J/K object of the monomer SCF, or from
-        `cpscf_jk` if it is set (see `build_cpscf_jk`).
+        The amplitudes t of a perturbation omega solve H t = -omega, with H the orbital
+        Hessian of `orbital_hessian_product`; uncoupled, they are
+        omega / (eps_occ - eps_vir). The J and K matrices come from the J/K object of
+        the monomer SCF, or from `cpscf_jk` if it is set (see `build_cpscf_jk`).
 
         Args:
             monomer (str): "A" or "B".
             perturbations (list[np.ndarray]): (ov) perturbation matrices.
-            r_convergence (float | None, optional): Residual convergence threshold.
-                Defaults to the `r_convergence` option.
+            r_convergence (float | None, optional): Convergence threshold of the
+                relative residual. Defaults to the `r_convergence` option.
             maxiter (int | None, optional): Maximum number of iterations. Defaults to the
                 `cpscf_maxiter` option.
 
         Returns:
             list[np.ndarray]: The (vo) amplitudes, in the order of `perturbations`.
+
+        Warns:
+            RuntimeWarning: Raised if some amplitudes have not converged.
         """
 
         self._check_cpscf(monomer)
@@ -607,32 +614,52 @@ class helper_SAPT(object):
 
         # NOTE: Changed the monomer naming scheme:
         # 'monomer' refers now to the one that returned amplitudes are for.
-        occ, vir, wfn = (
-            ("a", "r", self.wfnA) if monomer == "A" else ("b", "s", self.wfnB)
+        occ, vir = ("a", "r") if monomer == "A" else ("b", "s")
+
+        amplitudes = conjugate_gradient(
+            [-np.asarray(pert_ov) for pert_ov in perturbations],
+            lambda vectors: self.orbital_hessian_product(monomer, vectors),
+            self.eps(vir) - self.eps(occ, dim=2),
+            r_convergence=r_convergence,
+            maxiter=maxiter,
+            title=f"CPSCF of monomer {monomer}",
         )
-        no = self.sizes[occ]
-        nv = self.sizes[vir]
 
-        # Get the orbital energy differences
-        eps_ov = psi4.core.Matrix.from_array(self.eps(occ, dim=2) - self.eps(vir))
+        # We want to return (vo) matrices
+        return [t.T for t in amplitudes]
 
-        # apply hessian func to every active vector in one call
-        def _hess_x(x_vec, act_mask):
-            active = [x for x, on in zip(x_vec, act_mask) if on]
-            products = iter(wfn.cphf_Hx(active) if active else [])
-            return [next(products) if on else False for on in act_mask]
+    def orbital_hessian_product(
+        self, monomer: str, vectors: list[np.ndarray]
+    ) -> list[np.ndarray]:
+        """
+        Products of the orbital Hessian of `monomer` with (ov) `vectors`, the left-hand
+        side of its CPSCF equations (see `cpscf_batch`).
 
-        # preconditioner - applies denominator (for faster convergence)
-        def _apply_precon(x_vec, act_mask):
-            preconditioned = []
-            for x, on in zip(x_vec, act_mask):
-                if on:
-                    p = x.clone()
-                    p.apply_denominator(eps_ov)
-                    preconditioned.append(p)
-                else:
-                    preconditioned.append(False)
-            return preconditioned
+        The Hessian is the symmetric positive definite one of a real singlet
+        perturbation: for RHF,
+        H_{ar,a'r'} = (eps_r - eps_a) delta_{aa'} delta_{rr'}
+        + 4 (ar|a'r') - (ar'|a'r) - (aa'|rr'),
+        and for RKS the exchange-correlation kernel too. Its J and K matrices come from
+        the J/K object of the monomer SCF, or from `cpscf_jk` if it is set (see
+        `build_cpscf_jk`). Psi4's `cphf_Hx` gives the products, with the opposite sign.
+
+        Args:
+            monomer (str): "A" or "B".
+            vectors (list[np.ndarray]): (ov) vectors.
+
+        Returns:
+            list[np.ndarray]: The (ov) products, in the order of `vectors`.
+        """
+
+        self._check_cpscf(monomer)
+
+        if len(vectors) == 0:
+            return []
+
+        wfn = self.wfnA if monomer == "A" else self.wfnB
+        matrices = [
+            psi4.core.Matrix.from_array(np.ascontiguousarray(x)) for x in vectors
+        ]
 
         # `cphf_Hx` takes the J and K matrices from the wavefunction's J/K object
         swap_jk = self.cpscf_jk is not None
@@ -640,22 +667,13 @@ class helper_SAPT(object):
             scf_jk = wfn.jk()
             wfn.set_jk(self.cpscf_jk)
 
-        # solve cpscf
         try:
-            x_vec, _ = cg_solver(
-                [psi4.core.Matrix.from_array(pert_ov) for pert_ov in perturbations],
-                _hess_x,
-                _apply_precon,
-                printlvl=2,
-                maxiter=maxiter,
-                rcond=r_convergence,
-            )
+            products = wfn.cphf_Hx(matrices)
         finally:
             if swap_jk:
                 wfn.set_jk(scf_jk)
 
-        # We want to return (vo) matrices
-        return [np.array(x).reshape(no, nv).T for x in x_vec]
+        return [-np.asarray(product) for product in products]
 
     def build_cpscf_jk(
         self, cpscf_type: str | None, df_basis: str | None = None

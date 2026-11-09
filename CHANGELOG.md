@@ -21,6 +21,12 @@ requests of the private repository propSAPT was developed in before it was publi
   `df_basis_cpscf` sets the fitting basis. The SAPT energies are unchanged. See the
   [usage guide](https://btyrcha.github.io/propSAPT/usage.html#density-matrix-calculations).
 
+### Changed
+
+- propSAPT solves the CPSCF equations with its own conjugate-gradient solver, with the
+  same results. A solve that has not converged in `cpscf_maxiter` iterations now warns,
+  where it used to go on silently.
+
 ## [0.4.0] - 2026-11-04
 
 The first public release. Highlights since 0.3.1:
