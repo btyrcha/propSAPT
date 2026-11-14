@@ -21,6 +21,8 @@ Scripts
   :func:`~prop_sapt.artifacts.load_densities`; run :file:`save_mo_matrices.py` first
 * :file:`read_subtract_save.py` - cube arithmetic on the cubes that :file:`water_dimer.py`
   writes to :file:`water-dimer-cubes/`; run :file:`water_dimer.py` first
+* :file:`export_trexio.py` - TREXIO files of the density changes of Ne–H2, to view them in
+  VIAMD, and the natural orbitals of its polarisation; needs ``trexio``
 * :file:`run_config.yaml` - a commented configuration for ``prop-sapt run``
 
 For example:

@@ -19,6 +19,8 @@ finite field, and use aug-cc-pVTZ with aug-cc-pVQZ fitting sets.
   `load_densities`. Run `save_mo_matrices.py` first.
 - **`read_subtract_save.py`**: cube arithmetic on the cubes that `water_dimer.py` writes to
   `water-dimer-cubes/`. Run `water_dimer.py` first.
+- **`export_trexio.py`**: TREXIO files of the density changes of Ne–H2, to view them in VIAMD,
+  and the natural orbitals of its polarisation. Needs `trexio` (`pip install trexio`).
 - **`run_config.yaml`**: a commented configuration for the `prop-sapt run` command-line runner.
 
 ## Notebooks
