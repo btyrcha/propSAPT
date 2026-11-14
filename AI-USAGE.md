@@ -148,3 +148,7 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-08
 
 - Explained when the version changes; a release workflow check that `CITATION.cff` and the install commands match the tag, `main` set to `0.5.0.dev0`, and a release checklist in `CONTRIBUTING.md`.
+
+### 2026-11-14
+
+- Added the second-order properties preprint (arXiv:2611.07993) to the citations: `CITATION.cff` (under `references`, schema-validated), the README, and a new Citing section in the docs with BibTeX entries for both papers.

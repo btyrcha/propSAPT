@@ -14,6 +14,9 @@ requests of the private repository propSAPT was developed in before it was publi
 
 - The Zenodo DOI of the software in `CITATION.cff`, and a DOI badge and the DOIs in the
   README.
+- The preprint on the second-order properties,
+  [arXiv:2611.07993](https://arxiv.org/abs/2611.07993), in `CITATION.cff`, the README and
+  the docs, and a Citing section in the docs with BibTeX entries for both papers.
 - The `cpscf_type` option sets how the CPSCF equations of the density matrices and the
   properties are solved: with the monomer SCF's J/K object (None, the default, which
   follows `SCF_TYPE`), "DIRECT" or "DF". With "DF" and `SCF_TYPE DIRECT`, densities and

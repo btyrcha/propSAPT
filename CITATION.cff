@@ -1,5 +1,8 @@
 cff-version: 1.2.0
-message: "If you use propSAPT in your work, please cite the paper below."
+message: >-
+  If you use propSAPT in your work, please cite the paper in preferred-citation.
+  If you use the second-order properties, please also cite the preprint in
+  references.
 type: software
 title: propSAPT
 abstract: >-
@@ -45,3 +48,27 @@ preferred-citation:
   end: 4578
   year: 2025
   doi: 10.1021/acs.jctc.5c00238
+references:
+  - type: article
+    status: preprint
+    title: "Direct calculation of dipole moment surfaces through second-order symmetry-adapted perturbation theory for properties"
+    authors:
+      - family-names: Tyrcha
+        given-names: Bartosz
+        orcid: "https://orcid.org/0009-0007-5969-945X"
+      - family-names: Stachowiak
+        given-names: Marcin
+      - family-names: Patkowski
+        given-names: Konrad
+        orcid: "https://orcid.org/0000-0002-4468-207X"
+      - family-names: Żuchowski
+        given-names: Piotr S.
+        orcid: "https://orcid.org/0000-0001-9267-3090"
+    year: 2026
+    month: 11
+    doi: 10.48550/arXiv.2611.07993
+    url: "https://arxiv.org/abs/2611.07993"
+    identifiers:
+      - type: other
+        value: "arXiv:2611.07993"
+        description: "arXiv identifier (physics.chem-ph)"

@@ -6,7 +6,8 @@
 propSAPT computes first-order interaction-induced properties and density matrices of molecular
 dimers in the spirit of symmetry-adapted perturbation theory (SAPT). The properties, such as the
 interaction-induced dipole moment, are analytic derivatives of the SAPT energy corrections,
-described in [J. Chem. Theory Comput. 21, 4562 (2025)](https://doi.org/10.1021/acs.jctc.5c00238).
+described in [J. Chem. Theory Comput. 21, 4562 (2025)](https://doi.org/10.1021/acs.jctc.5c00238)
+and, for the second-order corrections, in [arXiv:2611.07993](https://arxiv.org/abs/2611.07993).
 It also gives the SAPT0 / SAPT(DFT) energy decomposition, with uncoupled dispersion.
 
 Finite-field wrappers compute interaction-induced dipoles numerically, as field derivatives:
@@ -50,11 +51,23 @@ Details are in the [usage guide](https://btyrcha.github.io/propSAPT/usage.html#k
 
 ## Citing
 
-If you use propSAPT, please cite B. Tyrcha, T. Gupta, K. Patkowski, P. S. Żuchowski,
-*Analytical Derivatives of Symmetry-Adapted Perturbation Theory Corrections for
-Interaction-Induced Properties*, J. Chem. Theory Comput. **21**, 4562–4578 (2025),
-[doi:10.1021/acs.jctc.5c00238](https://doi.org/10.1021/acs.jctc.5c00238). GitHub's "Cite this
-repository" gives the same, from [`CITATION.cff`](CITATION.cff).
+If you use propSAPT, please cite
+
+- B. Tyrcha, T. Gupta, K. Patkowski, P. S. Żuchowski, *Analytical Derivatives of
+  Symmetry-Adapted Perturbation Theory Corrections for Interaction-Induced Properties*,
+  J. Chem. Theory Comput. **21**, 4562–4578 (2025),
+  [doi:10.1021/acs.jctc.5c00238](https://doi.org/10.1021/acs.jctc.5c00238).
+
+If you use the second-order properties (the `x2_*` terms and the totals), please also cite
+
+- B. Tyrcha, M. Stachowiak, K. Patkowski, P. S. Żuchowski, *Direct calculation of dipole
+  moment surfaces through second-order symmetry-adapted perturbation theory for properties*,
+  arXiv:2611.07993 (2026),
+  [doi:10.48550/arXiv.2611.07993](https://doi.org/10.48550/arXiv.2611.07993).
+
+GitHub's "Cite this repository" gives the first, from [`CITATION.cff`](CITATION.cff), which
+lists the preprint under `references`. The documentation has
+[BibTeX entries](https://btyrcha.github.io/propSAPT/#citing) for both.
 
 The software itself is archived on Zenodo:
 [doi:10.5281/zenodo.23951143](https://doi.org/10.5281/zenodo.23951143) always points to the latest version, and each
