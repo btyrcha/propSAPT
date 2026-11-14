@@ -39,6 +39,7 @@ import numpy as np
 import psi4
 
 from ._version import __version__
+from .artifacts import DensitySet, load_densities
 from .natural_orbitals import NaturalOrbitals, density_natural_orbitals
 
 #: How to install the optional trexio package.
@@ -67,7 +68,7 @@ _COEFFICIENT_RTOL = 1.0e-10
 
 class TrexioExportError(RuntimeError):
     """Raised when TREXIO files cannot be written: trexio is missing, or the basis set
-    cannot be written."""
+    cannot be written or, for a bundle, rebuilt."""
 
 
 def import_trexio():
@@ -93,7 +94,7 @@ def import_trexio():
 
 
 def export_trexio(
-    densities: Mapping[str, np.ndarray],
+    densities: Mapping[str, np.ndarray] | DensitySet | str | os.PathLike,
     directory: str | os.PathLike = ".",
     *,
     dimer=None,
@@ -105,13 +106,22 @@ def export_trexio(
 
     See `prop_sapt.trexio_export` for the encoding. A file of the same name is replaced.
 
+    A bundle needs its basis set rebuilt by Psi4, by name (`DensitySet.wavefunction`): a
+    basis set given by per-element overrides or read from a basis set directory has to be
+    made available to Psi4 first. The basis set rebuilt is checked against the one the
+    bundle records.
+
     Args:
-        densities (Mapping[str, np.ndarray]): AO density matrices as `calc_densities`
-            returns them (the default ``orbital_basis="AO"``), keyed "<component>_A",
-            "<component>_B" and "<component>" for the dimer.
+        densities (Mapping[str, np.ndarray] | DensitySet | str | os.PathLike): AO density
+            matrices as `calc_densities` returns them (the default ``orbital_basis="AO"``),
+            keyed "<component>_A", "<component>_B" and "<component>" for the dimer; or a
+            bundle, read by `prop_sapt.load_densities` or given by its path (the file or
+            its directory).
         directory (str | os.PathLike, optional): Directory of the files, created if
             needed. Defaults to ".".
-        dimer (Dimer): The dimer of the matrices: its geometry, basis set and orbitals.
+        dimer (Dimer | None, optional): The dimer of the matrices, for its geometry, basis
+            set and orbitals; required with a dict of matrices, unused with a bundle.
+            Defaults to None.
         keys (Iterable[str] | None, optional): The densities to write. Defaults to every
             key of `densities`.
         relative_cutoff (float, optional): Natural orbitals with ``|n|`` up to
@@ -119,9 +129,11 @@ def export_trexio(
             keeps all but those of zero occupation. Defaults to `DEFAULT_RELATIVE_CUTOFF`.
 
     Raises:
-        TrexioExportError: If trexio is missing, or the basis set mixes spherical and
-            Cartesian shells.
-        TypeError: If no `dimer` is given.
+        TrexioExportError: If trexio is missing, the basis set mixes spherical and
+            Cartesian shells, or Psi4 cannot rebuild a bundle's basis set.
+        ArtifactError: If a bundle is malformed, or its basis set rebuilt differs from the
+            one it records.
+        TypeError: If a dict of matrices comes without a `dimer`.
 
     Warns:
         UserWarning: If the basis set has shells above g, which VIAMD does not read.
@@ -132,13 +144,20 @@ def export_trexio(
 
     trexio = import_trexio()
 
-    if dimer is None:
-        raise TypeError("`dimer` is needed for its geometry, basis set and orbitals!")
+    if isinstance(densities, (str, os.PathLike)):
+        densities = load_densities(densities)
 
-    matrices = densities
+    if isinstance(densities, DensitySet):
+        fragments, basisset = densities.fragments, _bundle_basisset(densities)
+    elif dimer is None:
+        raise TypeError("`dimer` is needed for its geometry, basis set and orbitals!")
+    else:
+        fragments, basisset = dimer.fragments, dimer.get_psi4_basisset()
+
+    matrices = densities.matrices if isinstance(densities, DensitySet) else densities
     keys = list(matrices) if keys is None else list(keys)
-    system = _system_arrays(dimer.fragments, dimer.get_psi4_basisset())
-    orbitals = density_natural_orbitals(matrices, dimer, keys=keys)
+    system = _system_arrays(fragments, basisset)
+    orbitals = density_natural_orbitals(densities, dimer, keys=keys)
 
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
@@ -151,6 +170,19 @@ def export_trexio(
         paths.append(path)
 
     return paths
+
+
+def _bundle_basisset(densities: DensitySet) -> psi4.core.BasisSet:
+    """The basis set of a bundle, rebuilt by Psi4 and checked against the bundle's."""
+
+    try:
+        basisset = densities.wavefunction("A").basisset()
+    except RuntimeError as err:
+        raise TrexioExportError(str(err)) from err
+
+    densities.check(basisset=basisset)
+
+    return basisset
 
 
 def _select(orbitals: NaturalOrbitals, relative_cutoff: float) -> NaturalOrbitals:

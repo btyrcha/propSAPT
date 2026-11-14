@@ -19,6 +19,8 @@ from prop_sapt import (
     load_densities,
     reset_propsapt_options,
 )
+from prop_sapt.artifacts import DENSITIES_FILENAME, save_densities
+from prop_sapt.cli import main
 from prop_sapt.evaluate import evaluate_basis_functions
 from prop_sapt.fragments import DimerFragments
 from prop_sapt.natural_orbitals import NaturalOrbitals, density_natural_orbitals
@@ -385,3 +387,97 @@ def test_calc_densities_checks_for_trexio_first(monkeypatch):
 
     with pytest.raises(TrexioExportError, match="pip install trexio"):
         calc_densities(object(), save_trexio=True)
+
+
+# export from a densities.npz bundle, also through `prop-sapt export trexio`
+
+
+@pytest.fixture
+def bundle(tmp_path, prepare_dimer, he_h2_densities):
+    """A bundle of the He-H2 densities."""
+
+    return save_densities(
+        tmp_path / "run" / DENSITIES_FILENAME, he_h2_densities, prepare_dimer
+    )
+
+
+EXPORT_KEYS = ["total", "pol_A", "Disp_B"]
+
+
+def _assert_same_files(first, second):
+    for path_1, path_2 in zip(first, second, strict=True):
+        assert path_1.name == path_2.name
+        data_1, data_2 = trexio_spec.read_file(path_1), trexio_spec.read_file(path_2)
+        for name in ("coord", "charge", "shell_am", "exponent", "coefficient"):
+            np.testing.assert_array_equal(data_1[name], data_2[name], err_msg=name)
+        np.testing.assert_allclose(
+            data_1["shell_factor"], data_2["shell_factor"], rtol=1e-14, atol=0
+        )
+        assert list(data_1["label"]) == list(data_2["label"])
+        assert data_1["description"] == data_2["description"]
+        for data in (data_1, data_2):
+            signs = np.where(data["mo_spin"] == 0, 1.0, -1.0)
+            coefficients = data["mo_coefficient"].T
+            data["density"] = (coefficients * (signs * data["mo_occupation"])) @ (
+                coefficients.T
+            )
+        np.testing.assert_allclose(
+            data_1["density"], data_2["density"], rtol=0, atol=1e-12
+        )
+
+
+@needs_trexio
+def test_export_from_a_bundle(tmp_path, prepare_dimer, he_h2_densities, bundle):
+    """A bundle, by path or read, gives the files the dimer gives: its basis set is
+    rebuilt by Psi4 and its orbitals come from its monomer wavefunctions."""
+
+    from_dimer = export_trexio(
+        he_h2_densities, tmp_path / "dimer", dimer=prepare_dimer, keys=EXPORT_KEYS
+    )
+    from_path = export_trexio(bundle, tmp_path / "path", keys=EXPORT_KEYS)
+    from_set = export_trexio(
+        load_densities(bundle.parent), tmp_path / "set", keys=EXPORT_KEYS
+    )
+
+    _assert_same_files(from_dimer, from_path)
+    _assert_same_files(from_dimer, from_set)
+
+
+@needs_trexio
+def test_cli_export_trexio(tmp_path, capsys, prepare_dimer, he_h2_densities, bundle):
+    """`prop-sapt export trexio` writes the files next to the bundle by default."""
+
+    status = main(["export", "trexio", str(bundle), "--keys", *EXPORT_KEYS])
+
+    assert status == 0
+    expected = export_trexio(
+        he_h2_densities, tmp_path / "dimer", dimer=prepare_dimer, keys=EXPORT_KEYS
+    )
+    _assert_same_files(expected, [bundle.parent / path.name for path in expected])
+    output = capsys.readouterr().out
+    assert "Wrote 3 TREXIO file(s)" in output
+    assert "spin Difference" in output
+
+    status = main(
+        ["export", "trexio", str(bundle.parent), "--output-dir", str(tmp_path / "out")]
+    )
+    assert status == 0
+    assert len(list((tmp_path / "out").iterdir())) == len(he_h2_densities)
+
+
+@needs_trexio
+def test_cli_export_trexio_errors(tmp_path, capsys, bundle):
+    assert main(["export", "trexio", str(bundle), "--keys", "polarisation"]) == 2
+    assert "No density matrix 'polarisation'" in capsys.readouterr().err
+
+    assert main(["export", "trexio", str(tmp_path / "missing.npz")]) == 2
+    assert "prop-sapt: error:" in capsys.readouterr().err
+
+
+def test_cli_export_trexio_needs_trexio(tmp_path, capsys, monkeypatch):
+    """Without trexio the command says how to install it, before reading the bundle."""
+
+    monkeypatch.setitem(sys.modules, "trexio", None)  # trexio is not installed
+
+    assert main(["export", "trexio", str(tmp_path / "missing.npz")]) == 2
+    assert "pip install trexio" in capsys.readouterr().err
