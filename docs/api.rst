@@ -43,6 +43,14 @@ Natural Orbitals of Density Changes
    :undoc-members:
    :show-inheritance:
 
+TREXIO Export
+-------------
+
+.. automodule:: prop_sapt.trexio_export
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Invariant Checks
 ----------------
 
