@@ -1,0 +1,1223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.properties &mdash; prop-sapt 0.5.0.dev0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=be1c004d"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-a-release">Installing a release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#development-install">Development install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#optional-packages">Optional packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-the-installation">Verifying the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finite-field-properties">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#sapt">SAPT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#any-psi4-energy-method">Any Psi4 energy method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-runner">Command-Line Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#basis-sets-missing-from-psi4">Basis sets missing from Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#hellmann-feynman-forces">Hellmann-Feynman Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#evaluating-at-arbitrary-points">Evaluating at Arbitrary Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#fragment-populations">Fragment Populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#cube-file-utilities">Cube File Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#generating-cube-files">Generating cube files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#working-with-cubes">Working with cubes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#known-limitations">Known limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#scripts">Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#notebooks">Notebooks</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.clear_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.clear_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_density"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_density()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_esp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_orbital()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.fragment_operators"><code class="docutils literal notranslate"><span class="pre">Dimer.fragment_operators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.get_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.store_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.store_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.use_cpscf_type"><code class="docutils literal notranslate"><span class="pre">Dimer.use_cpscf_type()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.BATCHED_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">BATCHED_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.DENSITY_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">DENSITY_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.MATRIX_FORMATS"><code class="docutils literal notranslate"><span class="pre">MATRIX_FORMATS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.artifacts">Density Artifacts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.ArtifactError"><code class="docutils literal notranslate"><span class="pre">ArtifactError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.CONVENTIONS"><code class="docutils literal notranslate"><span class="pre">CONVENTIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DENSITIES_FILENAME"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FILENAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DENSITIES_FORMAT"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FORMAT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet"><code class="docutils literal notranslate"><span class="pre">DensitySet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.check"><code class="docutils literal notranslate"><span class="pre">DensitySet.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.components"><code class="docutils literal notranslate"><span class="pre">DensitySet.components</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.fragments"><code class="docutils literal notranslate"><span class="pre">DensitySet.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.matrices"><code class="docutils literal notranslate"><span class="pre">DensitySet.matrices</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.metadata"><code class="docutils literal notranslate"><span class="pre">DensitySet.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.path"><code class="docutils literal notranslate"><span class="pre">DensitySet.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.total"><code class="docutils literal notranslate"><span class="pre">DensitySet.total()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.wavefunction"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.wavefunction_data"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.FORMAT_VERSION"><code class="docutils literal notranslate"><span class="pre">FORMAT_VERSION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.artifact_metadata"><code class="docutils literal notranslate"><span class="pre">artifact_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.load_densities"><code class="docutils literal notranslate"><span class="pre">load_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.save_densities"><code class="docutils literal notranslate"><span class="pre">save_densities()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.checks">Invariant Checks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id1">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id2">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.InvariantWarning"><code class="docutils literal notranslate"><span class="pre">InvariantWarning</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_charge_closure"><code class="docutils literal notranslate"><span class="pre">check_charge_closure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_partition_of_unity"><code class="docutils literal notranslate"><span class="pre">check_partition_of_unity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_symmetric"><code class="docutils literal notranslate"><span class="pre">check_symmetric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.fragments">Fragments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id3">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id4">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.A"><code class="docutils literal notranslate"><span class="pre">DimerFragments.A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.B"><code class="docutils literal notranslate"><span class="pre">DimerFragments.B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.atomic_numbers"><code class="docutils literal notranslate"><span class="pre">DimerFragments.atomic_numbers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.check_same_system"><code class="docutils literal notranslate"><span class="pre">DimerFragments.check_same_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.coordinates"><code class="docutils literal notranslate"><span class="pre">DimerFragments.coordinates</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.extra"><code class="docutils literal notranslate"><span class="pre">DimerFragments.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.fragment_of"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragment_of()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.fragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.from_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.from_molecule"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.natom"><code class="docutils literal notranslate"><span class="pre">DimerFragments.natom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.real"><code class="docutils literal notranslate"><span class="pre">DimerFragments.real</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.symbols"><code class="docutils literal notranslate"><span class="pre">DimerFragments.symbols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.to_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.atoms"><code class="docutils literal notranslate"><span class="pre">Fragment.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.charge"><code class="docutils literal notranslate"><span class="pre">Fragment.charge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.label"><code class="docutils literal notranslate"><span class="pre">Fragment.label</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.multiplicity"><code class="docutils literal notranslate"><span class="pre">Fragment.multiplicity</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.parse_fragments"><code class="docutils literal notranslate"><span class="pre">parse_fragments()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.finite_field">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.runner">Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.add_basis_dirs"><code class="docutils literal notranslate"><span class="pre">add_basis_dirs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.as_run_config"><code class="docutils literal notranslate"><span class="pre">as_run_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.build_dimer"><code class="docutils literal notranslate"><span class="pre">build_dimer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.setup_psi4"><code class="docutils literal notranslate"><span class="pre">setup_psi4()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.config">Run Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.ConfigError"><code class="docutils literal notranslate"><span class="pre">ConfigError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig"><code class="docutils literal notranslate"><span class="pre">RunConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.applied_basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.applied_basis_overrides()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis_dirs"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_dirs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_overrides</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.df_basis_sapt"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_sapt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.df_basis_scf"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_scf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.effective_psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.effective_psi4_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.functional"><code class="docutils literal notranslate"><span class="pre">RunConfig.functional</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.grac_A"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.grac_B"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.memory_gb"><code class="docutils literal notranslate"><span class="pre">RunConfig.memory_gb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.method_tag"><code class="docutils literal notranslate"><span class="pre">RunConfig.method_tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.output_dir"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.output_dir_template"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.propsapt_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.propsapt_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.psi4_output"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.reference"><code class="docutils literal notranslate"><span class="pre">RunConfig.reference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.source"><code class="docutils literal notranslate"><span class="pre">RunConfig.source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.tasks"><code class="docutils literal notranslate"><span class="pre">RunConfig.tasks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.threads"><code class="docutils literal notranslate"><span class="pre">RunConfig.threads</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">RunConfig.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.resolve_config"><code class="docutils literal notranslate"><span class="pre">resolve_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.basis_overrides">Basis Set Overrides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_overrides.apply_basis_overrides"><code class="docutils literal notranslate"><span class="pre">apply_basis_overrides()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_overrides.load_basis_overrides"><code class="docutils literal notranslate"><span class="pre">load_basis_overrides()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.basis_fetch">Fetching Basis Sets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_fetch.BasisFetchError"><code class="docutils literal notranslate"><span class="pre">BasisFetchError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_fetch.fetch_basis_file"><code class="docutils literal notranslate"><span class="pre">fetch_basis_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cli">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cli.build_parser"><code class="docutils literal notranslate"><span class="pre">build_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.options">propSAPT Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__contains__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__contains__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__getitem__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__getitem__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__iter__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__len__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__len__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.get_options_dict"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.get_options_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_cpscf_type"><code class="docutils literal notranslate"><span class="pre">check_cpscf_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_df_basis_cpscf"><code class="docutils literal notranslate"><span class="pre">check_df_basis_cpscf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_if_valid_option"><code class="docutils literal notranslate"><span class="pre">check_if_valid_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_option_value"><code class="docutils literal notranslate"><span class="pre">check_option_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.get_propsapt_options"><code class="docutils literal notranslate"><span class="pre">get_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.reset_propsapt_options"><code class="docutils literal notranslate"><span class="pre">reset_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.set_propsapt_options"><code class="docutils literal notranslate"><span class="pre">set_propsapt_options()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.changed_psi4_options"><code class="docutils literal notranslate"><span class="pre">changed_psi4_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.package_version"><code class="docutils literal notranslate"><span class="pre">package_version()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.evaluate">Point Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id5">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_basis_functions"><code class="docutils literal notranslate"><span class="pre">evaluate_basis_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_density"><code class="docutils literal notranslate"><span class="pre">evaluate_density()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">evaluate_esp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">evaluate_orbital()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.partition">Fragment Populations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id6">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id7">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators"><code class="docutils literal notranslate"><span class="pre">FragmentOperators</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.__init__"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.ao_overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.ao_overlap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.charge"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.closure_error"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.closure_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.dipole"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.dipole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.first_moment"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.first_moment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.fragments"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.from_grid"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.from_grid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.nbf"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.nbf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.population"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.population()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.atom_index"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.atom_index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.points"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.points</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.weights"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.becke_fragment_weights"><code class="docutils literal notranslate"><span class="pre">becke_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.hirshfeld_fragment_weights"><code class="docutils literal notranslate"><span class="pre">hirshfeld_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.molecular_grid"><code class="docutils literal notranslate"><span class="pre">molecular_grid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.atoms"><code class="docutils literal notranslate"><span class="pre">Cube.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.comment1"><code class="docutils literal notranslate"><span class="pre">Cube.comment1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.comment2"><code class="docutils literal notranslate"><span class="pre">Cube.comment2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.integrate"><code class="docutils literal notranslate"><span class="pre">Cube.integrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_atoms"><code class="docutils literal notranslate"><span class="pre">Cube.n_atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_x"><code class="docutils literal notranslate"><span class="pre">Cube.n_x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_y"><code class="docutils literal notranslate"><span class="pre">Cube.n_y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_z"><code class="docutils literal notranslate"><span class="pre">Cube.n_z</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.origin"><code class="docutils literal notranslate"><span class="pre">Cube.origin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.volumetric_data"><code class="docutils literal notranslate"><span class="pre">Cube.volumetric_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.voxel_volume"><code class="docutils literal notranslate"><span class="pre">Cube.voxel_volume</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.x_vector"><code class="docutils literal notranslate"><span class="pre">Cube.x_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.y_vector"><code class="docutils literal notranslate"><span class="pre">Cube.y_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.z_vector"><code class="docutils literal notranslate"><span class="pre">Cube.z_vector</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.translate_cube"><code class="docutils literal notranslate"><span class="pre">translate_cube()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.forces">Forces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id8">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.forces.calc_force_at_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_at_nuc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.forces.calc_force_nuc_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_nuc_nuc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.properties</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.properties</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Calculations of SAPT one-electron properties.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generator</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">opt_einsum</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">oe</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.cpscf_batching</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_batched</span><span class="p">,</span> <span class="n">solve_now</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace_memory_peak</span><span class="p">,</span> <span class="n">CalcTimer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.properties_components</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calc_exch_ind2_resp_s2_property</span><span class="p">,</span>
+    <span class="n">calc_exch_ind2_resp_sinf_property</span><span class="p">,</span>
+    <span class="n">calc_exch_disp2_s2_property</span><span class="p">,</span>
+    <span class="n">calc_exch_disp2_sinf_property</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.properties_components.exch_ind2</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_u_ra_amplitudes</span><span class="p">,</span>
+    <span class="n">get_u_sb_amplitudes</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">RESPONSE_VALUES</span> <span class="o">=</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"both"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Rejects a `response` value other than True, False or "both"."""</span>
+
+    <span class="k">if</span> <span class="n">response</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">RESPONSE_VALUES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Invalid value for 'response': </span><span class="si">{</span><span class="n">response</span><span class="si">!r}</span><span class="s2">. Must be True, False or </span><span class="se">\"</span><span class="s2">both</span><span class="se">\"</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="perform_property_contractions">
+<a class="viewcode-back" href="../../api.html#prop_sapt.properties.perform_property_contractions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perform_property_contractions</span><span class="p">(</span>
+    <span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">property_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Calculates property contributions. Returns pandas.DataFrame with values of separate</span>
+<span class="sd">    contributions and the summed-up total.</span>
+
+<span class="sd">    The property is the field derivative of the energy of `calc_sapt_energy` with the</span>
+<span class="sd">    same `response`. The monomers relax in the field in every mode (the first-order,</span>
+<span class="sd">    dispersion and exchange-dispersion terms do not depend on it); `response` chooses</span>
+<span class="sd">    the induction amplitudes of the second-order induction terms:</span>
+
+<span class="sd">    - True: the coupled (CPSCF) ones, `x2_ind,r`, `x2_exch-ind,r_S2` and</span>
+<span class="sd">      `x2_exch-ind,r`. The uncoupled `x2_ind` is reported too.</span>
+<span class="sd">    - False: the uncoupled ones, `x2_ind`, `x2_exch-ind_S2` and `x2_exch-ind`. No</span>
+<span class="sd">      CPSCF equations are solved for the induction amplitudes or their derivatives.</span>
+<span class="sd">    - "both": both sets.</span>
+
+<span class="sd">    The totals `x_induced` and `x_induced_S2` take the coupled terms unless</span>
+<span class="sd">    `response` is False, as `calc_sapt_energy` does.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dimer (Dimer): A dimer system.</span>
+<span class="sd">        property_matrix (np.ndarray): A matrix representation of the operator corresponding</span>
+<span class="sd">            to a property to calculate, in AO basis.</span>
+<span class="sd">        response (bool | str, optional): True, False or "both", see above. Defaults to</span>
+<span class="sd">            True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame with results.</span>
+<span class="sd">    """</span>
+
+    <span class="n">_check_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">solve_now</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="n">_property_builder</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="n">property_matrix</span><span class="p">,</span> <span class="n">response</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_property_builder</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">property_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Builder of the results of `perform_property_contractions`, see</span>
+<span class="sd">    `prop_sapt.cpscf_batching`."""</span>
+
+    <span class="n">coupled</span> <span class="o">=</span> <span class="n">response</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="s2">"both"</span><span class="p">)</span>
+    <span class="n">uncoupled</span> <span class="o">=</span> <span class="n">response</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">"both"</span><span class="p">)</span>
+
+    <span class="c1"># prepare results DataFrame, one row that scalars are broadcast into</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># variables for each axis</span>
+    <span class="n">prop_A_aa</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matrix</span><span class="p">,</span> <span class="s2">"aa"</span><span class="p">)</span>
+    <span class="n">prop_A_ar</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matrix</span><span class="p">,</span> <span class="s2">"ar"</span><span class="p">)</span>
+    <span class="n">prop_A_rr</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matrix</span><span class="p">,</span> <span class="s2">"rr"</span><span class="p">)</span>
+
+    <span class="n">prop_B_bb</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matrix</span><span class="p">,</span> <span class="s2">"bb"</span><span class="p">)</span>
+    <span class="n">prop_B_bs</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matrix</span><span class="p">,</span> <span class="s2">"bs"</span><span class="p">)</span>
+    <span class="n">prop_B_ss</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">transform_ao_to_mo</span><span class="p">(</span><span class="n">property_matrix</span><span class="p">,</span> <span class="s2">"ss"</span><span class="p">)</span>
+
+    <span class="c1"># relaxed amplitudes with dipole moment</span>
+    <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">xt_B_sb</span> <span class="o">=</span> <span class="k">yield</span> <span class="p">[(</span><span class="s2">"A"</span><span class="p">,</span> <span class="n">prop_A_ar</span><span class="p">),</span> <span class="p">(</span><span class="s2">"B"</span><span class="p">,</span> <span class="n">prop_B_bs</span><span class="p">)]</span>
+
+    <span class="c1"># SCF monomers</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x0_A"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"aa"</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">)])</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x0_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"bb"</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">)])</span>
+
+    <span class="c1">### First-order</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r_A"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,ar"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_ar</span><span class="p">)])</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,bs"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_bs</span><span class="p">)])</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r"</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r_A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r_B"</span><span class="p">]</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_S2_A"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,ar"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ar_S2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,ra"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ra_S2</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_S2_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,bs"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_bs_S2</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,sb"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_sb_S2</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_S2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_S2_A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_S2_B"</span><span class="p">]</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_A"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,ar"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ar</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,ra"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchB_ra</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,bs"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_bs</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,sb"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omega_exchA_sb</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r"</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r_B"</span><span class="p">]</span>
+
+    <span class="c1">### Second-order</span>
+
+    <span class="c1">## Induction</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind_A"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">+</span><span class="mi">16</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,Qar,Qbs,sb"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,ac,rc"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_aa</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,cr,ca"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_rr</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ac,rc,ra"</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"cr,ca,ra"</span><span class="p">,</span> <span class="n">prop_A_rr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">)</span>
+            <span class="c1"># X_A -&gt; X_A + [W_A, C_A - C_A^\dagger]_1</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,de,Qer,Qac"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,ec,Qde,Qar"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,ec,Qdr,Qae"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,de,Qar,Qec"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">+</span><span class="mi">16</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,Qar,Qbs,ra"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,bc,sc"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_bb</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,cs,cb"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_ss</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"bc,sc,sb"</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"cs,cb,sb"</span><span class="p">,</span> <span class="n">prop_B_ss</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">)</span>
+            <span class="c1"># X_B -&gt; X_B + [W_B, C_B - C_B^\dagger]_1</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,de,Qes,Qbc"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,ec,Qde,Qbs"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,ec,Qds,Qbe"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,de,Qbs,Qec"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind"</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind_A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind_B"</span><span class="p">]</span>
+
+    <span class="c1">## Induction response</span>
+    <span class="k">if</span> <span class="n">coupled</span><span class="p">:</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind,r_A"</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind,r_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_calc_ind2_r_terms</span><span class="p">(</span>
+            <span class="n">mol</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">,</span> <span class="n">prop_A_rr</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">,</span> <span class="n">prop_B_ss</span>
+        <span class="p">)</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind,r"</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind,r_A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_ind,r_B"</span><span class="p">]</span>
+
+    <span class="c1">## Exchange-Induction S^2 and S^inf</span>
+    <span class="n">prop_blocks</span> <span class="o">=</span> <span class="p">(</span><span class="n">prop_A_aa</span><span class="p">,</span> <span class="n">prop_A_rr</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">,</span> <span class="n">prop_B_ss</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">coupled</span><span class="p">:</span>
+        <span class="k">yield from</span> <span class="n">_add_exch_ind2_terms</span><span class="p">(</span>
+            <span class="n">results</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="o">*</span><span class="n">prop_blocks</span><span class="p">,</span> <span class="n">coupled</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">uncoupled</span><span class="p">:</span>
+        <span class="k">yield from</span> <span class="n">_add_exch_ind2_terms</span><span class="p">(</span>
+            <span class="n">results</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="o">*</span><span class="n">prop_blocks</span><span class="p">,</span> <span class="n">coupled</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+    <span class="c1">## Dispersion</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp_A"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="c1"># 2 Re &lt;R(X)|V R(V)&gt;</span>
+            <span class="c1"># NOTE some response not coupled</span>
+            <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"rsab,Qcr,Qbs,ca"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"rsab,Qac,Qbs,rc"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="c1"># &lt;R(V)|X R(V)&gt;</span>
+            <span class="c1"># NOTE not coupled no response</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ac,rscb,rsab"</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"cr,csab,rsab"</span><span class="p">,</span> <span class="n">prop_A_rr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+            <span class="c1"># X_A -&gt; X_A + [W_A, C_A - C_A^\dagger]_1</span>
+            <span class="o">+</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,dscb,dseb,Qer,Qac"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,dscb,escb,Qar,Qde"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,dscb,escb,Qdr,Qae"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,dscb,dseb,Qar,Qec"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="c1"># 2 Re &lt;R(X)|V R(V)&gt;</span>
+            <span class="c1"># NOTE some response not coupled</span>
+            <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"rsab,Qar,Qcs,cb"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"rsab,Qar,Qbc,sc"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="c1"># &lt;R(V)|X R(V)&gt;</span>
+            <span class="c1"># NOTE not coupled no response</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"bc,rsac,rsab"</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"cs,rcab,rsab"</span><span class="p">,</span> <span class="n">prop_B_ss</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">)</span>
+            <span class="c1"># X_B -&gt; X_B + [W_B, C_B - C_B^\dagger]_1</span>
+            <span class="o">+</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,rdac,rdae,Qes,Qbc"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,rdac,reac,Qbs,Qde"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,rdac,reac,Qds,Qbe"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,rdac,rdae,Qbs,Qec"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">t_rsab</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp"</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp_A"</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp_B"</span><span class="p">]</span>
+
+    <span class="c1">## Exchange-Dispersion S^2</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_exch-disp_S2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_exch_disp2_s2_property</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">prop_A_aa</span><span class="o">=</span><span class="n">prop_A_aa</span><span class="p">,</span>
+        <span class="n">prop_A_rr</span><span class="o">=</span><span class="n">prop_A_rr</span><span class="p">,</span>
+        <span class="n">prop_B_bb</span><span class="o">=</span><span class="n">prop_B_bb</span><span class="p">,</span>
+        <span class="n">prop_B_ss</span><span class="o">=</span><span class="n">prop_B_ss</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1">## Exchange-Dispersion S^inf</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x2_exch-disp"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">calc_exch_disp2_sinf_property</span><span class="p">(</span>
+            <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+            <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+            <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+            <span class="n">prop_A_aa</span><span class="o">=</span><span class="n">prop_A_aa</span><span class="p">,</span>
+            <span class="n">prop_A_rr</span><span class="o">=</span><span class="n">prop_A_rr</span><span class="p">,</span>
+            <span class="n">prop_B_bb</span><span class="o">=</span><span class="n">prop_B_bb</span><span class="p">,</span>
+            <span class="n">prop_B_ss</span><span class="o">=</span><span class="n">prop_B_ss</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp"</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1">### Summing up contributions</span>
+
+    <span class="c1"># sum up first-order contributions</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x1_induced"</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r"</span><span class="p">]</span> <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r"</span><span class="p">]</span>
+
+    <span class="c1"># induction with the coupled amplitudes unless only the uncoupled ones were made,</span>
+    <span class="c1"># as in calc_sapt_energy</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="s2">",r"</span> <span class="k">if</span> <span class="n">coupled</span> <span class="k">else</span> <span class="s2">""</span>
+
+    <span class="c1"># sum up all contributions</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x_induced"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">"x2_ind</span><span class="si">{</span><span class="n">ind</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">"x2_exch-ind</span><span class="si">{</span><span class="n">ind</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_exch-disp"</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="c1"># sum up all contributions with S^2 exchange terms</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"x_induced_S2"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">"x1_pol,r"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x1_exch,r"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">"x2_ind</span><span class="si">{</span><span class="n">ind</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">"x2_exch-ind</span><span class="si">{</span><span class="n">ind</span><span class="si">}</span><span class="s2">_S2"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_disp"</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">results</span><span class="p">[</span><span class="s2">"x2_exch-disp_S2"</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_calc_ind2_r_terms</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span>
+    <span class="n">xt_A_ra</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">xt_B_sb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_A_aa</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_A_rr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_B_bb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_B_ss</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    The second-order induction terms with the coupled (CPSCF) induction amplitudes,</span>
+<span class="sd">    `x2_ind,r_A` and `x2_ind,r_B`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[float, float]: The terms of monomers A and B.</span>
+<span class="sd">    """</span>
+
+    <span class="n">x2_ind_r_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">+</span><span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,Qar,Qbs,sb"</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,ac,rc"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_aa</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ra,cr,ca"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaB_rr</span><span class="p">,</span> <span class="n">xt_A_ra</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"ac,rc,ra"</span><span class="p">,</span> <span class="n">prop_A_aa</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">())</span>
+            <span class="o">+</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"cr,ca,ra"</span><span class="p">,</span> <span class="n">prop_A_rr</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">())</span>
+            <span class="c1"># 2 Re &lt;C^{(1)}_A | W_A C^{[1]}_A C^{(1)}_A &gt; + Re &lt;C^{(1)}_A C^{(1)}_A | W_A C^{[1]}_A &gt;</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cr,de,Qad,Qec"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,de,Qer,Qac"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,ac,de,Qcr,Qed"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,ec,Qde,Qar"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,ac,de,Qcd,Qer"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,ec,Qdr,Qae"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cr,de,Qed,Qac"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cd,de,Qar,Qec"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,cr,de,Qae,Qcd"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qaa</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"ra,ac,de,Qec,Qrd"</span><span class="p">,</span>
+                <span class="n">xt_A_ra</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qrr</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">x2_ind_r_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="o">+</span><span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,Qar,Qbs,ra"</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qar</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,bc,sc"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_bb</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"sb,cs,cb"</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">omegaA_ss</span><span class="p">,</span> <span class="n">xt_B_sb</span><span class="p">)</span>
+            <span class="o">-</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"bc,sc,sb"</span><span class="p">,</span> <span class="n">prop_B_bb</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">())</span>
+            <span class="o">+</span> <span class="mi">2</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="s2">"cs,cb,sb"</span><span class="p">,</span> <span class="n">prop_B_ss</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">())</span>
+            <span class="c1"># 2 Re &lt;C^{(1)}_B | W_B C^{[1]}_B C^{(1)}_B &gt; + Re &lt;C^{(1)}_B C^{(1)}_B | W_B C^{[1]}_B &gt;</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cs,de,Qbd,Qec"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,de,Qes,Qbc"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,bc,de,Qcs,Qed"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,ec,Qde,Qbs"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,bc,de,Qcd,Qes"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,ec,Qds,Qbe"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">16</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cs,de,Qed,Qbc"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">8</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cd,de,Qbs,Qec"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,cs,de,Qbe,Qcd"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">-</span> <span class="mi">4</span>
+            <span class="o">*</span> <span class="n">oe</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span>
+                <span class="s2">"sb,bc,de,Qec,Qsd"</span><span class="p">,</span>
+                <span class="n">xt_B_sb</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qbs</span><span class="p">,</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">Qss</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x2_ind_r_A</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">x2_ind_r_B</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_exch_ind2_terms</span><span class="p">(</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">mol</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span>
+    <span class="n">xt_A_ra</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">xt_B_sb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_A_aa</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_A_rr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_B_bb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">prop_B_ss</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">coupled</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Adds the S^2 and S^inf exchange-induction terms to `results`: `x2_exch-ind,r_S2`</span>
+<span class="sd">    and `x2_exch-ind,r` with the coupled (CPSCF) induction amplitudes, or</span>
+<span class="sd">    `x2_exch-ind_S2` and `x2_exch-ind` with the uncoupled ones. The induction term</span>
+<span class="sd">    made with the same amplitudes (`x2_ind,r` or `x2_ind`) must already be there.</span>
+
+<span class="sd">    A builder step, see `prop_sapt.cpscf_batching`: the coupled amplitude derivatives</span>
+<span class="sd">    yield their CPSCF requests.</span>
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">coupled</span><span class="p">:</span>
+        <span class="n">t_ra</span><span class="p">,</span> <span class="n">t_sb</span><span class="p">,</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_ra</span><span class="p">(),</span> <span class="n">mol</span><span class="o">.</span><span class="n">get_cpscf_sb</span><span class="p">(),</span> <span class="s2">",r"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t_ra</span><span class="p">,</span> <span class="n">t_sb</span><span class="p">,</span> <span class="n">tag</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">tB_ra</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">tA_sb</span><span class="p">,</span> <span class="s2">""</span>
+
+    <span class="n">u_ra</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">get_u_ra_amplitudes</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">prop_A_aa</span><span class="o">=</span><span class="n">prop_A_aa</span><span class="p">,</span>
+        <span class="n">prop_A_rr</span><span class="o">=</span><span class="n">prop_A_rr</span><span class="p">,</span>
+        <span class="n">coupled</span><span class="o">=</span><span class="n">coupled</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">u_sb</span> <span class="o">=</span> <span class="k">yield from</span> <span class="n">get_u_sb_amplitudes</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">prop_B_bb</span><span class="o">=</span><span class="n">prop_B_bb</span><span class="p">,</span>
+        <span class="n">prop_B_ss</span><span class="o">=</span><span class="n">prop_B_ss</span><span class="p">,</span>
+        <span class="n">coupled</span><span class="o">=</span><span class="n">coupled</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">amplitudes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">xt_A_ra</span><span class="o">=</span><span class="n">xt_A_ra</span><span class="p">,</span>
+        <span class="n">xt_B_sb</span><span class="o">=</span><span class="n">xt_B_sb</span><span class="p">,</span>
+        <span class="n">u_ra</span><span class="o">=</span><span class="n">u_ra</span><span class="p">,</span>
+        <span class="n">u_sb</span><span class="o">=</span><span class="n">u_sb</span><span class="p">,</span>
+        <span class="n">t_ra</span><span class="o">=</span><span class="n">t_ra</span><span class="p">,</span>
+        <span class="n">t_sb</span><span class="o">=</span><span class="n">t_sb</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">"x2_exch-ind</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">_S2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">calc_exch_ind2_resp_s2_property</span><span class="p">(</span><span class="o">**</span><span class="n">amplitudes</span><span class="p">)</span>
+
+    <span class="c1"># the S^inf expression holds the induction term as well</span>
+    <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">"x2_exch-ind</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">calc_exch_ind2_resp_sinf_property</span><span class="p">(</span><span class="o">**</span><span class="n">amplitudes</span><span class="p">)</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="sa">f</span><span class="s2">"x2_ind</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="calc_induced_dipole">
+<a class="viewcode-back" href="../../api.html#prop_sapt.properties.calc_induced_dipole">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_induced_dipole</span><span class="p">(</span><span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Calculate interaction-induced dipole moment along X, Y and Z axes.</span>
+
+<span class="sd">    The CPSCF equations of the three axes are solved together, a batch per monomer at a</span>
+<span class="sd">    time, which costs much less than solving them axis by axis.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dimer (Dimer): A dimer system.</span>
+<span class="sd">        response (bool | str, optional): Induction amplitudes, True (coupled), False</span>
+<span class="sd">            (uncoupled) or "both"; see `perform_property_contractions`. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame with results.</span>
+<span class="sd">    """</span>
+
+    <span class="n">_check_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+    <span class="c1"># grab nuclear dipole moment</span>
+    <span class="n">nuc_dipole</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">dimer</span><span class="o">.</span><span class="n">nuclear_dipole</span><span class="p">()</span>
+    <span class="n">nuc_dipole</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">nuc_dipole</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nuc_dipole</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nuc_dipole</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+
+    <span class="c1"># grab AO dipole moment matrices</span>
+    <span class="n">d_vec</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">mints</span><span class="o">.</span><span class="n">ao_dipole</span><span class="p">()</span>
+    <span class="n">d_vec</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">d_vec</span><span class="p">]</span>
+
+    <span class="c1"># the CPSCF equations of the three axes are solved together, see `solve_batched`</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">{</span><span class="n">axis</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Property calculation along </span><span class="si">{</span><span class="n">axis</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="s2">"XYZ"</span><span class="p">}</span>
+    <span class="n">solved</span> <span class="o">=</span> <span class="n">solve_batched</span><span class="p">(</span>
+        <span class="n">dimer</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="n">names</span><span class="p">[</span><span class="n">axis</span><span class="p">]:</span> <span class="n">_property_builder</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="n">d_i</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">d_i</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">d_vec</span><span class="p">,</span> <span class="s2">"XYZ"</span><span class="p">)</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">solved</span><span class="p">[</span><span class="n">names</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="s2">"XYZ"</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="k">del</span> <span class="n">d_vec</span>
+
+    <span class="n">results</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"axis"</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">"nuc"</span><span class="p">]</span> <span class="o">=</span> <span class="n">nuc_dipole</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<div class="viewcode-block" id="calc_property">
+<a class="viewcode-back" href="../../api.html#prop_sapt.properties.calc_property">[docs]</a>
+<span class="nd">@trace_memory_peak</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_property</span><span class="p">(</span>
+    <span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Calculation of interaction-induced property.</span>
+
+<span class="sd">    The property is the field derivative of the energy `calc_sapt_energy` gives for</span>
+<span class="sd">    the same `response`.</span>
+
+<span class="sd">    Known issue: the S^inf exchange-dispersion term `x2_exch-disp` is not yet the field</span>
+<span class="sd">    derivative of `EXCH-DISP2`. For the dipole of He-H2 in aug-cc-pVTZ it is 7.2e-5 a.u.</span>
+<span class="sd">    off the finite-field derivative (about 18%), and the total `x_induced` carries that</span>
+<span class="sd">    error. Every term of `x_induced_S2` agrees with its finite-field derivative. See</span>
+<span class="sd">    "Known limitations" in the usage guide.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dimer (Dimer): A dimer system.</span>
+<span class="sd">        prop (str | np.ndarray): Property to calculate. Either name of already implemented</span>
+<span class="sd">            property, e.g. dipole moment (prop="dipole") or an array with matrix representation,</span>
+<span class="sd">            in AO basis, of the operator corresponding to a property to calculate.</span>
+<span class="sd">        response (bool | str, optional): Induction amplitudes of the second-order</span>
+<span class="sd">            induction terms. True: the coupled (CPSCF) ones, `x2_ind,r`,</span>
+<span class="sd">            `x2_exch-ind,r_S2` and `x2_exch-ind,r` (plus the uncoupled `x2_ind`).</span>
+<span class="sd">            False: the uncoupled ones, `x2_ind`, `x2_exch-ind_S2` and `x2_exch-ind`,</span>
+<span class="sd">            with no CPSCF equations solved for them. "both": both sets. The totals take</span>
+<span class="sd">            the coupled terms unless `response` is False. The monomers relax in the</span>
+<span class="sd">            field in every mode, so the other terms do not depend on it. Defaults to</span>
+<span class="sd">            True.</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        results (str): Path of the CSV file the results are saved to. Defaults to</span>
+<span class="sd">            "results.csv".</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: DataFrame with results.</span>
+<span class="sd">    """</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_check_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+        <span class="k">raise</span>
+
+    <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">"Interaction-induced property calculations"</span><span class="p">):</span>
+        <span class="c1">### Results output file</span>
+        <span class="n">results_fname</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"results"</span><span class="p">,</span> <span class="s2">"results.csv"</span><span class="p">)</span>
+
+        <span class="c1"># array check first: comparing an array with a string is elementwise</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c1">### Property matrix is given</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">perform_property_contractions</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">"dipole"</span><span class="p">:</span>
+            <span class="c1">### Dipole moment calculations</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">calc_induced_dipole</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Property </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> is not implemented. "</span>
+                <span class="s2">"Please provide a valid property name or a property matrix."</span>
+            <span class="p">)</span>
+
+        <span class="c1">### Results saving to file</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">results_fname</span><span class="p">)</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

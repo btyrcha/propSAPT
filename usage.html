@@ -1,0 +1,1094 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage Guide &mdash; prop-sapt 0.5.0.dev0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=be1c004d"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-a-release">Installing a release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#development-install">Development install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#optional-packages">Optional packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verifying-the-installation">Verifying the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finite-field-properties">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sapt">SAPT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#any-psi4-energy-method">Any Psi4 energy method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-runner">Command-Line Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basis-sets-missing-from-psi4">Basis sets missing from Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-calculations">Customizing Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hellmann-feynman-forces">Hellmann-Feynman Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluating-at-arbitrary-points">Evaluating at Arbitrary Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fragment-populations">Fragment Populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cube-file-utilities">Cube File Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generating-cube-files">Generating cube files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-cubes">Working with cubes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#known-limitations">Known limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#scripts">Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#notebooks">Notebooks</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.clear_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.clear_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.evaluate_density"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_density()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_esp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_orbital()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.fragment_operators"><code class="docutils literal notranslate"><span class="pre">Dimer.fragment_operators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.get_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.get_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.store_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.store_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.use_cpscf_type"><code class="docutils literal notranslate"><span class="pre">Dimer.use_cpscf_type()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.BATCHED_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">BATCHED_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.DENSITY_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">DENSITY_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.MATRIX_FORMATS"><code class="docutils literal notranslate"><span class="pre">MATRIX_FORMATS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.artifacts">Density Artifacts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.ArtifactError"><code class="docutils literal notranslate"><span class="pre">ArtifactError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.CONVENTIONS"><code class="docutils literal notranslate"><span class="pre">CONVENTIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.DENSITIES_FILENAME"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FILENAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.DENSITIES_FORMAT"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FORMAT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet"><code class="docutils literal notranslate"><span class="pre">DensitySet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.check"><code class="docutils literal notranslate"><span class="pre">DensitySet.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.components"><code class="docutils literal notranslate"><span class="pre">DensitySet.components</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.fragments"><code class="docutils literal notranslate"><span class="pre">DensitySet.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.matrices"><code class="docutils literal notranslate"><span class="pre">DensitySet.matrices</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.metadata"><code class="docutils literal notranslate"><span class="pre">DensitySet.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.path"><code class="docutils literal notranslate"><span class="pre">DensitySet.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.total"><code class="docutils literal notranslate"><span class="pre">DensitySet.total()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.wavefunction"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.artifacts.DensitySet.wavefunction_data"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.FORMAT_VERSION"><code class="docutils literal notranslate"><span class="pre">FORMAT_VERSION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.artifact_metadata"><code class="docutils literal notranslate"><span class="pre">artifact_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.load_densities"><code class="docutils literal notranslate"><span class="pre">load_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.artifacts.save_densities"><code class="docutils literal notranslate"><span class="pre">save_densities()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.checks">Invariant Checks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id1">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id2">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.checks.InvariantWarning"><code class="docutils literal notranslate"><span class="pre">InvariantWarning</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.checks.check_charge_closure"><code class="docutils literal notranslate"><span class="pre">check_charge_closure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.checks.check_partition_of_unity"><code class="docutils literal notranslate"><span class="pre">check_partition_of_unity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.checks.check_symmetric"><code class="docutils literal notranslate"><span class="pre">check_symmetric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.fragments">Fragments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id3">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id4">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.A"><code class="docutils literal notranslate"><span class="pre">DimerFragments.A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.B"><code class="docutils literal notranslate"><span class="pre">DimerFragments.B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.atomic_numbers"><code class="docutils literal notranslate"><span class="pre">DimerFragments.atomic_numbers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.check_same_system"><code class="docutils literal notranslate"><span class="pre">DimerFragments.check_same_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.coordinates"><code class="docutils literal notranslate"><span class="pre">DimerFragments.coordinates</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.extra"><code class="docutils literal notranslate"><span class="pre">DimerFragments.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.fragment_of"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragment_of()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.fragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.from_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.from_molecule"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.natom"><code class="docutils literal notranslate"><span class="pre">DimerFragments.natom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.real"><code class="docutils literal notranslate"><span class="pre">DimerFragments.real</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.symbols"><code class="docutils literal notranslate"><span class="pre">DimerFragments.symbols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments.to_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.fragments.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.Fragment.atoms"><code class="docutils literal notranslate"><span class="pre">Fragment.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.Fragment.charge"><code class="docutils literal notranslate"><span class="pre">Fragment.charge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.Fragment.label"><code class="docutils literal notranslate"><span class="pre">Fragment.label</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.fragments.Fragment.multiplicity"><code class="docutils literal notranslate"><span class="pre">Fragment.multiplicity</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.fragments.parse_fragments"><code class="docutils literal notranslate"><span class="pre">parse_fragments()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.finite_field">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.runner">Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.runner.add_basis_dirs"><code class="docutils literal notranslate"><span class="pre">add_basis_dirs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.runner.as_run_config"><code class="docutils literal notranslate"><span class="pre">as_run_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.runner.build_dimer"><code class="docutils literal notranslate"><span class="pre">build_dimer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.runner.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.runner.setup_psi4"><code class="docutils literal notranslate"><span class="pre">setup_psi4()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.config">Run Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.config.ConfigError"><code class="docutils literal notranslate"><span class="pre">ConfigError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig"><code class="docutils literal notranslate"><span class="pre">RunConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.applied_basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.applied_basis_overrides()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.basis"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.basis_dirs"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_dirs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_overrides</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.df_basis_sapt"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_sapt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.df_basis_scf"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_scf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.effective_psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.effective_psi4_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.functional"><code class="docutils literal notranslate"><span class="pre">RunConfig.functional</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.grac_A"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.grac_B"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.memory_gb"><code class="docutils literal notranslate"><span class="pre">RunConfig.memory_gb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.method_tag"><code class="docutils literal notranslate"><span class="pre">RunConfig.method_tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.output_dir"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.output_dir_template"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.propsapt_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.propsapt_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.psi4_output"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.reference"><code class="docutils literal notranslate"><span class="pre">RunConfig.reference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.source"><code class="docutils literal notranslate"><span class="pre">RunConfig.source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.tasks"><code class="docutils literal notranslate"><span class="pre">RunConfig.tasks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.threads"><code class="docutils literal notranslate"><span class="pre">RunConfig.threads</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.config.RunConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">RunConfig.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.config.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.config.resolve_config"><code class="docutils literal notranslate"><span class="pre">resolve_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.basis_overrides">Basis Set Overrides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.basis_overrides.apply_basis_overrides"><code class="docutils literal notranslate"><span class="pre">apply_basis_overrides()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.basis_overrides.load_basis_overrides"><code class="docutils literal notranslate"><span class="pre">load_basis_overrides()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.basis_fetch">Fetching Basis Sets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.basis_fetch.BasisFetchError"><code class="docutils literal notranslate"><span class="pre">BasisFetchError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.basis_fetch.fetch_basis_file"><code class="docutils literal notranslate"><span class="pre">fetch_basis_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.cli">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cli.build_parser"><code class="docutils literal notranslate"><span class="pre">build_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.options">propSAPT Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.PropsaptOptions"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.options.PropsaptOptions.__contains__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__contains__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.options.PropsaptOptions.__getitem__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__getitem__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.options.PropsaptOptions.__iter__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.options.PropsaptOptions.__len__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__len__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.options.PropsaptOptions.get_options_dict"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.get_options_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.check_cpscf_type"><code class="docutils literal notranslate"><span class="pre">check_cpscf_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.check_df_basis_cpscf"><code class="docutils literal notranslate"><span class="pre">check_df_basis_cpscf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.check_if_valid_option"><code class="docutils literal notranslate"><span class="pre">check_if_valid_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.check_option_value"><code class="docutils literal notranslate"><span class="pre">check_option_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.get_propsapt_options"><code class="docutils literal notranslate"><span class="pre">get_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.reset_propsapt_options"><code class="docutils literal notranslate"><span class="pre">reset_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.options.set_propsapt_options"><code class="docutils literal notranslate"><span class="pre">set_propsapt_options()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.changed_psi4_options"><code class="docutils literal notranslate"><span class="pre">changed_psi4_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.package_version"><code class="docutils literal notranslate"><span class="pre">package_version()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.evaluate">Point Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id5">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.evaluate.evaluate_basis_functions"><code class="docutils literal notranslate"><span class="pre">evaluate_basis_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.evaluate.evaluate_density"><code class="docutils literal notranslate"><span class="pre">evaluate_density()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.evaluate.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">evaluate_esp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.evaluate.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">evaluate_orbital()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.partition">Fragment Populations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id6">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id7">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators"><code class="docutils literal notranslate"><span class="pre">FragmentOperators</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.__init__"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.ao_overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.ao_overlap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.charge"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.closure_error"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.closure_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.dipole"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.dipole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.first_moment"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.first_moment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.fragments"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.from_grid"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.from_grid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.nbf"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.nbf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.population"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.population()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.partition.QuadratureGrid"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.QuadratureGrid.atom_index"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.atom_index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.QuadratureGrid.points"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.points</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.partition.QuadratureGrid.weights"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.partition.becke_fragment_weights"><code class="docutils literal notranslate"><span class="pre">becke_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.partition.hirshfeld_fragment_weights"><code class="docutils literal notranslate"><span class="pre">hirshfeld_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.partition.molecular_grid"><code class="docutils literal notranslate"><span class="pre">molecular_grid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.atoms"><code class="docutils literal notranslate"><span class="pre">Cube.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.comment1"><code class="docutils literal notranslate"><span class="pre">Cube.comment1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.comment2"><code class="docutils literal notranslate"><span class="pre">Cube.comment2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.integrate"><code class="docutils literal notranslate"><span class="pre">Cube.integrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.n_atoms"><code class="docutils literal notranslate"><span class="pre">Cube.n_atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.n_x"><code class="docutils literal notranslate"><span class="pre">Cube.n_x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.n_y"><code class="docutils literal notranslate"><span class="pre">Cube.n_y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.n_z"><code class="docutils literal notranslate"><span class="pre">Cube.n_z</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.origin"><code class="docutils literal notranslate"><span class="pre">Cube.origin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.volumetric_data"><code class="docutils literal notranslate"><span class="pre">Cube.volumetric_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.voxel_volume"><code class="docutils literal notranslate"><span class="pre">Cube.voxel_volume</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.x_vector"><code class="docutils literal notranslate"><span class="pre">Cube.x_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.y_vector"><code class="docutils literal notranslate"><span class="pre">Cube.y_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.html#prop_sapt.cubes.Cube.z_vector"><code class="docutils literal notranslate"><span class="pre">Cube.z_vector</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.cubes.translate_cube"><code class="docutils literal notranslate"><span class="pre">translate_cube()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module-prop_sapt.forces">Forces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#id8">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.forces.calc_force_at_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_at_nuc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api.html#prop_sapt.forces.calc_force_nuc_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_nuc_nuc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage-guide">
+<h1>Usage Guide<a class="headerlink" href="#usage-guide" title="Link to this heading"></a></h1>
+<p>This guide provides an overview of how to use prop-sapt for your calculations.</p>
+<section id="basic-workflow">
+<h2>Basic Workflow<a class="headerlink" href="#basic-workflow" title="Link to this heading"></a></h2>
+<p>The typical workflow for using prop-sapt involves:</p>
+<ol class="arabic simple">
+<li><p>Define your dimer geometry</p></li>
+<li><p>Create a Dimer object</p></li>
+<li><p>Calculate SAPT energy decomposition</p></li>
+<li><p>Compute interaction-induced properties and/or density matrices</p></li>
+<li><p>Analyze and visualize results</p></li>
+</ol>
+</section>
+<section id="creating-a-dimer">
+<h2>Creating a Dimer<a class="headerlink" href="#creating-a-dimer" title="Link to this heading"></a></h2>
+<p>The fundamental object in prop-sapt is the <code class="docutils literal notranslate"><span class="pre">Dimer</span></code> class.
+It is created by providing a geometry string in Psi4 format, which should include two fragments (for both monomers) separated by <code class="docutils literal notranslate"><span class="pre">--</span></code>.
+Set Psi4’s output file, memory and basis sets first, as for any Psi4 calculation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span>
+
+<span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">set_output_file</span><span class="p">(</span><span class="s2">"output.dat"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">set_memory</span><span class="p">(</span><span class="s2">"4 GB"</span><span class="p">)</span>
+<span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"basis"</span><span class="p">:</span> <span class="s2">"aug-cc-pvdz"</span><span class="p">,</span>
+        <span class="s2">"df_basis_scf"</span><span class="p">:</span> <span class="s2">"aug-cc-pvdz-jkfit"</span><span class="p">,</span>
+        <span class="s2">"df_basis_sapt"</span><span class="p">:</span> <span class="s2">"aug-cc-pvdz-ri"</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Define geometry in Psi4 format</span>
+<span class="n">geometry</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">0 1</span>
+<span class="s2">O  0.000000  0.000000  0.000000</span>
+<span class="s2">H  0.758602  0.000000  0.504284</span>
+<span class="s2">H  0.260455  0.000000 -0.872893</span>
+<span class="s2">--</span>
+<span class="s2">0 1</span>
+<span class="s2">O  3.000000  0.000000  0.000000</span>
+<span class="s2">H  3.758602  0.000000  0.504284</span>
+<span class="s2">H  3.260455  0.000000 -0.872893</span>
+<span class="s2">units angstrom</span>
+<span class="s2">"""</span>
+
+<span class="c1"># Create dimer with optional parameters</span>
+<span class="n">dimer</span> <span class="o">=</span> <span class="n">Dimer</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">"RHF"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The dimer runs the monomer SCF calculations with Psi4 in the dimer-centred basis set and
+takes Psi4’s memory setting (<code class="docutils literal notranslate"><span class="pre">Dimer(memory=...)</span></code> is deprecated). The reference is
+<code class="docutils literal notranslate"><span class="pre">&quot;RHF&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;RKS&quot;</span></code>. The dimer keeps the monomer JK objects that the CPSCF equations need
+itself: the Psi4 option <code class="docutils literal notranslate"><span class="pre">save_jk</span></code> is not needed.</p>
+<p>If your geometry string will include more fragments, they will be treated as ghost atoms.
+You can specify midbonds and farbonds in this way.</p>
+<p>The fragment structure is kept on the dimer as <code class="docutils literal notranslate"><span class="pre">dimer.fragments</span></code>
+(<a class="reference internal" href="api.html#prop_sapt.fragments.DimerFragments" title="prop_sapt.fragments.DimerFragments"><code class="xref py py-class docutils literal notranslate"><span class="pre">DimerFragments</span></code></a>): the atoms of monomers A and B and of any
+extra fragments, their charges and multiplicities, the ghost atoms, and the coordinates in
+bohr. <a class="reference internal" href="api.html#prop_sapt.fragments.parse_fragments" title="prop_sapt.fragments.parse_fragments"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_fragments()</span></code></a> reads the same from a geometry string or
+a <code class="file docutils literal notranslate"><span class="pre">.p4m</span></code> file, without running any calculation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.fragments</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_fragments</span>
+
+<span class="n">fragments</span> <span class="o">=</span> <span class="n">parse_fragments</span><span class="p">(</span><span class="s2">"geos/geo1.p4m"</span><span class="p">)</span>
+<span class="n">fragments</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span> <span class="n">fragments</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">atoms</span>     <span class="c1"># e.g. (0, 1, 2), (3, 4, 5)</span>
+<span class="n">fragments</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">charge</span><span class="p">,</span> <span class="n">fragments</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">multiplicity</span>
+<span class="n">fragments</span><span class="o">.</span><span class="n">extra</span>                          <span class="c1"># fragments after the second, e.g. midbonds</span>
+</pre></div>
+</div>
+</section>
+<section id="sapt-energy-calculations">
+<h2>SAPT Energy Calculations<a class="headerlink" href="#sapt-energy-calculations" title="Link to this heading"></a></h2>
+<p>To perform the SAPT energy decomposition, SAPT0 for an <code class="docutils literal notranslate"><span class="pre">RHF</span></code> dimer and SAPT(DFT) for an
+<code class="docutils literal notranslate"><span class="pre">RKS</span></code> one:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_sapt_energy</span>
+
+<span class="c1"># Calculate all SAPT components</span>
+<span class="n">energy_result</span> <span class="o">=</span> <span class="n">calc_sapt_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">energy_result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result is a pandas Series of all SAPT energy components. It is also saved to
+<code class="file docutils literal notranslate"><span class="pre">sapt_results.csv</span></code>; <code class="docutils literal notranslate"><span class="pre">results=&quot;energies.csv&quot;</span></code> chooses another file and
+<code class="docutils literal notranslate"><span class="pre">results=False</span></code> saves none.</p>
+<p>The dispersion is the <em>uncoupled</em> one: <code class="docutils literal notranslate"><span class="pre">DISP2</span></code> and <code class="docutils literal notranslate"><span class="pre">EXCH-DISP2</span></code> are built from the
+monomer orbitals and orbital energies, without the response of the monomers to each other.</p>
+<ul class="simple">
+<li><p>With <code class="docutils literal notranslate"><span class="pre">RHF</span></code>, that is the dispersion of SAPT0, as in Psi4’s SAPT0.</p></li>
+<li><p>With <code class="docutils literal notranslate"><span class="pre">RKS</span></code>, it is the uncoupled dispersion from the Kohn–Sham orbitals. Psi4’s
+SAPT(DFT) uses the <em>coupled</em> dispersion by default, so its dispersion and total energies
+differ from propSAPT’s. Compare with Psi4’s uncoupled dispersion instead.</p></li>
+</ul>
+<p>Coupled dispersion is not implemented (see <a class="reference internal" href="#known-limitations"><span class="std std-ref">Known limitations</span></a>). The dispersion terms
+of the properties and density matrices are the uncoupled ones too.</p>
+</section>
+<section id="property-calculations">
+<h2>Property Calculations<a class="headerlink" href="#property-calculations" title="Link to this heading"></a></h2>
+<p>To calculate interaction-induced properties for a general one-electron operator:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_property</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># A one-electron operator in the dimer's AO basis, an (nbf, nbf) array</span>
+<span class="n">property_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">...</span><span class="p">])</span>
+
+<span class="c1"># Calculate property contributions</span>
+<span class="n">property_result</span> <span class="o">=</span> <span class="n">calc_property</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="n">property_matrix</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">property_result</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For predefined properties, you can use the convenience functions, e.g., to calculate the dipole moment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_property</span>
+
+<span class="n">dipole_result</span> <span class="o">=</span> <span class="n">calc_property</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="s2">"dipole"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The property is the field derivative of the SAPT energy, and like
+<a class="reference internal" href="api.html#prop_sapt.sapt_driver.calc_sapt_energy" title="prop_sapt.sapt_driver.calc_sapt_energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a> it takes <code class="docutils literal notranslate"><span class="pre">response</span></code>, which chooses the induction
+amplitudes of the second-order induction terms:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">uncoupled</span> <span class="o">=</span> <span class="n">calc_property</span><span class="p">(</span><span class="n">dimer</span><span class="p">,</span> <span class="s2">"dipole"</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">response</span></code></p></th>
+<th class="head"><p>Second-order induction terms</p></th>
+<th class="head"><p>Totals (<code class="docutils literal notranslate"><span class="pre">x_induced</span></code>, <code class="docutils literal notranslate"><span class="pre">x_induced_S2</span></code>) use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> (default)</p></td>
+<td><p>coupled (CPSCF): <code class="docutils literal notranslate"><span class="pre">x2_ind,r</span></code>, <code class="docutils literal notranslate"><span class="pre">x2_exch-ind,r_S2</span></code>, <code class="docutils literal notranslate"><span class="pre">x2_exch-ind,r</span></code>; also the
+uncoupled <code class="docutils literal notranslate"><span class="pre">x2_ind</span></code></p></td>
+<td><p>the coupled terms</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>uncoupled: <code class="docutils literal notranslate"><span class="pre">x2_ind</span></code>, <code class="docutils literal notranslate"><span class="pre">x2_exch-ind_S2</span></code>, <code class="docutils literal notranslate"><span class="pre">x2_exch-ind</span></code></p></td>
+<td><p>the uncoupled terms</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;both&quot;</span></code></p></td>
+<td><p>all of the above</p></td>
+<td><p>the coupled terms</p></td>
+</tr>
+</tbody>
+</table>
+<p>The monomers relax in the field in every mode, so the first-order, dispersion and
+exchange-dispersion terms do not depend on <code class="docutils literal notranslate"><span class="pre">response</span></code>. With <code class="docutils literal notranslate"><span class="pre">response=False</span></code> no CPSCF
+equations are solved for the induction amplitudes or their field derivatives; the two
+left are the responses of the monomers to the property operator. This helps when
+comparing methods and when isolating problems in the CPSCF solver.</p>
+<p>The S^inf exchange-dispersion term <code class="docutils literal notranslate"><span class="pre">x2_exch-disp</span></code>, and with it the total <code class="docutils literal notranslate"><span class="pre">x_induced</span></code>,
+has a known error; see <a class="reference internal" href="#known-limitations"><span class="std std-ref">Known limitations</span></a>.</p>
+</section>
+<section id="density-matrix-calculations">
+<h2>Density Matrix Calculations<a class="headerlink" href="#density-matrix-calculations" title="Link to this heading"></a></h2>
+<p>To compute interaction-induced density matrix components from propSAPT:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_densities</span>
+
+<span class="n">density_matrices</span> <span class="o">=</span> <span class="n">calc_densities</span><span class="p">(</span><span class="n">dimer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result is a dictionary of density matrices: <code class="docutils literal notranslate"><span class="pre">&quot;&lt;component&gt;_A&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;&lt;component&gt;_B&quot;</span></code>
+and their sum <code class="docutils literal notranslate"><span class="pre">&quot;&lt;component&gt;&quot;</span></code> for each component of
+<a class="reference internal" href="api.html#prop_sapt.densities.DENSITY_COMPONENTS" title="prop_sapt.densities.DENSITY_COMPONENTS"><code class="xref py py-data docutils literal notranslate"><span class="pre">DENSITY_COMPONENTS</span></code></a> (<code class="docutils literal notranslate"><span class="pre">&quot;pol&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;exch&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ind&quot;</span></code>, …).
+The matrices are for one spin, the <code class="docutils literal notranslate"><span class="pre">Da</span></code> convention: the total density is twice the
+matrix.</p>
+<p>The second-order exchange components of each monomer need theta amplitudes of both
+monomers. <a class="reference internal" href="api.html#prop_sapt.densities.calc_density_matrix" title="prop_sapt.densities.calc_density_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a> computes them once and keeps
+them on the dimer for the other monomer’s call, and
+<a class="reference internal" href="api.html#prop_sapt.densities.calc_densities" title="prop_sapt.densities.calc_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_densities()</span></code></a> frees them when both monomers are done. If
+you call <a class="reference internal" href="api.html#prop_sapt.densities.calc_density_matrix" title="prop_sapt.densities.calc_density_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a> for each monomer yourself, free
+them afterwards with <a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.clear_theta_amplitudes" title="prop_sapt.molecule.Dimer.clear_theta_amplitudes"><code class="xref py py-meth docutils literal notranslate"><span class="pre">clear_theta_amplitudes()</span></code></a>: the
+exchange-dispersion ones take as much memory as the dispersion amplitudes.</p>
+<p>Most of the time goes into solving CPSCF equations, one for each component of each
+monomer and for the theta amplitudes. <a class="reference internal" href="api.html#prop_sapt.densities.calc_density_matrix" title="prop_sapt.densities.calc_density_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a>
+solves the equations of a monomer together, in one run of the solver
+(<code class="docutils literal notranslate"><span class="pre">Dimer.cpscf_batch</span></code>). Each iteration then builds the J and K
+matrices of all of them at once, which costs much less than solving them one by one.</p>
+<p>Those J and K matrices come from the monomer SCF’s J/K object, so they follow
+<code class="docutils literal notranslate"><span class="pre">SCF_TYPE</span></code>: with <code class="docutils literal notranslate"><span class="pre">DIRECT</span></code>, every iteration recomputes the four-index integrals. The
+<code class="docutils literal notranslate"><span class="pre">cpscf_type</span></code> option switches the CPSCF solves of the densities and the properties to
+density fitting, while the SAPT energies keep the monomer SCF’s J/K object and stay
+consistent with Psi4’s SAPT:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_propsapt_options</span>
+
+<span class="n">set_propsapt_options</span><span class="p">({</span><span class="s2">"cpscf_type"</span><span class="p">:</span> <span class="s2">"DF"</span><span class="p">,</span> <span class="s2">"df_basis_cpscf"</span><span class="p">:</span> <span class="s2">"aug-cc-pvqz-jkfit"</span><span class="p">})</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">cpscf_type</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default, the monomer SCF’s J/K object), <code class="docutils literal notranslate"><span class="pre">&quot;DIRECT&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;DF&quot;</span></code>. <code class="docutils literal notranslate"><span class="pre">df_basis_cpscf</span></code> is the fitting basis of <code class="docutils literal notranslate"><span class="pre">&quot;DF&quot;</span></code>; it defaults to
+<code class="docutils literal notranslate"><span class="pre">DF_BASIS_SCF</span></code> as it was when the dimer was built, or else the JKFIT basis of the
+dimer’s orbital basis. With <code class="docutils literal notranslate"><span class="pre">&quot;DF&quot;</span></code> the
+densities and properties solve their own induction amplitudes and differ from the
+<code class="docutils literal notranslate"><span class="pre">DIRECT</span></code> ones by a small fitting error, which a larger fitting basis such as
+aug-cc-pVQZ-JKFIT lowers further. The gain is largest with <code class="docutils literal notranslate"><span class="pre">SCF_TYPE</span> <span class="pre">DIRECT</span></code> and HF,
+where the density matrices become several times faster. With DFT the
+exchange-correlation kernel takes a large part of the CPSCF time, so the gain is smaller.
+In a run configuration, set the options under <code class="docutils literal notranslate"><span class="pre">propsapt_options</span></code>.</p>
+<p>Every matrix is symmetric. <a class="reference internal" href="api.html#prop_sapt.densities.calc_density_matrix" title="prop_sapt.densities.calc_density_matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a> and
+<a class="reference internal" href="api.html#prop_sapt.artifacts.save_densities" title="prop_sapt.artifacts.save_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">save_densities()</span></code></a> check this and warn with
+<a class="reference internal" href="api.html#prop_sapt.checks.InvariantWarning" title="prop_sapt.checks.InvariantWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">InvariantWarning</span></code></a> if a matrix is not symmetric within the
+<code class="docutils literal notranslate"><span class="pre">check_symmetry_atol</span></code> option (1e-10; <code class="docutils literal notranslate"><span class="pre">None</span></code> turns the check off). Bundles written by
+0.4.0.dev0 before 2026-10-14 hold second-order exchange components (<code class="docutils literal notranslate"><span class="pre">exch-ind_S2</span></code>,
+<code class="docutils literal notranslate"><span class="pre">exch-ind</span></code>, <code class="docutils literal notranslate"><span class="pre">exch-disp_S2</span></code> and the <code class="docutils literal notranslate"><span class="pre">Ind</span></code>, <code class="docutils literal notranslate"><span class="pre">Disp</span></code> and <code class="docutils literal notranslate"><span class="pre">total</span></code> sums) with an
+antisymmetric part. It does not enter densities, cubes or traces with symmetric operators,
+but symmetrize such matrices with <code class="docutils literal notranslate"><span class="pre">0.5</span> <span class="pre">*</span> <span class="pre">(D</span> <span class="pre">+</span> <span class="pre">D.T)</span></code> before an eigendecomposition (e.g.
+natural orbitals) or before writing one triangle of them (e.g. into an fchk file).</p>
+<p>With <code class="code highlight python docutils literal highlight-python"><span class="n">save_cubes</span><span class="o">=</span><span class="kc">True</span></code> the total densities are saved as <code class="file docutils literal notranslate"><span class="pre">.cube</span></code> files for
+visualization. With <code class="code highlight python docutils literal highlight-python"><span class="n">save_matrices</span><span class="o">=</span><span class="kc">True</span></code> the matrices are saved, always in the AO
+basis, into one self-describing bundle, <code class="file docutils literal notranslate"><span class="pre">densities.npz</span></code>. It also holds the monomer
+wavefunctions and the metadata: the geometry and its fragments, the basis set and the
+fitting bases, the method, the Psi4 and propSAPT options, the versions, and the
+conventions. The basis sets and the Psi4 options are those the dimer was built with.
+Nothing in it is pickled. Read it back with <a class="reference internal" href="api.html#prop_sapt.artifacts.load_densities" title="prop_sapt.artifacts.load_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_densities()</span></code></a>, which checks the
+conventions and, if asked, that the matrices belong to a geometry, a dimer or a basis set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_densities</span>
+
+<span class="n">densities</span> <span class="o">=</span> <span class="n">load_densities</span><span class="p">(</span><span class="s2">"results/geo1"</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="s2">"geos/geo1.p4m"</span><span class="p">)</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="n">densities</span><span class="o">.</span><span class="n">matrices</span><span class="p">[</span><span class="s2">"total_A"</span><span class="p">]</span>      <span class="c1"># one spin, AO basis</span>
+<span class="n">rho_total</span> <span class="o">=</span> <span class="n">densities</span><span class="o">.</span><span class="n">total</span><span class="p">(</span><span class="s2">"total_A"</span><span class="p">)</span>   <span class="c1"># both spins, 2 * rho</span>
+<span class="n">densities</span><span class="o">.</span><span class="n">fragments</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">atoms</span>              <span class="c1"># fragment structure</span>
+<span class="n">densities</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"basis"</span><span class="p">][</span><span class="s2">"blend"</span><span class="p">]</span>     <span class="c1"># e.g. "AUG-CC-PVTZ"</span>
+<span class="n">wfn_A</span> <span class="o">=</span> <span class="n">densities</span><span class="o">.</span><span class="n">wavefunction</span><span class="p">(</span><span class="s2">"A"</span><span class="p">)</span>      <span class="c1"># psi4.core.Wavefunction of monomer A</span>
+</pre></div>
+</div>
+<p>A bundle that does not match raises <a class="reference internal" href="api.html#prop_sapt.artifacts.ArtifactError" title="prop_sapt.artifacts.ArtifactError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArtifactError</span></code></a>.
+<a class="reference internal" href="api.html#prop_sapt.artifacts.save_densities" title="prop_sapt.artifacts.save_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">save_densities()</span></code></a> writes a bundle of any AO matrices of a dimer.
+The older layout of bare <code class="file docutils literal notranslate"><span class="pre">delta_dm_&lt;key&gt;.npy</span></code> and <code class="file docutils literal notranslate"><span class="pre">wfn_mon_&lt;A/B&gt;.npy</span></code> files is
+still written with <code class="code highlight python docutils literal highlight-python"><span class="n">matrix_format</span><span class="o">=</span><span class="s2">"npy"</span></code>, but it is deprecated, and so is the
+<code class="docutils literal notranslate"><span class="pre">compress_matrices</span></code> argument.</p>
+</section>
+<section id="finite-field-properties">
+<h2>Finite-Field Properties<a class="headerlink" href="#finite-field-properties" title="Link to this heading"></a></h2>
+<p>Two wrappers compute interaction-induced dipoles numerically, as field derivatives of
+energies. Each places the system in a uniform electric field of <code class="docutils literal notranslate"><span class="pre">±field_strength</span></code> along
+every axis (6 fields for the two-point formula, 12 for the four-point one) through Psi4’s
+<code class="docutils literal notranslate"><span class="pre">PERTURB_H</span></code>, and differentiates the energies. Both take the geometry string, not a
+<code class="docutils literal notranslate"><span class="pre">Dimer</span></code>, and use the Psi4 options set at the time. Only <code class="docutils literal notranslate"><span class="pre">&quot;dipole&quot;</span></code> is available.</p>
+<section id="sapt">
+<h3>SAPT<a class="headerlink" href="#sapt" title="Link to this heading"></a></h3>
+<p><a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_sapt" title="prop_sapt.finite_field.finite_field_sapt"><code class="xref py py-func docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a> differentiates every component of
+<a class="reference internal" href="api.html#prop_sapt.sapt_driver.calc_sapt_energy" title="prop_sapt.sapt_driver.calc_sapt_energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a>, building a dimer for each field. The
+result has one row per axis and one column per energy component (<code class="docutils literal notranslate"><span class="pre">ELST1</span></code>, <code class="docutils literal notranslate"><span class="pre">EXCH1</span></code>,
+<code class="docutils literal notranslate"><span class="pre">IND2</span></code>, <code class="docutils literal notranslate"><span class="pre">DISP2</span></code>, …). Each column is the finite-field counterpart of a
+<a class="reference internal" href="api.html#prop_sapt.properties.calc_property" title="prop_sapt.properties.calc_property"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_property()</span></code></a> term, so the analytic properties can be
+checked term by term; <code class="file docutils literal notranslate"><span class="pre">examples/finite_field_sapt.py</span></code> lines them up:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">finite_field_sapt</span>
+
+<span class="n">ff_dipole</span> <span class="o">=</span> <span class="n">finite_field_sapt</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">,</span>
+    <span class="s2">"dipole"</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">formula</span><span class="o">=</span><span class="s2">"two_point"</span><span class="p">,</span>     <span class="c1"># or "four_point"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sapt_kwargs</span></code> is passed on to <a class="reference internal" href="api.html#prop_sapt.sapt_driver.calc_sapt_energy" title="prop_sapt.sapt_driver.calc_sapt_energy"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a>, e.g.
+<code class="docutils literal notranslate"><span class="pre">sapt_kwargs={&quot;response&quot;:</span> <span class="pre">False}</span></code>. The result is also saved to <code class="file docutils literal notranslate"><span class="pre">results-ff.csv</span></code>
+(<code class="docutils literal notranslate"><span class="pre">results=</span></code> chooses another file), and the SAPT energies of every field to
+<code class="file docutils literal notranslate"><span class="pre">results-&lt;axis&gt;-&lt;sign&gt;&lt;field&gt;.csv</span></code>, both in the working directory.</p>
+</section>
+<section id="any-psi4-energy-method">
+<h3>Any Psi4 energy method<a class="headerlink" href="#any-psi4-energy-method" title="Link to this heading"></a></h3>
+<p><a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_property" title="prop_sapt.finite_field.finite_field_property"><code class="xref py py-func docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a> does the same for any method
+<code class="docutils literal notranslate"><span class="pre">psi4.energy</span></code> runs: <code class="docutils literal notranslate"><span class="pre">&quot;scf&quot;</span></code>, a density functional, <code class="docutils literal notranslate"><span class="pre">&quot;mp2&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ccsd&quot;</span></code>, and so on.
+With <code class="docutils literal notranslate"><span class="pre">cp_correction=True</span></code> each energy is the counterpoise-corrected interaction energy
+(<code class="docutils literal notranslate"><span class="pre">bsse_type=&quot;cp&quot;</span></code>). The result is then the supermolecular interaction-induced dipole of
+that method, a reference for the SAPT values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.finite_field</span><span class="w"> </span><span class="kn">import</span> <span class="n">finite_field_property</span>
+
+<span class="n">ff_ccsd</span> <span class="o">=</span> <span class="n">finite_field_property</span><span class="p">(</span>
+    <span class="n">geometry</span><span class="p">,</span>
+    <span class="s2">"ccsd"</span><span class="p">,</span>
+    <span class="s2">"dipole"</span><span class="p">,</span>
+    <span class="n">cp_correction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">field_strength</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+    <span class="n">formula</span><span class="o">=</span><span class="s2">"four_point"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The derivative includes the orbital relaxation. For the HF molecule, the finite-field
+DF-MP2 and CCSD dipoles agree with Psi4’s analytic orbital-relaxed ones within 3e-9 a.u.
+Without <code class="docutils literal notranslate"><span class="pre">cp_correction</span></code> the total energy of the system is differentiated. Psi4’s field
+acts on the electrons only, so that gives the electronic part of the dipole, which depends
+on the origin; the nuclear parts cancel in an interaction energy. The result is also saved
+to <code class="file docutils literal notranslate"><span class="pre">results-ff-&lt;method&gt;.csv</span></code> (<code class="docutils literal notranslate"><span class="pre">results=</span></code> chooses another file).</p>
+</section>
+</section>
+<section id="command-line-runner">
+<h2>Command-Line Runner<a class="headerlink" href="#command-line-runner" title="Link to this heading"></a></h2>
+<p>For production runs, the <code class="docutils literal notranslate"><span class="pre">prop-sapt</span></code> command runs a calculation from a configuration
+file, with no Python script needed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>prop-sapt<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span>geos/geo1.p4m<span class="w"> </span>--memory<span class="w"> </span><span class="m">32</span><span class="w"> </span>--threads<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</div>
+<p>The configuration (YAML or JSON) sets the reference, basis sets, resources, Psi4 and
+propSAPT options, the output directory and the tasks to run.
+See <code class="file docutils literal notranslate"><span class="pre">examples/run_config.yaml</span></code> for a commented example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">reference</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RHF</span>
+<span class="nt">basis</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aug-cc-pvtz</span>
+<span class="nt">df_basis</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aug-cc-pvtz</span><span class="w">     </span><span class="c1"># DF_BASIS_SCF = aug-cc-pvtz-jkfit, DF_BASIS_SAPT = aug-cc-pvtz-ri</span>
+<span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">                 </span><span class="c1"># GB</span>
+<span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">psi4_options</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">scf_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">direct</span>
+<span class="w">  </span><span class="nt">e_convergence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0e-10</span>
+<span class="nt">output</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">dir</span><span class="p">:</span><span class="w"> </span><span class="s">"{geometry}"</span><span class="w">       </span><span class="c1"># expands to the geometry file name without its extension</span>
+<span class="nt">tasks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">monomer_references</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># monomer density cubes and .fchk files</span>
+<span class="w">  </span><span class="nt">sapt_energy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># sapt_results.csv</span>
+<span class="w">  </span><span class="nt">densities</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">            </span><span class="c1"># densities.npz and delta_dm_*.cube</span>
+</pre></div>
+</div>
+<p>Values come from the built-in defaults, then the file, then the command-line flags
+(<code class="docutils literal notranslate"><span class="pre">--memory</span></code>, <code class="docutils literal notranslate"><span class="pre">--threads</span></code>, <code class="docutils literal notranslate"><span class="pre">--reference</span></code>, <code class="docutils literal notranslate"><span class="pre">--functional</span></code>, <code class="docutils literal notranslate"><span class="pre">--grac-a</span></code>, <code class="docutils literal notranslate"><span class="pre">--grac-b</span></code>,
+<code class="docutils literal notranslate"><span class="pre">--basis</span></code>, <code class="docutils literal notranslate"><span class="pre">--df-basis</span></code>, <code class="docutils literal notranslate"><span class="pre">--output-dir</span></code>). The available tasks are
+<code class="docutils literal notranslate"><span class="pre">monomer_references</span></code>, <code class="docutils literal notranslate"><span class="pre">sapt_energy</span></code>, <code class="docutils literal notranslate"><span class="pre">property</span></code> and <code class="docutils literal notranslate"><span class="pre">densities</span></code>; they always run
+in that order. The fitting bases can also be given by their full names
+(<code class="docutils literal notranslate"><span class="pre">df_basis_scf</span></code>, <code class="docutils literal notranslate"><span class="pre">df_basis_sapt</span></code>). Without <code class="docutils literal notranslate"><span class="pre">df_basis</span></code> or <code class="docutils literal notranslate"><span class="pre">df_basis_scf</span></code>,
+<code class="docutils literal notranslate"><span class="pre">DF_BASIS_SCF</span></code> is left to Psi4’s default.</p>
+<p>Elements that lack a basis set can be given a substitute with <code class="docutils literal notranslate"><span class="pre">basis_overrides</span></code>, either
+inline or as a JSON file next to the configuration:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"Zn"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"DF_BASIS_SCF"</span><span class="p">:</span><span class="w"> </span><span class="s2">"def2-tzvpd-ri"</span><span class="p">,</span><span class="w"> </span><span class="nt">"DF_BASIS_SAPT"</span><span class="p">:</span><span class="w"> </span><span class="s2">"def2-tzvpd-ri"</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Add <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> to print the resolved configuration and Psi4 options without calculating
+anything. Each run also writes <code class="file docutils literal notranslate"><span class="pre">propsapt_run.json</span></code> into the output directory,
+recording the resolved configuration, the Psi4 options, the package versions and the
+fragments of the geometry. The <code class="docutils literal notranslate"><span class="pre">densities</span></code> task saves its matrices into
+<code class="file docutils literal notranslate"><span class="pre">densities.npz</span></code> (<code class="docutils literal notranslate"><span class="pre">matrix_format:</span> <span class="pre">npz</span></code>, the default), whose metadata also holds the
+run configuration and the basis overrides applied; <code class="docutils literal notranslate"><span class="pre">matrix_format:</span> <span class="pre">npy</span></code> (deprecated)
+writes bare <code class="file docutils literal notranslate"><span class="pre">.npy</span></code> files.
+The command exits with status 0 on success, 1 if a calculation failed and 2 for an invalid
+configuration, so it can be used directly in batch scripts, e.g. in a SLURM array job:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">GEO_FILES</span><span class="o">=(</span>geos/*.p4m<span class="o">)</span>
+prop-sapt<span class="w"> </span>run<span class="w"> </span>config.yaml<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">GEO_FILES</span><span class="p">[</span><span class="nv">$SLURM_ARRAY_TASK_ID</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--memory<span class="w"> </span><span class="s2">"</span><span class="nv">$MEMORY</span><span class="s2">"</span><span class="w"> </span>--threads<span class="w"> </span><span class="s2">"</span><span class="nv">$SLURM_CPUS_PER_TASK</span><span class="s2">"</span>
+</pre></div>
+</div>
+<section id="basis-sets-missing-from-psi4">
+<span id="id1"></span><h3>Basis sets missing from Psi4<a class="headerlink" href="#basis-sets-missing-from-psi4" title="Link to this heading"></a></h3>
+<p>Basis sets that Psi4’s library lacks, for some or all elements, can come from the
+<a class="reference external" href="https://www.basissetexchange.org">Basis Set Exchange</a> (BSE) or from
+<a class="reference external" href="http://www.grant-hill.group.shef.ac.uk/ccrepo/">ccRepo</a>, which also holds
+correlation-consistent fitting sets (<code class="docutils literal notranslate"><span class="pre">_JKFIT</span></code>, <code class="docutils literal notranslate"><span class="pre">_MP2FIT</span></code>) for elements missing them in
+Psi4. There are two ways to use them.</p>
+<p><strong>For the whole molecule, from the BSE:</strong> Psi4 reads names prefixed with <code class="docutils literal notranslate"><span class="pre">bse:</span></code> from the
+<code class="docutils literal notranslate"><span class="pre">basis_set_exchange</span></code> package (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">basis_set_exchange</span></code>), e.g.
+<code class="docutils literal notranslate"><span class="pre">df_basis_scf:</span> <span class="pre">bse:def2-universal-jkfit</span></code>. Such names cannot be used in
+<code class="docutils literal notranslate"><span class="pre">basis_overrides</span></code>, and <code class="docutils literal notranslate"><span class="pre">df_basis</span></code> appends <code class="docutils literal notranslate"><span class="pre">-jkfit</span></code>/<code class="docutils literal notranslate"><span class="pre">-ri</span></code>, which rarely match BSE
+names, so give <code class="docutils literal notranslate"><span class="pre">df_basis_scf</span></code>/<code class="docutils literal notranslate"><span class="pre">df_basis_sapt</span></code> in full.</p>
+<p><strong>As files, from either source:</strong> <code class="docutils literal notranslate"><span class="pre">prop-sapt</span> <span class="pre">basis</span> <span class="pre">fetch</span></code> writes a basis set into a
+Psi4-format file once, and runs then read it through <code class="docutils literal notranslate"><span class="pre">basis_dirs</span></code>, with no network or
+extra packages needed on the compute nodes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>prop-sapt<span class="w"> </span>basis<span class="w"> </span>fetch<span class="w"> </span>ccrepo<span class="w"> </span>aug-cc-pVTZ_MP2FIT<span class="w"> </span>--elements<span class="w"> </span>Zn<span class="w"> </span>--dir<span class="w"> </span>basis
+prop-sapt<span class="w"> </span>basis<span class="w"> </span>fetch<span class="w"> </span>bse<span class="w"> </span>&lt;basis<span class="w"> </span>set&gt;<span class="w"> </span>--elements<span class="w"> </span>&lt;elements&gt;<span class="w"> </span>--dir<span class="w"> </span>basis
+</pre></div>
+</div>
+<p>Each file is named after its basis set, <code class="docutils literal notranslate"><span class="pre">&lt;source&gt;-&lt;basis</span> <span class="pre">set&gt;</span></code> by default (<code class="docutils literal notranslate"><span class="pre">--as</span></code>
+chooses another name), e.g. <code class="file docutils literal notranslate"><span class="pre">basis/ccrepo-aug-cc-pvtz_mp2fit.gbs</span></code> holds the basis set
+<code class="docutils literal notranslate"><span class="pre">ccrepo-aug-cc-pVTZ_MP2FIT</span></code>, and starts with a record of its source, version and date.
+A file holding a few elements is used for those elements through <code class="docutils literal notranslate"><span class="pre">basis_overrides</span></code>, while
+the others keep their default. For example, for Zn with aug-cc-pVTZ, whose fitting sets
+Psi4 lacks, the RI set can come from ccRepo and the JKFIT set from Psi4’s library:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">df_basis</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aug-cc-pvtz</span>
+<span class="nt">basis_dirs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">basis</span><span class="p p-Indicator">]</span><span class="w">       </span><span class="c1"># relative to the configuration file</span>
+<span class="nt">basis_overrides</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Zn</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">DF_BASIS_SCF</span><span class="p">:</span><span class="w"> </span><span class="nv">def2-universal-jkfit</span><span class="p p-Indicator">,</span><span class="nt"> DF_BASIS_SAPT</span><span class="p">:</span><span class="w"> </span><span class="nv">ccrepo-aug-cc-pVTZ_MP2FIT</span><span class="p p-Indicator">}</span>
+</pre></div>
+</div>
+<p>A file must not take the name of a basis set in Psi4’s library: Psi4 reads the first file
+of a name it finds, so a file holding a few elements would hide the library basis set for
+every other element. <code class="docutils literal notranslate"><span class="pre">prop-sapt</span> <span class="pre">basis</span> <span class="pre">fetch</span></code> refuses such names, refuses to overwrite a
+file without <code class="docutils literal notranslate"><span class="pre">--force</span></code>, and writes nothing if the basis set is missing for a requested
+element.</p>
+<p>The sources are used through optional packages, installed separately and only where
+<code class="docutils literal notranslate"><span class="pre">prop-sapt</span> <span class="pre">basis</span> <span class="pre">fetch</span></code> runs; propSAPT itself does not depend on them:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bse</span></code>: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">basis_set_exchange</span></code>
+(or <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">conda-forge</span> <span class="pre">basis_set_exchange</span></code>);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ccrepo</span></code>: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/Sheffield-Theoretical-Chemistry/ccrepo_utility</span> <span class="pre">colorlog</span> <span class="pre">tqdm</span> <span class="pre">requests</span></code>
+(ccrepo_utility does not install its own dependencies, and it is licensed for
+non-commercial use only).</p></li>
+</ul>
+<p>Please cite the source and the original publications of the basis sets you use.</p>
+<p>The same runner is available from Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt</span><span class="w"> </span><span class="kn">import</span> <span class="n">run</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="s2">"config.yaml"</span><span class="p">,</span> <span class="s2">"geos/geo1.p4m"</span><span class="p">)</span>
+<span class="n">sapt_energy</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s2">"sapt_energy"</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">prop_sapt</span> <span class="pre">run</span> <span class="pre">...</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">prop-sapt</span> <span class="pre">run</span> <span class="pre">...</span></code>.</p>
+</section>
+</section>
+<section id="advanced-options">
+<h2>Advanced Options<a class="headerlink" href="#advanced-options" title="Link to this heading"></a></h2>
+<section id="customizing-calculations">
+<h3>Customizing Calculations<a class="headerlink" href="#customizing-calculations" title="Link to this heading"></a></h3>
+<p>You can customize various aspects of the calculation using Psi4 options before creating the Dimer object and running calculations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">"basis"</span><span class="p">:</span> <span class="s2">"aug-cc-pvtz"</span><span class="p">,</span>
+        <span class="s2">"DF_BASIS_SCF"</span><span class="p">:</span> <span class="s2">"aug-cc-pvtz-jkfit"</span><span class="p">,</span>
+        <span class="s2">"DF_BASIS_SAPT"</span><span class="p">:</span> <span class="s2">"aug-cc-pvtz-ri"</span><span class="p">,</span>
+        <span class="s2">"scf_type"</span><span class="p">:</span> <span class="s2">"direct"</span><span class="p">,</span>
+        <span class="s2">"e_convergence"</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span>
+        <span class="s2">"d_convergence"</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span>
+        <span class="c1"># Integral thresholds for higher precision</span>
+        <span class="s2">"ints_tolerance"</span><span class="p">:</span> <span class="mf">1e-14</span><span class="p">,</span>
+        <span class="s2">"screening"</span><span class="p">:</span> <span class="s2">"schwarz"</span><span class="p">,</span>
+        <span class="s2">"cholesky_tolerance"</span><span class="p">:</span> <span class="mf">1e-10</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="hellmann-feynman-forces">
+<h2>Hellmann-Feynman Forces<a class="headerlink" href="#hellmann-feynman-forces" title="Link to this heading"></a></h2>
+<p>To compute Hellmann-Feynman forces on nuclei from one-particle AO density matrices:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.forces</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_force_at_nuc</span><span class="p">,</span> <span class="n">calc_force_nuc_nuc</span>
+
+<span class="n">mol</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">get_psi4_molecule</span><span class="p">()</span>
+<span class="n">basisset</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">get_psi4_basisset</span><span class="p">()</span>
+
+<span class="c1"># Force on nucleus 0 from the interaction-induced density of monomer A</span>
+<span class="n">force</span> <span class="o">=</span> <span class="n">calc_force_at_nuc</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_A</span><span class="p">,</span> <span class="n">atidx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">basisset</span><span class="o">=</span><span class="n">basisset</span><span class="p">,</span> <span class="n">add_nuclear</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Pass multiple density matrices — integrals are computed only once</span>
+<span class="n">forces</span> <span class="o">=</span> <span class="n">calc_force_at_nuc</span><span class="p">(</span>
+    <span class="n">mol</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho_A_elst</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_A_exch</span><span class="p">],</span> <span class="n">atidx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">basisset</span><span class="o">=</span><span class="n">basisset</span><span class="p">,</span> <span class="n">add_nuclear</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># Nuclear-nuclear repulsion only (no electron density needed)</span>
+<span class="n">force_nuc</span> <span class="o">=</span> <span class="n">calc_force_nuc_nuc</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">atidx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All forces are in atomic units (Hartree/Bohr). The nuclear-nuclear repulsion contribution
+is added by default; pass <code class="docutils literal notranslate"><span class="pre">add_nuclear=False</span></code> to obtain the electronic part only, as for
+interaction-induced densities above. The matrices must be in the AO basis of <code class="docutils literal notranslate"><span class="pre">basisset</span></code>;
+without it, a basis set is built for <code class="docutils literal notranslate"><span class="pre">mol</span></code> from the current <code class="docutils literal notranslate"><span class="pre">BASIS</span></code> option, so pass the
+dimer’s for its density matrices. As elsewhere, no spin factor is applied: pass
+<code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">rho</span></code> for the matrices of <a class="reference internal" href="api.html#prop_sapt.densities.calc_densities" title="prop_sapt.densities.calc_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_densities()</span></code></a>.</p>
+</section>
+<section id="evaluating-at-arbitrary-points">
+<h2>Evaluating at Arbitrary Points<a class="headerlink" href="#evaluating-at-arbitrary-points" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="api.html#module-prop_sapt.evaluate" title="prop_sapt.evaluate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">prop_sapt.evaluate</span></code></a> module evaluates densities, orbitals and the electrostatic
+potential (ESP) of AO matrices at any set of points: a quadrature grid, a line, a plane.
+Points are in bohr, as an array of shape <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">3)</span></code>, and the result has the shape of the
+points without the last axis.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.evaluate</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate_density</span><span class="p">,</span> <span class="n">evaluate_orbital</span><span class="p">,</span> <span class="n">evaluate_esp</span>
+
+<span class="n">basisset</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">get_psi4_basisset</span><span class="p">()</span>
+
+<span class="c1"># density along the x axis</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">line</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="n">evaluate_density</span><span class="p">(</span><span class="n">rho_A</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">basisset</span><span class="p">)</span>                 <span class="c1"># shape (200,)</span>
+
+<span class="c1"># several matrices in one call share the basis function values</span>
+<span class="n">rhos</span> <span class="o">=</span> <span class="n">evaluate_density</span><span class="p">([</span><span class="n">rho_elst</span><span class="p">,</span> <span class="n">rho_exch</span><span class="p">],</span> <span class="n">line</span><span class="p">,</span> <span class="n">basisset</span><span class="p">)</span>  <span class="c1"># shape (2, 200)</span>
+
+<span class="c1"># orbitals are the columns of the MO coefficients, as in Psi4's Ca()</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">wfnA</span><span class="o">.</span><span class="n">Ca</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">evaluate_orbital</span><span class="p">(</span><span class="n">C</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span><span class="p">,</span> <span class="n">basisset</span><span class="p">)</span>              <span class="c1"># shape (3, 200)</span>
+
+<span class="c1"># ESP of the electrons; nuclei=True adds the nuclei of the basis set's molecule</span>
+<span class="n">esp</span> <span class="o">=</span> <span class="n">evaluate_esp</span><span class="p">(</span><span class="n">rho_A</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">basisset</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The same functions are <a class="reference internal" href="api.html#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimer</span></code></a> methods that use the dimer basis set:
+<code class="docutils literal notranslate"><span class="pre">dimer.evaluate_density(rho,</span> <span class="pre">points)</span></code>, <code class="docutils literal notranslate"><span class="pre">dimer.evaluate_orbital(C,</span> <span class="pre">points)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">dimer.evaluate_esp(rho,</span> <span class="pre">points)</span></code>.</p>
+<ul class="simple">
+<li><p>Matrices must be in the AO basis of <code class="docutils literal notranslate"><span class="pre">basisset</span></code>, in Psi4 AO order.</p></li>
+<li><p>No spin factor is applied. The density matrices returned by
+<a class="reference internal" href="api.html#prop_sapt.densities.calc_densities" title="prop_sapt.densities.calc_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_densities()</span></code></a> follow the <code class="docutils literal notranslate"><span class="pre">Da</span></code> convention, so pass <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">rho</span></code>
+for the total (RHF) density, as the density cubes do.</p></li>
+<li><p>Basis function values are computed for blocks of <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> points, which takes
+about <code class="docutils literal notranslate"><span class="pre">chunk_size</span> <span class="pre">*</span> <span class="pre">nbf</span></code> floats of memory. The default is the
+<code class="docutils literal notranslate"><span class="pre">point_eval_chunk_size</span></code> option (2000).</p></li>
+</ul>
+<p>Integrals over space become weighted sums on a quadrature grid, for example Psi4’s
+molecular grid from <a class="reference internal" href="api.html#prop_sapt.partition.molecular_grid" title="prop_sapt.partition.molecular_grid"><code class="xref py py-func docutils literal notranslate"><span class="pre">prop_sapt.partition.molecular_grid()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.partition</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecular_grid</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">molecular_grid</span><span class="p">(</span><span class="n">basisset</span><span class="p">)</span>
+<span class="n">n_elec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="n">evaluate_density</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho_A</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">basisset</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="fragment-populations">
+<span id="id2"></span><h2>Fragment Populations<a class="headerlink" href="#fragment-populations" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="api.html#module-prop_sapt.partition" title="prop_sapt.partition"><code class="xref py py-mod docutils literal notranslate"><span class="pre">prop_sapt.partition</span></code></a> module turns a partition of space between fragments into
+matrices, computed once per geometry. With fragment weights <span class="math notranslate nohighlight">\(w_X(\mathbf{r})\)</span> on a
+quadrature grid, the weighted-overlap matrix of fragment <span class="math notranslate nohighlight">\(X\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[W^X_{\mu\nu} = \int w_X(\mathbf{r})\, \phi_\mu(\mathbf{r})\, \phi_\nu(\mathbf{r})\, d\mathbf{r},\]</div>
+<p>and the electrons any density matrix <span class="math notranslate nohighlight">\(D\)</span> puts on <span class="math notranslate nohighlight">\(X\)</span> are the trace
+<span class="math notranslate nohighlight">\(\mathrm{Tr}(D W^X)\)</span>, with no further grid work. The first-moment matrices
+(<span class="math notranslate nohighlight">\(\mathbf{r}\)</span> times the same integrand) give fragment dipoles the same way.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ops</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">fragment_operators</span><span class="p">(</span><span class="s2">"hirshfeld"</span><span class="p">)</span>   <span class="c1"># or "becke"</span>
+
+<span class="n">q_A</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="s2">"A"</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_pol</span><span class="p">)</span>            <span class="c1"># charge moved onto A, -Tr(D W_A)</span>
+<span class="n">n_B</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">population</span><span class="p">(</span><span class="s2">"B"</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_A</span><span class="p">)</span>          <span class="c1"># electrons on B, Tr(D W_B)</span>
+<span class="n">q_all</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="s2">"A"</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho_elst</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_exch</span><span class="p">])</span>     <span class="c1"># one value per matrix</span>
+<span class="n">mu_A</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">dipole</span><span class="p">(</span><span class="s2">"A"</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_pol</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">com_A</span><span class="p">)</span>         <span class="c1"># electronic dipole of A</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;becke&quot;</span></code> assigns each point to the Becke cell of an atom of monomer A or B.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;hirshfeld&quot;</span></code> uses <span class="math notranslate nohighlight">\(w_X = \rho^0_X / (\rho^0_A + \rho^0_B)\)</span> from the
+unperturbed monomer densities.</p></li>
+<li><p>The grid is Psi4’s molecular quadrature grid, 75 radial times 590 Lebedev points per
+atom by default (options <code class="docutils literal notranslate"><span class="pre">quadrature_radial_points</span></code>, <code class="docutils literal notranslate"><span class="pre">quadrature_spherical_points</span></code>).
+Its radial extent is twice Psi4’s DFT default (option <code class="docutils literal notranslate"><span class="pre">quadrature_bs_radius_alpha</span></code>),
+which diffuse basis sets need: the operators of fragments that cover the whole system
+sum to the overlap matrix within about 1e-6 for aug-cc-pVTZ.</p></li>
+<li><p>As in <a class="reference internal" href="api.html#module-prop_sapt.evaluate" title="prop_sapt.evaluate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">prop_sapt.evaluate</span></code></a>, no spin factor is applied: pass <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">rho</span></code> for the
+matrices of <a class="reference internal" href="api.html#prop_sapt.densities.calc_densities" title="prop_sapt.densities.calc_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_densities()</span></code></a>. Dipoles are in atomic units, with the
+electrons contributing negatively, as in Psi4’s <code class="docutils literal notranslate"><span class="pre">ao_dipole</span></code>.</p></li>
+</ul>
+<p>Fragment weights from any other partitioning (e.g. LISA or MBIS weights from
+horton_part) work as well: give them at the points of the grid they were computed on,
+with that grid’s quadrature weights. Only these arrays are needed; the basis functions
+are evaluated by Psi4 in the given basis set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.partition</span><span class="w"> </span><span class="kn">import</span> <span class="n">FragmentOperators</span>
+
+<span class="c1"># points (n, 3) in bohr, quadrature weights (n,), fragment weights w_A, w_B (n,)</span>
+<span class="n">ops</span> <span class="o">=</span> <span class="n">FragmentOperators</span><span class="o">.</span><span class="n">from_grid</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="p">{</span><span class="s2">"A"</span><span class="p">:</span> <span class="n">w_A</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">:</span> <span class="n">w_B</span><span class="p">},</span> <span class="n">dimer</span><span class="o">.</span><span class="n">get_psi4_basisset</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">q_A</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">charge</span><span class="p">(</span><span class="s2">"A"</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_pol</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The accuracy is then that of the given grid. By default (<code class="docutils literal notranslate"><span class="pre">partition_of_unity=True</span></code>)
+the fragments are taken to cover the whole system, and two checks guard it; like the
+other checks of <a class="reference internal" href="api.html#module-prop_sapt.checks" title="prop_sapt.checks"><code class="xref py py-mod docutils literal notranslate"><span class="pre">prop_sapt.checks</span></code></a> they warn with
+<a class="reference internal" href="api.html#prop_sapt.checks.InvariantWarning" title="prop_sapt.checks.InvariantWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">InvariantWarning</span></code></a> and never stop a calculation:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api.html#prop_sapt.partition.FragmentOperators.from_grid" title="prop_sapt.partition.FragmentOperators.from_grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_grid()</span></code></a> checks that the fragment
+weights sum to 1 wherever the basis functions reach: the largest element of
+<span class="math notranslate nohighlight">\(\sum_q w_q (\sum_X w_X(\mathbf{r}_q) - 1)\, \phi_\mu \phi_\nu\)</span> must be within the
+<code class="docutils literal notranslate"><span class="pre">check_partition_atol</span></code> option (1e-8). Points far from the molecule, where e.g. LISA
+weights stop summing to 1, do not count.</p></li>
+<li><p>Every <code class="docutils literal notranslate"><span class="pre">population</span></code> and <code class="docutils literal notranslate"><span class="pre">charge</span></code> call checks that the fragments account for all the
+electrons of each density, <span class="math notranslate nohighlight">\(\sum_X \mathrm{Tr}(D W^X) = \mathrm{Tr}(D S)\)</span>, within
+the <code class="docutils literal notranslate"><span class="pre">check_closure_atol</span></code> option (1e-6 electrons). The default grid closes within 1e-8
+electrons for the total density of the water dimer in aug-cc-pVTZ and within 1e-9 for
+its interaction-induced densities.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">ops.closure_error(2</span> <span class="pre">*</span> <span class="pre">rho)</span></code> gives the electrons a grid misses for a density. For
+fragments that do not cover the whole system, e.g. a single atom or a grid over part of
+space, their weights do not sum to 1: pass <code class="docutils literal notranslate"><span class="pre">partition_of_unity=False</span></code> (also to
+<code class="docutils literal notranslate"><span class="pre">dimer.fragment_operators</span></code>), and nothing is checked then.</p>
+</section>
+<section id="cube-file-utilities">
+<h2>Cube File Utilities<a class="headerlink" href="#cube-file-utilities" title="Link to this heading"></a></h2>
+<section id="generating-cube-files">
+<h3>Generating cube files<a class="headerlink" href="#generating-cube-files" title="Link to this heading"></a></h3>
+<p><a class="reference internal" href="api.html#prop_sapt.molecule.Dimer.make_cube" title="prop_sapt.molecule.Dimer.make_cube"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Dimer.make_cube</span></code></a> evaluates matrices in the
+dimer’s basis set on a Cartesian grid, with the functions of <a class="reference internal" href="api.html#module-prop_sapt.evaluate" title="prop_sapt.evaluate"><code class="xref py py-mod docutils literal notranslate"><span class="pre">prop_sapt.evaluate</span></code></a>.
+It supports three matrix types:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;density&quot;</span></code> — electron density from a one-particle AO density matrix</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;orbital&quot;</span></code> — orbital amplitude from a coefficient vector</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;esp&quot;</span></code> — electrostatic potential (AO density matrix contracted with the Coulomb kernel)</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single density cube</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">make_cube</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho_A</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s2">"density"</span><span class="p">)</span>
+<span class="n">cube</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"delta_dm_A.cube"</span><span class="p">)</span>
+
+<span class="c1"># Multiple matrices in one call (basis function values computed once)</span>
+<span class="n">cubes</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">make_cube</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho_elst</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_exch</span><span class="p">,</span> <span class="n">orbital_vec</span><span class="p">],</span>
+    <span class="n">obj_type</span><span class="o">=</span><span class="p">[</span><span class="s2">"density"</span><span class="p">,</span> <span class="s2">"density"</span><span class="p">,</span> <span class="s2">"orbital"</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># A finer grid than the default (cube_grid_step 0.2 bohr, cube_grid_overage 4.0 bohr)</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">dimer</span><span class="o">.</span><span class="n">make_cube</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rho_B</span><span class="p">,</span> <span class="n">grid_step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="api.html#prop_sapt.cubes.make_cube" title="prop_sapt.cubes.make_cube"><code class="xref py py-func docutils literal notranslate"><span class="pre">prop_sapt.cubes.make_cube()</span></code></a> does the same for any Psi4 molecule; pass the basis set
+the matrices are in as <code class="docutils literal notranslate"><span class="pre">basisset=</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">dimer.get_psi4_basisset()</span></code>, since without it
+a basis set is built from the current <code class="docutils literal notranslate"><span class="pre">BASIS</span></code> option. A grid from
+<a class="reference internal" href="api.html#prop_sapt.cubes.prepare_grid" title="prop_sapt.cubes.prepare_grid"><code class="xref py py-func docutils literal notranslate"><span class="pre">prop_sapt.cubes.prepare_grid()</span></code></a> can be reused across calls with <code class="docutils literal notranslate"><span class="pre">grid=</span></code>.</p>
+</section>
+<section id="working-with-cubes">
+<h3>Working with cubes<a class="headerlink" href="#working-with-cubes" title="Link to this heading"></a></h3>
+<p>A <a class="reference internal" href="api.html#prop_sapt.cubes.Cube" title="prop_sapt.cubes.Cube"><code class="xref py py-class docutils literal notranslate"><span class="pre">prop_sapt.cubes.Cube</span></code></a> holds values on a regular grid, in bohr. Cubes on the same
+grid combine with <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">-</span></code>, and scale with <code class="docutils literal notranslate"><span class="pre">*</span></code> and <code class="docutils literal notranslate"><span class="pre">/</span></code> by a number. The grids
+are checked first, and the result takes the atoms of the left cube and empty comments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">prop_sapt.cubes</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cube</span>
+
+<span class="n">rho</span> <span class="o">=</span> <span class="n">Cube</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">"cubes/delta_dm_total_A.cube"</span><span class="p">)</span>
+<span class="n">rho_pol</span> <span class="o">=</span> <span class="n">Cube</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">"cubes/delta_dm_pol_A.cube"</span><span class="p">)</span>
+
+<span class="n">rho_rest</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">-</span> <span class="n">rho_pol</span>
+<span class="n">rho_rest</span><span class="o">.</span><span class="n">comment1</span> <span class="o">=</span> <span class="s2">"total minus polarization density of monomer A"</span>
+<span class="n">rho_rest</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"delta_dm_rest_A.cube"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Cube.integrate</span></code> sums the values over the voxels times <code class="docutils literal notranslate"><span class="pre">Cube.voxel_volume</span></code>. It takes an
+optional weight at every voxel, either a cube on the same grid or an array of the grid’s
+shape. Leading axes of the array stack several weights:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span><span class="o">.</span><span class="n">integrate</span><span class="p">()</span>                       <span class="c1"># electrons in the box</span>
+<span class="n">rho</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">w_A</span><span class="p">)</span>                    <span class="c1"># electrons that the weight cube w_A gives to A</span>
+<span class="n">rho</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">w_A</span><span class="o">.</span><span class="n">volumetric_data</span><span class="p">,</span> <span class="n">w_B</span><span class="o">.</span><span class="n">volumetric_data</span><span class="p">]))</span>  <span class="c1"># both at once</span>
+<span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rho</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">rho</span><span class="o">.</span><span class="n">volumetric_data</span><span class="p">))</span>  <span class="c1"># L2 norm</span>
+<span class="n">rho</span><span class="o">.</span><span class="n">moved_charge</span><span class="p">()</span>                    <span class="c1"># half the integral of |rho|</span>
+</pre></div>
+</div>
+<p>Integrals on a cube carry the error of its voxel grid and box. <a class="reference internal" href="#fragment-populations"><span class="std std-ref">Fragment populations</span></a> from the
+density matrices avoid it.</p>
+<p><code class="docutils literal notranslate"><span class="pre">read_cube_file</span></code> (also <code class="docutils literal notranslate"><span class="pre">Cube.from_file</span></code>) accepts any number of values per line. Cubes of
+several orbitals, with several values per voxel or in angstrom are not supported.</p>
+</section>
+<section id="visualization">
+<h3>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h3>
+<p>The package includes utilities for visualizing orbitals and densities.
+See the Jupyter notebooks in the <code class="docutils literal notranslate"><span class="pre">examples/</span></code> directory:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">visualise_orbital.ipynb</span></code> - Visualize molecular orbitals</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">visualise_density.ipynb</span></code> - Visualize density matrices</p></li>
+</ul>
+<p>For more examples, see the <a class="reference internal" href="examples.html"><span class="doc">Examples</span></a> section.</p>
+</section>
+</section>
+<section id="known-limitations">
+<span id="id3"></span><h2>Known limitations<a class="headerlink" href="#known-limitations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>S^inf exchange-dispersion property.</strong> The <code class="docutils literal notranslate"><span class="pre">x2_exch-disp</span></code> term of
+<a class="reference internal" href="api.html#prop_sapt.properties.calc_property" title="prop_sapt.properties.calc_property"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_property()</span></code></a> is not yet the field derivative of the S^inf
+exchange-dispersion energy <code class="docutils literal notranslate"><span class="pre">EXCH-DISP2</span></code>. For the dipole of He–H2 in aug-cc-pVTZ it is
+7.2e-5 a.u. off the finite-field derivative, about 18% of the term, and the total
+<code class="docutils literal notranslate"><span class="pre">x_induced</span></code> carries that error. Every term of <code class="docutils literal notranslate"><span class="pre">x_induced_S2</span></code>, the total with the S^2
+exchange terms, agrees with its finite-field derivative. Use it, or check a system with
+<a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_sapt" title="prop_sapt.finite_field.finite_field_sapt"><code class="xref py py-func docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a>. Tracked in
+<a class="reference external" href="https://github.com/btyrcha/propSAPT/issues/1">issue #1</a>.</p></li>
+<li><p><strong>S^2 exchange in the density totals.</strong> The second-order totals of
+<a class="reference internal" href="api.html#prop_sapt.densities.calc_densities" title="prop_sapt.densities.calc_densities"><code class="xref py py-func docutils literal notranslate"><span class="pre">calc_densities()</span></code></a> use the S^2 exchange densities: <code class="docutils literal notranslate"><span class="pre">Ind</span></code> is <code class="docutils literal notranslate"><span class="pre">ind</span></code> plus
+<code class="docutils literal notranslate"><span class="pre">exch-ind_S2</span></code>, <code class="docutils literal notranslate"><span class="pre">Disp</span></code> is <code class="docutils literal notranslate"><span class="pre">disp</span></code> plus <code class="docutils literal notranslate"><span class="pre">exch-disp_S2</span></code>, and <code class="docutils literal notranslate"><span class="pre">total</span></code> sums <code class="docutils literal notranslate"><span class="pre">pol</span></code>,
+<code class="docutils literal notranslate"><span class="pre">exch</span></code>, <code class="docutils literal notranslate"><span class="pre">Ind</span></code> and <code class="docutils literal notranslate"><span class="pre">Disp</span></code>. The S^inf exchange-induction density <code class="docutils literal notranslate"><span class="pre">exch-ind</span></code> is
+returned on its own; an S^inf exchange-dispersion density is not implemented yet.</p></li>
+<li><p><strong>Uncoupled dispersion only.</strong> The dispersion and exchange-dispersion energies, and the
+dispersion terms of the properties and density matrices, are the uncoupled ones. With
+<code class="docutils literal notranslate"><span class="pre">RHF</span></code> this is the SAPT0 dispersion. With <code class="docutils literal notranslate"><span class="pre">RKS</span></code> it is not the coupled dispersion that
+Psi4’s SAPT(DFT) uses by default, so SAPT(DFT) dispersion and total energies differ from
+Psi4’s. Coupled dispersion is not implemented yet.</p></li>
+<li><p><strong>Closed-shell references only.</strong> The monomers must be closed-shell singlets with an
+<code class="docutils literal notranslate"><span class="pre">RHF</span></code> or <code class="docutils literal notranslate"><span class="pre">RKS</span></code> reference; unrestricted references are not implemented.</p></li>
+<li><p><strong>All-electron only.</strong> Frozen core is not supported, and <a class="reference internal" href="api.html#prop_sapt.molecule.Dimer" title="prop_sapt.molecule.Dimer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimer</span></code></a>
+rejects the <code class="docutils literal notranslate"><span class="pre">FREEZE_CORE</span></code> option.</p></li>
+<li><p><strong>Finite-field files.</strong> <a class="reference internal" href="api.html#prop_sapt.finite_field.finite_field_sapt" title="prop_sapt.finite_field.finite_field_sapt"><code class="xref py py-func docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a> writes the SAPT energies of
+every field into the working directory, <code class="file docutils literal notranslate"><span class="pre">results-&lt;axis&gt;-&lt;sign&gt;&lt;field&gt;.csv</span></code>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

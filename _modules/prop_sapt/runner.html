@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>prop_sapt.runner &mdash; prop-sapt 0.5.0.dev0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=be1c004d"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            prop-sapt
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installing-a-release">Installing a release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#development-install">Development install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#optional-packages">Optional packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#verifying-the-installation">Verifying the installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#basic-workflow">Basic Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#creating-a-dimer">Creating a Dimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#sapt-energy-calculations">SAPT Energy Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#property-calculations">Property Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#density-matrix-calculations">Density Matrix Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finite-field-properties">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#sapt">SAPT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#any-psi4-energy-method">Any Psi4 energy method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#command-line-runner">Command-Line Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#basis-sets-missing-from-psi4">Basis sets missing from Psi4</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#advanced-options">Advanced Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#customizing-calculations">Customizing Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#hellmann-feynman-forces">Hellmann-Feynman Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#evaluating-at-arbitrary-points">Evaluating at Arbitrary Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#fragment-populations">Fragment Populations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#cube-file-utilities">Cube File Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#generating-cube-files">Generating cube files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#working-with-cubes">Working with cubes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../usage.html#visualization">Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#known-limitations">Known limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#scripts">Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#notebooks">Notebooks</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.molecule">Dimer Class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer"><code class="docutils literal notranslate"><span class="pre">Dimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.clear_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.clear_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_density"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_density()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_esp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">Dimer.evaluate_orbital()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.fragment_operators"><code class="docutils literal notranslate"><span class="pre">Dimer.fragment_operators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_ra"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_ra()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_cpscf_sb"><code class="docutils literal notranslate"><span class="pre">Dimer.get_cpscf_sb()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_basisset"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_basisset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_molecule"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_psi4_wavefunction"><code class="docutils literal notranslate"><span class="pre">Dimer.get_psi4_wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.get_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.get_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.make_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.make_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.save_cube"><code class="docutils literal notranslate"><span class="pre">Dimer.save_cube()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.store_theta_amplitudes"><code class="docutils literal notranslate"><span class="pre">Dimer.store_theta_amplitudes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.molecule.Dimer.use_cpscf_type"><code class="docutils literal notranslate"><span class="pre">Dimer.use_cpscf_type()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.properties">Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_induced_dipole"><code class="docutils literal notranslate"><span class="pre">calc_induced_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.calc_property"><code class="docutils literal notranslate"><span class="pre">calc_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.properties.perform_property_contractions"><code class="docutils literal notranslate"><span class="pre">perform_property_contractions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.densities">Densities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.BATCHED_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">BATCHED_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.DENSITY_COMPONENTS"><code class="docutils literal notranslate"><span class="pre">DENSITY_COMPONENTS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.MATRIX_FORMATS"><code class="docutils literal notranslate"><span class="pre">MATRIX_FORMATS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_densities"><code class="docutils literal notranslate"><span class="pre">calc_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.calc_density_matrix"><code class="docutils literal notranslate"><span class="pre">calc_density_matrix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.densities.density_mo_to_ao"><code class="docutils literal notranslate"><span class="pre">density_mo_to_ao()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.artifacts">Density Artifacts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.ArtifactError"><code class="docutils literal notranslate"><span class="pre">ArtifactError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.CONVENTIONS"><code class="docutils literal notranslate"><span class="pre">CONVENTIONS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DENSITIES_FILENAME"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FILENAME</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DENSITIES_FORMAT"><code class="docutils literal notranslate"><span class="pre">DENSITIES_FORMAT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet"><code class="docutils literal notranslate"><span class="pre">DensitySet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.check"><code class="docutils literal notranslate"><span class="pre">DensitySet.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.components"><code class="docutils literal notranslate"><span class="pre">DensitySet.components</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.fragments"><code class="docutils literal notranslate"><span class="pre">DensitySet.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.matrices"><code class="docutils literal notranslate"><span class="pre">DensitySet.matrices</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.metadata"><code class="docutils literal notranslate"><span class="pre">DensitySet.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.path"><code class="docutils literal notranslate"><span class="pre">DensitySet.path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.total"><code class="docutils literal notranslate"><span class="pre">DensitySet.total()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.wavefunction"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.DensitySet.wavefunction_data"><code class="docutils literal notranslate"><span class="pre">DensitySet.wavefunction_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.FORMAT_VERSION"><code class="docutils literal notranslate"><span class="pre">FORMAT_VERSION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.artifact_metadata"><code class="docutils literal notranslate"><span class="pre">artifact_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.load_densities"><code class="docutils literal notranslate"><span class="pre">load_densities()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.artifacts.save_densities"><code class="docutils literal notranslate"><span class="pre">save_densities()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.checks">Invariant Checks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id1">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id2">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.InvariantWarning"><code class="docutils literal notranslate"><span class="pre">InvariantWarning</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_charge_closure"><code class="docutils literal notranslate"><span class="pre">check_charge_closure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_partition_of_unity"><code class="docutils literal notranslate"><span class="pre">check_partition_of_unity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.checks.check_symmetric"><code class="docutils literal notranslate"><span class="pre">check_symmetric()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.fragments">Fragments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id3">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id4">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.A"><code class="docutils literal notranslate"><span class="pre">DimerFragments.A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.B"><code class="docutils literal notranslate"><span class="pre">DimerFragments.B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.atomic_numbers"><code class="docutils literal notranslate"><span class="pre">DimerFragments.atomic_numbers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.check_same_system"><code class="docutils literal notranslate"><span class="pre">DimerFragments.check_same_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.coordinates"><code class="docutils literal notranslate"><span class="pre">DimerFragments.coordinates</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.extra"><code class="docutils literal notranslate"><span class="pre">DimerFragments.extra</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.fragment_of"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragment_of()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.fragments"><code class="docutils literal notranslate"><span class="pre">DimerFragments.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.from_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.from_molecule"><code class="docutils literal notranslate"><span class="pre">DimerFragments.from_molecule()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.natom"><code class="docutils literal notranslate"><span class="pre">DimerFragments.natom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.real"><code class="docutils literal notranslate"><span class="pre">DimerFragments.real</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.symbols"><code class="docutils literal notranslate"><span class="pre">DimerFragments.symbols</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.DimerFragments.to_dict"><code class="docutils literal notranslate"><span class="pre">DimerFragments.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment"><code class="docutils literal notranslate"><span class="pre">Fragment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.atoms"><code class="docutils literal notranslate"><span class="pre">Fragment.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.charge"><code class="docutils literal notranslate"><span class="pre">Fragment.charge</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.label"><code class="docutils literal notranslate"><span class="pre">Fragment.label</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.fragments.Fragment.multiplicity"><code class="docutils literal notranslate"><span class="pre">Fragment.multiplicity</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.fragments.parse_fragments"><code class="docutils literal notranslate"><span class="pre">parse_fragments()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.sapt_driver">SAPT Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.calc_sapt_energy"><code class="docutils literal notranslate"><span class="pre">calc_sapt_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.sapt_driver.print_sapt_summary"><code class="docutils literal notranslate"><span class="pre">print_sapt_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.finite_field">Finite-Field Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calc_ff_sapt_dipole"><code class="docutils literal notranslate"><span class="pre">calc_ff_sapt_dipole()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.calculate_ff_sapt_dipole_along_axis"><code class="docutils literal notranslate"><span class="pre">calculate_ff_sapt_dipole_along_axis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_property"><code class="docutils literal notranslate"><span class="pre">finite_field_property()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.finite_field.finite_field_sapt"><code class="docutils literal notranslate"><span class="pre">finite_field_sapt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.runner">Runner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.add_basis_dirs"><code class="docutils literal notranslate"><span class="pre">add_basis_dirs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.as_run_config"><code class="docutils literal notranslate"><span class="pre">as_run_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.build_dimer"><code class="docutils literal notranslate"><span class="pre">build_dimer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.runner.setup_psi4"><code class="docutils literal notranslate"><span class="pre">setup_psi4()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.config">Run Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.ConfigError"><code class="docutils literal notranslate"><span class="pre">ConfigError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig"><code class="docutils literal notranslate"><span class="pre">RunConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.applied_basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.applied_basis_overrides()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis_dirs"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_dirs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.basis_overrides"><code class="docutils literal notranslate"><span class="pre">RunConfig.basis_overrides</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.df_basis_sapt"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_sapt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.df_basis_scf"><code class="docutils literal notranslate"><span class="pre">RunConfig.df_basis_scf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.effective_psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.effective_psi4_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.functional"><code class="docutils literal notranslate"><span class="pre">RunConfig.functional</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.grac_A"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.grac_B"><code class="docutils literal notranslate"><span class="pre">RunConfig.grac_B</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.memory_gb"><code class="docutils literal notranslate"><span class="pre">RunConfig.memory_gb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.method_tag"><code class="docutils literal notranslate"><span class="pre">RunConfig.method_tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.output_dir"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.output_dir_template"><code class="docutils literal notranslate"><span class="pre">RunConfig.output_dir_template</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.propsapt_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.propsapt_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.psi4_options"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_options</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.psi4_output"><code class="docutils literal notranslate"><span class="pre">RunConfig.psi4_output</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.reference"><code class="docutils literal notranslate"><span class="pre">RunConfig.reference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.source"><code class="docutils literal notranslate"><span class="pre">RunConfig.source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.tasks"><code class="docutils literal notranslate"><span class="pre">RunConfig.tasks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.threads"><code class="docutils literal notranslate"><span class="pre">RunConfig.threads</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.config.RunConfig.to_dict"><code class="docutils literal notranslate"><span class="pre">RunConfig.to_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.config.resolve_config"><code class="docutils literal notranslate"><span class="pre">resolve_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.basis_overrides">Basis Set Overrides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_overrides.apply_basis_overrides"><code class="docutils literal notranslate"><span class="pre">apply_basis_overrides()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_overrides.load_basis_overrides"><code class="docutils literal notranslate"><span class="pre">load_basis_overrides()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.basis_fetch">Fetching Basis Sets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_fetch.BasisFetchError"><code class="docutils literal notranslate"><span class="pre">BasisFetchError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.basis_fetch.fetch_basis_file"><code class="docutils literal notranslate"><span class="pre">fetch_basis_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cli">Command-Line Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cli.build_parser"><code class="docutils literal notranslate"><span class="pre">build_parser()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.options">propSAPT Options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__contains__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__contains__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__getitem__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__getitem__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__iter__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__iter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.__len__"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.__len__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.options.PropsaptOptions.get_options_dict"><code class="docutils literal notranslate"><span class="pre">PropsaptOptions.get_options_dict()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_cpscf_type"><code class="docutils literal notranslate"><span class="pre">check_cpscf_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_df_basis_cpscf"><code class="docutils literal notranslate"><span class="pre">check_df_basis_cpscf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_if_valid_option"><code class="docutils literal notranslate"><span class="pre">check_if_valid_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.check_option_value"><code class="docutils literal notranslate"><span class="pre">check_option_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.get_propsapt_options"><code class="docutils literal notranslate"><span class="pre">get_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.reset_propsapt_options"><code class="docutils literal notranslate"><span class="pre">reset_propsapt_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.options.set_propsapt_options"><code class="docutils literal notranslate"><span class="pre">set_propsapt_options()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.utils">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer"><code class="docutils literal notranslate"><span class="pre">CalcTimer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__enter__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__enter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__exit__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__exit__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.utils.CalcTimer.__init__"><code class="docutils literal notranslate"><span class="pre">CalcTimer.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.changed_psi4_options"><code class="docutils literal notranslate"><span class="pre">changed_psi4_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.energy_printer"><code class="docutils literal notranslate"><span class="pre">energy_printer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.package_version"><code class="docutils literal notranslate"><span class="pre">package_version()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.prepare_path"><code class="docutils literal notranslate"><span class="pre">prepare_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.utils.trace_memory_peak"><code class="docutils literal notranslate"><span class="pre">trace_memory_peak()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.evaluate">Point Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id5">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_basis_functions"><code class="docutils literal notranslate"><span class="pre">evaluate_basis_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_density"><code class="docutils literal notranslate"><span class="pre">evaluate_density()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_esp"><code class="docutils literal notranslate"><span class="pre">evaluate_esp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.evaluate.evaluate_orbital"><code class="docutils literal notranslate"><span class="pre">evaluate_orbital()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.partition">Fragment Populations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id6">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id7">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators"><code class="docutils literal notranslate"><span class="pre">FragmentOperators</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.__init__"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.ao_overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.ao_overlap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.charge"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.closure_error"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.closure_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.dipole"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.dipole()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.first_moment"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.first_moment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.fragments"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.fragments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.from_grid"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.from_grid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.nbf"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.nbf</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.overlap"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.overlap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.FragmentOperators.population"><code class="docutils literal notranslate"><span class="pre">FragmentOperators.population()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.atom_index"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.atom_index</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.points"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.points</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.partition.QuadratureGrid.weights"><code class="docutils literal notranslate"><span class="pre">QuadratureGrid.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.becke_fragment_weights"><code class="docutils literal notranslate"><span class="pre">becke_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.hirshfeld_fragment_weights"><code class="docutils literal notranslate"><span class="pre">hirshfeld_fragment_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.partition.molecular_grid"><code class="docutils literal notranslate"><span class="pre">molecular_grid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.cubes">Cube Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube"><code class="docutils literal notranslate"><span class="pre">Cube</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.atoms"><code class="docutils literal notranslate"><span class="pre">Cube.atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.comment1"><code class="docutils literal notranslate"><span class="pre">Cube.comment1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.comment2"><code class="docutils literal notranslate"><span class="pre">Cube.comment2</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.copy"><code class="docutils literal notranslate"><span class="pre">Cube.copy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.from_file"><code class="docutils literal notranslate"><span class="pre">Cube.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.integrate"><code class="docutils literal notranslate"><span class="pre">Cube.integrate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.moved_charge"><code class="docutils literal notranslate"><span class="pre">Cube.moved_charge()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_atoms"><code class="docutils literal notranslate"><span class="pre">Cube.n_atoms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_x"><code class="docutils literal notranslate"><span class="pre">Cube.n_x</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_y"><code class="docutils literal notranslate"><span class="pre">Cube.n_y</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.n_z"><code class="docutils literal notranslate"><span class="pre">Cube.n_z</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.origin"><code class="docutils literal notranslate"><span class="pre">Cube.origin</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.save"><code class="docutils literal notranslate"><span class="pre">Cube.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.volumetric_data"><code class="docutils literal notranslate"><span class="pre">Cube.volumetric_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.voxel_volume"><code class="docutils literal notranslate"><span class="pre">Cube.voxel_volume</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.x_vector"><code class="docutils literal notranslate"><span class="pre">Cube.x_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.y_vector"><code class="docutils literal notranslate"><span class="pre">Cube.y_vector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api.html#prop_sapt.cubes.Cube.z_vector"><code class="docutils literal notranslate"><span class="pre">Cube.z_vector</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.add_cubes"><code class="docutils literal notranslate"><span class="pre">add_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.calculate_isocontour"><code class="docutils literal notranslate"><span class="pre">calculate_isocontour()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.cosine_similarity"><code class="docutils literal notranslate"><span class="pre">cosine_similarity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.make_cube"><code class="docutils literal notranslate"><span class="pre">make_cube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.prepare_grid"><code class="docutils literal notranslate"><span class="pre">prepare_grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.read_cube_file"><code class="docutils literal notranslate"><span class="pre">read_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.save_cube_file"><code class="docutils literal notranslate"><span class="pre">save_cube_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.subtract_cubes"><code class="docutils literal notranslate"><span class="pre">subtract_cubes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.cubes.translate_cube"><code class="docutils literal notranslate"><span class="pre">translate_cube()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#module-prop_sapt.forces">Forces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#id8">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.forces.calc_force_at_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_at_nuc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#prop_sapt.forces.calc_force_nuc_nuc"><code class="docutils literal notranslate"><span class="pre">calc_force_nuc_nuc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">prop-sapt</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">prop_sapt.runner</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for prop_sapt.runner</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Configurable runner: one configuration file, one geometry, the selected propSAPT tasks.</span>
+
+<span class="sd">Used by the `prop-sapt run` command (see `prop_sapt.cli`), and from Python::</span>
+
+<span class="sd">    &gt;&gt;&gt; from prop_sapt import run</span>
+<span class="sd">    &gt;&gt;&gt; results = run("config.yaml", "geos/geo1.p4m")</span>
+
+<span class="sd">See `prop_sapt.config` for the configuration format.</span>
+<span class="sd">"""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._version</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.basis_overrides</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_basis_overrides</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunConfig</span><span class="p">,</span> <span class="n">load_config</span><span class="p">,</span> <span class="n">resolve_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.densities</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_densities</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.fragments</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_fragments</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dimer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.options</span><span class="w"> </span><span class="kn">import</span> <span class="n">reset_propsapt_options</span><span class="p">,</span> <span class="n">set_propsapt_options</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.properties</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_property</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.sapt_driver</span><span class="w"> </span><span class="kn">import</span> <span class="n">calc_sapt_energy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalcTimer</span><span class="p">,</span> <span class="n">prepare_path</span>
+
+<span class="n">PROVENANCE_FILENAME</span> <span class="o">=</span> <span class="s2">"propsapt_run.json"</span>
+
+
+<div class="viewcode-block" id="setup_psi4">
+<a class="viewcode-back" href="../../api.html#prop_sapt.runner.setup_psi4">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_psi4</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span><span class="p">,</span> <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Sets up Psi4 for a calculation described by `config`.</span>
+
+<span class="sd">    Resets the Psi4 and propSAPT options first, so the calculation depends on `config`</span>
+<span class="sd">    alone. Then sets memory, threads and the output file, the basis set search path, the</span>
+<span class="sd">    Psi4 options, the per-element basis overrides and the propSAPT options.</span>
+
+<span class="sd">    The directories in `config.basis_dirs` are prepended to the PSIPATH environment</span>
+<span class="sd">    variable, which Psi4 searches for `&lt;basis name&gt;.gbs` files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (RunConfig): Run configuration.</span>
+<span class="sd">        output_file (str): Path of the Psi4 output file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list[str]: The basis options that were overridden per element.</span>
+<span class="sd">    """</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean_options</span><span class="p">()</span>
+    <span class="n">reset_propsapt_options</span><span class="p">()</span>
+
+    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">set_output_file</span><span class="p">(</span><span class="n">prepare_path</span><span class="p">(</span><span class="n">output_file</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_memory</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">memory_gb</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">))</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_num_threads</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">threads</span><span class="p">)</span>
+
+    <span class="n">add_basis_dirs</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">basis_dirs</span><span class="p">)</span>
+
+    <span class="n">options</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">effective_psi4_options</span><span class="p">()</span>
+    <span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">applied</span> <span class="o">=</span> <span class="n">apply_basis_overrides</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">basis_overrides</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">propsapt_options</span><span class="p">:</span>
+        <span class="n">set_propsapt_options</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">propsapt_options</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">applied</span></div>
+
+
+
+<div class="viewcode-block" id="add_basis_dirs">
+<a class="viewcode-back" href="../../api.html#prop_sapt.runner.add_basis_dirs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_basis_dirs</span><span class="p">(</span><span class="n">basis_dirs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Prepends directories to the PSIPATH environment variable, where Psi4 looks for</span>
+<span class="sd">    `&lt;basis name&gt;.gbs` files, skipping those already on it.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        basis_dirs (Iterable[str]): Directories holding basis set files.</span>
+<span class="sd">    """</span>
+
+    <span class="n">current</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"PSIPATH"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="p">)</span> <span class="k">if</span> <span class="n">path</span><span class="p">]</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">basis_dirs</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">new</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"PSIPATH"</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">pathsep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new</span> <span class="o">+</span> <span class="n">current</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="build_dimer">
+<a class="viewcode-back" href="../../api.html#prop_sapt.runner.build_dimer">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_dimer</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span><span class="p">,</span> <span class="n">geometry</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dimer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Creates the `Dimer` for `geometry` as described by `config`.</span>
+
+<span class="sd">    Psi4 has to be set up first, see `setup_psi4`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (RunConfig): Run configuration.</span>
+<span class="sd">        geometry (str): Dimer geometry in Psi4 format.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dimer: The dimer, with the monomer SCF calculations done.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># memory comes from `psi4.set_memory` in `setup_psi4`</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"reference"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">reference</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="s2">"RKS"</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"functional"</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">functional</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">grac_A</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"grac_A"</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">grac_A</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">grac_B</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"grac_B"</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">grac_B</span>
+
+    <span class="k">return</span> <span class="n">Dimer</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_task_monomer_references</span><span class="p">(</span>
+    <span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Saves the monomer densities as cubes and the monomer wavefunctions as .fchk files."""</span>
+
+    <span class="n">tag</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">method_tag</span>
+    <span class="n">written</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s2">"cubes"</span><span class="p">]:</span>
+        <span class="n">cube_files</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"dm_</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">monomer</span><span class="si">}</span><span class="s2">.cube"</span><span class="p">)</span> <span class="k">for</span> <span class="n">monomer</span> <span class="ow">in</span> <span class="s2">"AB"</span><span class="p">]</span>
+        <span class="n">dimer</span><span class="o">.</span><span class="n">save_cube</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">dimer</span><span class="o">.</span><span class="n">wfnA</span><span class="o">.</span><span class="n">Da</span><span class="p">()),</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">dimer</span><span class="o">.</span><span class="n">wfnB</span><span class="o">.</span><span class="n">Da</span><span class="p">()),</span>
+            <span class="p">],</span>  <span class="c1"># RHF spin</span>
+            <span class="p">[</span><span class="s2">"density"</span><span class="p">,</span> <span class="s2">"density"</span><span class="p">],</span>
+            <span class="n">cube_files</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">written</span> <span class="o">+=</span> <span class="n">cube_files</span>
+
+    <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s2">"fchk"</span><span class="p">]:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">""</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="s2">"RHF"</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"propsapt_</span><span class="si">{</span><span class="n">tag</span><span class="si">}</span><span class="s2">_"</span>
+        <span class="n">fchk_files</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">monomer_</span><span class="si">{</span><span class="n">monomer</span><span class="si">}</span><span class="s2">.fchk"</span><span class="p">)</span> <span class="k">for</span> <span class="n">monomer</span> <span class="ow">in</span> <span class="s2">"ab"</span>
+        <span class="p">]</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">fchk</span><span class="p">(</span><span class="n">dimer</span><span class="o">.</span><span class="n">wfnA</span><span class="p">,</span> <span class="n">fchk_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">fchk</span><span class="p">(</span><span class="n">dimer</span><span class="o">.</span><span class="n">wfnB</span><span class="p">,</span> <span class="n">fchk_files</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">written</span> <span class="o">+=</span> <span class="n">fchk_files</span>
+
+    <span class="k">return</span> <span class="n">written</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_task_sapt_energy</span><span class="p">(</span><span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculates the SAPT interaction energy components."""</span>
+
+    <span class="k">return</span> <span class="n">calc_sapt_energy</span><span class="p">(</span>
+        <span class="n">dimer</span><span class="p">,</span>
+        <span class="n">results</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="n">settings</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]),</span>
+        <span class="n">response</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"response"</span><span class="p">],</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_task_property</span><span class="p">(</span><span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculates an interaction-induced property."""</span>
+
+    <span class="k">return</span> <span class="n">calc_property</span><span class="p">(</span>
+        <span class="n">dimer</span><span class="p">,</span>
+        <span class="n">settings</span><span class="p">[</span><span class="s2">"prop"</span><span class="p">],</span>
+        <span class="n">results</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="n">settings</span><span class="p">[</span><span class="s2">"results"</span><span class="p">]),</span>
+        <span class="n">response</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"response"</span><span class="p">],</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_task_densities</span><span class="p">(</span><span class="n">dimer</span><span class="p">:</span> <span class="n">Dimer</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">settings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculates the interaction-induced density matrices; the bundle records the run</span>
+<span class="sd">    configuration and the basis overrides applied."""</span>
+
+    <span class="k">return</span> <span class="n">calc_densities</span><span class="p">(</span>
+        <span class="n">dimer</span><span class="p">,</span>
+        <span class="n">orbital_basis</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"orbital_basis"</span><span class="p">],</span>
+        <span class="n">save_cubes</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"save_cubes"</span><span class="p">],</span>
+        <span class="n">cubes_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">out_dir</span><span class="p">),</span>
+        <span class="n">save_matrices</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"save_matrices"</span><span class="p">],</span>
+        <span class="n">matrices_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">out_dir</span><span class="p">),</span>
+        <span class="n">matrix_format</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"matrix_format"</span><span class="p">],</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"run"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"config_file"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
+                <span class="s2">"config"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+                <span class="s2">"basis_overrides_applied"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">applied_basis_overrides</span><span class="p">(),</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># Task functions, called in this order for the tasks enabled in the configuration.</span>
+<span class="n">TASKS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"monomer_references"</span><span class="p">:</span> <span class="n">_task_monomer_references</span><span class="p">,</span>
+    <span class="s2">"sapt_energy"</span><span class="p">:</span> <span class="n">_task_sapt_energy</span><span class="p">,</span>
+    <span class="s2">"property"</span><span class="p">:</span> <span class="n">_task_property</span><span class="p">,</span>
+    <span class="s2">"densities"</span><span class="p">:</span> <span class="n">_task_densities</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="as_run_config">
+<a class="viewcode-back" href="../../api.html#prop_sapt.runner.as_run_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_run_config</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RunConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Returns `config` as a `RunConfig`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (RunConfig | str | os.PathLike | Mapping): A resolved configuration, the path</span>
+<span class="sd">            of a configuration file, or a raw configuration mapping (relative paths in it are</span>
+<span class="sd">            resolved against the current working directory).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        RunConfig: The resolved configuration.</span>
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">RunConfig</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">config</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">)):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resolve_config</span><span class="p">(</span>
+            <span class="n">load_config</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">base_dir</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">resolve_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="run">
+<a class="viewcode-back" href="../../api.html#prop_sapt.runner.run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">RunConfig</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span> <span class="o">|</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">geometry_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Runs the tasks of a configuration for one dimer geometry.</span>
+
+<span class="sd">    Every file is written into the configured output directory, and a record of the run</span>
+<span class="sd">    (configuration, Psi4 options, versions, timings, the geometry's fragments) into</span>
+<span class="sd">    `propsapt_run.json` there.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config (RunConfig | str | os.PathLike | Mapping): Run configuration, see</span>
+<span class="sd">            `as_run_config`.</span>
+<span class="sd">        geometry_file (str | os.PathLike): Path to the dimer geometry in Psi4 format</span>
+<span class="sd">            (e.g. a .p4m file).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: The result of each task that ran, keyed by task name.</span>
+<span class="sd">    """</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">as_run_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="n">geometry_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">geometry_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">(</span><span class="n">geometry_path</span><span class="o">.</span><span class="n">stem</span><span class="p">))</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">out_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">started</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">astimezone</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">applied_overrides</span> <span class="o">=</span> <span class="n">setup_psi4</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="n">config</span><span class="o">.</span><span class="n">psi4_output</span><span class="p">))</span>
+
+        <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="s2">"propSAPT runner"</span><span class="p">):</span>
+            <span class="n">dimer</span> <span class="o">=</span> <span class="n">build_dimer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
+
+            <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">settings</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">with</span> <span class="n">CalcTimer</span><span class="p">(</span><span class="sa">f</span><span class="s2">"runner task '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">'"</span><span class="p">):</span>
+                    <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">TASKS</span><span class="p">[</span><span class="n">name</span><span class="p">](</span><span class="n">dimer</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">,</span> <span class="n">settings</span><span class="p">)</span>
+
+        <span class="n">record</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"geometry_file"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">geometry_path</span><span class="p">),</span>
+            <span class="s2">"config_file"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
+            <span class="s2">"config"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="s2">"psi4_options"</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">effective_psi4_options</span><span class="p">(),</span>
+            <span class="s2">"basis_overrides_applied"</span><span class="p">:</span> <span class="n">applied_overrides</span><span class="p">,</span>
+            <span class="s2">"fragments"</span><span class="p">:</span> <span class="n">parse_fragments</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+            <span class="s2">"tasks"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">),</span>
+            <span class="s2">"prop_sapt_version"</span><span class="p">:</span> <span class="n">__version__</span><span class="p">,</span>
+            <span class="s2">"psi4_version"</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+            <span class="s2">"started"</span><span class="p">:</span> <span class="n">started</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">"seconds"</span><span class="p">),</span>
+            <span class="s2">"finished"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">astimezone</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">isoformat</span><span class="p">(</span><span class="n">timespec</span><span class="o">=</span><span class="s2">"seconds"</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="n">PROVENANCE_FILENAME</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Bartosz Tyrcha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
