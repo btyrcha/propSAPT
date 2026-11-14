@@ -3,12 +3,15 @@ Command-line interface of propSAPT::
 
     prop-sapt run CONFIG GEOMETRY [GEOMETRY ...] [--memory 32 --threads 8 ...]
     prop-sapt basis fetch SOURCE NAME --elements He,Li [--dir basis]
+    prop-sapt export trexio BUNDLE [--output-dir DIR] [--keys total pol ...]
 
 `run` runs the tasks of a configuration file (see `prop_sapt.config`) for each geometry in
 turn; flags override the values in the file. `basis fetch` writes a basis set missing from
-Psi4's library into a file for `basis_dirs` (see `prop_sapt.basis_fetch`).
+Psi4's library into a file for `basis_dirs` (see `prop_sapt.basis_fetch`). `export trexio`
+writes TREXIO files of the densities of a ``densities.npz`` bundle, to view them in VIAMD
+(see `prop_sapt.trexio_export`).
 Exit status: 0 on success, 1 if a calculation failed, 2 for an invalid configuration,
-command line or basis set request.
+command line, basis set request or bundle.
 """
 
 import argparse
@@ -82,6 +85,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     _add_basis_parser(subparsers)
+    _add_export_parser(subparsers)
 
     return parser
 
@@ -133,6 +137,56 @@ def _add_basis_parser(subparsers) -> None:
     )
 
 
+def _add_export_parser(subparsers) -> None:
+    """Adds the `prop-sapt export` commands."""
+
+    from .trexio_export import DEFAULT_RELATIVE_CUTOFF
+
+    export_parser = subparsers.add_parser(
+        "export", help="Write the results of a calculation in other formats."
+    )
+    export_subparsers = export_parser.add_subparsers(
+        dest="export_command", required=True
+    )
+
+    trexio_parser = export_subparsers.add_parser(
+        "trexio",
+        help="Write TREXIO files of the densities of a densities.npz bundle, for VIAMD.",
+        description=(
+            "Write the density changes of a densities.npz bundle into TREXIO files, "
+            "delta_dm_<key>.h5, as natural orbitals: VIAMD shows a density change as the "
+            "alpha - beta density of its file. Needs the trexio package. Psi4 rebuilds "
+            "the basis set by name, so one from a run's basis_dirs or basis_overrides is "
+            "not available here: use prop_sapt.export_trexio after making it available "
+            "to Psi4."
+        ),
+    )
+    trexio_parser.add_argument(
+        "bundle", help="Path to densities.npz, or to the directory holding it."
+    )
+    trexio_parser.add_argument(
+        "--output-dir",
+        dest="output_dir",
+        help="Directory to write into (default: the bundle's directory).",
+    )
+    trexio_parser.add_argument(
+        "--keys",
+        nargs="+",
+        metavar="KEY",
+        help="Densities to write, e.g. total pol_A (default: all of the bundle).",
+    )
+    trexio_parser.add_argument(
+        "--relative-cutoff",
+        dest="relative_cutoff",
+        type=float,
+        default=DEFAULT_RELATIVE_CUTOFF,
+        help=(
+            "Leave out natural orbitals with |n| up to this times the largest |n| of "
+            f"their density (default: {DEFAULT_RELATIVE_CUTOFF:g})."
+        ),
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     """Entry point of the `prop-sapt` command.
 
@@ -151,6 +205,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "basis":
         return _basis_fetch_command(args)
+
+    if args.command == "export":
+        return _export_trexio_command(args)
 
     return 2  # unreachable: argparse requires a known command
 
@@ -255,5 +312,41 @@ def _basis_fetch_command(args: argparse.Namespace) -> int:
     print(f"(relative to the configuration file), e.g. for {element}:")
     print(f"  basis_dirs: [{path.parent}]")
     print(f"  basis_overrides: {{{element}: {{{option}: {basis_name}}}}}")
+
+    return 0
+
+
+def _export_trexio_command(args: argparse.Namespace) -> int:
+    """Runs `prop-sapt export trexio`."""
+
+    import psi4
+
+    from .artifacts import load_densities
+    from .trexio_export import TrexioExportError, export_trexio, import_trexio
+
+    try:
+        import_trexio()  # before reading the bundle
+        densities = load_densities(args.bundle)
+        psi4.core.be_quiet()  # rebuilding the basis set prints Psi4's output
+        output_dir = args.output_dir or densities.path.parent
+        paths = export_trexio(
+            densities,
+            output_dir,
+            keys=args.keys,
+            relative_cutoff=args.relative_cutoff,
+        )
+    # ArtifactError is a ValueError
+    except (ValueError, TrexioExportError, KeyError, OSError) as err:
+        message = err.args[0] if isinstance(err, KeyError) and err.args else err
+        print(f"prop-sapt: error: {message}", file=sys.stderr)
+        return 2
+
+    print(f"Wrote {len(paths)} TREXIO file(s) into {Path(output_dir)}:")
+    for path in paths:
+        print(f"  {path.name}")
+    print(
+        "In VIAMD, show the Electron Density with spin Difference: the alpha - beta "
+        "density is the density change."
+    )
 
     return 0

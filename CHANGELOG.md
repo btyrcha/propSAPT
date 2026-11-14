@@ -23,6 +23,15 @@ requests of the private repository propSAPT was developed in before it was publi
   properties are several times faster, with a small density-fitting error;
   `df_basis_cpscf` sets the fitting basis. The SAPT energies are unchanged. See the
   [usage guide](https://btyrcha.github.io/propSAPT/usage.html#density-matrix-calculations).
+- TREXIO files of the density changes, to view them interactively in
+  [VIAMD](https://github.com/scanberg/viamd): `calc_densities(save_trexio=True)`, the
+  `save_trexio` setting of the `densities` task, and `export_trexio` and
+  `prop-sapt export trexio` for existing `densities.npz` bundles. Each file holds the
+  natural orbitals of a density change, and VIAMD shows the change as its alpha - beta
+  density. Needs the `trexio` package (the `trexio` extra). See the
+  [usage guide](https://btyrcha.github.io/propSAPT/usage.html#viewing-density-changes-in-viamd).
+- `density_natural_orbitals`: the natural orbitals of the density changes, a few of which
+  usually carry most of a change, in the spirit of NOCV.
 
 ## [0.4.0] - 2026-11-04
 

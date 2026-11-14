@@ -146,6 +146,8 @@ def test_run_forwards_settings(recorder, geometry_file, tmp_path):
         "save_matrices": True,
         "matrices_dir": str(out_dir),
         "matrix_format": "npz",
+        "save_trexio": False,
+        "trexio_dir": str(out_dir),
         "metadata": {
             "run": {
                 "config_file": None,

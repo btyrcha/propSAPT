@@ -257,6 +257,94 @@ still written with :python:`matrix_format="npy"`, but it is deprecated, and so i
 ``compress_matrices`` argument.
    
 
+.. _viamd:
+
+Viewing Density Changes in VIAMD
+--------------------------------
+
+`VIAMD <https://github.com/scanberg/viamd>`_ shows electron densities and orbitals
+interactively. propSAPT writes its density changes for it into
+`TREXIO <https://github.com/TREX-CoE/trexio>`_ files, one per density, named
+:file:`delta_dm_<key>.h5` like the cube files. Writing them needs the ``trexio`` package
+(see :doc:`installation`). They can be written with the calculation, from its matrices, or
+from a bundle:
+
+.. code-block:: python
+
+   from prop_sapt import calc_densities, export_trexio
+
+   densities = calc_densities(dimer, save_trexio=True, trexio_dir="trexio")
+   export_trexio(densities, "trexio", dimer=dimer, keys=["total", "pol"])
+   export_trexio("results/geo1/densities.npz", "trexio")
+
+A bundle can also be converted from the command line:
+
+.. code-block:: bash
+
+   prop-sapt export trexio results/geo1/densities.npz --keys total pol Ind Disp
+
+In a run configuration, ``densities: {save_trexio: true}`` writes the files into the
+output directory next to the cubes. To convert a bundle, Psi4 rebuilds its basis set by
+name, so a basis set from ``basis_dirs`` or ``basis_overrides`` has to be made available
+to Psi4 first, as for :meth:`~prop_sapt.artifacts.DensitySet.wavefunction`.
+
+**What a file holds.** TREXIO, like VIAMD, gives a density by orbitals and their
+occupations, so each file holds the natural orbitals of its density change (see
+:ref:`natural-orbitals`). VIAMD shows a density with signs only as the difference of the
+alpha and beta densities. The orbitals of positive occupation are therefore written as
+alpha orbitals, and those of negative occupation as beta orbitals: the alpha - beta density
+of a file is the total density change, as in the cube files.
+
+**Viewing a file in VIAMD:**
+
+#. Open the file. Add a representation of type *Electronic Structure*, with source
+   *Electron Density* and spin *Difference*. Its isosurfaces show in two colours where the
+   density grows and where it drops.
+#. Set the isovalue. VIAMD draws density isosurfaces at plus and minus the *square* of the
+   isovalue, and density changes are small: start near the bottom of the slider (0.01
+   draws the surfaces at 1e-4). Ctrl+click the slider to type a smaller value.
+#. To see single natural orbitals, set the source to *Molecular Orbital*. Spin *Alpha*
+   lists the orbitals that gain density and *Beta* those that lose it, the largest first.
+
+**Limits:**
+
+- The *Total* spin means nothing for these files.
+- VIAMD reads basis sets up to g functions. It refuses the files of a basis set with h
+  functions (e.g. aug-cc-pV5Z), and propSAPT warns when writing them.
+- VIAMD's own cube export of a density puts the grid origin in its header half a voxel
+  away from where it evaluated the density.
+
+.. _natural-orbitals:
+
+Natural orbitals of the density changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:func:`~prop_sapt.natural_orbitals.density_natural_orbitals` gives the natural orbitals of
+the density changes on their own, without trexio. It works on the matrices of a
+calculation and on a bundle:
+
+.. code-block:: python
+
+   from prop_sapt import density_natural_orbitals
+
+   orbitals = density_natural_orbitals(densities, dimer, keys=["pol_A", "Disp"])
+   orbitals["pol_A"].occupations     # one spin, largest first
+   orbitals["pol_A"].coefficients    # AO coefficients, one orbital per column
+
+**How to read them:**
+
+- **Occupations:** a monomer's natural orbitals are orthonormal, and their occupations sum
+  to zero, because a density change moves charge without changing the number of
+  electrons. Orbitals of positive occupation show where charge goes, and those of negative
+  occupation where it comes from.
+- **Few orbitals matter:** a few orbitals usually carry most of a density change, so they
+  picture it in the spirit of natural orbitals for chemical valence (NOCV). First-order
+  polarisation and exchange come in +/- pairs.
+- **Dimer keys:** a dimer key such as ``"Disp"`` lists the orbitals of both monomers. The
+  two sets are not orthogonal to each other, but their density is exactly the sum.
+- **On a grid:** :meth:`~prop_sapt.molecule.Dimer.make_cube` with
+  :python:`obj_type="orbital"` puts a single orbital on a grid.
+
 Finite-Field Properties
 -----------------------
 
@@ -373,7 +461,8 @@ recording the resolved configuration, the Psi4 options, the package versions and
 fragments of the geometry. The ``densities`` task saves its matrices into
 :file:`densities.npz` (``matrix_format: npz``, the default), whose metadata also holds the
 run configuration and the basis overrides applied; ``matrix_format: npy`` (deprecated)
-writes bare :file:`.npy` files.
+writes bare :file:`.npy` files. With ``save_trexio: true`` it also writes TREXIO files of
+the densities, to view them in VIAMD (see :ref:`viamd`).
 The command exits with status 0 on success, 1 if a calculation failed and 2 for an invalid
 configuration, so it can be used directly in batch scripts, e.g. in a SLURM array job:
 
@@ -712,7 +801,8 @@ See the Jupyter notebooks in the ``examples/`` directory:
 * ``visualise_orbital.ipynb`` - Visualize molecular orbitals
 * ``visualise_density.ipynb`` - Visualize density matrices
 
-For more examples, see the :doc:`examples` section.
+For interactive views of the density changes and their natural orbitals in VIAMD, see
+:ref:`viamd`. For more examples, see the :doc:`examples` section.
 
 .. _known-limitations:
 
