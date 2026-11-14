@@ -73,4 +73,5 @@ tasks:
   # property: {prop: dipole, results: property_results.csv}
   # interaction-induced density matrices (one densities.npz bundle, see
   # prop_sapt.load_densities) and their total-density cubes (delta_dm_*.cube)
-  densities: {orbital_basis: AO, save_cubes: true, save_matrices: true, matrix_format: npz}
+  densities: {orbital_basis: AO, save_cubes: true, save_matrices: true, matrix_format: npz,
+              save_trexio: false}  # true: TREXIO files for VIAMD, needs `pip install trexio`

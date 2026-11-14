@@ -175,6 +175,8 @@ def _task_densities(dimer: Dimer, config: RunConfig, out_dir: Path, settings: di
         save_matrices=settings["save_matrices"],
         matrices_dir=str(out_dir),
         matrix_format=settings["matrix_format"],
+        save_trexio=settings["save_trexio"],
+        trexio_dir=str(out_dir),
         metadata={
             "run": {
                 "config_file": config.source,

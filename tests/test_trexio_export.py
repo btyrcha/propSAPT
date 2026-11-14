@@ -12,7 +12,13 @@ import numpy as np
 import psi4
 import pytest
 
-from prop_sapt import calc_densities, reset_propsapt_options
+import prop_sapt.densities as densities_module
+from prop_sapt import (
+    DENSITY_COMPONENTS,
+    calc_densities,
+    load_densities,
+    reset_propsapt_options,
+)
 from prop_sapt.evaluate import evaluate_basis_functions
 from prop_sapt.fragments import DimerFragments
 from prop_sapt.natural_orbitals import NaturalOrbitals, density_natural_orbitals
@@ -280,3 +286,102 @@ def test_missing_trexio_is_explained(monkeypatch):
 
     with pytest.raises(TrexioExportError, match="pip install trexio"):
         import_trexio()
+
+
+# calc_densities(save_trexio=True), reusing the He-H2 components
+
+
+@pytest.fixture
+def cached_components(monkeypatch, prepare_dimer, he_h2_densities):
+    """Makes `calc_densities` reuse the He-H2 components instead of computing them, in
+    the AO basis or in the MO basis of their monomer (C^T S rho S C)."""
+
+    orbitals = {"A": prepare_dimer.C_A, "B": prepare_dimer.C_B}
+    overlap = prepare_dimer.S
+
+    def cached(mol, monomer, orbital_basis="AO"):
+        components = {}
+        for component in DENSITY_COMPONENTS:
+            rho = he_h2_densities[f"{component}_{monomer}"]
+            if orbital_basis == "MO":
+                C = orbitals[monomer]
+                rho = C.T @ overlap @ rho @ overlap @ C
+            components[component] = rho.copy()
+        return components
+
+    monkeypatch.setattr(densities_module, "calc_density_matrix", cached)
+
+
+@needs_trexio
+def test_calc_densities_saves_trexio_files(
+    tmp_path, prepare_dimer, he_h2_densities, cached_components
+):
+    """`save_trexio` writes a file per density, and the bundle lists them."""
+
+    rho = calc_densities(
+        prepare_dimer,
+        save_matrices=True,
+        matrices_dir=str(tmp_path),
+        save_trexio=True,
+        trexio_dir=str(tmp_path / "trexio"),
+    )
+
+    names = [f"delta_dm_{key}.h5" for key in rho]
+    assert sorted(path.name for path in (tmp_path / "trexio").iterdir()) == sorted(
+        names
+    )
+    assert load_densities(tmp_path).metadata["trexio"] == {
+        "files": [f"trexio/{name}" for name in names],
+        "encoding": ENCODING,
+    }
+
+    data = trexio_spec.read_file(tmp_path / "trexio" / "delta_dm_total.h5")
+    signs = np.where(data["mo_spin"] == 0, 1.0, -1.0)
+    coefficients = data["mo_coefficient"].T
+    np.testing.assert_allclose(
+        (coefficients * (signs * data["mo_occupation"])) @ coefficients.T,
+        2 * he_h2_densities["total"],
+        rtol=0,
+        atol=1e-12,
+    )
+
+
+@needs_trexio
+def test_calc_densities_in_the_mo_basis_saves_ao_densities(
+    tmp_path, prepare_dimer, he_h2_densities, cached_components
+):
+    """In the MO basis the files hold the monomers' densities, transformed to the AO
+    basis: there is no dimer key, as for the cubes."""
+
+    calc_densities(
+        prepare_dimer, orbital_basis="MO", save_trexio=True, trexio_dir=str(tmp_path)
+    )
+
+    names = {path.name for path in tmp_path.iterdir()}
+    assert names == {
+        f"delta_dm_{component}_{monomer}.h5"
+        for component in DENSITY_COMPONENTS
+        for monomer in ("A", "B")
+    }
+    data = trexio_spec.read_file(tmp_path / "delta_dm_Disp_B.h5")
+    signs = np.where(data["mo_spin"] == 0, 1.0, -1.0)
+    coefficients = data["mo_coefficient"].T
+    np.testing.assert_allclose(
+        (coefficients * (signs * data["mo_occupation"])) @ coefficients.T,
+        2 * he_h2_densities["Disp_B"],
+        rtol=0,
+        atol=1e-12,
+    )
+
+
+def test_calc_densities_checks_for_trexio_first(monkeypatch):
+    """Without trexio, `save_trexio` fails before the calculation, not after it."""
+
+    def calculation(*args, **kwargs):
+        raise AssertionError("the densities were calculated")
+
+    monkeypatch.setattr(densities_module, "calc_density_matrix", calculation)
+    monkeypatch.setitem(sys.modules, "trexio", None)  # trexio is not installed
+
+    with pytest.raises(TrexioExportError, match="pip install trexio"):
+        calc_densities(object(), save_trexio=True)
