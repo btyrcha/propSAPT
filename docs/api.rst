@@ -35,6 +35,14 @@ Density Artifacts
    :undoc-members:
    :show-inheritance:
 
+Natural Orbitals of Density Changes
+-----------------------------------
+
+.. automodule:: prop_sapt.natural_orbitals
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Invariant Checks
 ----------------
 
