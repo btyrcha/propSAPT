@@ -16,8 +16,9 @@ The short version, for disclosures; the log below has the detail.
   Copilot code review on some pull requests.
 - **What the AI assistance did.** Implementation of new features and refactoring, tests,
   documentation, CI and packaging, and reviews of code written by the authors. It also
-  diagnosed numerical discrepancies, and implemented corrections to the
-  orbital-relaxation terms of the second-order properties.
+  diagnosed numerical discrepancies, implemented corrections to the
+  orbital-relaxation terms of the second-order properties, and researched external file
+  formats and viewers (TREXIO, VIAMD) for new features.
 
 ## Log
 
@@ -152,8 +153,10 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-14
 
 - Added the second-order properties preprint (arXiv:2611.07993) to the citations: `CITATION.cff` (under `references`, schema-validated), the README, and a new Citing section in the docs with BibTeX entries for both papers.
+- TREXIO export of the density changes for interactive viewing in VIAMD, after an investigation of the format and the viewer (its source code) with a prototype: `density_natural_orbitals`, `export_trexio` with `calc_densities(save_trexio=True)`, the runner's `save_trexio` setting and `prop-sapt export trexio`, the `trexio` extra, tests against Psi4's AOs through a TREXIO-spec evaluator, docs and an example; exact to round-off on He–H2, and a density exported back from VIAMD matched propSAPT's to 1.2e-9 rms.
 
 ### 2026-11-16
 
 - Prepared the 0.5.0 release (version, `CITATION.cff`, install commands, changelog section), after checking that its package code is the commit the `~/densities` recalculation ran with.
 - Fixed density file names that collided on case-insensitive file systems (`Ind`/`ind`, `Disp`/`disp`): a file-name helper with a collision check in `prop_sapt.artifacts`, `Ind`/`Disp` files named `ind-total`/`disp-total`, with tests, an example, docs and a changelog entry.
+- Rebased the TREXIO export PR onto `main` after the 0.5.0 release (its changelog entries moved to the Unreleased section) and after the density file-name fix, naming the TREXIO files like the cubes through `density_file_names`, with a test of the collision check.
