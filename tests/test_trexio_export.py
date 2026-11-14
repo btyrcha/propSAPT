@@ -17,7 +17,7 @@ from prop_sapt.evaluate import evaluate_basis_functions
 from prop_sapt.fragments import DimerFragments
 from prop_sapt.natural_orbitals import NaturalOrbitals, density_natural_orbitals
 from prop_sapt.trexio_export import (
-    DEFAULT_CUTOFF,
+    DEFAULT_RELATIVE_CUTOFF,
     ENCODING,
     TrexioExportError,
     _system_arrays,
@@ -213,7 +213,9 @@ def test_files_hold_the_densities(tmp_path, prepare_dimer, he_h2_densities):
     """Every file's alpha - beta density is the total density change (twice the one-spin
     matrix): as a matrix, and at points as the specification evaluates it."""
 
-    paths = export_trexio(he_h2_densities, tmp_path, dimer=prepare_dimer, cutoff=0.0)
+    paths = export_trexio(
+        he_h2_densities, tmp_path, dimer=prepare_dimer, relative_cutoff=0.0
+    )
 
     assert [path.name for path in paths] == [
         f"delta_dm_{key}.h5" for key in he_h2_densities
@@ -240,7 +242,7 @@ def test_files_hold_the_densities(tmp_path, prepare_dimer, he_h2_densities):
 @needs_trexio
 def test_file_contents(tmp_path, prepare_dimer, he_h2_densities):
     """The orbitals of a file: alpha for the positive occupations by decreasing n, beta for
-    the negative ones by decreasing |n|, without those up to the cutoff; the nuclei, the
+    the negative ones by decreasing |n|, without the numerically zero ones; the nuclei, the
     description and the orbital type."""
 
     (path,) = export_trexio(
@@ -248,17 +250,16 @@ def test_file_contents(tmp_path, prepare_dimer, he_h2_densities):
     )
 
     data = trexio_spec.read_file(path)
-    orbitals = density_natural_orbitals(
-        he_h2_densities, prepare_dimer, keys=["Ind"], cutoff=DEFAULT_CUTOFF
-    )["Ind"]
-    n = orbitals.occupations
+    orbitals = density_natural_orbitals(he_h2_densities, prepare_dimer, keys=["Ind"])
+    n = orbitals["Ind"].occupations
+    n = n[np.abs(n) > DEFAULT_RELATIVE_CUTOFF * np.abs(n).max()]
     expected = 2 * np.concatenate([n[n > 0], -n[n < 0][::-1]])
 
     np.testing.assert_allclose(data["mo_occupation"], expected, rtol=0, atol=0)
     np.testing.assert_array_equal(
         data["mo_spin"], [0] * np.sum(n > 0) + [1] * np.sum(n < 0)
     )
-    assert len(n) < 2 * prepare_dimer.nmo  # the cutoff dropped some
+    assert len(n) < 2 * prepare_dimer.nmo  # the numerically zero ones were dropped
     assert data["mo_type"] == "Natural"
     assert "'Ind' of the dimer (A + B)" in data["description"]
     assert ENCODING in data["description"]

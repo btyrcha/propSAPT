@@ -47,9 +47,10 @@ TREXIO_INSTALL = 'pip install trexio (or: pip install "prop_sapt[trexio]")'
 TREXIO_PREFIX = "delta_dm_"
 #: Extension of the files (TREXIO's HDF5 back end).
 TREXIO_SUFFIX = ".h5"
-#: Default of `export_trexio`'s `cutoff`: natural orbitals with ``|n|`` up to it (one
-#: spin) are left out.
-DEFAULT_CUTOFF = 1.0e-10
+#: Default of `export_trexio`'s `relative_cutoff`: the natural orbitals left out are the
+#: numerically zero ones (a density change has far fewer non-zero ones than orbitals), and
+#: the density is unchanged to round-off.
+DEFAULT_RELATIVE_CUTOFF = 1.0e-12
 #: Highest angular momentum VIAMD reads (g): it refuses files with higher shells.
 VIAMD_MAX_ANGULAR_MOMENTUM = 4
 #: The encoding of the orbitals, recorded in the files and in a bundle's metadata.
@@ -97,7 +98,7 @@ def export_trexio(
     *,
     dimer=None,
     keys: Iterable[str] | None = None,
-    cutoff: float = DEFAULT_CUTOFF,
+    relative_cutoff: float = DEFAULT_RELATIVE_CUTOFF,
 ) -> list[Path]:
     """
     Write density changes into TREXIO files, one per density, as natural orbitals.
@@ -113,8 +114,9 @@ def export_trexio(
         dimer (Dimer): The dimer of the matrices: its geometry, basis set and orbitals.
         keys (Iterable[str] | None, optional): The densities to write. Defaults to every
             key of `densities`.
-        cutoff (float, optional): Natural orbitals with ``|n|`` up to `cutoff` (one spin)
-            are left out. Defaults to `DEFAULT_CUTOFF`.
+        relative_cutoff (float, optional): Natural orbitals with ``|n|`` up to
+            `relative_cutoff` times the largest ``|n|`` of their density are left out; 0
+            keeps all but those of zero occupation. Defaults to `DEFAULT_RELATIVE_CUTOFF`.
 
     Raises:
         TrexioExportError: If trexio is missing, or the basis set mixes spherical and
@@ -136,7 +138,7 @@ def export_trexio(
     matrices = densities
     keys = list(matrices) if keys is None else list(keys)
     system = _system_arrays(dimer.fragments, dimer.get_psi4_basisset())
-    orbitals = density_natural_orbitals(matrices, dimer, keys=keys, cutoff=cutoff)
+    orbitals = density_natural_orbitals(matrices, dimer, keys=keys)
 
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
@@ -144,10 +146,18 @@ def export_trexio(
     paths = []
     for key in keys:
         path = directory / f"{TREXIO_PREFIX}{key}{TREXIO_SUFFIX}"
-        _write_file(trexio, path, system, orbitals[key], _description(key))
+        selected = _select(orbitals[key], relative_cutoff)
+        _write_file(trexio, path, system, selected, _description(key))
         paths.append(path)
 
     return paths
+
+
+def _select(orbitals: NaturalOrbitals, relative_cutoff: float) -> NaturalOrbitals:
+    """The orbitals with ``|n|`` above `relative_cutoff` times the largest ``|n|``."""
+
+    largest = np.max(np.abs(orbitals.occupations), initial=0.0)
+    return orbitals.select(relative_cutoff * largest)
 
 
 @dataclass(frozen=True)
