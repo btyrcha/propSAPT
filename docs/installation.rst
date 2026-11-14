@@ -53,6 +53,10 @@ basis sets through packages that propSAPT itself does not need:
 * the ccRepo source, installed from git:
   ``pip install git+https://github.com/Sheffield-Theoretical-Chemistry/ccrepo_utility colorlog tqdm requests``.
 
+Writing the density changes into TREXIO files, to view them in VIAMD (see
+:ref:`the usage guide <viamd>`), needs the ``trexio`` package: ``pip install trexio``, or
+the ``trexio`` extra. The conda environment of :file:`prop-sapt.yaml` includes it.
+
 The ``docs`` extra installs Sphinx and its theme, to build this documentation
 (``sphinx-build -W -b html docs docs/_build/html``).
 
