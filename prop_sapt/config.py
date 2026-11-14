@@ -29,7 +29,7 @@ A run is described by a small YAML or JSON file. Every key is optional except `t
       sapt_energy: {results: sapt_results.csv, response: true}
       property: {prop: dipole, results: property_results.csv, response: true}
       densities: {orbital_basis: AO, save_cubes: true, save_matrices: true,
-                  matrix_format: npz}
+                  matrix_format: npz, save_trexio: false}
 
 Values are taken from the built-in defaults, then the file, then the command-line flags.
 A `--df-basis` flag sets both fitting bases from its stem, replacing `df_basis_scf` and
@@ -42,7 +42,9 @@ otherwise (e.g. for He with aug-cc-pvtz).
 The densities task saves its matrices into one self-describing bundle, ``densities.npz``
 (`matrix_format: npz`, read with `prop_sapt.load_densities`), or as bare ``.npy`` files
 (`matrix_format: npy`, deprecated). The older `compress_matrices: true/false` setting still
-works, as `npz`/`npy`, with a deprecation warning.
+works, as `npz`/`npy`, with a deprecation warning. With `save_trexio: true` it also saves
+TREXIO files of the densities, ``delta_dm_<key>.h5``, to view them in VIAMD; that needs the
+trexio package (`prop_sapt.trexio_export`).
 
 Relative paths inside the file (`basis_overrides`, `basis_dirs`) are resolved against the
 directory of the file; the output directory is resolved against the current working
@@ -53,6 +55,7 @@ Basis sets missing from Psi4's library can be added as Psi4-format files named
 Exchange with `prop-sapt basis fetch` (see `prop_sapt.basis_fetch`).
 """
 
+import importlib.util
 import json
 import os
 import re
@@ -62,6 +65,7 @@ from pathlib import Path
 from collections.abc import Mapping
 
 from .densities import MATRIX_FORMATS
+from .trexio_export import TREXIO_INSTALL
 from .options import _OPTION_DEFAULTS, check_if_valid_option, check_option_value
 from .basis_overrides import ASSIGNABLE_BASIS_NAME, load_basis_overrides
 
@@ -86,6 +90,7 @@ TASK_DEFAULTS = {
         "save_cubes": True,
         "save_matrices": True,
         "matrix_format": "npz",
+        "save_trexio": False,
     },
 }
 
@@ -644,6 +649,12 @@ def _check_task_settings(name: str, settings: dict) -> None:
         if settings["matrix_format"] not in MATRIX_FORMATS:
             raise ConfigError(
                 f"'tasks.densities.matrix_format' must be one of {', '.join(MATRIX_FORMATS)}."
+            )
+
+        if settings["save_trexio"] and importlib.util.find_spec("trexio") is None:
+            raise ConfigError(
+                "'tasks.densities.save_trexio' needs the trexio package, which is not "
+                f"installed. Install it with: {TREXIO_INSTALL}"
             )
 
 

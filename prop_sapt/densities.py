@@ -9,6 +9,13 @@ from .molecule import Dimer
 from .artifacts import DENSITIES_FILENAME, density_file_names, save_densities
 from .checks import check_symmetric
 from .cubes import Cube
+from .trexio_export import (
+    ENCODING,
+    TREXIO_PREFIX,
+    TREXIO_SUFFIX,
+    export_trexio,
+    import_trexio,
+)
 from .utils import trace_memory_peak, CalcTimer, prepare_path
 from .cpscf_batching import DensityBuilder, options_cpscf_type, solve_batched
 from .densities_components.exch_disp import exch_disp_s2_density_builder
@@ -71,13 +78,16 @@ def calc_densities(
     matrix_format: str | None = None,
     metadata: Mapping | None = None,
     compress_matrices: bool | None = None,
+    save_trexio=False,
+    trexio_dir=".",
 ) -> dict[str, np.ndarray]:
     """
     Calculate interaction-induced changes in the density matrix of dimer (and both monomers).
 
     The matrices are for one spin (the ``Da`` convention): the total density of the
     closed-shell monomers is twice their sum. Saved matrices are always in the AO basis
-    (transformed from the MO basis if needed); saved cubes hold the total density.
+    (transformed from the MO basis if needed); saved cubes and TREXIO files hold the total
+    density.
 
     Args:
         dimer (Dimer): A dimer system.
@@ -98,6 +108,14 @@ def calc_densities(
             bundle's metadata under "extra". Defaults to None.
         compress_matrices (bool | None, optional): Deprecated, use `matrix_format`:
             True is "npz" and False is "npy".
+        save_trexio (bool, optional): Whether to save TREXIO files of the densities,
+            ``delta_dm_<key>.h5``, to view them in VIAMD (see `prop_sapt.trexio_export`).
+            Needs the trexio package, which is checked before the calculation.
+            Defaults to False.
+        trexio_dir (str, optional): Directory to save the TREXIO files. Defaults to ".".
+
+    Raises:
+        TrexioExportError: If `save_trexio` is set and trexio is not installed.
 
     Returns:
         dict[str, np.ndarray]: Density matrices keyed "<component>_A", "<component>_B"
@@ -108,6 +126,8 @@ def calc_densities(
 
     orbital_basis = orbital_basis.upper()
     matrix_format = _resolve_matrix_format(matrix_format, compress_matrices)
+    if save_trexio:
+        import_trexio()  # before the calculation, which it would otherwise end
 
     try:
         # one CPSCF J/K object of the `cpscf_type` option for both monomers
@@ -128,7 +148,7 @@ def calc_densities(
 
     # matrices to save, in the AO basis; nothing is added to them (they may be rho_dict)
     rho_ao = rho_dict
-    if orbital_basis != "AO" and (save_cubes or save_matrices):
+    if orbital_basis != "AO" and (save_cubes or save_matrices or save_trexio):
 
         psi4.core.print_out(
             f"\nWarning: Density matrices are in {orbital_basis} basis,"
@@ -147,6 +167,9 @@ def calc_densities(
     cube_filenames = {
         key: f"{cubes_dir}/{name}.cube" for key, name in file_names.items()
     }
+    trexio_filenames = [
+        f"{trexio_dir}/{TREXIO_PREFIX}{key}{TREXIO_SUFFIX}" for key in rho_ao
+    ]
 
     if save_matrices:
 
@@ -165,6 +188,14 @@ def calc_densities(
                         for fname in cube_filenames.values()
                     ],
                     "density": "total",
+                }
+            if save_trexio:
+                bundle_metadata["trexio"] = {
+                    "files": [
+                        os.path.relpath(fname, matrices_dir)
+                        for fname in trexio_filenames
+                    ],
+                    "encoding": ENCODING,
                 }
 
             bundle = save_densities(
@@ -223,6 +254,15 @@ def calc_densities(
             cube.save(cube_filenames[key])
 
         psi4.core.print_out("Density cubes saved.\n")
+
+    if save_trexio:
+
+        psi4.core.print_out("\nSaving TREXIO files of the densities...\n")
+        export_trexio(rho_ao, trexio_dir, dimer=dimer)
+        psi4.core.print_out(
+            "TREXIO files saved: natural orbitals, the density change is the alpha - "
+            "beta density.\n"
+        )
 
     return rho_dict
 
