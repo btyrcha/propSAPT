@@ -6,7 +6,7 @@ import psi4
 import numpy as np
 import opt_einsum as oe
 from .molecule import Dimer
-from .artifacts import DENSITIES_FILENAME, save_densities
+from .artifacts import DENSITIES_FILENAME, density_file_names, save_densities
 from .checks import check_symmetric
 from .cubes import Cube
 from .utils import trace_memory_peak, CalcTimer, prepare_path
@@ -83,15 +83,17 @@ def calc_densities(
         dimer (Dimer): A dimer system.
         orbital_basis (str, optional): Select orbital basis of the returned density matrix, either
             "AO" or "MO". Defaults to "AO".
-        save_cubes (bool, optional): Whether to save density cubes. Defaults to False.
+        save_cubes (bool, optional): Whether to save density cubes,
+            ``delta_dm_<key>.cube``, with "Ind" and "Disp" named "ind-total" and
+            "disp-total" (see `prop_sapt.artifacts.density_file_name`). Defaults to False.
         cubes_dir (str, optional): Directory to save density cubes. Defaults to ".".
         save_matrices (bool, optional): Whether to save density matrices. Defaults to False.
         matrices_dir (str, optional): Directory to save density matrices. Defaults to ".".
         matrix_format (str | None, optional): "npz" saves the matrices, the monomer
             wavefunctions and their metadata into one self-describing bundle,
             ``densities.npz``, read with `prop_sapt.load_densities`. "npy" saves bare
-            ``delta_dm_<key>.npy`` and ``wfn_mon_<A/B>.npy`` files; it is deprecated.
-            Defaults to "npz".
+            ``delta_dm_<key>.npy`` files, named as the cubes, and ``wfn_mon_<A/B>.npy``
+            files; it is deprecated. Defaults to "npz".
         metadata (Mapping | None, optional): JSON-serialisable entries stored in the
             bundle's metadata under "extra". Defaults to None.
         compress_matrices (bool | None, optional): Deprecated, use `matrix_format`:
@@ -140,7 +142,11 @@ def calc_densities(
 
         psi4.core.print_out("MO -> AO transformation complete.\n")
 
-    cube_filenames = {key: f"{cubes_dir}/delta_dm_{key}.cube" for key in rho_ao}
+    # distinct on any file system, checked before anything is written
+    file_names = density_file_names(rho_ao)
+    cube_filenames = {
+        key: f"{cubes_dir}/{name}.cube" for key, name in file_names.items()
+    }
 
     if save_matrices:
 
@@ -185,7 +191,7 @@ def calc_densities(
             psi4.core.print_out(f"\nWarning: {message}\n")
 
             for key, matrix in rho_ao.items():
-                np.save(f"{matrices_dir}/delta_dm_{key}.npy", matrix)
+                np.save(f"{matrices_dir}/{file_names[key]}.npy", matrix)
 
             psi4.core.print_out("Density matrices saved.\n")
 

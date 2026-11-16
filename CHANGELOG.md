@@ -10,6 +10,15 @@ requests of the private repository propSAPT was developed in before it was publi
 
 ## [Unreleased]
 
+### Fixed
+
+- The cube and `.npy` files of the `Ind` and `Disp` densities are now named
+  `delta_dm_ind-total*` and `delta_dm_disp-total*`. Their old names differ from those of
+  `ind` and `disp` only in case, so on a case-insensitive file system (macOS and Windows by
+  default) 0.4.0 and 0.5.0 wrote `Ind` and `Disp` over the `ind` and `disp` files without
+  an error: recompute `delta_dm_ind*` and `delta_dm_disp*` files written there. The keys
+  of the densities and the `densities.npz` bundle are unchanged.
+
 ## [0.5.0] - 2026-11-16
 
 ### Added

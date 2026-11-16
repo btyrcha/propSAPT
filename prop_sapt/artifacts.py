@@ -15,6 +15,11 @@ bundle that records what they are, and a loader that checks them before use.
 
 Nothing in the bundle is pickled: it is written and read with ``allow_pickle=False``.
 
+Files of single densities, such as the ``.cube`` files written by `calc_densities`, are
+named by `density_file_name`: ``delta_dm_<key>``, except that the keys "Ind" and "Disp",
+which differ from "ind" and "disp" only in case, are named "ind-total" and "disp-total"
+(e.g. ``delta_dm_ind-total_A.cube``). Inside the bundle the entries keep the keys.
+
 Conventions (`CONVENTIONS`): the matrices are in the AO basis of the dimer basis set, in
 Psi4 AO order, for one spin (the ``Da`` convention of the matrices `calc_densities`
 returns). The total density of a closed-shell system is twice the stored matrix, see
@@ -36,13 +41,17 @@ load_densities
     Read a bundle, checking its conventions and, optionally, its geometry and basis set.
 artifact_metadata
     The metadata of a dimer recorded in the bundle.
+density_file_name
+    File name of a single density, e.g. for its cube.
+density_file_names
+    File names of several densities, checked to be distinct on any file system.
 """
 
 import datetime
 import hashlib
 import json
 import os
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 import numpy as np
@@ -66,6 +75,15 @@ CONVENTIONS = {
     "spin": "alpha",
     "total_density_factor": 2,
 }
+
+#: Prefix of the names of the files of single densities, e.g. their cubes: see
+#: `density_file_name`.
+DENSITY_FILE_PREFIX = "delta_dm_"
+
+# Names in file names of the density components whose keys differ from others only in
+# case ("Ind" and "ind", "Disp" and "disp"), which case-insensitive file systems would
+# write into one file.
+_FILE_COMPONENTS = {"Ind": "ind-total", "Disp": "disp-total"}
 
 # entry names inside the bundle
 _METADATA_ENTRY = "metadata"
@@ -436,6 +454,60 @@ def load_densities(
     return densities
 
 
+def density_file_name(key: str, suffix: str = "") -> str:
+    """
+    File name of the density `key`, e.g. for its cube: ``delta_dm_<key><suffix>``, with the
+    sum components "Ind" and "Disp" named "ind-total" and "disp-total".
+
+    The keys "Ind" and "Disp" differ from "ind" and "disp" only in case, which
+    case-insensitive file systems (macOS and Windows by default) do not tell apart.
+
+    Args:
+        key (str): Density key, e.g. "pol_A" or "Ind".
+        suffix (str, optional): Appended to the name, e.g. ".cube". Defaults to "".
+
+    Returns:
+        str: The file name, e.g. "delta_dm_pol_A.cube" or "delta_dm_ind-total.cube".
+    """
+
+    component, monomer = _split_monomer(key)
+    component = _FILE_COMPONENTS.get(component, component)
+
+    return f"{DENSITY_FILE_PREFIX}{component}{monomer}{suffix}"
+
+
+def density_file_names(keys: Iterable[str], suffix: str = "") -> dict[str, str]:
+    """
+    File names of the densities `keys`, see `density_file_name`, checked to be distinct
+    also on case-insensitive file systems.
+
+    Args:
+        keys (Iterable[str]): Density keys.
+        suffix (str, optional): Appended to the names, e.g. ".cube". Defaults to "".
+
+    Raises:
+        ValueError: If two names differ only in case, or not at all, so that one file
+            would be written over the other.
+
+    Returns:
+        dict[str, str]: The file names by key.
+    """
+
+    names = {key: density_file_name(key, suffix) for key in keys}
+
+    seen = {}
+    for key, name in names.items():
+        other = seen.setdefault(name.casefold(), key)
+        if other != key:
+            raise ValueError(
+                f"The densities '{other}' and '{key}' would be saved into files whose "
+                f"names differ only in case, '{names[other]}' and '{name}', and one would "
+                "be written over the other on a case-insensitive file system!"
+            )
+
+    return names
+
+
 def _read_entry(npz, name: str, where: str) -> np.ndarray:
     """Reads one entry of an open bundle, refusing pickled data."""
 
@@ -555,12 +627,22 @@ def _check_basis(recorded: Mapping, basisset: psi4.core.BasisSet, where: str):
         )
 
 
+def _split_monomer(key: str) -> tuple[str, str]:
+    """Splits a matrix key into its density component and its "_A" or "_B" suffix,
+    which is "" for a dimer sum."""
+
+    if key.endswith(("_A", "_B")):
+        return key[:-2], key[-2:]
+
+    return key, ""
+
+
 def _components(keys) -> list[str]:
     """Density components of matrix keys: the keys without a "_A" or "_B" suffix."""
 
     components = []
     for key in keys:
-        component = key[:-2] if key.endswith(("_A", "_B")) else key
+        component, _ = _split_monomer(key)
         if component not in components:
             components.append(component)
 

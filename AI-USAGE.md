@@ -156,3 +156,4 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-16
 
 - Prepared the 0.5.0 release (version, `CITATION.cff`, install commands, changelog section), after checking that its package code is the commit the `~/densities` recalculation ran with.
+- Fixed density file names that collided on case-insensitive file systems (`Ind`/`ind`, `Disp`/`disp`): a file-name helper with a collision check in `prop_sapt.artifacts`, `Ind`/`Disp` files named `ind-total`/`disp-total`, with tests, an example, docs and a changelog entry.

@@ -11,6 +11,7 @@ basis, in one bundle with the geometry, the basis set and the conventions, which
 import psi4
 
 from prop_sapt import load_densities
+from prop_sapt.artifacts import density_file_name
 from prop_sapt.cubes import make_cube
 
 MATRICES_DIR = "matrices_MO"
@@ -39,4 +40,4 @@ if __name__ == "__main__":
             "density",
             basisset=basisset,  # necesary in this case
         )
-        cube.save(f"{MATRICES_DIR}/delta_dm_{key}.cube")
+        cube.save(f"{MATRICES_DIR}/{density_file_name(key, '.cube')}")

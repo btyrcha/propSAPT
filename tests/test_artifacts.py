@@ -24,6 +24,8 @@ from prop_sapt.artifacts import (
     ArtifactError,
     _flatten_tree,
     _unflatten_tree,
+    density_file_name,
+    density_file_names,
     save_densities,
 )
 from prop_sapt.checks import InvariantWarning
@@ -447,6 +449,39 @@ MONOMER_KEYS = {
 }
 
 
+@pytest.mark.parametrize(
+    "key, suffix, name",
+    [
+        ("Ind_A", ".cube", "delta_dm_ind-total_A.cube"),
+        ("Ind_B", ".npy", "delta_dm_ind-total_B.npy"),
+        ("Disp", "", "delta_dm_disp-total"),
+        ("ind_A", ".cube", "delta_dm_ind_A.cube"),
+        ("pol_A", ".cube", "delta_dm_pol_A.cube"),
+        ("exch-ind_S2_B", ".cube", "delta_dm_exch-ind_S2_B.cube"),
+        ("total", ".h5", "delta_dm_total.h5"),
+    ],
+)
+def test_density_file_name(key, suffix, name):
+    assert density_file_name(key, suffix) == name
+
+
+def test_density_file_names_are_distinct_on_case_insensitive_file_systems():
+    """Every density `calc_densities` returns gets its own file also on macOS and
+    Windows, which do not tell "Ind" from "ind"."""
+
+    names = density_file_names(sorted(ALL_KEYS), ".cube")
+
+    assert len({name.casefold() for name in names.values()}) == len(ALL_KEYS)
+    assert names["Ind"] == "delta_dm_ind-total.cube"
+    assert names["Disp_B"] == "delta_dm_disp-total_B.cube"
+
+
+@pytest.mark.parametrize("keys", [("ind_A", "IND_A"), ("Ind", "ind-total")])
+def test_density_file_names_refuse_names_equal_up_to_case(keys):
+    with pytest.raises(ValueError, match="names differ only in case"):
+        density_file_names(keys, ".cube")
+
+
 def test_calc_densities_writes_bundle_and_cubes(
     prepare_dimer, cached_components, tmp_path
 ):
@@ -470,18 +505,24 @@ def test_calc_densities_writes_bundle_and_cubes(
         np.testing.assert_array_equal(densities.matrices[key], matrix)
 
     assert densities.metadata["extra"] == {"project": "test"}
+    cube_names = density_file_names(rho, ".cube")
     assert densities.metadata["cubes"] == {
-        "files": [f"../cubes/delta_dm_{key}.cube" for key in rho],
+        "files": [f"../cubes/{cube_names[key]}" for key in rho],
         "density": "total",
     }
 
     cubes = sorted(path.name for path in (tmp_path / "cubes").iterdir())
-    assert cubes == sorted(f"delta_dm_{key}.cube" for key in rho)
+    assert cubes == sorted(cube_names.values())
+    assert "delta_dm_ind-total_A.cube" in cubes
+    assert not any(name.startswith(("delta_dm_Ind", "delta_dm_Disp")) for name in cubes)
     cube = read_cube_file(str(tmp_path / "cubes" / "delta_dm_pol_A.cube"))
     assert (
         cube.comment1
         == "propSAPT delta_dm_pol_A: total density (2 x alpha-spin matrix)"
     )
+    # the comment names the key of the density
+    cube = read_cube_file(str(tmp_path / "cubes" / "delta_dm_ind-total_A.cube"))
+    assert cube.comment1.startswith("propSAPT delta_dm_Ind_A:")
 
 
 def test_calc_densities_in_mo_basis_saves_ao_matrices(
@@ -518,7 +559,8 @@ def test_calc_densities_in_mo_basis_saves_ao_matrices(
             )
 
     cubes = sorted(path.name for path in (tmp_path / "cubes").iterdir())
-    assert cubes == sorted(f"delta_dm_{key}.cube" for key in rho)
+    assert cubes == sorted(density_file_names(rho, ".cube").values())
+    assert "delta_dm_disp-total_B.cube" in cubes
 
 
 def test_calc_densities_npy_format_is_deprecated(
@@ -533,10 +575,14 @@ def test_calc_densities_npy_format_is_deprecated(
         )
 
     assert sorted(path.name for path in tmp_path.iterdir()) == sorted(
-        [f"delta_dm_{key}.npy" for key in rho] + ["wfn_mon_A.npy", "wfn_mon_B.npy"]
+        list(density_file_names(rho, ".npy").values())
+        + ["wfn_mon_A.npy", "wfn_mon_B.npy"]
     )
     np.testing.assert_array_equal(
         np.load(tmp_path / "delta_dm_pol_A.npy"), rho["pol_A"]
+    )
+    np.testing.assert_array_equal(
+        np.load(tmp_path / "delta_dm_ind-total_A.npy"), rho["Ind_A"]
     )
 
 
