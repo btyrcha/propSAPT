@@ -231,7 +231,10 @@ but symmetrize such matrices with ``0.5 * (D + D.T)`` before an eigendecompositi
 natural orbitals) or before writing one triangle of them (e.g. into an fchk file).
 
 With :python:`save_cubes=True` the total densities are saved as :file:`.cube` files for
-visualization. With :python:`save_matrices=True` the matrices are saved, always in the AO
+visualization, :file:`delta_dm_<key>.cube`. The ``Ind`` and ``Disp`` densities are saved as
+:file:`delta_dm_ind-total*.cube` and :file:`delta_dm_disp-total*.cube`, because their keys
+differ from ``ind`` and ``disp`` only in case, which macOS and Windows file systems do not
+tell apart. With :python:`save_matrices=True` the matrices are saved, always in the AO
 basis, into one self-describing bundle, :file:`densities.npz`. It also holds the monomer
 wavefunctions and the metadata: the geometry and its fragments, the basis set and the
 fitting bases, the method, the Psi4 and propSAPT options, the versions, and the
