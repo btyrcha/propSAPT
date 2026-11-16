@@ -100,9 +100,12 @@ def calc_densities(
         matrices_dir (str, optional): Directory to save density matrices. Defaults to ".".
         matrix_format (str | None, optional): "npz" saves the matrices, the monomer
             wavefunctions and their metadata into one self-describing bundle,
-            ``densities.npz``, read with `prop_sapt.load_densities`. "npy" saves bare
-            ``delta_dm_<key>.npy`` files, named as the cubes, and ``wfn_mon_<A/B>.npy``
-            files; it is deprecated. Defaults to "npz".
+            ``densities.npz``, read with `prop_sapt.load_densities`. Its metadata also
+            lists the cube and TREXIO files requested ("cubes", "trexio"), which are
+            written after the bundle: if writing them fails, the bundle is kept and
+            names files that are missing. "npy" saves bare ``delta_dm_<key>.npy`` files,
+            named as the cubes, and ``wfn_mon_<A/B>.npy`` files; it is deprecated.
+            Defaults to "npz".
         metadata (Mapping | None, optional): JSON-serialisable entries stored in the
             bundle's metadata under "extra". Defaults to None.
         compress_matrices (bool | None, optional): Deprecated, use `matrix_format`:
@@ -180,6 +183,8 @@ def calc_densities(
             bundle_metadata = {}
             if metadata:
                 bundle_metadata["extra"] = dict(metadata)
+            # the files requested, written after the bundle so that a failed export
+            # cannot lose the matrices: the entries record the request, not the files
             if save_cubes:
                 bundle_metadata["cubes"] = {
                     "files": [

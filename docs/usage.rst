@@ -239,6 +239,10 @@ basis, into one self-describing bundle, :file:`densities.npz`. It also holds the
 wavefunctions and the metadata: the geometry and its fragments, the basis set and the
 fitting bases, the method, the Psi4 and propSAPT options, the versions, and the
 conventions. The basis sets and the Psi4 options are those the dimer was built with.
+With :python:`save_cubes` or :python:`save_trexio` the metadata also lists the cube and
+TREXIO files requested. They are written after the bundle, so that a failed or
+interrupted export cannot lose the matrices; a file listed may then be missing, and TREXIO
+files can be written again from the bundle (see :ref:`viamd`).
 Nothing in it is pickled. Read it back with :func:`~prop_sapt.artifacts.load_densities`, which checks the
 conventions and, if asked, that the matrices belong to a geometry, a dimer or a basis set:
 
