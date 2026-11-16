@@ -285,6 +285,20 @@ def test_export_needs_a_dimer():
         export_trexio({"pol_A": np.zeros((2, 2))})
 
 
+@pytest.mark.parametrize("cutoff", [-1e-12, 1.0, 2.0, float("nan"), float("inf")])
+def test_relative_cutoff_is_checked(tmp_path, cutoff):
+    """A negative cutoff would keep the orbitals of zero occupation, and one of 1 or
+    more, or not a number, would leave out every orbital: they are refused before
+    anything else."""
+
+    with pytest.raises(ValueError, match="`relative_cutoff` should be at least 0"):
+        export_trexio(
+            {"pol_A": np.zeros((2, 2))}, tmp_path / "out", relative_cutoff=cutoff
+        )
+
+    assert not (tmp_path / "out").exists()
+
+
 @needs_trexio
 def test_file_names_that_differ_only_in_case_are_refused(
     tmp_path, prepare_dimer, he_h2_densities
@@ -493,6 +507,9 @@ def test_cli_export_trexio_errors(tmp_path, capsys, bundle):
 
     assert main(["export", "trexio", str(tmp_path / "missing.npz")]) == 2
     assert "prop-sapt: error:" in capsys.readouterr().err
+
+    assert main(["export", "trexio", str(bundle), "--relative-cutoff", "nan"]) == 2
+    assert "`relative_cutoff` should be at least 0" in capsys.readouterr().err
 
 
 def test_cli_export_trexio_needs_trexio(tmp_path, capsys, monkeypatch):

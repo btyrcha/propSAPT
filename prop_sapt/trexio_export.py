@@ -128,7 +128,8 @@ def export_trexio(
             key of `densities`.
         relative_cutoff (float, optional): Natural orbitals with ``|n|`` up to
             `relative_cutoff` times the largest ``|n|`` of their density are left out; 0
-            keeps all but those of zero occupation. Defaults to `DEFAULT_RELATIVE_CUTOFF`.
+            keeps all but those of zero occupation. At least 0 and below 1. Defaults to
+            `DEFAULT_RELATIVE_CUTOFF`.
 
     Raises:
         TrexioExportError: If trexio is missing, the basis set mixes spherical and
@@ -136,8 +137,9 @@ def export_trexio(
         ArtifactError: If a bundle is malformed, or its basis set rebuilt differs from the
             one it records.
         TypeError: If a dict of matrices comes without a `dimer`.
-        ValueError: If the file names of two densities differ only in case, so that
-            one would be written over the other; nothing is written then.
+        ValueError: If `relative_cutoff` is not at least 0 and below 1, or the file
+            names of two densities differ only in case, so that one would be written
+            over the other; nothing is written then.
 
     Warns:
         UserWarning: If the basis set has shells above g, which VIAMD does not read.
@@ -145,6 +147,12 @@ def export_trexio(
     Returns:
         list[Path]: The files written, in the order of `keys`.
     """
+
+    # not a number fails too; 1 and above would leave out every orbital
+    if not 0.0 <= relative_cutoff < 1.0:
+        raise ValueError(
+            f"`relative_cutoff` should be at least 0 and below 1, got {relative_cutoff}!"
+        )
 
     trexio = import_trexio()
 

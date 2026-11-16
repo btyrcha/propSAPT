@@ -183,7 +183,8 @@ def _add_export_parser(subparsers) -> None:
         default=DEFAULT_RELATIVE_CUTOFF,
         help=(
             "Leave out natural orbitals with |n| up to this times the largest |n| of "
-            f"their density (default: {DEFAULT_RELATIVE_CUTOFF:g})."
+            "their density; at least 0 and below 1 "
+            f"(default: {DEFAULT_RELATIVE_CUTOFF:g})."
         ),
     )
 
