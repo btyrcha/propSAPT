@@ -26,7 +26,7 @@ propSAPT needs Python 3.12 or later and Psi4 from conda:
 ```bash
 conda create -n prop-sapt -c conda-forge python=3.12 psi4
 conda activate prop-sapt
-pip install "prop_sapt @ git+https://github.com/btyrcha/propSAPT@v0.4.0"
+pip install "prop_sapt @ git+https://github.com/btyrcha/propSAPT@v0.5.0"
 ```
 
 See the [installation guide](https://btyrcha.github.io/propSAPT/installation.html) for the

@@ -10,19 +10,21 @@ requests of the private repository propSAPT was developed in before it was publi
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-16
+
 ### Added
 
-- The Zenodo DOI of the software in `CITATION.cff`, and a DOI badge and the DOIs in the
-  README.
-- The preprint on the second-order properties,
-  [arXiv:2611.07993](https://arxiv.org/abs/2611.07993), in `CITATION.cff`, the README and
-  the docs, and a Citing section in the docs with BibTeX entries for both papers.
 - The `cpscf_type` option sets how the CPSCF equations of the density matrices and the
   properties are solved: with the monomer SCF's J/K object (None, the default, which
   follows `SCF_TYPE`), "DIRECT" or "DF". With "DF" and `SCF_TYPE DIRECT`, densities and
   properties are several times faster, with a small density-fitting error;
   `df_basis_cpscf` sets the fitting basis. The SAPT energies are unchanged. See the
   [usage guide](https://btyrcha.github.io/propSAPT/usage.html#density-matrix-calculations).
+- The Zenodo DOI of the software in `CITATION.cff`, and a DOI badge and the DOIs in the
+  README.
+- The preprint on the second-order properties,
+  [arXiv:2611.07993](https://arxiv.org/abs/2611.07993), in `CITATION.cff`, the README and
+  the docs, and a Citing section in the docs with BibTeX entries for both papers.
 
 ## [0.4.0] - 2026-11-04
 

@@ -152,3 +152,7 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-14
 
 - Added the second-order properties preprint (arXiv:2611.07993) to the citations: `CITATION.cff` (under `references`, schema-validated), the README, and a new Citing section in the docs with BibTeX entries for both papers.
+
+### 2026-11-16
+
+- Prepared the 0.5.0 release (version, `CITATION.cff`, install commands, changelog section), after checking that its package code is the commit the `~/densities` recalculation ran with.

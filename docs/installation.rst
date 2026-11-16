@@ -20,7 +20,7 @@ Create a conda environment with Psi4, then install a tagged release of propSAPT 
 
    conda create -n prop-sapt -c conda-forge python=3.12 psi4
    conda activate prop-sapt
-   pip install "prop_sapt @ git+https://github.com/btyrcha/propSAPT@v0.4.0"
+   pip install "prop_sapt @ git+https://github.com/btyrcha/propSAPT@v0.5.0"
 
 The releases are listed on the
 `GitHub releases page <https://github.com/btyrcha/propSAPT/releases>`_, which also has the
@@ -48,7 +48,7 @@ Optional packages
 basis sets through packages that propSAPT itself does not need:
 
 * the Basis Set Exchange source, through the ``bse`` extra:
-  ``pip install "prop_sapt[bse] @ git+https://github.com/btyrcha/propSAPT@v0.4.0"``,
+  ``pip install "prop_sapt[bse] @ git+https://github.com/btyrcha/propSAPT@v0.5.0"``,
   or ``pip install basis_set_exchange``;
 * the ccRepo source, installed from git:
   ``pip install git+https://github.com/Sheffield-Theoretical-Chemistry/ccrepo_utility colorlog tqdm requests``.
