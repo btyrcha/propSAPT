@@ -4,7 +4,9 @@ Export of the interaction-induced density changes to TREXIO files, to view them 
 - **What is written:** TREXIO (https://github.com/TREX-CoE/trexio) has no AO density
   matrix: a one-particle density is given by orbitals and their occupations. Each density
   change is therefore written as its natural orbitals (`prop_sapt.natural_orbitals`), one
-  file per density, ``delta_dm_<key>.h5``, with the names of the cube files.
+  file per density, ``delta_dm_<key>.h5``, named as the cube files
+  (`prop_sapt.artifacts.density_file_name`: "Ind" and "Disp" are "ind-total" and
+  "disp-total").
 - **Signs as spins:** VIAMD (https://github.com/scanberg/viamd) shows a signed density
   only as the difference of the alpha and beta densities. The orbitals of positive
   occupation are therefore written as alpha orbitals (``mo.spin`` 0), and those of
@@ -39,13 +41,11 @@ import numpy as np
 import psi4
 
 from ._version import __version__
-from .artifacts import DensitySet, load_densities
+from .artifacts import DensitySet, density_file_names, load_densities
 from .natural_orbitals import NaturalOrbitals, density_natural_orbitals
 
 #: How to install the optional trexio package.
 TREXIO_INSTALL = 'pip install trexio (or: pip install "prop_sapt[trexio]")'
-#: Prefix of the file names, as for the cube files: ``delta_dm_<key>.h5``.
-TREXIO_PREFIX = "delta_dm_"
 #: Extension of the files (TREXIO's HDF5 back end).
 TREXIO_SUFFIX = ".h5"
 #: Default of `export_trexio`'s `relative_cutoff`: the natural orbitals left out are the
@@ -104,7 +104,9 @@ def export_trexio(
     """
     Write density changes into TREXIO files, one per density, as natural orbitals.
 
-    See `prop_sapt.trexio_export` for the encoding. A file of the same name is replaced.
+    See `prop_sapt.trexio_export` for the encoding. The files are named as the cubes,
+    ``delta_dm_<key>.h5`` (`prop_sapt.artifacts.density_file_name`). A file of the same
+    name is replaced.
 
     A bundle needs its basis set rebuilt by Psi4, by name (`DensitySet.wavefunction`): a
     basis set given by per-element overrides or read from a basis set directory has to be
@@ -134,6 +136,8 @@ def export_trexio(
         ArtifactError: If a bundle is malformed, or its basis set rebuilt differs from the
             one it records.
         TypeError: If a dict of matrices comes without a `dimer`.
+        ValueError: If the file names of two densities differ only in case, so that
+            one would be written over the other; nothing is written then.
 
     Warns:
         UserWarning: If the basis set has shells above g, which VIAMD does not read.
@@ -156,6 +160,8 @@ def export_trexio(
 
     matrices = densities.matrices if isinstance(densities, DensitySet) else densities
     keys = list(matrices) if keys is None else list(keys)
+    # distinct on any file system, checked before anything is written
+    names = density_file_names(keys, TREXIO_SUFFIX)
     system = _system_arrays(fragments, basisset)
     orbitals = density_natural_orbitals(densities, dimer, keys=keys)
 
@@ -164,7 +170,7 @@ def export_trexio(
 
     paths = []
     for key in keys:
-        path = directory / f"{TREXIO_PREFIX}{key}{TREXIO_SUFFIX}"
+        path = directory / names[key]
         selected = _select(orbitals[key], relative_cutoff)
         _write_file(trexio, path, system, selected, _description(key))
         paths.append(path)

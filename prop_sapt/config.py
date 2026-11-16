@@ -43,8 +43,8 @@ The densities task saves its matrices into one self-describing bundle, ``densiti
 (`matrix_format: npz`, read with `prop_sapt.load_densities`), or as bare ``.npy`` files
 (`matrix_format: npy`, deprecated). The older `compress_matrices: true/false` setting still
 works, as `npz`/`npy`, with a deprecation warning. With `save_trexio: true` it also saves
-TREXIO files of the densities, ``delta_dm_<key>.h5``, to view them in VIAMD; that needs the
-trexio package (`prop_sapt.trexio_export`).
+TREXIO files of the densities, ``delta_dm_<key>.h5`` named as the cubes, to view them in
+VIAMD; that needs the trexio package (`prop_sapt.trexio_export`).
 
 Relative paths inside the file (`basis_overrides`, `basis_dirs`) are resolved against the
 directory of the file; the output directory is resolved against the current working

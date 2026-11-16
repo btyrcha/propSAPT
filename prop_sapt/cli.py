@@ -154,7 +154,8 @@ def _add_export_parser(subparsers) -> None:
         help="Write TREXIO files of the densities of a densities.npz bundle, for VIAMD.",
         description=(
             "Write the density changes of a densities.npz bundle into TREXIO files, "
-            "delta_dm_<key>.h5, as natural orbitals: VIAMD shows a density change as the "
+            "delta_dm_<key>.h5 (Ind and Disp as ind-total and disp-total), as natural "
+            "orbitals: VIAMD shows a density change as the "
             "alpha - beta density of its file. Needs the trexio package. Psi4 rebuilds "
             "the basis set by name, so one from a run's basis_dirs or basis_overrides is "
             "not available here: use prop_sapt.export_trexio after making it available "

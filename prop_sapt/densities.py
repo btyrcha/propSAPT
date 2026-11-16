@@ -11,7 +11,6 @@ from .checks import check_symmetric
 from .cubes import Cube
 from .trexio_export import (
     ENCODING,
-    TREXIO_PREFIX,
     TREXIO_SUFFIX,
     export_trexio,
     import_trexio,
@@ -109,9 +108,9 @@ def calc_densities(
         compress_matrices (bool | None, optional): Deprecated, use `matrix_format`:
             True is "npz" and False is "npy".
         save_trexio (bool, optional): Whether to save TREXIO files of the densities,
-            ``delta_dm_<key>.h5``, to view them in VIAMD (see `prop_sapt.trexio_export`).
-            Needs the trexio package, which is checked before the calculation.
-            Defaults to False.
+            ``delta_dm_<key>.h5``, named as the cubes, to view them in VIAMD (see
+            `prop_sapt.trexio_export`). Needs the trexio package, which is checked
+            before the calculation. Defaults to False.
         trexio_dir (str, optional): Directory to save the TREXIO files. Defaults to ".".
 
     Raises:
@@ -168,7 +167,7 @@ def calc_densities(
         key: f"{cubes_dir}/{name}.cube" for key, name in file_names.items()
     }
     trexio_filenames = [
-        f"{trexio_dir}/{TREXIO_PREFIX}{key}{TREXIO_SUFFIX}" for key in rho_ao
+        f"{trexio_dir}/{file_names[key]}{TREXIO_SUFFIX}" for key in rho_ao
     ]
 
     if save_matrices:

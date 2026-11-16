@@ -19,7 +19,11 @@ from prop_sapt import (
     load_densities,
     reset_propsapt_options,
 )
-from prop_sapt.artifacts import DENSITIES_FILENAME, save_densities
+from prop_sapt.artifacts import (
+    DENSITIES_FILENAME,
+    density_file_names,
+    save_densities,
+)
 from prop_sapt.cli import main
 from prop_sapt.evaluate import evaluate_basis_functions
 from prop_sapt.fragments import DimerFragments
@@ -225,9 +229,9 @@ def test_files_hold_the_densities(tmp_path, prepare_dimer, he_h2_densities):
         he_h2_densities, tmp_path, dimer=prepare_dimer, relative_cutoff=0.0
     )
 
-    assert [path.name for path in paths] == [
-        f"delta_dm_{key}.h5" for key in he_h2_densities
-    ]
+    assert [path.name for path in paths] == list(
+        density_file_names(he_h2_densities, ".h5").values()
+    )
     points = _points(prepare_dimer.get_psi4_molecule(), count=300)
     for key, path in zip(he_h2_densities, paths):
         data = trexio_spec.read_file(path)
@@ -281,6 +285,22 @@ def test_export_needs_a_dimer():
         export_trexio({"pol_A": np.zeros((2, 2))})
 
 
+@needs_trexio
+def test_file_names_that_differ_only_in_case_are_refused(
+    tmp_path, prepare_dimer, he_h2_densities
+):
+    """Keys whose file names differ only in case are refused before anything is
+    written: a case-insensitive file system would write one file over the other."""
+
+    matrix = he_h2_densities["ind_A"]
+    with pytest.raises(ValueError, match="differ only in case"):
+        export_trexio(
+            {"ind_A": matrix, "IND_A": matrix}, tmp_path / "out", dimer=prepare_dimer
+        )
+
+    assert not (tmp_path / "out").exists()
+
+
 def test_missing_trexio_is_explained(monkeypatch):
     """Without trexio, writing a file says how to install it."""
 
@@ -328,7 +348,7 @@ def test_calc_densities_saves_trexio_files(
         trexio_dir=str(tmp_path / "trexio"),
     )
 
-    names = [f"delta_dm_{key}.h5" for key in rho]
+    names = list(density_file_names(rho, ".h5").values())
     assert sorted(path.name for path in (tmp_path / "trexio").iterdir()) == sorted(
         names
     )
@@ -360,12 +380,13 @@ def test_calc_densities_in_the_mo_basis_saves_ao_densities(
     )
 
     names = {path.name for path in tmp_path.iterdir()}
-    assert names == {
-        f"delta_dm_{component}_{monomer}.h5"
+    keys = [
+        f"{component}_{monomer}"
         for component in DENSITY_COMPONENTS
         for monomer in ("A", "B")
-    }
-    data = trexio_spec.read_file(tmp_path / "delta_dm_Disp_B.h5")
+    ]
+    assert names == set(density_file_names(keys, ".h5").values())
+    data = trexio_spec.read_file(tmp_path / "delta_dm_disp-total_B.h5")
     signs = np.where(data["mo_spin"] == 0, 1.0, -1.0)
     coefficients = data["mo_coefficient"].T
     np.testing.assert_allclose(
