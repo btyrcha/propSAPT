@@ -24,6 +24,8 @@ Features
   of any Psi4 method, e.g. MP2 or CCSD (a supermolecular reference)
 * Densities, orbitals and electrostatic potentials on grids, fragment populations, and
   :file:`.cube` file utilities
+* The natural orbitals of the density changes, and TREXIO files of them for interactive
+  views in VIAMD
 * A command-line runner, ``prop-sapt run``, for production calculations from a
   configuration file
 

@@ -35,6 +35,22 @@ Density Artifacts
    :undoc-members:
    :show-inheritance:
 
+Natural Orbitals of Density Changes
+-----------------------------------
+
+.. automodule:: prop_sapt.natural_orbitals
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+TREXIO Export
+-------------
+
+.. automodule:: prop_sapt.trexio_export
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Invariant Checks
 ----------------
 

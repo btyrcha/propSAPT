@@ -3,7 +3,9 @@
 None of these run a calculation.
 """
 
+import importlib.util
 import json
+import sys
 
 import pytest
 
@@ -224,6 +226,29 @@ def test_densities_matrix_format():
     assert TASK_DEFAULTS["densities"]["matrix_format"] == "npz"
 
 
+def test_densities_save_trexio_needs_trexio(monkeypatch):
+    """TREXIO files are off by default; asking for them without trexio installed fails
+    when the configuration is read, before any calculation."""
+
+    assert TASK_DEFAULTS["densities"]["save_trexio"] is False
+
+    monkeypatch.setitem(sys.modules, "trexio", None)  # trexio is not installed
+    with pytest.raises(ConfigError, match="pip install trexio"):
+        resolve_config({"tasks": {"densities": {"save_trexio": True}}})
+
+    config = resolve_config({"tasks": {"densities": {"save_trexio": False}}})
+    assert config.tasks["densities"]["save_trexio"] is False
+
+
+@pytest.mark.skipif(
+    importlib.util.find_spec("trexio") is None, reason="trexio not installed"
+)
+def test_densities_save_trexio():
+    config = resolve_config({"tasks": {"densities": {"save_trexio": True}}})
+
+    assert config.tasks["densities"]["save_trexio"] is True
+
+
 @pytest.mark.parametrize("compress, matrix_format", [(True, "npz"), (False, "npy")])
 def test_deprecated_compress_matrices_sets_matrix_format(compress, matrix_format):
     with pytest.warns(FutureWarning, match="compress_matrices' is deprecated"):
@@ -316,6 +341,7 @@ def test_basis_dirs_are_resolved_against_the_config_directory(tmp_path):
         ({"tasks": {"sapt_energy": {"response": "yes"}}}, "response"),
         ({"tasks": {"property": {"response": "yes"}}}, "tasks.property.response"),
         ({"tasks": {"densities": {"save_cubes": "yes"}}}, "true or false"),
+        ({"tasks": {"densities": {"save_trexio": "yes"}}}, "true or false"),
         ({"tasks": {"densities": {"orbital_basis": "NO"}}}, "orbital_basis"),
         ({"tasks": {"densities": {"matrix_format": "hdf5"}}}, "matrix_format"),
         (
