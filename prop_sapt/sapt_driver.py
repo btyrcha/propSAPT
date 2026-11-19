@@ -3,11 +3,13 @@ SAPT Driver Module
 This module provides a function to calculate the SAPT energy components for a dimer system.
 """
 
+import logging
+
 import psi4
 import pandas as pd
 
 from .molecule import Dimer
-from .utils import trace_memory_peak, CalcTimer, energy_printer
+from .utils import trace_memory_peak, CalcTimer, format_energy
 
 from .sapt_components import (
     calc_elst1_energy,
@@ -18,9 +20,11 @@ from .sapt_components import (
     calc_disp2_energy,
 )
 
+logger = logging.getLogger(__name__)
+
 
 def print_sapt_summary(results: pd.Series, **kwargs):
-    """Prints a summary of the SAPT energy components.
+    """Logs a summary table of the SAPT energy components.
 
     Args:
         results (pd.Series):  A pandas Series containing the SAPT energy components.
@@ -28,63 +32,41 @@ def print_sapt_summary(results: pd.Series, **kwargs):
 
     line_width = 93
 
-    # Header
-    psi4.core.print_out("\n")
-    psi4.core.print_out("            |------------------------------------| \n")
-    psi4.core.print_out("            |         SAPT Summary Table         | \n")
-    psi4.core.print_out("            |------------------------------------| \n")
-
-    # Table header
-    psi4.core.print_out("\n")
-    psi4.core.print_out("=" * line_width + "\n")
-    psi4.core.print_out(
-        " Term                        Value (mEh)           Value (kcal/mol)           Value (kJ/mol)\n"
-    )
-    psi4.core.print_out("=" * line_width + "\n")
-
-    # Electrostatics
-    psi4.core.print_out("\n")
-    psi4.core.print_out("Electrostatics\n")
-    psi4.core.print_out("-" * line_width + "\n")
-    energy_printer("ELST1", results["ELST1"], output="psi4")
-
-    # Exchange
-    psi4.core.print_out("\n")
-    psi4.core.print_out("Exchange\n")
-    psi4.core.print_out("-" * line_width + "\n")
-    energy_printer("EXCH1", results["EXCH1"], output="psi4")
-    energy_printer("EXCH1(S^2)", results["EXCH1(S^2)"], output="psi4")
-
-    # Induction
-    psi4.core.print_out("\n")
-    psi4.core.print_out("Induction\n")
-    psi4.core.print_out("-" * line_width + "\n")
     if kwargs.get("response") is True:
-        energy_printer("IND2,R_A", results["IND2,R_A"], output="psi4")
-        energy_printer("IND2,R_B", results["IND2,R_B"], output="psi4")
-        energy_printer("IND2,R", results["IND2,R"], output="psi4")
-        energy_printer("EXCH-IND2,R_A", results["EXCH-IND2,R_A"], output="psi4")
-        energy_printer("EXCH-IND2,R_B", results["EXCH-IND2,R_B"], output="psi4")
-        energy_printer("EXCH-IND2,R", results["EXCH-IND2,R"], output="psi4")
+        induction = ["IND2,R_A", "IND2,R_B", "IND2,R"]
+        induction += ["EXCH-IND2,R_A", "EXCH-IND2,R_B", "EXCH-IND2,R"]
     else:
-        energy_printer("IND2_A", results["IND2_A"], output="psi4")
-        energy_printer("IND2_B", results["IND2_B"], output="psi4")
-        energy_printer("IND2", results["IND2"], output="psi4")
-        energy_printer("EXCH-IND2_A", results["EXCH-IND2_A"], output="psi4")
-        energy_printer("EXCH-IND2_B", results["EXCH-IND2_B"], output="psi4")
-        energy_printer("EXCH-IND2", results["EXCH-IND2"], output="psi4")
+        induction = [
+            "IND2_A",
+            "IND2_B",
+            "IND2",
+            "EXCH-IND2_A",
+            "EXCH-IND2_B",
+            "EXCH-IND2",
+        ]
+    sections = {
+        "Electrostatics": ["ELST1"],
+        "Exchange": ["EXCH1", "EXCH1(S^2)"],
+        "Induction": induction,
+        "Dispersion": ["DISP2", "EXCH-DISP2"],
+    }
 
-    # Dispersion
-    psi4.core.print_out("\n")
-    psi4.core.print_out("Dispersion\n")
-    psi4.core.print_out("-" * line_width + "\n")
-    energy_printer("DISP2", results["DISP2"], output="psi4")
-    energy_printer("EXCH-DISP2", results["EXCH-DISP2"], output="psi4")
+    lines = [
+        "            |------------------------------------| ",
+        "            |         SAPT Summary Table         | ",
+        "            |------------------------------------| ",
+        "",
+        "=" * line_width,
+        " Term                        Value (mEh)           Value (kcal/mol)"
+        "           Value (kJ/mol)",
+        "=" * line_width,
+    ]
+    for title, terms in sections.items():
+        lines += ["", title, "-" * line_width]
+        lines += [format_energy(term, results[term]) for term in terms]
+    lines += ["", format_energy("TOTAL", results["TOTAL"]), "=" * line_width]
 
-    # Total energy
-    psi4.core.print_out("\n")
-    energy_printer("TOTAL", results["TOTAL"], output="psi4")
-    psi4.core.print_out("=" * line_width + "\n")
+    logger.info("\n".join(lines))
 
 
 @trace_memory_peak
@@ -123,13 +105,12 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
     """
 
     # Print header
-    psi4.core.print_out("\n")
-    psi4.core.print_out("*" * 80)
-    psi4.core.print_out("\n\n")
-    psi4.core.print_out("        |-------------------------------------|        \n")
-    psi4.core.print_out("        |        Second-Quantized SAPT        |        \n")
-    psi4.core.print_out("        |-------------------------------------|        \n")
-    psi4.core.print_out("\n")
+    logger.info("*" * 80)
+    logger.info(
+        "        |-------------------------------------|        \n"
+        "        |        Second-Quantized SAPT        |        \n"
+        "        |-------------------------------------|        "
+    )
     psi4.core.tstart()
 
     with CalcTimer("SAPT energy calculations"):
@@ -161,7 +142,6 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
             )
 
         else:
-            psi4.core.clean()
             raise ValueError(
                 "Invalid value for 'response'. Must be True, False or 'both'."
             )

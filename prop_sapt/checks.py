@@ -2,7 +2,7 @@
 Invariant checks: cheap checks of properties that propSAPT results must have.
 
 A failed check warns with `InvariantWarning`, attributed to the first caller outside
-propSAPT, and writes the same message into the Psi4 output file; it never stops a
+propSAPT, and logs the same message as a warning (see `prop_sapt.log`); it never stops a
 calculation. Turn the warnings into errors with
 ``warnings.simplefilter("error", InvariantWarning)``. Each check takes its tolerance from
 a propSAPT option, and setting the option to None turns the check off.
@@ -28,6 +28,7 @@ check_charge_closure
     fragment weights are a partition of unity.
 """
 
+import logging
 import os
 import sys
 import warnings
@@ -42,6 +43,8 @@ from .evaluate import (
     _prepare_points,
 )
 from .options import PROPSAPT_OPTIONS
+
+logger = logging.getLogger(__name__)
 
 # number of failing matrices listed by index in a closure warning
 _LISTED_INDICES = 10
@@ -348,7 +351,7 @@ def _tolerance(atol, option_key: str) -> float | None:
 
 def _warn(message: str):
     """Warns `InvariantWarning`, attributed to the first caller outside propSAPT, and
-    writes `message` into the Psi4 output file."""
+    logs `message` as a warning."""
 
     # stack level 1 is this function; count the frames inside the package above it
     stacklevel = 1
@@ -360,4 +363,4 @@ def _warn(message: str):
         stacklevel += 1
 
     warnings.warn(message, InvariantWarning, stacklevel=stacklevel)
-    psi4.core.print_out(f"\nWarning: {message}\n")
+    logger.warning(message)

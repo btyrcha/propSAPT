@@ -5,6 +5,7 @@ Cube file reference:
 https://paulbourke.net/dataformats/cube/
 """
 
+import logging
 import numbers
 import os
 from dataclasses import dataclass
@@ -22,6 +23,8 @@ from .evaluate import (
     _nuclear_potential,
     _stack_matrices,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(kw_only=True, eq=False, repr=False)
@@ -442,13 +445,12 @@ def make_cube(
 
     # initialize
     t_start = time()
-    psi4.core.print_out("\n")
-    psi4.core.print_out("*" * 80)
-    psi4.core.print_out("\n\n")
-    psi4.core.print_out("        |------------------------------------|        \n")
-    psi4.core.print_out("        |            `make_cube`             |        \n")
-    psi4.core.print_out("        |------------------------------------|        \n")
-    psi4.core.print_out("\n")
+    logger.info("*" * 80)
+    logger.info(
+        "        |------------------------------------|        \n"
+        "        |            `make_cube`             |        \n"
+        "        |------------------------------------|        "
+    )
     psi4.core.tstart()
 
     # get basis set and geometry
@@ -479,26 +481,25 @@ def make_cube(
         grid = prepare_grid(geo_matrix, grid_step, grid_overage)
 
     n_points = grid["n_x"] * grid["n_y"] * grid["n_z"]
-    psi4.core.print_out(
+    logger.info(
         f"  Grid size      : {grid['n_x']} x {grid['n_y']} x {grid['n_z']}"
-        f"  ({n_points} points)\n"
+        f"  ({n_points} points)"
     )
-    psi4.core.print_out(
+    logger.info(
         f"  Grid step      : {grid['step_x']:.4f} x {grid['step_y']:.4f}"
-        f" x {grid['step_z']:.4f} bohr\n"
+        f" x {grid['step_z']:.4f} bohr"
     )
     n_density = sum(1 for t in obj_type if t == "density")
     n_orbital = sum(1 for t in obj_type if t == "orbital")
     n_esp = sum(1 for t in obj_type if t == "esp")
-    psi4.core.print_out(
+    logger.info(
         f"  Matrices       : {len(matrix)}"
-        f"  ({n_density} density, {n_orbital} orbital, {n_esp} esp)\n"
+        f"  ({n_density} density, {n_orbital} orbital, {n_esp} esp)"
     )
     esp_nuclei = kwargs.get("esp_nuclei", False)
     if n_esp > 0:
-        psi4.core.print_out(f"  ESP nuclei     : {'yes' if esp_nuclei else 'no'}\n")
-    psi4.core.print_out(f"  Setup time     : {(time() - t_setup):5.2f} s\n")
-    psi4.core.print_out("\n")
+        logger.info(f"  ESP nuclei     : {'yes' if esp_nuclei else 'no'}")
+    logger.info(f"  Setup time     : {(time() - t_setup):5.2f} s")
 
     # compute values on the grid one x-slice at a time
     values = np.zeros((len(matrix), grid["n_x"], grid["n_y"], grid["n_z"]))
@@ -573,8 +574,8 @@ def make_cube(
                 values[orbital_idx_arr, i] = orbitals.reshape(slice_shape)
 
         # progress report every x-slice
-        psi4.core.print_out(
-            f"\r  Grid progress  : x-slice {i + 1:4d} / {grid['n_x']:4d}"
+        logger.debug(
+            f"  Grid progress  : x-slice {i + 1:4d} / {grid['n_x']:4d}"
             f"  (phi: {timings['phi']:6.2f} s, contract: {timings['contract']:6.2f} s,"
             f" esp: {t_esp:6.2f} s, elapsed: {(time() - t_grid):6.2f} s)"
         )
@@ -583,13 +584,13 @@ def make_cube(
     t_phi = timings["phi"]
     t_contract = timings["contract"]
     t_overhead = t_grid_total - t_phi - t_contract - t_esp
-    psi4.core.print_out(
-        f"\n\n  Grid evaluation : {t_grid_total:5.2f} s total\n"
+    logger.info(
+        f"  Grid evaluation : {t_grid_total:5.2f} s total\n"
         f"    basis values  : {t_phi:5.2f} s  ({100 * t_phi / t_grid_total:.1f}%)\n"
         f"    contractions  : {t_contract:5.2f} s  ({100 * t_contract / t_grid_total:.1f}%)\n"
         f"    esp integrals : {t_esp:5.2f} s  ({100 * t_esp / t_grid_total:.1f}%)\n"
         f"    overhead      : {t_overhead:5.2f} s"
-        f"  ({100 * t_overhead / t_grid_total:.1f}%)\n"
+        f"  ({100 * t_overhead / t_grid_total:.1f}%)"
     )
 
     # get isocontour values
@@ -632,12 +633,9 @@ def make_cube(
         cubes_list.append(Cube(**cube_dict))
 
     # finalize
-    psi4.core.print_out("\n")
-    psi4.core.print_out(f"...finished in {(time() - t_start):5.2f} s total.\n")
+    logger.info(f"...finished in {(time() - t_start):5.2f} s total.")
     psi4.core.tstop()
-    psi4.core.print_out("\n")
-    psi4.core.print_out("*" * 80)
-    psi4.core.print_out("\n\n")
+    logger.info("*" * 80)
 
     if len(cubes_list) == 1:
         return cubes_list[0]
@@ -1090,6 +1088,6 @@ def calculate_isocontour(
                 negative_isoval = flatened_vals[i]
                 do_negative = False
 
-    psi4.core.print_out(f"  Isocontour     : {(time() - t_iso):5.2f} s\n")
+    logger.info(f"  Isocontour     : {(time() - t_iso):5.2f} s")
 
     return (positive_isoval, negative_isoval)  # pyright: ignore reportReturnType

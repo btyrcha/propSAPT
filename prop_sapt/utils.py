@@ -1,10 +1,12 @@
+import logging
 import os
 import time
 from functools import wraps
 from collections.abc import Callable
 from importlib import metadata
 import tracemalloc
-import psi4
+
+logger = logging.getLogger(__name__)
 
 
 def trace_memory_peak(func: Callable):
@@ -22,8 +24,8 @@ def trace_memory_peak(func: Callable):
         result = func(*args, **kwargs)
         _, peak_size = tracemalloc.get_traced_memory()
 
-        psi4.core.print_out(f"\nFunction: {func}\n")
-        psi4.core.print_out(f"...peak memory usage: {peak_size*1e-6:.2f} MB\n\n")
+        logger.info(f"Function: {func}")
+        logger.info(f"...peak memory usage: {peak_size*1e-6:.2f} MB")
 
         tracemalloc.reset_peak()
         tracemalloc.stop()
@@ -102,17 +104,33 @@ class CalcTimer(object):
         """
 
         self.start = time.time()
-        psi4.core.print_out(f"\nStarting {self.name}...\n")
+        logger.info(f"Starting {self.name}...")
 
         return self
 
     def __exit__(self, *args):
         """
-        Stops the timer. And prints out the time taken for the operation into the output file.
+        Stops the timer and logs the time taken for the operation.
         """
 
         t = time.time() - self.start
-        psi4.core.print_out(f"...{self.name} took a total of {t: .2f} seconds.\n")
+        logger.info(f"...{self.name} took a total of {t: .2f} seconds.")
+
+
+def format_energy(name: str, value: float) -> str:
+    """The line of an energy term: its name and its value in mEh, kcal/mol and kJ/mol.
+
+    Args:
+        name (str): Name of the energy term.
+        value (float): Value of the energy term in Hartree.
+    """
+
+    name_padding = " " * (20 - len(name))
+    return (
+        name
+        + name_padding
+        + f"{value* 1000: 16.8f} mEh  {value* 627.509: 16.8f} kcal/mol  {value* 2625.50: 16.8f} kJ/mol"
+    )
 
 
 def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
@@ -121,22 +139,18 @@ def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
     Args:
         name (str): Name of the energy term.
         value (float): Value of the energy term in Hartree.
-        output (str, optional): Output method. Defaults to "psi4" - Psi4's output file.
+        output (str, optional): Output method. Defaults to "psi4": the propSAPT log,
+            which goes into Psi4's output file (see `prop_sapt.log`).
 
     Raises:
         ValueError: If an unknown output type is provided.
         ValueError: If the output filename is not provided when output is 'file'.
     """
 
-    name_padding = " " * (20 - len(name))
-    energy_output_string = (
-        name
-        + name_padding
-        + f"{value* 1000: 16.8f} mEh  {value* 627.509: 16.8f} kcal/mol  {value* 2625.50: 16.8f} kJ/mol"
-    )
+    energy_output_string = format_energy(name, value)
 
     if output == "psi4":
-        psi4.core.print_out(energy_output_string + "\n")
+        logger.info(energy_output_string)
 
     elif output == "stdout":
         print(energy_output_string)

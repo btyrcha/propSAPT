@@ -17,10 +17,13 @@ calculation does not use (e.g. "DF_BASIS_MP2" in a propSAPT run) are skipped.
 """
 
 import json
+import logging
 import os
 import re
 from collections.abc import Mapping
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Basis set names that `psi4.basis_helper` can assign to an element.
 ASSIGNABLE_BASIS_NAME = re.compile(r"^[-+*()\w]+$")
@@ -133,8 +136,8 @@ def apply_basis_overrides(
         option_key = option_keys.get(basis_option)
 
         if option_key is None:
-            psi4.core.print_out(
-                f"\nBasis overrides: skipping {basis_option}, not used by this calculation.\n"
+            logger.info(
+                f"Basis overrides: skipping {basis_option}, not used by this calculation."
             )
             continue
 
@@ -152,8 +155,8 @@ def apply_basis_overrides(
         applied.append(basis_option)
 
         substitutes = ", ".join(f"{el} -> {name}" for el, name in element_map.items())
-        psi4.core.print_out(
-            f"\nBasis overrides: {basis_option} defaults to {default_basis}; {substitutes}.\n"
+        logger.info(
+            f"Basis overrides: {basis_option} defaults to {default_basis}; {substitutes}."
         )
 
     return applied
