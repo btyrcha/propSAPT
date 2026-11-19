@@ -117,6 +117,22 @@ class CalcTimer(object):
         logger.info(f"...{self.name} took a total of {t: .2f} seconds.")
 
 
+def format_energy(name: str, value: float) -> str:
+    """The line of an energy term: its name and its value in mEh, kcal/mol and kJ/mol.
+
+    Args:
+        name (str): Name of the energy term.
+        value (float): Value of the energy term in Hartree.
+    """
+
+    name_padding = " " * (20 - len(name))
+    return (
+        name
+        + name_padding
+        + f"{value* 1000: 16.8f} mEh  {value* 627.509: 16.8f} kcal/mol  {value* 2625.50: 16.8f} kJ/mol"
+    )
+
+
 def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
     """Prints out the energy value in mH and kcal/mol.
 
@@ -131,12 +147,7 @@ def energy_printer(name: str, value: float, output: str = "psi4", **kwargs):
         ValueError: If the output filename is not provided when output is 'file'.
     """
 
-    name_padding = " " * (20 - len(name))
-    energy_output_string = (
-        name
-        + name_padding
-        + f"{value* 1000: 16.8f} mEh  {value* 627.509: 16.8f} kcal/mol  {value* 2625.50: 16.8f} kJ/mol"
-    )
+    energy_output_string = format_energy(name, value)
 
     if output == "psi4":
         logger.info(energy_output_string)
