@@ -22,6 +22,12 @@ requests of the private repository propSAPT was developed in before it was publi
 - `density_natural_orbitals`: the natural orbitals of the density changes, a few of which
   usually carry most of a change, in the spirit of NOCV.
 
+### Changed
+
+- propSAPT solves the CPSCF equations with its own conjugate-gradient solver, with the
+  same results. A solve that has not converged in `cpscf_maxiter` iterations now warns,
+  where it used to go on silently.
+
 ### Fixed
 
 - The cube and `.npy` files of the `Ind` and `Disp` densities are now named
