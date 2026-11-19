@@ -550,7 +550,6 @@ class Dimer(sinfinity):
 
         # check before the grid evaluation, which is the expensive part
         if len(filename) != len(matrix):
-            psi4.core.clean()
             raise ValueError(
                 f"One filename per matrix is required, got {len(matrix)} matrices "
                 f"and {len(filename)} filenames."

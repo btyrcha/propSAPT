@@ -156,7 +156,6 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
             )
 
         else:
-            psi4.core.clean()
             raise ValueError(
                 "Invalid value for 'response'. Must be True, False or 'both'."
             )

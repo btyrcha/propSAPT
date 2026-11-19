@@ -35,11 +35,9 @@ def validate_property(prop: str | np.ndarray) -> None:
         ValueError: If the property is not supported.
     """
     if isinstance(prop, np.ndarray):
-        psi4.core.clean()
         raise ValueError("Property for general external operator is not implemented.")
 
     if prop != "dipole":
-        psi4.core.clean()
         raise ValueError(
             f"Property {prop} is not implemented. "
             "Please provide a valid property name or a property matrix."
@@ -160,7 +158,6 @@ def calculate_ff_dipole_along_axis(
 
     # Validate formula
     if formula not in ["two_point", "four_point"]:
-        psi4.core.clean()
         raise ValueError(f"Unknown finite difference formula: {formula}")
 
     molecule = psi4.geometry(geometry)
@@ -339,7 +336,6 @@ def calculate_ff_sapt_dipole_along_axis(
 
     # Validate formula
     if formula not in ["two_point", "four_point"]:
-        psi4.core.clean()
         raise ValueError(f"Unknown finite difference formula: {formula}")
 
     logger.info(

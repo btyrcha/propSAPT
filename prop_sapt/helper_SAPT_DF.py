@@ -117,19 +117,16 @@ class helper_SAPT(object):
 
         # propSAPT is all-electron: reject frozen core instead of ignoring it
         if psi4.core.get_global_option("FREEZE_CORE") not in ("FALSE", "0"):
-            psi4.core.clean()
             raise ValueError(
                 "propSAPT does not support frozen core; set FREEZE_CORE to false."
             )
 
         # Verify reference
         if reference not in ["RHF", "ROHF", "UHF", "RKS", "UKS"]:
-            psi4.core.clean()
             raise ValueError(f"Unsupported reference type '{reference}'.")
 
         if reference in ["ROHF", "UHF", "UKS"]:
             # NOTE: Future upgrades
-            psi4.core.clean()
             raise ValueError(f"Reference '{reference}' not implemented yet.")
 
         # Check if the functional is specified for DFT
@@ -162,7 +159,6 @@ class helper_SAPT(object):
         nfrags = dimer.nfragments()
 
         if nfrags < 2:
-            psi4.core.clean()
             raise ValueError(f"Found {nfrags:d} fragments, must be at least 2.")
         elif nfrags > 2:
             logger.info(
@@ -181,7 +177,6 @@ class helper_SAPT(object):
         # closed-shell references only, fail before any SCF is run
         for label, mult in (("A", self.mult_A), ("B", self.mult_B)):
             if mult != 1:
-                psi4.core.clean()
                 raise ValueError(
                     f"Monomer {label} has multiplicity {mult}, "
                     f"{reference} reference requires singlet monomers."
@@ -253,7 +248,6 @@ class helper_SAPT(object):
             occA = self.ndocc_A + self.nsocc_A
 
         elif reference == "UHF" or reference == "UKS":
-            psi4.core.clean()
             raise NotImplementedError(f"Reference {reference} not implemented yet.")
 
         elif reference == "RHF" or reference == "RKS":
@@ -262,7 +256,6 @@ class helper_SAPT(object):
             occA = self.ndocc_A
 
         else:
-            psi4.core.clean()
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_A = np.asarray(self.wfnA.Ca())
@@ -282,7 +275,6 @@ class helper_SAPT(object):
             occB = self.ndocc_B + self.nsocc_B
 
         elif reference == "UHF" or reference == "UKS":
-            psi4.core.clean()
             raise NotImplementedError(f"Reference {reference} not implemented yet.")
 
         elif reference == "RHF" or reference == "RKS":
@@ -291,7 +283,6 @@ class helper_SAPT(object):
             occB = self.ndocc_B
 
         else:
-            psi4.core.clean()
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_B = np.asarray(self.wfnB.Ca())
@@ -448,7 +439,6 @@ class helper_SAPT(object):
     # Gets transformed DF integrals in MO
     def df_ints(self, string):
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"S: string {string} does not have 2 elements.")
 
         return np.array(
@@ -463,7 +453,6 @@ class helper_SAPT(object):
     # Grab MO overlap matrices
     def s(self, string):
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"S: string {string} does not have 2 elements.")
 
         # Compute on the fly, an empty orbital block gives a correctly shaped empty array
@@ -472,7 +461,6 @@ class helper_SAPT(object):
     # Grab epsilons, reshape if requested
     def eps(self, string, dim=1):
         if len(string) != 1:
-            psi4.core.clean()
             raise ValueError(f"Epsilon: string {string} does not have 1 element.")
 
         shape = (-1,) + tuple([1] * (dim - 1))
@@ -482,13 +470,11 @@ class helper_SAPT(object):
         elif (string == "j") or (string == "b") or (string == "s"):
             return self.eps_B[self.slices[string]].reshape(shape)
         else:
-            psi4.core.clean()
             raise ValueError(f"Unknown orbital type in eps: {string}.")
 
     # Grab MO potential matrices
     def potential(self, string, side):
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"Potential: string {string} does not have 2 elements.")
 
         # Two separate cases
@@ -504,7 +490,6 @@ class helper_SAPT(object):
                 (self.orbitals[string[0]].T).dot(self.V_B).dot(self.orbitals[string[1]])
             )
         else:
-            psi4.core.clean()
             raise ValueError(
                 f"helper_SAPT.potential side must be either A or B, not {side}."
             )
@@ -756,15 +741,12 @@ class helper_SAPT(object):
         """Raises ValueError unless CPSCF is implemented for this reference and `monomer`."""
 
         if self.reference in ["ROHF", "UHF", "UKS"]:
-            psi4.core.clean()
             raise ValueError(
                 f"CPSCF solver for a {self.reference} reference not implemented yet."
             )
         if self.reference not in ["RHF", "RKS"]:
-            psi4.core.clean()
             raise ValueError(f"Unknown reference type: {self.reference}.")
         if monomer not in ["A", "B"]:
-            psi4.core.clean()
             raise ValueError(f"'{monomer}' is not a valid monomer for CPSCF.")
 
     def chain_dot(self, *dot_list):
@@ -781,7 +763,6 @@ class helper_SAPT(object):
         """
 
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"S: string {string} does not have 2 elements.")
 
         return self.orbitals[string[0]].T.dot(x).dot(self.orbitals[string[1]])
@@ -789,7 +770,6 @@ class helper_SAPT(object):
     def compute_jk(self, Cleft, Cright, tensor=None):
 
         if self.reference == "ROHF":
-            psi4.core.clean()
             raise NotImplementedError(
                 "JK generation not yet implemented for ROHF reference."
             )
@@ -806,7 +786,6 @@ class helper_SAPT(object):
             return_single = True
 
         if len(Cleft) != len(Cright):
-            psi4.core.clean()
             raise ValueError("Cleft list is not the same length as Cright list")
 
         zero_append = []
@@ -822,7 +801,6 @@ class helper_SAPT(object):
                 mor = Cr.shape[1]
 
                 if (tensor[num].shape[0] != mol) or (tensor[num].shape[1] != mor):
-                    psi4.core.clean()
                     raise ValueError(
                         f"compute_sapt_JK: Tensor size does not match Cl ({mol}) "
                         f"/Cr ({mor}) : {tensor[num].shape}"

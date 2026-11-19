@@ -3,7 +3,6 @@ import os
 import warnings
 from collections.abc import Mapping
 from pathlib import Path
-import psi4
 import numpy as np
 import opt_einsum as oe
 from .molecule import Dimer
@@ -66,7 +65,6 @@ def density_mo_to_ao(
     elif monomer == "B":
         return dimer.C_B.dot(density_matrix).dot(dimer.C_B.T)
     else:
-        psi4.core.clean()
         raise ValueError(f"Invalid monomer: {monomer}")
 
 
@@ -280,7 +278,6 @@ def _resolve_matrix_format(matrix_format: str | None, compress_matrices) -> str:
 
     if compress_matrices is not None:
         if matrix_format is not None:
-            psi4.core.clean()
             raise TypeError(
                 "`compress_matrices` is deprecated, use `matrix_format` alone!"
             )
@@ -299,7 +296,6 @@ def _resolve_matrix_format(matrix_format: str | None, compress_matrices) -> str:
         not isinstance(matrix_format, str)
         or matrix_format.lower() not in MATRIX_FORMATS
     ):
-        psi4.core.clean()
         raise ValueError(
             f"`matrix_format` should be one of {MATRIX_FORMATS}, was {matrix_format!r}!"
         )
@@ -707,12 +703,10 @@ def calc_density_matrix(
     """
 
     if monomer not in ["A", "B"]:
-        psi4.core.clean()
         raise ValueError(f"'{monomer}' is not a valid monomer for density matrix.")
 
     orbital_basis = orbital_basis.upper()
     if orbital_basis not in ["MO", "AO"]:
-        psi4.core.clean()
         raise ValueError(
             f"Argument 'orbital_basis' should be either 'MO' or 'AO' but was '{orbital_basis}'!"
         )
@@ -804,7 +798,6 @@ def calc_density_matrix(
 
     else:
 
-        psi4.core.clean()
         raise ValueError(
             f"Argument 'orbital_basis' should be either 'MO' or 'AO' but was '{orbital_basis}'!"
         )
