@@ -131,6 +131,13 @@ propSAPT Options
    :undoc-members:
    :show-inheritance:
 
+Logging
+-------
+
+.. automodule:: prop_sapt.log
+   :members:
+   :show-inheritance:
+
 Utility Functions
 -----------------
 

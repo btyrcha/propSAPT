@@ -170,3 +170,4 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-19
 
 - Rebased the CPSCF solver PR onto `main` after the 0.5.0 release and the TREXIO export (its changelog entry moved to the Unreleased section).
+- Planned and implemented the logging layer (step 1.2 of the backend roadmap): the `prop_sapt` logger with a handler writing into Psi4's output file, about 120 `psi4.core.print_out` calls in 15 modules replaced by module loggers with messages free of blank lines, the SAPT summary table as one record, `make_cube` progress at DEBUG, the 36 `psi4.core.clean()` calls before raises removed, with tests, docs and a changelog entry; results unchanged on He–H2 (energies, properties, densities and finite field within run-to-run round-off).
