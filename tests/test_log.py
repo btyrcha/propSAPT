@@ -8,6 +8,8 @@ import pytest
 
 import prop_sapt.log
 
+from .test_cpscf_solver import DenseHessian, right_hand_sides, solve
+
 
 @pytest.fixture
 def psi4_output(tmp_path):
@@ -81,3 +83,35 @@ def test_reload_keeps_one_handler(psi4_output):
     assert len(_handlers()) == 1
     logging.getLogger("prop_sapt").info("once")
     assert psi4_output().count("once") == 1
+
+
+def _solver_records(caplog):
+    return [
+        record for record in caplog.records if record.name == "prop_sapt.cpscf_solver"
+    ]
+
+
+def test_cpscf_progress_is_logged(caplog):
+    """The CPSCF table is made of INFO records of the `prop_sapt.cpscf_solver` logger,
+    which reach `caplog` by propagation, each without blank lines around it."""
+
+    with caplog.at_level(logging.INFO, logger="prop_sapt"):
+        solve(DenseHessian(), right_hand_sides(2))
+
+    records = _solver_records(caplog)
+    messages = [record.getMessage() for record in records]
+    assert "CPSCF: preconditioned conjugate gradient" in messages[0]
+    assert {record.levelno for record in records} == {logging.INFO}
+    assert not [m for m in messages if m.startswith("\n") or m.endswith("\n")]
+
+
+def test_unconverged_solve_logs_a_warning(caplog):
+    with (
+        pytest.warns(RuntimeWarning),
+        caplog.at_level(logging.INFO, logger="prop_sapt"),
+    ):
+        solve(DenseHessian(), right_hand_sides(2), maxiter=2)
+
+    warned = [r for r in _solver_records(caplog) if r.levelno == logging.WARNING]
+    assert len(warned) == 1
+    assert "did not converge" in warned[0].getMessage()

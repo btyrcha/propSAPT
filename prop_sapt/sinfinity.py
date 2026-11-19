@@ -2,11 +2,13 @@
 Second-quantized SAPT S^infinity
 """
 
+import logging
 from time import time
-import psi4
 import numpy as np
 import opt_einsum as oe
 from .helper_SAPT_DF import helper_SAPT
+
+logger = logging.getLogger(__name__)
 
 
 def get_A_bb(s_ba, s_ab):
@@ -41,7 +43,7 @@ class sinfinity(helper_SAPT):
         super().__init__(dimer, reference, memory, **kwargs)
 
         ### Starting initialisation
-        psi4.core.print_out("\nInitializing Sinfinity object...\n")
+        logger.info("Initializing Sinfinity object...")
         t_start = time()
 
         ###  Matrices and tensors from helper_sapt
@@ -236,6 +238,6 @@ class sinfinity(helper_SAPT):
         self.tA_sb = self.omegaA_bs.T * self.eps_sb
 
         ### Print time
-        psi4.core.print_out(
-            f"...finished initializing Sinfinity object in {(time() - t_start):5.2f} seconds.\n\n"
+        logger.info(
+            f"...finished initializing Sinfinity object in {(time() - t_start):5.2f} seconds."
         )

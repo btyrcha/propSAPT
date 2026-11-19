@@ -8,12 +8,14 @@ unconverged vectors in one call, which for the CPSCF equations is one J/K build 
 whole batch. Each vector converges on its own.
 """
 
+import logging
 import time
 import warnings
 from collections.abc import Callable, Mapping, Sequence
 
 import numpy as np
-import psi4
+
+logger = logging.getLogger(__name__)
 
 HessianProduct = Callable[[list[np.ndarray]], list[np.ndarray]]
 
@@ -33,7 +35,7 @@ def conjugate_gradient(
     right-hand side, b / `diagonal`: for the CPSCF equations, the uncoupled solution. A
     vector has converged when its relative residual ||b - H x|| / ||b|| is below
     `r_convergence`. A zero right-hand side has the solution zero. The progress is
-    printed to Psi4's output file.
+    logged by the `prop_sapt.cpscf_solver` logger.
 
     Args:
         rhs (Sequence[np.ndarray]): Right-hand sides b, arrays of the shape of
@@ -113,7 +115,7 @@ def conjugate_gradient(
         active = unconverged
         _print_row(f"{iteration:d}", residual, len(active), t_start)
 
-    psi4.core.print_out("   " + "-" * 56 + "\n")
+    logger.info("   " + "-" * 56)
 
     if active:
         _warn(
@@ -153,24 +155,24 @@ def _products(
 
 
 def _print_header(title: str, count: int, r_convergence: float, maxiter: int):
-    psi4.core.print_out(
-        f"\n   {title}: preconditioned conjugate gradient\n"
+    logger.info(
+        f"   {title}: preconditioned conjugate gradient\n"
         f"    Equations           = {count:11d}\n"
         f"    Convergence         = {r_convergence:11.3e}\n"
         f"    Maxiter             = {maxiter:11d}\n\n"
         f"    {'Iter':>5} {'Residual mean':>14} {'Residual max':>13} "
         f"{'Remaining':>10} {'Time [s]':>9}\n"
-        "   " + "-" * 56 + "\n"
+        "   " + "-" * 56
     )
 
 
 def _print_row(label: str, residual: list[float], remaining: int, t_start: float):
-    psi4.core.print_out(
+    logger.info(
         f"    {label:>5} {np.mean(residual):14.3e} {np.max(residual):13.3e} "
-        f"{remaining:10d} {time.time() - t_start:9.1f}\n"
+        f"{remaining:10d} {time.time() - t_start:9.1f}"
     )
 
 
 def _warn(message: str):
-    psi4.core.print_out(f"\n   Warning: {message}\n")
+    logger.warning(message)
     warnings.warn(message, RuntimeWarning, stacklevel=3)

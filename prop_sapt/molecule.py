@@ -2,6 +2,7 @@
 Definition of a core Dimer (molecule-like) class.
 """
 
+import logging
 import os
 import warnings
 from time import time
@@ -23,6 +24,8 @@ from .partition import (
     molecular_grid,
 )
 from .utils import changed_psi4_options
+
+logger = logging.getLogger(__name__)
 
 
 class Dimer(sinfinity):
@@ -67,12 +70,12 @@ class Dimer(sinfinity):
                 "which the dimer follows by default."
             )
             warnings.warn(message, FutureWarning, stacklevel=2)
-            psi4.core.print_out(f"\nWarning: {message}\n")
+            logger.warning(message)
 
         # starting initialisation
         t_start = time()
-        psi4.core.print_out("*" * 80)
-        psi4.core.print_out("\nInitializing Dimer object...\n\n")
+        logger.info("*" * 80)
+        logger.info("Initializing Dimer object...")
         psi4.core.tstart()
 
         # create Psi4 Molecule object
@@ -103,13 +106,11 @@ class Dimer(sinfinity):
         self._theta_cpscf_key: tuple[str, str | None] | None = None
 
         # print time
-        psi4.core.print_out(
-            f"...finished initializing Dimer object in {(time() - t_start):5.2f} seconds.\n"
+        logger.info(
+            f"...finished initializing Dimer object in {(time() - t_start):5.2f} seconds."
         )
         psi4.core.tstop()
-        psi4.core.print_out("\n")
-        psi4.core.print_out("*" * 80)
-        psi4.core.print_out("\n")
+        logger.info("*" * 80)
 
     def get_cpscf_ra(self) -> np.ndarray:
         """

@@ -1,3 +1,4 @@
+import logging
 import os
 import warnings
 from collections.abc import Mapping
@@ -22,6 +23,8 @@ from .densities_components.exch_ind import (
     exch_ind_density_builder,
     exch_ind_s2_density_builder,
 )
+
+logger = logging.getLogger(__name__)
 
 #: Keys of the density components returned by `calc_density_matrix`, in order;
 #: `calc_densities` returns them as "<key>_A", "<key>_B" and, in the AO basis, "<key>".
@@ -152,9 +155,9 @@ def calc_densities(
     rho_ao = rho_dict
     if orbital_basis != "AO" and (save_cubes or save_matrices or save_trexio):
 
-        psi4.core.print_out(
-            f"\nWarning: Density matrices are in {orbital_basis} basis,"
-            "attempting MO -> AO transformation, for saving...\n"
+        logger.warning(
+            f"Density matrices are in {orbital_basis} basis, "
+            "attempting MO -> AO transformation, for saving..."
         )
 
         rho_ao = {
@@ -162,7 +165,7 @@ def calc_densities(
             for key, rho in rho_dict.items()
         }
 
-        psi4.core.print_out("MO -> AO transformation complete.\n")
+        logger.info("MO -> AO transformation complete.")
 
     # distinct on any file system, checked before anything is written
     file_names = density_file_names(rho_ao)
@@ -175,7 +178,7 @@ def calc_densities(
 
     if save_matrices:
 
-        psi4.core.print_out("\nSaving density matrices...\n")
+        logger.info("Saving density matrices...")
         prepare_path(matrices_dir + "/dummy")  # create matrices_dir if it doesn't exist
 
         if matrix_format == "npz":
@@ -209,9 +212,9 @@ def calc_densities(
                 metadata=bundle_metadata,
             )
 
-            psi4.core.print_out(
+            logger.info(
                 f"Density matrices and monomer wavefunctions saved into {bundle}.\n"
-                "To load use `prop_sapt.load_densities`.\n"
+                "To load use `prop_sapt.load_densities`."
             )
 
         else:
@@ -223,24 +226,24 @@ def calc_densities(
                 "`prop_sapt.load_densities`."
             )
             warnings.warn(message, FutureWarning, stacklevel=2)
-            psi4.core.print_out(f"\nWarning: {message}\n")
+            logger.warning(message)
 
             for key, matrix in rho_ao.items():
                 np.save(f"{matrices_dir}/{file_names[key]}.npy", matrix)
 
-            psi4.core.print_out("Density matrices saved.\n")
+            logger.info("Density matrices saved.")
 
             # Save wavefunction information
-            psi4.core.print_out("\nSaving monomer Wfn objects...\n")
+            logger.info("Saving monomer Wfn objects...")
             dimer.wfnA.to_file(f"{matrices_dir}/wfn_mon_A.npy")
             dimer.wfnB.to_file(f"{matrices_dir}/wfn_mon_B.npy")
-            psi4.core.print_out(
-                "Monomer Wfn objects saved. To load use `psi4.core.Wavefunction.from_file`\n"
+            logger.info(
+                "Monomer Wfn objects saved. To load use `psi4.core.Wavefunction.from_file`"
             )
 
     if save_cubes:
 
-        psi4.core.print_out("\nSaving density cubes...\n")
+        logger.info("Saving density cubes...")
 
         prepare_path(cubes_dir + "/dummy")  # create cubes_dir if it doesn't exist
 
@@ -257,15 +260,15 @@ def calc_densities(
             )
             cube.save(cube_filenames[key])
 
-        psi4.core.print_out("Density cubes saved.\n")
+        logger.info("Density cubes saved.")
 
     if save_trexio:
 
-        psi4.core.print_out("\nSaving TREXIO files of the densities...\n")
+        logger.info("Saving TREXIO files of the densities...")
         export_trexio(rho_ao, trexio_dir, dimer=dimer)
-        psi4.core.print_out(
+        logger.info(
             "TREXIO files saved: natural orbitals, the density change is the alpha - "
-            "beta density.\n"
+            "beta density."
         )
 
     return rho_dict
