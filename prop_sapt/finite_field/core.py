@@ -2,6 +2,7 @@
 Finite field property calculations and finite field SAPT.
 """
 
+import logging
 from typing import Dict, Optional, cast
 
 import numpy as np
@@ -20,6 +21,8 @@ from .utils import (
 )
 
 from ..options import PROPSAPT_OPTIONS
+
+logger = logging.getLogger(__name__)
 
 
 def validate_property(prop: str | np.ndarray) -> None:
@@ -165,8 +168,8 @@ def calculate_ff_dipole_along_axis(
     if cp_correction:
         psi4_energy_kwargs["bsse_type"] = "cp"
 
-    psi4.core.print_out(
-        f"\nCalculating finite field dipole moment along {axis}-axis with field strength {field_strength:.6f} a.u.\n"
+    logger.info(
+        f"Calculating finite field dipole moment along {axis}-axis with field strength {field_strength:.6f} a.u."
     )
 
     # Build energies dict using helper utilities
@@ -213,9 +216,7 @@ def calculate_ff_dipole_along_axis(
         cast(float, dipole_moment), method.upper(), energies, formula, field_strength
     )
 
-    psi4.core.print_out(
-        f"Finite field dipole moment calculation along {axis}-axis completed.\n"
-    )
+    logger.info(f"Finite field dipole moment calculation along {axis}-axis completed.")
 
     return results
 
@@ -341,8 +342,8 @@ def calculate_ff_sapt_dipole_along_axis(
         psi4.core.clean()
         raise ValueError(f"Unknown finite difference formula: {formula}")
 
-    psi4.core.print_out(
-        f"\nCalculating finite field SAPT dipole moment along {axis}-axis with field strength {field_strength:.6f} a.u.\n"
+    logger.info(
+        f"Calculating finite field SAPT dipole moment along {axis}-axis with field strength {field_strength:.6f} a.u."
     )
 
     # Prepare dimer kwargs
@@ -400,8 +401,8 @@ def calculate_ff_sapt_dipole_along_axis(
     ### Calculate the finite field difference
     data = apply_finite_difference_formula(sapt_energies, formula, field_strength)
 
-    psi4.core.print_out(
-        f"Finite field SAPT dipole moment calculation along {axis}-axis completed.\n"
+    logger.info(
+        f"Finite field SAPT dipole moment calculation along {axis}-axis completed."
     )
 
     return cast(pd.Series, data)

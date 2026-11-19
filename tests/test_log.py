@@ -2,6 +2,7 @@
 
 import importlib
 import logging
+from pathlib import Path
 
 import psi4
 import pytest
@@ -115,3 +116,23 @@ def test_unconverged_solve_logs_a_warning(caplog):
     warned = [r for r in _solver_records(caplog) if r.levelno == logging.WARNING]
     assert len(warned) == 1
     assert "did not converge" in warned[0].getMessage()
+
+
+def _calls(pattern: str) -> list[str]:
+    """The `path:line` of every line of the package's modules containing `pattern`."""
+
+    root = Path(prop_sapt.log.__file__).parent
+    found = []
+    for path in sorted(root.rglob("*.py")):
+        for number, line in enumerate(path.read_text().splitlines(), start=1):
+            if pattern in line:
+                found.append(f"{path.relative_to(root).as_posix()}:{number}")
+    return found
+
+
+def test_only_the_log_module_writes_to_psi4_output():
+    """The modules log, and only `prop_sapt.log` writes into Psi4's output file, so a
+    backend other than Psi4 needs only another handler."""
+
+    calls = _calls("psi4.core.print_out(")
+    assert [call.split(":")[0] for call in calls] == ["log.py"]
