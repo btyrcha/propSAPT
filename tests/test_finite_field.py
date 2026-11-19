@@ -1,5 +1,6 @@
 """Minimal tests for finite_field module - core functionality only."""
 
+import logging
 import math
 
 import pandas as pd
@@ -141,17 +142,21 @@ class TestResultSeriesConstruction:
 class TestBannerPrinting:
     """Test banner printing."""
 
-    @patch("psi4.core.print_out")
-    def test_print_finite_field_banner(self, mock_print):
-        """Test print_finite_field_banner calls psi4.core.print_out."""
-        print_finite_field_banner(
-            "TEST BANNER",
-            {"Method": "HF", "Field strength": 0.001},
-        )
+    def test_print_finite_field_banner(self, caplog):
+        """The banner is one INFO record with the title and the details."""
+        with caplog.at_level(logging.INFO, logger="prop_sapt"):
+            print_finite_field_banner(
+                "TEST BANNER",
+                {"Method": "HF", "Field strength": 0.001},
+            )
 
-        assert mock_print.call_count >= 5
-        calls_str = str(mock_print.call_args_list)
-        assert "TEST BANNER" in calls_str
+        (record,) = caplog.records
+        assert record.name == "prop_sapt.finite_field.utils"
+        assert record.levelno == logging.INFO
+        lines = record.getMessage().splitlines()
+        assert lines[1] == "  TEST BANNER"
+        assert "  Method: HF" in lines
+        assert "  Field strength: 0.001000 a.u." in lines
 
 
 class TestDipoleTwoPointFormula:
