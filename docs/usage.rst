@@ -572,6 +572,29 @@ You can customize various aspects of the calculation using Psi4 options before c
        }
    )
 
+Output and logging
+~~~~~~~~~~~~~~~~~~
+
+propSAPT writes its output through Python's :mod:`logging`, under the ``prop_sapt``
+logger, and by default into Psi4's output file next to Psi4's own output. Each module
+logs under its own name, e.g. ``prop_sapt.cpscf_solver`` for the CPSCF iterations, so
+the standard ``logging`` calls quiet or redirect any part of it:
+
+.. code-block:: python
+
+   import logging
+
+   # only warnings from propSAPT
+   logging.getLogger("prop_sapt").setLevel(logging.WARNING)
+
+   # no CPSCF iteration tables
+   logging.getLogger("prop_sapt.cpscf_solver").setLevel(logging.WARNING)
+
+   # also into a file of its own
+   logging.getLogger("prop_sapt").addHandler(logging.FileHandler("prop_sapt.log"))
+
+The progress of ``make_cube`` over the grid is logged at the ``DEBUG`` level.
+
 Hellmann-Feynman Forces
 -----------------------
 

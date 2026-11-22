@@ -27,6 +27,11 @@ requests of the private repository propSAPT was developed in before it was publi
 - propSAPT solves the CPSCF equations with its own conjugate-gradient solver, with the
   same results. A solve that has not converged in `cpscf_maxiter` iterations now warns,
   where it used to go on silently.
+- propSAPT writes its output through Python's `logging`, under the `prop_sapt` logger.
+  It still goes into Psi4's output file, with fewer blank lines, and the standard
+  `logging` calls now quiet or redirect it, in whole or per module. The progress of
+  `make_cube` over the grid is logged at the DEBUG level. See the
+  [usage guide](https://btyrcha.github.io/propSAPT/usage.html#output-and-logging).
 
 ### Fixed
 

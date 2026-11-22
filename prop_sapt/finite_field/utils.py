@@ -2,6 +2,7 @@
 Utilities for finite field property calculations and finite field SAPT.
 """
 
+import logging
 from typing import Dict, Callable, Optional
 
 import psi4
@@ -11,6 +12,8 @@ from numpy.linalg import vector_norm
 
 from ..molecule import Dimer
 from ..sapt_driver import calc_sapt_energy
+
+logger = logging.getLogger(__name__)
 
 
 def get_field_vector(axis: str, magnitude: float) -> list:
@@ -70,8 +73,8 @@ def calculate_perturbed_energy(
             }
         )
 
-        psi4.core.print_out(
-            f"Computing energy with {sign} field ({magnitude:.6f}) along {axis}-axis...\n"
+        logger.info(
+            f"Computing energy with {sign} field ({magnitude:.6f}) along {axis}-axis..."
         )
 
         energy = psi4.energy(method, molecule=molecule, **energy_kwargs)
@@ -123,8 +126,8 @@ def calculate_perturbed_sapt_energies(
             }
         )
 
-        psi4.core.print_out(
-            f"Computing SAPT energy with {sign} field ({magnitude:.6f}) along {axis}-axis...\n"
+        logger.info(
+            f"Computing SAPT energy with {sign} field ({magnitude:.6f}) along {axis}-axis..."
         )
 
         dimer = Dimer(
@@ -174,7 +177,7 @@ def apply_finite_difference_formula(
                 "two_point formula requires 'plus_h' and 'minus_h' energies"
             )
 
-        psi4.core.print_out("Using two-point finite difference formula.\n")
+        logger.info("Using two-point finite difference formula.")
         derivative = (energies["plus_h"] - energies["minus_h"]) / (2 * field_strength)
 
     elif formula == "four_point":
@@ -182,7 +185,7 @@ def apply_finite_difference_formula(
         if not all(key in energies for key in required_keys):
             raise ValueError(f"four_point formula requires all of: {required_keys}")
 
-        psi4.core.print_out("Using four-point finite difference formula.\n")
+        logger.info("Using four-point finite difference formula.")
         derivative = (
             -energies["plus_2h"]
             + 8 * energies["plus_h"]
@@ -234,24 +237,23 @@ def build_result_series(
 
 
 def print_finite_field_banner(title: str, details: Dict[str, str | float]) -> None:
-    """Print a formatted banner with title and details for finite field calculations.
+    """Log a formatted banner with title and details for finite field calculations.
 
     Args:
         title (str): Title to display in the banner (e.g., "FINITE FIELD PROPERTY CALCULATIONS").
         details (Dict[str, str | float]): Dictionary of detail key-value pairs to display.
             Keys will be formatted as "  Key: value".
     """
-    psi4.core.print_out("\n" + "=" * 70 + "\n")
-    psi4.core.print_out(f"  {title}\n")
-    psi4.core.print_out("=" * 70 + "\n")
-
+    rule = "=" * 70
+    lines = [rule, f"  {title}", rule]
     for key, value in details.items():
         if isinstance(value, float):
-            psi4.core.print_out(f"  {key}: {value:.6f} a.u.\n")
+            lines.append(f"  {key}: {value:.6f} a.u.")
         else:
-            psi4.core.print_out(f"  {key}: {value}\n")
+            lines.append(f"  {key}: {value}")
+    lines.append(rule)
 
-    psi4.core.print_out("=" * 70 + "\n")
+    logger.info("\n".join(lines))
 
 
 def apply_to_cartesian_axes(

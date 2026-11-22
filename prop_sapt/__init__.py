@@ -1,4 +1,5 @@
 from ._version import __version__
+from . import log  # the `prop_sapt` logger writes into Psi4's output file
 from .molecule import Dimer
 from .properties import calc_property
 from .densities import calc_density_matrix, calc_densities, DENSITY_COMPONENTS

@@ -755,11 +755,7 @@ def calc_property(
         pd.DataFrame: DataFrame with results.
     """
 
-    try:
-        _check_response(response)
-    except ValueError:
-        psi4.core.clean()
-        raise
+    _check_response(response)
 
     with CalcTimer("Interaction-induced property calculations"):
         ### Results output file
@@ -775,7 +771,6 @@ def calc_property(
             results = calc_induced_dipole(dimer, response=response)
 
         else:
-            psi4.core.clean()
             raise ValueError(
                 f"Property {prop} is not implemented. "
                 "Please provide a valid property name or a property matrix."

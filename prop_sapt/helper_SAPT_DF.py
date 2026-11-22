@@ -49,6 +49,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
+import logging
 import time
 from typing import overload, Literal, Any
 from functools import wraps
@@ -59,6 +60,8 @@ from psi4.driver.p4util import message_box, OptionsState, OptionsStateCM
 
 from .cpscf_solver import conjugate_gradient
 from .options import PROPSAPT_OPTIONS, check_cpscf_type, check_df_basis_cpscf
+
+logger = logging.getLogger(__name__)
 
 
 @overload
@@ -114,19 +117,16 @@ class helper_SAPT(object):
 
         # propSAPT is all-electron: reject frozen core instead of ignoring it
         if psi4.core.get_global_option("FREEZE_CORE") not in ("FALSE", "0"):
-            psi4.core.clean()
             raise ValueError(
                 "propSAPT does not support frozen core; set FREEZE_CORE to false."
             )
 
         # Verify reference
         if reference not in ["RHF", "ROHF", "UHF", "RKS", "UKS"]:
-            psi4.core.clean()
             raise ValueError(f"Unsupported reference type '{reference}'.")
 
         if reference in ["ROHF", "UHF", "UKS"]:
             # NOTE: Future upgrades
-            psi4.core.clean()
             raise ValueError(f"Reference '{reference}' not implemented yet.")
 
         # Check if the functional is specified for DFT
@@ -136,15 +136,14 @@ class helper_SAPT(object):
 
         # Initialize time
         tinit_start = time.time()
-        psi4.core.print_out("\nInitializing SAPT object...\n")
-        psi4.core.print_out(
-            f"""         ---------------------------------------------------------
-                             helper_SAPT_DF
-                              {reference} Reference
-         ---------------------------------------------------------
-         """
+        logger.info("Initializing SAPT object...")
+        logger.info(
+            "         ---------------------------------------------------------\n"
+            "                             helper_SAPT_DF\n"
+            f"                              {reference} Reference\n"
+            "         ---------------------------------------------------------"
         )
-        psi4.core.print_out(f"\nSelected reference is {reference}\n")
+        logger.info(f"Selected reference is {reference}")
 
         # Set a few crucial attributes
         self.reference = reference.upper()
@@ -160,12 +159,11 @@ class helper_SAPT(object):
         nfrags = dimer.nfragments()
 
         if nfrags < 2:
-            psi4.core.clean()
             raise ValueError(f"Found {nfrags:d} fragments, must be at least 2.")
         elif nfrags > 2:
-            psi4.core.print_out(
+            logger.info(
                 f"Found {nfrags:d} fragments, using first 2 as monomers, "
-                "and the rest as extra basis functions (ghosts).\n"
+                "and the rest as extra basis functions (ghosts)."
             )
 
         # Grab monomers in DCBS
@@ -179,14 +177,13 @@ class helper_SAPT(object):
         # closed-shell references only, fail before any SCF is run
         for label, mult in (("A", self.mult_A), ("B", self.mult_B)):
             if mult != 1:
-                psi4.core.clean()
                 raise ValueError(
                     f"Monomer {label} has multiplicity {mult}, "
                     f"{reference} reference requires singlet monomers."
                 )
 
         # Compute monomer properties
-        psi4.core.print_out(message_box(f"Monomer A {reference}") + "\n")
+        logger.info(message_box(f"Monomer A {reference}").strip("\n"))
         tstart = time.time()
         if reference == "RHF":
             self.rhfA, self.wfnA = psi4_energy(
@@ -197,9 +194,8 @@ class helper_SAPT(object):
                 if kwargs.get("grac_A"):
                     psi4.set_options({"dft_grac_shift": kwargs["grac_A"]})
                 else:
-                    psi4.core.print_out(
-                        "\n*** WARNING!: GRAC shift for monomer A not specified! ***\n"
-                        "Running without GRAC.\n"
+                    logger.warning(
+                        "GRAC shift for monomer A not specified; running without GRAC."
                     )
                 self.dftA, self.wfnA = psi4_energy(
                     dft_functional, return_wfn=True, molecule=monomerA
@@ -207,11 +203,11 @@ class helper_SAPT(object):
         self.V_A = np.asarray(
             psi4.core.MintsHelper(self.wfnA.basisset()).ao_potential()
         )
-        psi4.core.print_out(
-            f"\n{reference} for monomer A finished in {time.time() - tstart:.2f} seconds.\n\n"
+        logger.info(
+            f"{reference} for monomer A finished in {time.time() - tstart:.2f} seconds."
         )
 
-        psi4.core.print_out(message_box(f"Monomer B {reference}") + "\n")
+        logger.info(message_box(f"Monomer B {reference}").strip("\n"))
         tstart = time.time()
         if reference == "RHF":
             self.rhfB, self.wfnB = psi4_energy(
@@ -222,9 +218,8 @@ class helper_SAPT(object):
                 if kwargs.get("grac_B"):
                     psi4.set_options({"dft_grac_shift": kwargs["grac_B"]})
                 else:
-                    psi4.core.print_out(
-                        "\n*** WARNING!: GRAC shift for monomer B not specified! ***\n"
-                        "Running without GRAC.\n"
+                    logger.warning(
+                        "GRAC shift for monomer B not specified; running without GRAC."
                     )
                 self.dftB, self.wfnB = psi4_energy(
                     dft_functional, return_wfn=True, molecule=monomerB
@@ -232,8 +227,8 @@ class helper_SAPT(object):
         self.V_B = np.asarray(
             psi4.core.MintsHelper(self.wfnB.basisset()).ao_potential()
         )
-        psi4.core.print_out(
-            f"\n{reference} for monomer B finished in {time.time() - tstart:.2f} seconds.\n\n"
+        logger.info(
+            f"{reference} for monomer B finished in {time.time() - tstart:.2f} seconds."
         )
 
         # Setup a few variables
@@ -253,7 +248,6 @@ class helper_SAPT(object):
             occA = self.ndocc_A + self.nsocc_A
 
         elif reference == "UHF" or reference == "UKS":
-            psi4.core.clean()
             raise NotImplementedError(f"Reference {reference} not implemented yet.")
 
         elif reference == "RHF" or reference == "RKS":
@@ -262,7 +256,6 @@ class helper_SAPT(object):
             occA = self.ndocc_A
 
         else:
-            psi4.core.clean()
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_A = np.asarray(self.wfnA.Ca())
@@ -282,7 +275,6 @@ class helper_SAPT(object):
             occB = self.ndocc_B + self.nsocc_B
 
         elif reference == "UHF" or reference == "UKS":
-            psi4.core.clean()
             raise NotImplementedError(f"Reference {reference} not implemented yet.")
 
         elif reference == "RHF" or reference == "RKS":
@@ -291,7 +283,6 @@ class helper_SAPT(object):
             occB = self.ndocc_B
 
         else:
-            psi4.core.clean()
             raise ValueError(f"Unknown reference type: {reference}.")
 
         self.C_B = np.asarray(self.wfnB.Ca())
@@ -360,16 +351,16 @@ class helper_SAPT(object):
             }
 
         ### Number of basis functions
-        psi4.core.print_out("\nNumber of molecular orbitals per type:\n")
-        psi4.core.print_out("-" * 38 + "\n")
-        psi4.core.print_out("".join([f"{dim:>5}" for dim in self.sizes]) + "\n")
-        psi4.core.print_out("-" * 38 + "\n")
-        psi4.core.print_out("".join([f"{dim:5d}" for _, dim in self.sizes.items()]))
-        psi4.core.print_out("\n\n")
+        rule = "-" * 38
+        labels = "".join(f"{name:>5}" for name in self.sizes)
+        counts = "".join(f"{dim:5d}" for dim in self.sizes.values())
+        logger.info(
+            f"Number of molecular orbitals per type:\n{rule}\n{labels}\n{rule}\n{counts}"
+        )
 
         ### Compute DF ERIs for dimer basis
         tstart = time.time()
-        psi4.core.print_out("\nCompute DF integrals for dimer-centered basis...\n")
+        logger.info("Compute DF integrals for dimer-centered basis...")
 
         self.dimer_wfn = psi4.core.Wavefunction.build(
             dimer, psi4.core.get_global_option("BASIS")
@@ -401,12 +392,10 @@ class helper_SAPT(object):
         Ppq = np.squeeze(Ppq)
         self.Qpq = np.array(oe.contract("QP,Ppq->Qpq", metric, Ppq))
 
-        psi4.core.print_out(
-            f"... DF integrals finished in {time.time() - tstart:.2f} seconds.\n"
-        )
+        logger.info(f"... DF integrals finished in {time.time() - tstart:.2f} seconds.")
 
         # JK object
-        psi4.core.print_out("\nInitialize JK objects...\n")
+        logger.info("Initialize JK objects...")
         tstart = time.time()
         aux_basis = psi4.core.BasisSet.build(
             self.dimer_wfn.molecule(),
@@ -423,9 +412,7 @@ class helper_SAPT(object):
         self.jk = psi4.core.JK.build(self.dimer_wfn.basisset(), aux_basis)
         self.jk.set_memory(self.jk_memory)
         self.jk.initialize()
-        psi4.core.print_out(
-            f"\n...initialized JK objects in {time.time() - tstart:.2f} seconds."
-        )
+        logger.info(f"...initialized JK objects in {time.time() - tstart:.2f} seconds.")
 
         self.J_A, self.K_A = self.compute_jk(self.Co_A, self.Co_A)
         self.J_B, self.K_B = self.compute_jk(self.Co_B, self.Co_B)
@@ -445,14 +432,13 @@ class helper_SAPT(object):
         self.S_AB = oe.contract("ui,vj,uv->ij", self.C_A, self.C_B, self.S)
 
         hsapt_init_time = time.time() - tinit_start
-        psi4.core.print_out(
-            f"\n...finished initializing SAPT object in {hsapt_init_time:5.2f} seconds.\n\n"
+        logger.info(
+            f"...finished initializing SAPT object in {hsapt_init_time:5.2f} seconds."
         )
 
     # Gets transformed DF integrals in MO
     def df_ints(self, string):
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"S: string {string} does not have 2 elements.")
 
         return np.array(
@@ -467,7 +453,6 @@ class helper_SAPT(object):
     # Grab MO overlap matrices
     def s(self, string):
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"S: string {string} does not have 2 elements.")
 
         # Compute on the fly, an empty orbital block gives a correctly shaped empty array
@@ -476,7 +461,6 @@ class helper_SAPT(object):
     # Grab epsilons, reshape if requested
     def eps(self, string, dim=1):
         if len(string) != 1:
-            psi4.core.clean()
             raise ValueError(f"Epsilon: string {string} does not have 1 element.")
 
         shape = (-1,) + tuple([1] * (dim - 1))
@@ -486,13 +470,11 @@ class helper_SAPT(object):
         elif (string == "j") or (string == "b") or (string == "s"):
             return self.eps_B[self.slices[string]].reshape(shape)
         else:
-            psi4.core.clean()
             raise ValueError(f"Unknown orbital type in eps: {string}.")
 
     # Grab MO potential matrices
     def potential(self, string, side):
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"Potential: string {string} does not have 2 elements.")
 
         # Two separate cases
@@ -508,7 +490,6 @@ class helper_SAPT(object):
                 (self.orbitals[string[0]].T).dot(self.V_B).dot(self.orbitals[string[1]])
             )
         else:
-            psi4.core.clean()
             raise ValueError(
                 f"helper_SAPT.potential side must be either A or B, not {side}."
             )
@@ -733,7 +714,7 @@ class helper_SAPT(object):
             )
 
         tstart = time.time()
-        psi4.core.print_out(f"\nInitialize the {cpscf_type} J/K object of CPSCF...\n")
+        logger.info(f"Initialize the {cpscf_type} J/K object of CPSCF...")
         jk = psi4.core.JK.build(
             wfn.basisset(),
             aux=aux,
@@ -750,8 +731,8 @@ class helper_SAPT(object):
             wfn.set_jk(scf_jk)
 
         fitting = f", fitting basis {aux.name()} ({aux.nbf()} functions)" if aux else ""
-        psi4.core.print_out(
-            f"...initialized {jk.name()}{fitting} in {time.time() - tstart:.2f} seconds.\n"
+        logger.info(
+            f"...initialized {jk.name()}{fitting} in {time.time() - tstart:.2f} seconds."
         )
 
         return jk
@@ -760,15 +741,12 @@ class helper_SAPT(object):
         """Raises ValueError unless CPSCF is implemented for this reference and `monomer`."""
 
         if self.reference in ["ROHF", "UHF", "UKS"]:
-            psi4.core.clean()
             raise ValueError(
                 f"CPSCF solver for a {self.reference} reference not implemented yet."
             )
         if self.reference not in ["RHF", "RKS"]:
-            psi4.core.clean()
             raise ValueError(f"Unknown reference type: {self.reference}.")
         if monomer not in ["A", "B"]:
-            psi4.core.clean()
             raise ValueError(f"'{monomer}' is not a valid monomer for CPSCF.")
 
     def chain_dot(self, *dot_list):
@@ -785,7 +763,6 @@ class helper_SAPT(object):
         """
 
         if len(string) != 2:
-            psi4.core.clean()
             raise ValueError(f"S: string {string} does not have 2 elements.")
 
         return self.orbitals[string[0]].T.dot(x).dot(self.orbitals[string[1]])
@@ -793,7 +770,6 @@ class helper_SAPT(object):
     def compute_jk(self, Cleft, Cright, tensor=None):
 
         if self.reference == "ROHF":
-            psi4.core.clean()
             raise NotImplementedError(
                 "JK generation not yet implemented for ROHF reference."
             )
@@ -810,7 +786,6 @@ class helper_SAPT(object):
             return_single = True
 
         if len(Cleft) != len(Cright):
-            psi4.core.clean()
             raise ValueError("Cleft list is not the same length as Cright list")
 
         zero_append = []
@@ -826,7 +801,6 @@ class helper_SAPT(object):
                 mor = Cr.shape[1]
 
                 if (tensor[num].shape[0] != mol) or (tensor[num].shape[1] != mor):
-                    psi4.core.clean()
                     raise ValueError(
                         f"compute_sapt_JK: Tensor size does not match Cl ({mol}) "
                         f"/Cr ({mor}) : {tensor[num].shape}"

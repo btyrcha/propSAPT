@@ -12,16 +12,18 @@ the CPSCF type of the options, see `options_cpscf_type`.
 """
 
 import inspect
+import logging
 import time
 from collections.abc import Callable, Generator, Mapping
 from contextlib import AbstractContextManager, nullcontext
 
 import numpy as np
-import psi4
 
 from .molecule import Dimer
 from .options import PROPSAPT_OPTIONS
 from .utils import CalcTimer
+
+logger = logging.getLogger(__name__)
 
 CPSCFRequest = tuple[str, np.ndarray]
 DensityBuilder = Generator[list[CPSCFRequest], list[np.ndarray], np.ndarray]
@@ -44,7 +46,7 @@ def solve_batched(
     Every builder runs up to its next request. The requests then pending are solved
     with one `Dimer.cpscf_batch` call per monomer, and the amplitudes are sent back to
     the builders, which run on to their next requests or finish. The time each builder
-    takes, without the solves, is printed under its name. The builders run in the
+    takes, without the solves, is logged under its name. The builders run in the
     context of `options_cpscf_type`, so all their CPSCF solves, including those of
     `Dimer.get_cpscf_ra` and `Dimer.get_cpscf_sb`, are of the `cpscf_type` option.
 
@@ -52,7 +54,7 @@ def solve_batched(
         mol (Dimer): The dimer.
         builders (Mapping[str, Generator]): Builders keyed by the name of what they
             calculate, e.g. "Second-order Induction density calculation".
-        report (bool, optional): Whether to print the timings to the Psi4 output.
+        report (bool, optional): Whether to log the timings.
             Defaults to True.
 
     Returns:
@@ -112,9 +114,7 @@ def _solve_batched(mol: Dimer, builders: Mapping[str, Generator], report: bool) 
             advance(name, amplitudes[name])
 
     for name, seconds in timings.items() if report else ():
-        psi4.core.print_out(
-            f"...{name} took a total of {seconds: .2f} seconds, besides CPSCF.\n"
-        )
+        logger.info(f"...{name} took a total of {seconds: .2f} seconds, besides CPSCF.")
 
     return results
 
