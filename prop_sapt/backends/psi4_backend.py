@@ -6,6 +6,9 @@ the integrals propSAPT needs, as Psi4's own SAPT does. It keeps the Psi4 objects
 `wfnB`, `mints`, ... compatibility attributes. The Psi4 options in place when it is built
 decide the calculation: `BASIS`, `DF_BASIS_SAPT`, `DF_BASIS_SCF`, `SCF_TYPE`, the
 convergence thresholds, and Psi4's memory (`psi4.set_memory`).
+
+`Psi4OutputHandler` writes the records of the `prop_sapt` logger into Psi4's output
+file, see `prop_sapt.log`.
 """
 
 import logging
@@ -83,6 +86,35 @@ def changed_psi4_options() -> dict | None:
         return None
 
     return prepare_options_for_set_options()
+
+
+class Psi4OutputFormatter(logging.Formatter):
+    """The message alone, after its level ("Warning: ...") for warnings and errors."""
+
+    def format(self, record: logging.LogRecord) -> str:
+        text = super().format(record)
+        if record.levelno >= logging.WARNING:
+            return f"{record.levelname.capitalize()}: {text}"
+
+        return text
+
+
+class Psi4OutputHandler(logging.Handler):
+    """Writes each log record into Psi4's output file, ended by a newline. `prop_sapt.log`
+    gives it the records of the `prop_sapt` logger."""
+
+    # marks the handler of this module across reloads, which create a new class
+    _prop_sapt_psi4_output = True
+
+    def __init__(self, level: int = logging.NOTSET):
+        super().__init__(level)
+        self.setFormatter(Psi4OutputFormatter())
+
+    def emit(self, record: logging.LogRecord):
+        try:
+            psi4.core.print_out(self.format(record) + "\n")
+        except Exception:
+            self.handleError(record)
 
 
 class Psi4Backend(Backend):

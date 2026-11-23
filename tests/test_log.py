@@ -8,6 +8,7 @@ import psi4
 import pytest
 
 import prop_sapt.log
+from prop_sapt.backends.psi4_backend import Psi4OutputHandler
 
 from .test_cpscf_solver import DenseHessian, right_hand_sides, solve
 
@@ -130,12 +131,17 @@ def _calls(pattern: str) -> list[str]:
     return found
 
 
-def test_only_the_log_module_writes_to_psi4_output():
-    """The modules log, and only `prop_sapt.log` writes into Psi4's output file, so a
-    backend other than Psi4 needs only another handler."""
+def test_only_the_psi4_backend_writes_to_psi4_output():
+    """The modules log, and only the Psi4 backend's handler writes into Psi4's output
+    file, so a backend other than Psi4 needs only another handler."""
 
     calls = _calls("psi4.core.print_out(")
-    assert [call.split(":")[0] for call in calls] == ["log.py"]
+    assert [call.split(":")[0] for call in calls] == ["backends/psi4_backend.py"]
+
+
+def test_log_module_installs_the_psi4_backends_handler():
+    assert prop_sapt.log.Psi4OutputHandler is Psi4OutputHandler
+    assert any(isinstance(handler, Psi4OutputHandler) for handler in _handlers())
 
 
 def test_psi4_scratch_cleaned_only_by_the_backend():
