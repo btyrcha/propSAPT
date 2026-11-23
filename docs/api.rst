@@ -11,6 +11,17 @@ Dimer Class
    :undoc-members:
    :show-inheritance:
 
+Backends
+--------
+
+.. automodule:: prop_sapt.backends.base
+   :members:
+   :show-inheritance:
+
+.. automodule:: prop_sapt.backends.psi4_backend
+   :members:
+   :show-inheritance:
+
 Properties
 ----------
 

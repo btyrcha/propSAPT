@@ -14,8 +14,8 @@ Conventions every backend follows, where the arrays enter or leave propSAPT:
 - `V` of a monomer is the attraction of an electron by that monomer's nuclei, -Z/r
   summed over its atoms.
 - `Qpq` is a factor of the density-fitted two-electron integrals in the fitting basis
-  of the SAPT terms (Psi4's `DF_BASIS_SAPT`): sum_Q Q_pq Q_rs = (pq|rs). Any factor
-  works, e.g. J^(-1/2) (P|pq) or a Cholesky one.
+  of the SAPT terms (Psi4's `DF_BASIS_SAPT`): ``sum_Q Q_pq Q_rs = (pq|rs)``. Any
+  factor works, e.g. ``J^(-1/2) (P|pq)`` or a Cholesky one.
 """
 
 from abc import ABC, abstractmethod
@@ -190,9 +190,9 @@ class Backend(ABC):
         self, lefts: Sequence[np.ndarray], rights: Sequence[np.ndarray]
     ) -> tuple[list[np.ndarray], list[np.ndarray]]:
         """
-        J and K matrices of the generalized densities D = C_left C_right^T, in the AO
-        basis: J_mn = (mn|ls) D_ls and K_mn = (ml|ns) D_ls. propSAPT passes only pairs
-        with at least one column on each side.
+        J and K matrices of the generalized densities ``D = C_left C_right^T``, in the
+        AO basis: ``J_mn = (mn|ls) D_ls`` and ``K_mn = (ml|ns) D_ls``. propSAPT passes
+        only pairs with at least one column on each side.
 
         Args:
             lefts (Sequence[np.ndarray]): C_left matrices, (nbf, k) each.
@@ -213,10 +213,12 @@ class Backend(ABC):
         side of its CPSCF equations.
 
         The Hessian is the symmetric positive definite one of a real singlet
-        perturbation: for RHF,
-        H_{ar,a'r'} = (eps_r - eps_a) delta_{aa'} delta_{rr'}
-        + 4 (ar|a'r') - (ar'|a'r) - (aa'|rr'),
-        and for RKS the exchange-correlation kernel too.
+        perturbation, for RHF ::
+
+            H_{ar,a'r'} = (eps_r - eps_a) delta_{aa'} delta_{rr'}
+                          + 4 (ar|a'r') - (ar'|a'r) - (aa'|rr')
+
+        and for RKS with the exchange-correlation kernel too.
 
         Args:
             monomer (str): "A" or "B".
