@@ -86,7 +86,7 @@ def he_h2_molecule() -> psi4.core.Molecule:
 
 
 def jkfit_size(molecule, target: str) -> int:
-    """Size of a JKFIT basis, built the way helper_SAPT_DF builds DF_BASIS_SCF."""
+    """Size of a JKFIT basis, built the way Psi4Backend builds DF_BASIS_SCF."""
 
     return psi4.core.BasisSet.build(
         molecule, "DF_BASIS_SCF", target, "JKFIT", "aug-cc-pvtz"

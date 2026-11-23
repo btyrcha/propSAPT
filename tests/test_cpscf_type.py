@@ -196,7 +196,7 @@ def test_scf_jk_restored_after_failed_solve(prepare_dimer, monkeypatch):
 
     mol = prepare_dimer
     failing = FailingHx(mol.wfnA)
-    monkeypatch.setattr(mol, "wfnA", failing)
+    monkeypatch.setitem(mol.backend.wavefunctions, "A", failing)
 
     with pytest.raises(RuntimeError, match="Hessian product failed"):
         with mol.use_cpscf_type("DF", DF_BASIS):

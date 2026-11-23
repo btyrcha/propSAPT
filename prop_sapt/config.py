@@ -74,7 +74,7 @@ class ConfigError(ValueError):
     """Raised when a run configuration cannot be read or is invalid."""
 
 
-# References the propSAPT code can run (see `helper_SAPT.__init__`).
+# References the propSAPT code can run (see `prop_sapt.backends.check_reference`).
 SUPPORTED_REFERENCES = ("RHF", "RKS")
 
 # Psi4 options the runner sets itself, from `basis`, `df_basis` and the `save_jk` requirement.

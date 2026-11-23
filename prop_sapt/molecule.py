@@ -13,9 +13,9 @@ import numpy as np
 import psi4
 from .sinfinity import sinfinity
 from .cubes import Cube, make_cube
-from .fragments import DimerFragments
 from .evaluate import evaluate_density, evaluate_esp, evaluate_orbital
-from .options import check_cpscf_type, check_df_basis_cpscf
+from .backends.psi4_backend import Psi4Backend
+from .options import PROPSAPT_OPTIONS, check_cpscf_type, check_df_basis_cpscf
 from .partition import (
     FragmentOperators,
     QuadratureGrid,
@@ -23,9 +23,42 @@ from .partition import (
     hirshfeld_fragment_weights,
     molecular_grid,
 )
-from .utils import changed_psi4_options
 
 logger = logging.getLogger(__name__)
+
+
+class _Psi4Attribute:
+    """A read-only attribute of a `Dimer` that is an object of its Psi4 backend, kept
+    for compatibility: attribute `name` of the backend, or its item `key`."""
+
+    def __init__(self, name: str, key: str | None = None, doc: str | None = None):
+        self.name = name
+        self.key = key
+        self.__doc__ = doc
+
+    def __set_name__(self, owner, attribute: str):
+        self.attribute = attribute
+
+    def __get__(self, dimer, owner=None):
+        if dimer is None:
+            return self
+
+        backend = dimer.backend
+        try:
+            value = getattr(backend, self.name)
+        except AttributeError:
+            raise AttributeError(
+                f"`{self.attribute}` is an object of the Psi4 backend; this dimer's "
+                f"backend is {type(backend).__name__}."
+            ) from None
+
+        return value if self.key is None else value[self.key]
+
+    def __set__(self, dimer, value):
+        raise AttributeError(
+            f"`{self.attribute}` is read-only: it is the Psi4 backend's, "
+            "see `Dimer.backend`."
+        )
 
 
 class Dimer(sinfinity):
@@ -46,6 +79,12 @@ class Dimer(sinfinity):
     options afterwards does not change the dimer.
 
     Memory comes from Psi4's setting (`psi4.set_memory`), as for any Psi4 calculation.
+
+    The monomer SCFs and the integrals are Psi4's, run by
+    `prop_sapt.backends.psi4_backend.Psi4Backend`, which the dimer keeps as `backend`.
+    Its Psi4 objects are also read-only attributes of the dimer: `dimer` (the
+    molecule), `wfnA` and `wfnB` (the monomer wavefunctions), `dimer_wfn`, `mints` and
+    `jk`.
 
     Args:
         geometry (str): Dimer geometry in Psi4 format, with monomers A and B as its
@@ -76,20 +115,21 @@ class Dimer(sinfinity):
         t_start = time()
         logger.info("*" * 80)
         logger.info("Initializing Dimer object...")
-        psi4.core.tstart()
 
-        # create Psi4 Molecule object
         self.geometry = geometry
-        self.dimer = psi4.geometry(geometry)
-        self.dimer.print_out_in_angstrom()
 
-        # the Psi4 options the dimer is built with, before the monomer SCFs change any
-        self.psi4_options = changed_psi4_options()
+        # the monomer SCFs and the integrals
+        backend = Psi4Backend(
+            geometry,
+            reference,
+            functional=kwargs.get("functional", PROPSAPT_OPTIONS["default_functional"]),
+            grac_A=kwargs.get("grac_A"),
+            grac_B=kwargs.get("grac_B"),
+            memory=memory,
+        )
 
         # initialize parent class
-        super().__init__(self.dimer, reference, memory, **kwargs)
-
-        self.fragments = DimerFragments.from_molecule(self.dimer)
+        super().__init__(backend)
 
         # induction amplitudes with the monomer SCF's J/K objects, as in IND2,r
         self.cpscf_ra = None
@@ -109,8 +149,29 @@ class Dimer(sinfinity):
         logger.info(
             f"...finished initializing Dimer object in {(time() - t_start):5.2f} seconds."
         )
-        psi4.core.tstop()
         logger.info("*" * 80)
+
+    # the Psi4 backend's objects, for compatibility
+    dimer = _Psi4Attribute("molecule", doc="The dimer's `psi4.core.Molecule`.")
+    wfnA = _Psi4Attribute("wavefunctions", "A", doc="Monomer A's SCF wavefunction.")
+    wfnB = _Psi4Attribute("wavefunctions", "B", doc="Monomer B's SCF wavefunction.")
+    dimer_wfn = _Psi4Attribute(
+        "dimer_wfn", doc="Wavefunction of the dimer basis set, without an SCF."
+    )
+    mints = _Psi4Attribute(
+        "mints", doc="`psi4.core.MintsHelper` of the dimer basis set."
+    )
+    jk = _Psi4Attribute("jk", doc="J/K object of the dimer basis set.")
+    jk_memory = _Psi4Attribute(
+        "jk_memory", doc="Memory of the J/K objects, in doubles."
+    )
+    memory = _Psi4Attribute("memory", doc="Memory of the J/K objects, in GB.")
+    psi4_options = _Psi4Attribute(
+        "psi4_options", doc="The Psi4 options changed from their defaults."
+    )
+    fitting_bases = _Psi4Attribute(
+        "fitting_bases", doc="The fitting basis sets as built, by option."
+    )
 
     def get_cpscf_ra(self) -> np.ndarray:
         """
@@ -284,7 +345,7 @@ class Dimer(sinfinity):
             psi4.core.Molecule: Psi4 molecule object of the dimer.
         """
 
-        return self.dimer
+        return self.backend.molecule
 
     def get_psi4_wavefunction(self) -> psi4.core.Wavefunction:
         """
@@ -308,7 +369,7 @@ class Dimer(sinfinity):
             psi4.core.BasisSet: Psi4 basis set object of the dimer.
         """
 
-        return self.dimer_wfn.basisset()
+        return self.backend.basisset
 
     def make_cube(
         self,

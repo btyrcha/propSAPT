@@ -4,7 +4,7 @@ import pytest
 
 from .he_h2 import HE_H2
 from prop_sapt import Dimer, get_propsapt_options
-from prop_sapt.helper_SAPT_DF import jk_memory_doubles
+from prop_sapt.backends.psi4_backend import jk_memory_doubles
 
 HE_H = """
 symmetry c1
@@ -166,9 +166,9 @@ def test_cpscf_batch_builds_products_together(prepare_dimer, monkeypatch, monome
     vectors: as many calls as its slowest vector alone, the first with every vector."""
 
     perturbations = random_perturbations(prepare_dimer, monomer, 3)
-    attribute = "wfnA" if monomer == "A" else "wfnB"
-    counted = CountedHx(getattr(prepare_dimer, attribute))
-    monkeypatch.setattr(prepare_dimer, attribute, counted)
+    wavefunctions = prepare_dimer.backend.wavefunctions
+    counted = CountedHx(wavefunctions[monomer])
+    monkeypatch.setitem(wavefunctions, monomer, counted)
 
     single_calls = []
     for p in perturbations:
