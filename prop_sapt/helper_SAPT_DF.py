@@ -54,7 +54,6 @@ import time
 from typing import overload, Literal, Any
 import numpy as np
 import opt_einsum as oe
-import psi4
 
 from .backends.base import Backend
 from .cpscf_solver import conjugate_gradient
@@ -445,9 +444,9 @@ class helper_SAPT(object):
         perturbation: for RHF,
         H_{ar,a'r'} = (eps_r - eps_a) delta_{aa'} delta_{rr'}
         + 4 (ar|a'r') - (ar'|a'r) - (aa'|rr'),
-        and for RKS the exchange-correlation kernel too. Its J and K matrices come from
-        the J/K object of the monomer SCF, or from `cpscf_jk` if it is set (see
-        `build_cpscf_jk`). Psi4's `cphf_Hx` gives the products, with the opposite sign.
+        and for RKS the exchange-correlation kernel too. The backend builds the
+        products (`Backend.orbital_hessian_product`), with the J/K of the monomer SCF,
+        or of `cpscf_jk` if it is set (see `build_cpscf_jk`).
 
         Args:
             monomer (str): "A" or "B".
@@ -462,47 +461,26 @@ class helper_SAPT(object):
         if len(vectors) == 0:
             return []
 
-        wfn = self.backend.wavefunctions[monomer]
-        matrices = [
-            psi4.core.Matrix.from_array(np.ascontiguousarray(x)) for x in vectors
-        ]
-
-        # `cphf_Hx` takes the J and K matrices from the wavefunction's J/K object
-        swap_jk = self.cpscf_jk is not None
-        if swap_jk:
-            scf_jk = wfn.jk()
-            wfn.set_jk(self.cpscf_jk)
-
-        try:
-            products = wfn.cphf_Hx(matrices)
-        finally:
-            if swap_jk:
-                wfn.set_jk(scf_jk)
-
-        return [-np.asarray(product) for product in products]
+        return self.backend.orbital_hessian_product(monomer, vectors, self.cpscf_jk)
 
     def build_cpscf_jk(
         self, cpscf_type: str | None, df_basis: str | None = None
-    ) -> psi4.core.JK | None:
+    ) -> object:
         """
-        J/K object for CPSCF solves of type `cpscf_type`, shared by both monomers.
-
-        It is set up as Psi4's SCF sets up its own (`initialize_jk`), with the memory of
-        propSAPT's J/K object, `jk_memory`. `cpscf_batch` uses it in place of the
-        monomer SCF's J/K object while it is `cpscf_jk`. The "DF" one is MemDFJK if it
-        fits in that memory and DiskDFJK otherwise, as for Psi4's `SCF_TYPE` "DF".
+        J/K object for CPSCF solves of type `cpscf_type`, shared by both monomers, from
+        the backend (`Backend.build_cpscf_jk`). `cpscf_batch` uses it in place of the
+        monomer SCF's J/K while it is `cpscf_jk`.
 
         Args:
             cpscf_type (str | None): "DIRECT" or "DF", case-insensitive, see the
                 `cpscf_type` option; None stands for the monomer SCF's J/K objects.
             df_basis (str | None, optional): Fitting basis of "DF". Defaults to the
-                dimer's `DF_BASIS_SCF` fitting basis (see `fitting_bases`): the one of
-                Psi4's `DF_BASIS_SCF` when the dimer was built, or else the JKFIT basis
-                of its orbital basis.
+                backend's default, for Psi4 the dimer's `DF_BASIS_SCF` fitting basis
+                (see `fitting_bases`).
 
         Returns:
-            psi4.core.JK | None: The J/K object, or None if the monomer SCF's J/K
-                objects are of this type already ("DF" only without `df_basis`).
+            object: The J/K object, or None if the monomer SCF's J/K objects are of
+                this type already ("DF" only without `df_basis`).
         """
 
         cpscf_type = check_cpscf_type(cpscf_type)
@@ -511,57 +489,7 @@ class helper_SAPT(object):
         if cpscf_type is None:
             return None
 
-        wavefunctions = self.backend.wavefunctions
-        scf_jk_names = {wfn.jk().name() for wfn in wavefunctions.values()}
-        if cpscf_type == "DIRECT" and scf_jk_names == {"DirectJK"}:
-            return None
-        if (
-            cpscf_type == "DF"
-            and df_basis is None
-            and scf_jk_names <= {"MemDFJK", "DiskDFJK"}
-        ):
-            return None
-
-        # the monomers share the dimer basis set (ghost atoms), as in Psi4's SAPT
-        wfn = wavefunctions["A"]
-        aux = None
-        if cpscf_type == "DF" and df_basis is None:
-            aux = self.backend._df_basis_scf
-        elif cpscf_type == "DF":
-            # a named fitting basis covers every atom; Psi4 only needs a valid orbital
-            # basis name next to it, the dimer's, not the options at this solve
-            aux = psi4.core.BasisSet.build(
-                wfn.molecule(),
-                "DF_BASIS_SCF",
-                df_basis,
-                "JKFIT",
-                wfn.basisset().name(),
-                puream=wfn.basisset().has_puream(),
-            )
-
-        tstart = time.time()
-        logger.info(f"Initialize the {cpscf_type} J/K object of CPSCF...")
-        jk = psi4.core.JK.build(
-            wfn.basisset(),
-            aux=aux,
-            jk_type=cpscf_type,
-            do_wK=wfn.functional().is_x_lrc(),
-            memory=self.backend.jk_memory,
-        )
-
-        # `initialize_jk` also puts the J/K object on the wavefunction
-        scf_jk = wfn.jk()
-        try:
-            wfn.initialize_jk(self.backend.jk_memory, jk=jk)
-        finally:
-            wfn.set_jk(scf_jk)
-
-        fitting = f", fitting basis {aux.name()} ({aux.nbf()} functions)" if aux else ""
-        logger.info(
-            f"...initialized {jk.name()}{fitting} in {time.time() - tstart:.2f} seconds."
-        )
-
-        return jk
+        return self.backend.build_cpscf_jk(cpscf_type, df_basis)
 
     def _check_cpscf(self, monomer):
         """Raises ValueError unless CPSCF is implemented for this reference and `monomer`."""
@@ -594,6 +522,24 @@ class helper_SAPT(object):
         return self.orbitals[string[0]].T.dot(x).dot(self.orbitals[string[1]])
 
     def compute_jk(self, Cleft, Cright, tensor=None):
+        """
+        J and K matrices of generalized densities D = C_left C_right^T, or
+        D = C_left M C_right^T with a matrix M of `tensor`, from the backend
+        (`Backend.compute_jk`).
+
+        M is folded into the side with fewer columns. A pair with no columns on a side
+        gets zero matrices without reaching the backend.
+
+        Args:
+            Cleft (np.ndarray | list[np.ndarray]): C_left matrix, (nbf, k), or a list.
+            Cright (np.ndarray | list[np.ndarray]): C_right matrix, (nbf, l), or a list
+                as long as `Cleft`.
+            tensor (np.ndarray | list[np.ndarray] | None, optional): M matrix, (k, l),
+                or a list of them, one per pair. Defaults to None, no M.
+
+        Returns:
+            tuple: J and K, AO matrices if one pair is given and lists of them otherwise.
+        """
 
         if self.reference == "ROHF":
             raise NotImplementedError(
@@ -615,7 +561,8 @@ class helper_SAPT(object):
             raise ValueError("Cleft list is not the same length as Cright list")
 
         zero_append = []
-        num_compute = 0
+        lefts = []
+        rights = []
 
         for num, (Cl, Cr) in enumerate(zip(Cleft, Cright)):
             if (Cr.shape[1] == 0) or (Cl.shape[1] == 0):
@@ -636,22 +583,14 @@ class helper_SAPT(object):
                 else:
                     Cr = np.dot(Cr, tensor[num].T)
 
-            Cl = psi4.core.Matrix.from_array(Cl)
-            Cr = psi4.core.Matrix.from_array(Cr)
-
-            self.backend.jk.C_left_add(Cl)
-            self.backend.jk.C_right_add(Cr)
-            num_compute += 1
-
-        self.backend.jk.compute()
+            lefts.append(Cl)
+            rights.append(Cr)
 
         J_list = []
         K_list = []
-        for num in range(num_compute):
-            J_list.append(np.array(self.backend.jk.J()[num]))
-            K_list.append(np.array(self.backend.jk.K()[num]))
-
-        self.backend.jk.C_clear()
+        if lefts:
+            J_list, K_list = self.backend.compute_jk(lefts, rights)
+            J_list, K_list = list(J_list), list(K_list)
 
         z = np.zeros((self.nbf, self.nbf))
         for num in zero_append:

@@ -9,7 +9,13 @@ NBF, NAUX = 6, 9
 
 
 class ArrayBackend(Backend):
-    """A backend of given arrays, without operations."""
+    """A backend of given arrays, with operations that do nothing."""
+
+    def compute_jk(self, lefts, rights):
+        return [], []
+
+    def orbital_hessian_product(self, monomer, vectors, cpscf_jk=None):
+        return []
 
 
 def monomer(ndocc=2, nmo=NBF, nbf=NBF, **changes):
@@ -126,3 +132,18 @@ def test_default_hooks_do_nothing():
     assert backend.clean_scratch() is None
     with backend.timer():
         pass
+
+
+def test_backend_needs_the_operations():
+    class NoOperations(Backend):
+        pass
+
+    with pytest.raises(TypeError, match="abstract"):
+        NoOperations(**backend_data())
+
+
+def test_no_cpscf_jk_types_by_default():
+    backend = ArrayBackend(**backend_data())
+
+    with pytest.raises(NotImplementedError, match="ArrayBackend backend has no CPSCF"):
+        backend.build_cpscf_jk("DF")

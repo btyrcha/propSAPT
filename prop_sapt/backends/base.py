@@ -18,8 +18,8 @@ Conventions every backend follows, where the arrays enter or leave propSAPT:
   works, e.g. J^(-1/2) (P|pq) or a Cholesky one.
 """
 
-from abc import ABC
-from collections.abc import Mapping
+from abc import ABC, abstractmethod
+from collections.abc import Mapping, Sequence
 from contextlib import AbstractContextManager, nullcontext
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
@@ -184,6 +184,73 @@ class Backend(ABC):
     def nbf(self) -> int:
         """Number of basis functions of the dimer basis set."""
         return self.S.shape[0]
+
+    @abstractmethod
+    def compute_jk(
+        self, lefts: Sequence[np.ndarray], rights: Sequence[np.ndarray]
+    ) -> tuple[list[np.ndarray], list[np.ndarray]]:
+        """
+        J and K matrices of the generalized densities D = C_left C_right^T, in the AO
+        basis: J_mn = (mn|ls) D_ls and K_mn = (ml|ns) D_ls. propSAPT passes only pairs
+        with at least one column on each side.
+
+        Args:
+            lefts (Sequence[np.ndarray]): C_left matrices, (nbf, k) each.
+            rights (Sequence[np.ndarray]): C_right matrices, as many as `lefts`, each
+                with the columns of its C_left.
+
+        Returns:
+            tuple[list[np.ndarray], list[np.ndarray]]: The J and the K matrices, in the
+                order of the pairs.
+        """
+
+    @abstractmethod
+    def orbital_hessian_product(
+        self, monomer: str, vectors: Sequence[np.ndarray], cpscf_jk: object = None
+    ) -> list[np.ndarray]:
+        """
+        Products of the orbital Hessian of a monomer with (ov) vectors, the left-hand
+        side of its CPSCF equations.
+
+        The Hessian is the symmetric positive definite one of a real singlet
+        perturbation: for RHF,
+        H_{ar,a'r'} = (eps_r - eps_a) delta_{aa'} delta_{rr'}
+        + 4 (ar|a'r') - (ar'|a'r) - (aa'|rr'),
+        and for RKS the exchange-correlation kernel too.
+
+        Args:
+            monomer (str): "A" or "B".
+            vectors (Sequence[np.ndarray]): (ov) vectors, (ndocc, nvirt) each.
+            cpscf_jk (object, optional): J/K object of `build_cpscf_jk` to build the
+                products with; None, the default, takes the monomer SCF's.
+
+        Returns:
+            list[np.ndarray]: The (ov) products, in the order of `vectors`.
+        """
+
+    def build_cpscf_jk(self, cpscf_type: str, df_basis: str | None = None) -> object:
+        """
+        J/K object for CPSCF solves of type `cpscf_type` (see the `cpscf_type` option),
+        for `orbital_hessian_product`. The backend's own type, the J/K of the monomer
+        SCFs, needs none.
+
+        Args:
+            cpscf_type (str): "DIRECT" or "DF".
+            df_basis (str | None, optional): Fitting basis of "DF"; None, the default,
+                is the backend's default fitting basis.
+
+        Returns:
+            object: The J/K object, or None if the monomer SCF's J/K is of this type
+                already.
+
+        Raises:
+            NotImplementedError: If the backend has no CPSCF J/K types, the default.
+        """
+
+        raise NotImplementedError(
+            f"The {type(self).__name__} backend has no CPSCF J/K types; "
+            "leave the `cpscf_type` option at None."
+        )
 
     def clean_scratch(self) -> None:
         """Free what the backend keeps on disk between calculations, at the end of a

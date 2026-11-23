@@ -10,6 +10,7 @@ convergence thresholds, and Psi4's memory (`psi4.set_memory`).
 
 import logging
 import time
+from collections.abc import Sequence
 from contextlib import contextmanager
 from functools import wraps
 from typing import Iterator, Literal, overload
@@ -323,6 +324,129 @@ class Psi4Backend(Backend):
         """The dimer basis set, the one the backend was built with."""
 
         return self.dimer_wfn.basisset()
+
+    def compute_jk(
+        self, lefts: Sequence[np.ndarray], rights: Sequence[np.ndarray]
+    ) -> tuple[list[np.ndarray], list[np.ndarray]]:
+        """J and K matrices of the pairs (C_left, C_right), with the J/K object `jk`, see
+        `Backend.compute_jk`."""
+
+        for Cl, Cr in zip(lefts, rights):
+            self.jk.C_left_add(psi4.core.Matrix.from_array(Cl))
+            self.jk.C_right_add(psi4.core.Matrix.from_array(Cr))
+
+        self.jk.compute()
+
+        J_list = [np.array(J) for J in self.jk.J()]
+        K_list = [np.array(K) for K in self.jk.K()]
+
+        self.jk.C_clear()
+
+        return J_list, K_list
+
+    def orbital_hessian_product(
+        self,
+        monomer: str,
+        vectors: Sequence[np.ndarray],
+        cpscf_jk: psi4.core.JK | None = None,
+    ) -> list[np.ndarray]:
+        """Products of the orbital Hessian of `monomer` with (ov) `vectors`, see
+        `Backend.orbital_hessian_product`. Psi4's `cphf_Hx` gives them, with the
+        opposite sign, taking the J and K matrices from the monomer wavefunction's J/K
+        object; `cpscf_jk` takes its place for the call."""
+
+        wfn = self.wavefunctions[monomer]
+        matrices = [
+            psi4.core.Matrix.from_array(np.ascontiguousarray(x)) for x in vectors
+        ]
+
+        # `cphf_Hx` takes the J and K matrices from the wavefunction's J/K object
+        swap_jk = cpscf_jk is not None
+        if swap_jk:
+            scf_jk = wfn.jk()
+            wfn.set_jk(cpscf_jk)
+
+        try:
+            products = wfn.cphf_Hx(matrices)
+        finally:
+            if swap_jk:
+                wfn.set_jk(scf_jk)
+
+        return [-np.asarray(product) for product in products]
+
+    def build_cpscf_jk(
+        self, cpscf_type: str, df_basis: str | None = None
+    ) -> psi4.core.JK | None:
+        """
+        J/K object for CPSCF solves of type `cpscf_type`, shared by both monomers, see
+        `Backend.build_cpscf_jk`.
+
+        It is set up as Psi4's SCF sets up its own (`initialize_jk`), with the memory of
+        the backend's J/K object, `jk_memory`. The "DF" one is MemDFJK if it fits in
+        that memory and DiskDFJK otherwise, as for Psi4's `SCF_TYPE` "DF".
+
+        Args:
+            cpscf_type (str): "DIRECT" or "DF".
+            df_basis (str | None, optional): Fitting basis of "DF". Defaults to the
+                dimer's `DF_BASIS_SCF` fitting basis (see `fitting_bases`): the one of
+                Psi4's `DF_BASIS_SCF` when the dimer was built, or else the JKFIT basis
+                of its orbital basis.
+
+        Returns:
+            psi4.core.JK | None: The J/K object, or None if the monomer SCF's J/K
+                objects are of this type already ("DF" only without `df_basis`).
+        """
+
+        scf_jk_names = {wfn.jk().name() for wfn in self.wavefunctions.values()}
+        if cpscf_type == "DIRECT" and scf_jk_names == {"DirectJK"}:
+            return None
+        if (
+            cpscf_type == "DF"
+            and df_basis is None
+            and scf_jk_names <= {"MemDFJK", "DiskDFJK"}
+        ):
+            return None
+
+        # the monomers share the dimer basis set (ghost atoms), as in Psi4's SAPT
+        wfn = self.wavefunctions["A"]
+        aux = None
+        if cpscf_type == "DF" and df_basis is None:
+            aux = self._df_basis_scf
+        elif cpscf_type == "DF":
+            # a named fitting basis covers every atom; Psi4 only needs a valid orbital
+            # basis name next to it, the dimer's, not the options at this solve
+            aux = psi4.core.BasisSet.build(
+                wfn.molecule(),
+                "DF_BASIS_SCF",
+                df_basis,
+                "JKFIT",
+                wfn.basisset().name(),
+                puream=wfn.basisset().has_puream(),
+            )
+
+        tstart = time.time()
+        logger.info(f"Initialize the {cpscf_type} J/K object of CPSCF...")
+        jk = psi4.core.JK.build(
+            wfn.basisset(),
+            aux=aux,
+            jk_type=cpscf_type,
+            do_wK=wfn.functional().is_x_lrc(),
+            memory=self.jk_memory,
+        )
+
+        # `initialize_jk` also puts the J/K object on the wavefunction
+        scf_jk = wfn.jk()
+        try:
+            wfn.initialize_jk(self.jk_memory, jk=jk)
+        finally:
+            wfn.set_jk(scf_jk)
+
+        fitting = f", fitting basis {aux.name()} ({aux.nbf()} functions)" if aux else ""
+        logger.info(
+            f"...initialized {jk.name()}{fitting} in {time.time() - tstart:.2f} seconds."
+        )
+
+        return jk
 
     @staticmethod
     @contextmanager

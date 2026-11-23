@@ -10,6 +10,7 @@ from prop_sapt.backends import MonomerReference
 from prop_sapt.backends.psi4_backend import Psi4Backend
 from prop_sapt.sinfinity import sinfinity
 
+from .test_cpscf_type import DF_BASIS
 from .test_dimer import HE_H
 
 
@@ -126,3 +127,49 @@ def test_helper_from_the_backend_alone(prepare_dimer):
             getattr(rebuilt, name), getattr(mol, name), rtol=0, atol=1e-12
         )
     assert rebuilt.nuc_rep == mol.nuc_rep
+
+
+def test_compute_jk_of_the_occupied_orbitals(prepare_dimer):
+    mol = prepare_dimer
+
+    (J_A, J_B), (K_A, K_B) = mol.backend.compute_jk(
+        [mol.Co_A, mol.Co_B], [mol.Co_A, mol.Co_B]
+    )
+
+    np.testing.assert_allclose(J_A, mol.J_A, rtol=0, atol=1e-12)
+    np.testing.assert_allclose(K_B, mol.K_B, rtol=0, atol=1e-12)
+
+
+class FailingHx:
+    """Wraps a monomer wavefunction whose Hessian products fail, recording the name of
+    its J/K object at the failure."""
+
+    def __init__(self, wfn):
+        self.wfn = wfn
+        self.jk_names = []
+
+    def __getattr__(self, name):
+        return getattr(self.wfn, name)
+
+    def cphf_Hx(self, x_vec):
+        self.jk_names.append(self.wfn.jk().name())
+        raise RuntimeError("Hessian product failed")
+
+
+def test_scf_jk_restored_after_failed_product(prepare_dimer, monkeypatch):
+    """A Hessian product that fails on a CPSCF J/K object leaves the monomer SCF's J/K
+    object on the wavefunction."""
+
+    mol = prepare_dimer
+    backend = mol.backend
+    failing = FailingHx(backend.wavefunctions["A"])
+    monkeypatch.setitem(backend.wavefunctions, "A", failing)
+    cpscf_jk = backend.build_cpscf_jk("DF", DF_BASIS)
+
+    with pytest.raises(RuntimeError, match="Hessian product failed"):
+        backend.orbital_hessian_product(
+            "A", [np.ones((mol.sizes["a"], mol.sizes["r"]))], cpscf_jk
+        )
+
+    assert failing.jk_names == ["MemDFJK"]
+    assert backend.wavefunctions["A"].jk().name() == "DirectJK"

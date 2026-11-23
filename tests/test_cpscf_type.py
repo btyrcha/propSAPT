@@ -174,36 +174,24 @@ def test_df_basis_from_dimer_build(prepare_dimer):
         np.testing.assert_allclose(value, reference, rtol=0, atol=1e-10 * scale)
 
 
-class FailingHx:
-    """Wraps a monomer wavefunction whose Hessian products fail, recording the name of
-    its J/K object at the failure."""
-
-    def __init__(self, wfn):
-        self.wfn = wfn
-        self.jk_names = []
-
-    def __getattr__(self, name):
-        return getattr(self.wfn, name)
-
-    def cphf_Hx(self, x_vec):
-        self.jk_names.append(self.wfn.jk().name())
-        raise RuntimeError("Hessian product failed")
-
-
-def test_scf_jk_restored_after_failed_solve(prepare_dimer, monkeypatch):
-    """A Hessian product that fails on the CPSCF J/K object leaves the monomer SCF's
-    J/K object on the wavefunction."""
+def test_state_restored_after_failed_solve(prepare_dimer, monkeypatch):
+    """A Hessian product that fails on the CPSCF J/K object leaves the dimer on the
+    monomer SCF's J/K objects."""
 
     mol = prepare_dimer
-    failing = FailingHx(mol.wfnA)
-    monkeypatch.setitem(mol.backend.wavefunctions, "A", failing)
+    jk_names = []
+
+    def failing(monomer, vectors, cpscf_jk=None):
+        jk_names.append(cpscf_jk.name())
+        raise RuntimeError("Hessian product failed")
+
+    monkeypatch.setattr(mol.backend, "orbital_hessian_product", failing)
 
     with pytest.raises(RuntimeError, match="Hessian product failed"):
         with mol.use_cpscf_type("DF", DF_BASIS):
             mol.cpscf_batch("A", [np.ones((mol.sizes["a"], mol.sizes["r"]))])
 
-    assert failing.jk_names == ["MemDFJK"]
-    assert mol.wfnA.jk().name() == "DirectJK"
+    assert jk_names == ["MemDFJK"]
     assert mol.cpscf_jk is None
     assert mol._cpscf_key is None
 
