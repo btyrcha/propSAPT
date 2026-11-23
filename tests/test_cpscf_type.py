@@ -298,7 +298,7 @@ def test_properties_use_cpscf_type(prepare_dimer, df_options, monkeypatch):
     DIRECT ones to the fitting error."""
 
     mol = prepare_dimer
-    d_X = np.asarray(mol.mints.ao_dipole()[0])
+    d_X = mol.backend.dipole_integrals()[0]
     reset_propsapt_options("cpscf_type")
     reference = perform_property_contractions(mol, d_X)
 

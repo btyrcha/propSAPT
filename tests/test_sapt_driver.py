@@ -1,5 +1,8 @@
 """Saving of the `calc_sapt_energy` results, with the energy terms stubbed out."""
 
+from contextlib import nullcontext
+from types import SimpleNamespace
+
 import pandas as pd
 import pytest
 
@@ -23,12 +26,17 @@ def stub_terms(monkeypatch, tmp_path):
     monkeypatch.setattr(sapt_driver, "print_sapt_summary", lambda results, **kw: None)
     monkeypatch.chdir(tmp_path)
 
+    # a dimer whose backend has no timers and no scratch files
+    return SimpleNamespace(
+        backend=SimpleNamespace(timer=nullcontext, clean_scratch=lambda: None)
+    )
+
 
 def test_results_saved_to_sapt_results_csv_by_default(stub_terms, tmp_path):
     """Like the other entry points, it saves its results unless told not to, under a
     name no other default uses (`calc_property` writes results.csv)."""
 
-    results = sapt_driver.calc_sapt_energy(None)
+    results = sapt_driver.calc_sapt_energy(stub_terms)
 
     saved = pd.read_csv(tmp_path / "sapt_results.csv", index_col=0).iloc[:, 0]
     assert results["TOTAL"] == 6.0
@@ -36,24 +44,24 @@ def test_results_saved_to_sapt_results_csv_by_default(stub_terms, tmp_path):
 
 
 def test_results_true_saves_to_the_default_file(stub_terms, tmp_path):
-    sapt_driver.calc_sapt_energy(None, results=True)
+    sapt_driver.calc_sapt_energy(stub_terms, results=True)
 
     assert [path.name for path in tmp_path.glob("*.csv")] == ["sapt_results.csv"]
 
 
 def test_results_path(stub_terms, tmp_path):
-    sapt_driver.calc_sapt_energy(None, results=str(tmp_path / "energies.csv"))
+    sapt_driver.calc_sapt_energy(stub_terms, results=str(tmp_path / "energies.csv"))
 
     assert [path.name for path in tmp_path.glob("*.csv")] == ["energies.csv"]
 
 
 @pytest.mark.parametrize("results", [False, None])
 def test_results_false_saves_nothing(stub_terms, tmp_path, results):
-    sapt_driver.calc_sapt_energy(None, results=results)
+    sapt_driver.calc_sapt_energy(stub_terms, results=results)
 
     assert list(tmp_path.glob("*.csv")) == []
 
 
 def test_invalid_response_names_every_choice(stub_terms):
     with pytest.raises(ValueError, match="True, False or 'both'"):
-        sapt_driver.calc_sapt_energy(None, response="coupled")
+        sapt_driver.calc_sapt_energy(stub_terms, response="coupled")

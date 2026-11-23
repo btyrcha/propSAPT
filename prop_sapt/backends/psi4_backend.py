@@ -448,6 +448,25 @@ class Psi4Backend(Backend):
 
         return jk
 
+    def dipole_integrals(self) -> list[np.ndarray]:
+        """AO dipole integrals (`MintsHelper.ao_dipole`), see
+        `Backend.dipole_integrals`."""
+
+        return [np.asarray(component) for component in self.mints.ao_dipole()]
+
+    def nuclear_dipole(self) -> np.ndarray:
+        """Nuclear dipole moment (`Molecule.nuclear_dipole`), see
+        `Backend.nuclear_dipole`."""
+
+        dipole = self.molecule.nuclear_dipole()
+        return np.array([dipole[0], dipole[1], dipole[2]])
+
+    @staticmethod
+    def clean_scratch() -> None:
+        """Remove Psi4's scratch files (`psi4.core.clean`)."""
+
+        psi4.core.clean()
+
     @staticmethod
     @contextmanager
     def timer() -> Iterator[None]:

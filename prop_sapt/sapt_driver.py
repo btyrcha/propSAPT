@@ -5,7 +5,6 @@ This module provides a function to calculate the SAPT energy components for a di
 
 import logging
 
-import psi4
 import pandas as pd
 
 from .molecule import Dimer
@@ -111,9 +110,8 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
         "        |        Second-Quantized SAPT        |        \n"
         "        |-------------------------------------|        "
     )
-    psi4.core.tstart()
 
-    with CalcTimer("SAPT energy calculations"):
+    with dimer.backend.timer(), CalcTimer("SAPT energy calculations"):
 
         pd_results_series = pd.Series(dtype=float)
 
@@ -186,6 +184,6 @@ def calc_sapt_energy(dimer: Dimer, **kwargs) -> pd.Series:
     if results_fname:
         pd_results_series.to_csv(results_fname)
 
-    psi4.core.clean()
+    dimer.backend.clean_scratch()
 
     return pd_results_series

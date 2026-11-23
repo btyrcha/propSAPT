@@ -138,8 +138,10 @@ def test_only_the_log_module_writes_to_psi4_output():
     assert [call.split(":")[0] for call in calls] == ["log.py"]
 
 
-def test_psi4_scratch_cleaned_only_at_the_end_of_jobs():
-    """Psi4's scratch files are cleaned between jobs, not before raising an error."""
+def test_psi4_scratch_cleaned_only_by_the_backend():
+    """Psi4's scratch files are cleaned by the Psi4 backend, at the end of jobs
+    (`clean_scratch`), not before raising an error."""
 
     files = [call.split(":")[0] for call in _calls("psi4.core.clean()")]
-    assert files == ["properties.py", "runner.py", "sapt_driver.py"]
+    assert files == ["backends/psi4_backend.py"]
+    assert len(_calls(".clean_scratch()")) == 3

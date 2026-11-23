@@ -59,7 +59,7 @@ def operator(water_dimer):
     """A random symmetric AO matrix. The property terms are linear in the operator, so
     this probes every element of the density matrices at once."""
 
-    nbf = np.asarray(water_dimer.mints.ao_overlap()).shape[0]
+    nbf = water_dimer.nbf
     matrix = np.random.default_rng(2026).standard_normal((nbf, nbf))
 
     return matrix + matrix.T

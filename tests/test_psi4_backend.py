@@ -53,6 +53,23 @@ def test_dimer_data(prepare_dimer):
     assert backend.fragments.B.atoms == (1, 2)
 
 
+def test_dipole_integrals(prepare_dimer):
+    """Psi4's, with the electron charge in the electronic ones; the nuclear dipole is
+    sum Z R over the real atoms."""
+
+    backend = prepare_dimer.backend
+    dipoles = backend.dipole_integrals()
+
+    assert len(dipoles) == 3
+    for component, psi4_component in zip(dipoles, backend.mints.ao_dipole()):
+        np.testing.assert_array_equal(component, np.asarray(psi4_component))
+    fragments = backend.fragments
+    charges = np.where(fragments.real, fragments.atomic_numbers, 0)
+    np.testing.assert_allclose(
+        backend.nuclear_dipole(), charges @ fragments.coordinates, rtol=0, atol=1e-12
+    )
+
+
 def test_dimer_takes_the_backend_arrays(prepare_dimer):
     """The dimer's arrays are the backend's, not copies."""
 

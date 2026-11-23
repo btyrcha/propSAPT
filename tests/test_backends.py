@@ -17,6 +17,12 @@ class ArrayBackend(Backend):
     def orbital_hessian_product(self, monomer, vectors, cpscf_jk=None):
         return []
 
+    def dipole_integrals(self):
+        return [np.zeros((NBF, NBF))] * 3
+
+    def nuclear_dipole(self):
+        return np.zeros(3)
+
 
 def monomer(ndocc=2, nmo=NBF, nbf=NBF, **changes):
     rng = np.random.default_rng(7)

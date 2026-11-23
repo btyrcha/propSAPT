@@ -414,7 +414,7 @@ def cached_mo_components(monkeypatch, prepare_dimer, component_matrices):
     MO basis of their monomer: C^T S rho S C, the inverse of C rho C^T as C^T S C = 1.
     """
 
-    overlap = np.asarray(prepare_dimer.mints.ao_overlap())
+    overlap = prepare_dimer.S
     coefficients = {"A": prepare_dimer.C_A, "B": prepare_dimer.C_B}
     mo_components = {
         monomer: {

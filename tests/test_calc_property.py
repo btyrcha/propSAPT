@@ -170,7 +170,7 @@ def test_calc_property_from_matrix(prepare_dimer, tmp_path, monkeypatch):
     one row of floats. The property components return floats, as the energy ones do."""
 
     threshold = 1.0e-8
-    d_X = np.asarray(prepare_dimer.mints.ao_dipole()[0])
+    d_X = prepare_dimer.backend.dipole_integrals()[0]
 
     returned = {}
     for name in PROPERTY_COMPONENTS:
@@ -205,7 +205,7 @@ def test_uncoupled_property(prepare_dimer, tmp_path, monkeypatch):
     """
 
     threshold = 1.0e-8
-    d_X = np.asarray(prepare_dimer.mints.ao_dipole()[0])
+    d_X = prepare_dimer.backend.dipole_integrals()[0]
 
     def no_cpscf_amplitudes():
         raise AssertionError("response=False asked for the CPSCF induction amplitudes")
@@ -283,9 +283,9 @@ def test_batched_dipole_matches_single_axes(prepare_dimer):
     """Every term of every axis is what the axis alone gives."""
 
     batched = calc_induced_dipole(prepare_dimer, response="both")
-    for axis, d_i in zip("XYZ", prepare_dimer.mints.ao_dipole()):
+    for axis, d_i in zip("XYZ", prepare_dimer.backend.dipole_integrals()):
         single = perform_property_contractions(
-            prepare_dimer, np.asarray(d_i), response="both"
+            prepare_dimer, d_i, response="both"
         ).iloc[0]
         for key, value in single.items():
             assert batched.loc[axis, key] == pytest.approx(value, rel=0, abs=1e-12), (

@@ -228,6 +228,27 @@ class Backend(ABC):
             list[np.ndarray]: The (ov) products, in the order of `vectors`.
         """
 
+    @abstractmethod
+    def dipole_integrals(self) -> list[np.ndarray]:
+        """
+        Integrals of the electronic dipole operator, -r, in the AO basis, with the
+        origin of the dimer's frame: the electron charge included, as Psi4's
+        `ao_dipole`.
+
+        Returns:
+            list[np.ndarray]: The x, y and z components, (nbf, nbf) each.
+        """
+
+    @abstractmethod
+    def nuclear_dipole(self) -> np.ndarray:
+        """
+        Dipole moment of the dimer's nuclei, sum_A Z_A R_A, with the origin of the
+        dimer's frame. Ghost atoms carry no charge.
+
+        Returns:
+            np.ndarray: The x, y and z components, (3,).
+        """
+
     def build_cpscf_jk(self, cpscf_type: str, df_basis: str | None = None) -> object:
         """
         J/K object for CPSCF solves of type `cpscf_type` (see the `cpscf_type` option),
