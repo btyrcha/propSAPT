@@ -3,6 +3,7 @@
 from types import SimpleNamespace
 
 import numpy as np
+import psi4
 import pytest
 
 from prop_sapt import Dimer
@@ -10,6 +11,7 @@ from prop_sapt.backends import MonomerReference
 from prop_sapt.backends.psi4_backend import Psi4Backend
 from prop_sapt.sinfinity import sinfinity
 
+from .he_h2 import OPTIONS
 from .test_cpscf_type import DF_BASIS
 from .test_dimer import HE_H
 
@@ -51,6 +53,20 @@ def test_dimer_data(prepare_dimer):
     assert backend.nuclear_repulsion == backend.molecule.nuclear_repulsion_energy()
     assert backend.fragments.A.atoms == (0,)
     assert backend.fragments.B.atoms == (1, 2)
+
+
+def test_naux_counts_the_fitting_functions(prepare_dimer):
+    """`naux` is the number of functions of the SAPT fitting basis, the rows of `Qpq`:
+    spherical ones for a spherical basis, fewer than its Cartesian ones."""
+
+    mol = prepare_dimer
+    fitting_basis = OPTIONS["DF_BASIS_SAPT"]
+    aux = psi4.core.BasisSet.build(
+        mol.dimer, target=fitting_basis, other=fitting_basis, fitrole="RIFIT"
+    )
+
+    assert aux.has_puream()
+    assert mol.naux == mol.Qpq.shape[0] == aux.nbf() < aux.nao()
 
 
 def test_dipole_integrals(prepare_dimer):

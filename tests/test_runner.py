@@ -324,7 +324,7 @@ def energies_with_overrides(basis_overrides) -> np.ndarray:
     dimer = runner.build_dimer(config, HE_H2)
 
     return np.array(
-        [calc_elst1_energy(dimer), calc_disp2_energy(dimer)["DISP2"], dimer.nao_aux]
+        [calc_elst1_energy(dimer), calc_disp2_energy(dimer)["DISP2"], dimer.naux]
     )
 
 

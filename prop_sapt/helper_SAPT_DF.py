@@ -238,7 +238,8 @@ class helper_SAPT(object):
 
         ### DF ERIs and the overlap of the dimer basis
         self.Qpq = backend.Qpq
-        self.nao_aux = self.Qpq.shape[0]
+        # functions of the SAPT fitting basis, spherical ones if it is spherical
+        self.naux = self.Qpq.shape[0]
         self.S = backend.S
 
         self.J_A, self.K_A = self.compute_jk(self.Co_A, self.Co_A)
