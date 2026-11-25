@@ -82,9 +82,13 @@ def _imports_psi4(path: Path) -> bool:
 
 def test_only_psi4_facing_modules_import_psi4():
     """The SAPT core (`helper_SAPT`, the contractions, the energy, property and density
-    drivers, CPSCF) reaches Psi4 only through the backend, so another backend can take
-    its place. The list of Psi4 modules is exact: it shrinks as modules move onto the
-    backend contract."""
+    drivers, CPSCF) does not import Psi4: its calculations reach Psi4 through the
+    backend, so another backend can take its place. The list of Psi4 modules is exact:
+    it shrinks as modules move onto the backend contract.
+
+    Only imports are checked. The density driver still uses Psi4 objects of the dimer
+    for some of its output: the cube files (`Dimer.make_cube`) and the monomer
+    wavefunctions of the deprecated ``matrix_format="npy"`` (`wfnA.to_file`)."""
 
     root = Path(prop_sapt.__file__).parent
     importing = {

@@ -84,7 +84,8 @@ class Dimer(sinfinity):
     `prop_sapt.backends.psi4_backend.Psi4Backend`, which the dimer keeps as `backend`.
     Its Psi4 objects are also read-only attributes of the dimer: `dimer` (the
     molecule), `wfnA` and `wfnB` (the monomer wavefunctions), `dimer_wfn`, `mints` and
-    `jk`.
+    `jk`, and so are its settings: `jk_memory` and `memory` (of the J/K objects),
+    `psi4_options` and `fitting_bases`.
 
     Args:
         geometry (str): Dimer geometry in Psi4 format, with monomers A and B as its

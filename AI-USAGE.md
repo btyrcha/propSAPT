@@ -175,3 +175,7 @@ The short version, for disclosures; the log below has the detail.
 ### 2026-11-23
 
 - Planned and implemented the Psi4 backend (step 1.3 of the backend roadmap), after a review of the plan against the code: the backend contract (`prop_sapt.backends.base`: `MonomerReference`, the `Backend` base class with J/K builds, orbital-Hessian products, CPSCF J/K objects, dipole integrals, timers and scratch cleaning) and `Psi4Backend`, which runs the monomer SCFs and builds the integrals in place of `helper_SAPT`, now free of Psi4; the dimer's Psi4 objects as read-only compatibility attributes, the Psi4 output handler, timers and scratch cleaning in the backend, a test that only the Psi4-facing modules import Psi4, with docs and a changelog entry; He–H2 energies, properties, densities and their intermediates bitwise equal to `main` (single-threaded runs).
+
+### 2026-11-25
+
+- Worked through a code review of the Psi4 backend pull request: J/K inputs cleared after a failed build, monomers with different numbers of orbitals rejected, `nao_aux` renamed `naux` (it now counts spherical fitting functions), Psi4's timer around the whole dimer construction again, clear errors from the Psi4 getters with another backend, the tensor folding of `compute_jk` tested on both sides, with docs and changelog notes for the API changes.
