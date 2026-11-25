@@ -116,39 +116,45 @@ class Dimer(sinfinity):
         logger.info("*" * 80)
         logger.info("Initializing Dimer object...")
 
-        self.geometry = geometry
+        # in Psi4's timer, around the whole construction (each Psi4 SCF restarts it)
+        with Psi4Backend.timer():
+            self.geometry = geometry
 
-        # the monomer SCFs and the integrals
-        backend = Psi4Backend(
-            geometry,
-            reference,
-            functional=kwargs.get("functional", PROPSAPT_OPTIONS["default_functional"]),
-            grac_A=kwargs.get("grac_A"),
-            grac_B=kwargs.get("grac_B"),
-            memory=memory,
-        )
+            # the monomer SCFs and the integrals
+            backend = Psi4Backend(
+                geometry,
+                reference,
+                functional=kwargs.get(
+                    "functional", PROPSAPT_OPTIONS["default_functional"]
+                ),
+                grac_A=kwargs.get("grac_A"),
+                grac_B=kwargs.get("grac_B"),
+                memory=memory,
+            )
 
-        # initialize parent class
-        super().__init__(backend)
+            # initialize parent class
+            super().__init__(backend)
 
-        # induction amplitudes with the monomer SCF's J/K objects, as in IND2,r
-        self.cpscf_ra = None
-        self.cpscf_sb = None
+            # induction amplitudes with the monomer SCF's J/K objects, as in IND2,r
+            self.cpscf_ra = None
+            self.cpscf_sb = None
 
-        # the CPSCF type in use, see `use_cpscf_type`; None is the monomer SCF's J/K
-        self._cpscf_key: tuple[str, str | None] | None = None
-        # induction amplitudes of the other CPSCF types, keyed (monomer, type)
-        self._other_cpscf_amplitudes: dict[tuple, np.ndarray] = {}
+            # the CPSCF type in use, see `use_cpscf_type`; None is the monomer SCF's J/K
+            self._cpscf_key: tuple[str, str | None] | None = None
+            # induction amplitudes of the other CPSCF types, keyed (monomer, type)
+            self._other_cpscf_amplitudes: dict[tuple, np.ndarray] = {}
 
-        # theta amplitudes of the exchange density matrices, see `get_theta_amplitudes`
-        self.theta_amplitudes: dict[str, np.ndarray | tuple[np.ndarray, ...]] = {}
-        # the CPSCF type they were calculated with
-        self._theta_cpscf_key: tuple[str, str | None] | None = None
+            # theta amplitudes of the exchange density matrices,
+            # see `get_theta_amplitudes`
+            self.theta_amplitudes: dict[str, np.ndarray | tuple[np.ndarray, ...]] = {}
+            # the CPSCF type they were calculated with
+            self._theta_cpscf_key: tuple[str, str | None] | None = None
 
-        # print time
-        logger.info(
-            f"...finished initializing Dimer object in {(time() - t_start):5.2f} seconds."
-        )
+            # print time
+            logger.info(
+                "...finished initializing Dimer object in "
+                f"{(time() - t_start):5.2f} seconds."
+            )
         logger.info("*" * 80)
 
     # the Psi4 backend's objects, for compatibility

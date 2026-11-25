@@ -171,12 +171,6 @@ class Psi4Backend(Backend):
         memory: float | None = None,
     ):
 
-        with self.timer():
-            self._run(geometry, reference, functional, grac_A, grac_B, memory)
-
-    def _run(self, geometry, reference, functional, grac_A, grac_B, memory):
-        """The calculation of `__init__`, in Psi4's timer."""
-
         tstart_backend = time.time()
 
         # create Psi4 Molecule object
