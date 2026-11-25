@@ -345,7 +345,8 @@ class Dimer(sinfinity):
             psi4.core.Molecule: Psi4 molecule object of the dimer.
         """
 
-        return self.backend.molecule
+        # through the attribute, which says so if the backend is not Psi4's
+        return self.dimer
 
     def get_psi4_wavefunction(self) -> psi4.core.Wavefunction:
         """
@@ -369,7 +370,8 @@ class Dimer(sinfinity):
             psi4.core.BasisSet: Psi4 basis set object of the dimer.
         """
 
-        return self.backend.basisset
+        # through the attribute, which says so if the backend is not Psi4's
+        return self.dimer_wfn.basisset()
 
     def make_cube(
         self,

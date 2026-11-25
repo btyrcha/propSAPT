@@ -127,14 +127,26 @@ def test_psi4_attributes_are_read_only(prepare_dimer, attribute):
         setattr(prepare_dimer, attribute, None)
 
 
-def test_psi4_attributes_of_another_backend():
+@pytest.mark.parametrize(
+    "get",
+    [
+        lambda dimer: dimer.wfnA,
+        lambda dimer: dimer.get_psi4_molecule(),
+        lambda dimer: dimer.get_psi4_basisset(),
+        lambda dimer: dimer.get_psi4_wavefunction(),
+    ],
+    ids=["wfnA", "get_psi4_molecule", "get_psi4_basisset", "get_psi4_wavefunction"],
+)
+def test_psi4_attributes_of_another_backend(get):
     """A dimer whose backend is not Psi4's says so when asked for a Psi4 object."""
 
     dimer = Dimer.__new__(Dimer)
     dimer.backend = SimpleNamespace()
 
-    with pytest.raises(AttributeError, match="backend is SimpleNamespace"):
-        dimer.wfnA
+    with pytest.raises(
+        AttributeError, match="Psi4 backend; .* backend is SimpleNamespace"
+    ):
+        get(dimer)
 
 
 def test_rks_needs_a_functional():
