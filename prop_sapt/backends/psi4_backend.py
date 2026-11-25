@@ -363,16 +363,19 @@ class Psi4Backend(Backend):
         """J and K matrices of the pairs (C_left, C_right), with the J/K object `jk`, see
         `Backend.compute_jk`."""
 
-        for Cl, Cr in zip(lefts, rights):
-            self.jk.C_left_add(psi4.core.Matrix.from_array(Cl))
-            self.jk.C_right_add(psi4.core.Matrix.from_array(Cr))
+        # the J/K object keeps its inputs until cleared: a failed build must not leave
+        # them for the next one, which would return their J and K matrices too
+        try:
+            for Cl, Cr in zip(lefts, rights):
+                self.jk.C_left_add(psi4.core.Matrix.from_array(Cl))
+                self.jk.C_right_add(psi4.core.Matrix.from_array(Cr))
 
-        self.jk.compute()
+            self.jk.compute()
 
-        J_list = [np.array(J) for J in self.jk.J()]
-        K_list = [np.array(K) for K in self.jk.K()]
-
-        self.jk.C_clear()
+            J_list = [np.array(J) for J in self.jk.J()]
+            K_list = [np.array(K) for K in self.jk.K()]
+        finally:
+            self.jk.C_clear()
 
         return J_list, K_list
 

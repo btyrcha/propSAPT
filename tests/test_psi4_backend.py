@@ -157,6 +157,24 @@ def test_compute_jk_of_the_occupied_orbitals(prepare_dimer):
     np.testing.assert_allclose(K_B, mol.K_B, rtol=0, atol=1e-12)
 
 
+def test_failed_compute_jk_leaves_no_inputs(prepare_dimer):
+    """A J/K build that fails part way clears the pairs it had added, so the next build
+    returns the J and K matrices of its own pairs only."""
+
+    mol = prepare_dimer
+    backend = mol.backend
+
+    # a 3-dimensional array is no matrix
+    with pytest.raises(ValueError):
+        backend.compute_jk([mol.Co_A, np.zeros((2, 2, 2))], [mol.Co_A, mol.Co_B])
+
+    J, K = backend.compute_jk([mol.Co_B], [mol.Co_B])
+
+    assert len(J) == len(K) == 1
+    np.testing.assert_allclose(J[0], mol.J_B, rtol=0, atol=1e-12)
+    np.testing.assert_allclose(K[0], mol.K_B, rtol=0, atol=1e-12)
+
+
 class FailingHx:
     """Wraps a monomer wavefunction whose Hessian products fail, recording the name of
     its J/K object at the failure."""
