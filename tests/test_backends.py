@@ -125,6 +125,10 @@ def test_functional_only_for_rks():
             {"monomers": {"A": monomer(), "B": monomer(nbf=NBF - 1, nmo=NBF - 1)}},
             "Monomer B has 5 basis functions",
         ),
+        (
+            {"monomers": {"A": monomer(), "B": monomer(nmo=NBF - 1)}},
+            "Monomers A and B have 6 and 5 orbitals",
+        ),
     ],
 )
 def test_inconsistent_backend(changes, message):

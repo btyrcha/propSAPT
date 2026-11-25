@@ -173,6 +173,12 @@ class Backend(ABC):
                     f"Monomer {label} has {monomers[label].nbf} basis functions, "
                     f"the dimer {nbf}: monomers use the dimer basis set!"
                 )
+        nmo_A, nmo_B = monomers["A"].nmo, monomers["B"].nmo
+        if nmo_A != nmo_B:
+            raise ValueError(
+                f"Monomers A and B have {nmo_A} and {nmo_B} orbitals: in the dimer "
+                "basis set, both should have as many!"
+            )
 
         self.monomers = dict(monomers)
         self.S = S
