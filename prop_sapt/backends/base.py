@@ -170,14 +170,14 @@ class Backend(ABC):
         for label in MONOMERS:
             if monomers[label].nbf != nbf:
                 raise ValueError(
-                    f"Monomer {label} has {monomers[label].nbf} basis functions, "
-                    f"the dimer {nbf}: monomers use the dimer basis set!"
+                    f"Monomer {label} has {monomers[label].nbf} basis functions, but "
+                    f"the dimer has {nbf}: the monomers should use the dimer basis set!"
                 )
         nmo_A, nmo_B = monomers["A"].nmo, monomers["B"].nmo
         if nmo_A != nmo_B:
             raise ValueError(
-                f"Monomers A and B have {nmo_A} and {nmo_B} orbitals: in the dimer "
-                "basis set, both should have as many!"
+                f"Monomer A has {nmo_A} orbitals and monomer B {nmo_B}, but they should "
+                "have the same number: both use the dimer basis set!"
             )
 
         self.monomers = dict(monomers)

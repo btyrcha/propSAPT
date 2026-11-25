@@ -127,7 +127,7 @@ def test_functional_only_for_rks():
         ),
         (
             {"monomers": {"A": monomer(), "B": monomer(nmo=NBF - 1)}},
-            "Monomers A and B have 6 and 5 orbitals",
+            "Monomer A has 6 orbitals and monomer B 5",
         ),
     ],
 )
