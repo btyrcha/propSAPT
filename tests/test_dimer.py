@@ -271,17 +271,26 @@ def test_compute_jk_of_empty_pairs_only(prepare_dimer, monkeypatch):
     assert not J.any() and not K.any()
 
 
-def test_compute_jk_folds_in_the_tensor(prepare_dimer):
-    """D = C_left M C_right^T, whichever side M is folded into."""
+@pytest.mark.parametrize("side", ["left", "right"])
+def test_compute_jk_folds_in_the_tensor(prepare_dimer, side):
+    """D = C_left M C_right^T, whichever side M is folded into (the one with fewer
+    columns): J and K are those of D itself, given to the backend as D I^T."""
 
     mol = prepare_dimer
     M = np.random.default_rng(5).standard_normal((mol.ndocc_A, mol.nvirt_A))
+    if side == "left":
+        Cl, Cr = mol.Co_A, mol.Cv_A
+    else:
+        Cl, Cr, M = mol.Cv_A, mol.Co_A, M.T
+    assert (Cl.shape[1] < Cr.shape[1]) == (side == "left")
 
-    J, K = mol.compute_jk(mol.Co_A, mol.Cv_A, tensor=M)
-    J_ref, K_ref = mol.compute_jk(mol.Co_A @ M, mol.Cv_A)
+    J, K = mol.compute_jk(Cl, Cr, tensor=M)
+    (J_ref,), (K_ref,) = mol.backend.compute_jk([Cl @ M @ Cr.T], [np.eye(mol.nbf)])
 
     np.testing.assert_allclose(J, J_ref, rtol=0, atol=1e-12)
     np.testing.assert_allclose(K, K_ref, rtol=0, atol=1e-12)
+    # K tells D from its transpose
+    assert np.abs(K - K.T).max() > 1e-3
 
 
 def test_cpscf_rejects_wrong_shape(prepare_dimer):
