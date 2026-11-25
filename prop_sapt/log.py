@@ -3,8 +3,7 @@
 Every module of the package logs through `logging.getLogger(__name__)`, a child of the
 `prop_sapt` logger. By default the records go to Psi4's output file, like propSAPT's
 output always has, through the Psi4 backend's handler
-(`prop_sapt.backends.psi4_backend.Psi4OutputHandler`), the only code writing to Psi4's
-output. The standard `logging` calls quiet or redirect them, e.g.
+(`prop_sapt.backends.psi4_backend.Psi4OutputHandler`). The standard `logging` calls quiet or redirect them, e.g.
 `logging.getLogger("prop_sapt").setLevel(logging.WARNING)` keeps only the warnings, and
 `logging.getLogger("prop_sapt.cpscf_solver")` is the logger of the CPSCF iterations.
 """

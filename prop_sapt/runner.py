@@ -281,7 +281,7 @@ def run(
             handle.write("\n")
 
     finally:
-        # Psi4's own: the dimer may not have been built
+        # on the class: the dimer, and so its backend, may not have been built
         Psi4Backend.clean_scratch()
 
     return results

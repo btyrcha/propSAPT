@@ -2,8 +2,8 @@
 
 `Psi4Backend` runs the monomer SCFs of a dimer in the dimer-centred basis set and builds
 the integrals propSAPT needs, as Psi4's own SAPT does. It keeps the Psi4 objects it made
-(wavefunctions, `MintsHelper`, JK object), which a `Dimer` also gives as its `wfnA`,
-`wfnB`, `mints`, ... compatibility attributes. The Psi4 options in place when it is built
+(wavefunctions, `MintsHelper`, JK object), which a `Dimer` also exposes as compatibility
+attributes (`wfnA`, `wfnB`, `mints`, ...). The Psi4 options in place when it is built
 decide the calculation: `BASIS`, `DF_BASIS_SAPT`, `DF_BASIS_SCF`, `SCF_TYPE`, the
 convergence thresholds, and Psi4's memory (`psi4.set_memory`).
 
@@ -155,9 +155,9 @@ class Psi4Backend(Backend):
             `jk_memory_doubles`. Defaults to Psi4's memory.
 
     Raises:
-        ValueError: If frozen core is set, the reference is not supported, the geometry
-            has fewer than two fragments, or a monomer is not a singlet; all before any
-            SCF is run.
+        ValueError: If frozen core is set, the reference is not supported or is RKS
+            without a functional, the geometry has fewer than two fragments, or a
+            monomer is not a singlet; all before any SCF is run.
     """
 
     def __init__(

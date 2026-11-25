@@ -82,12 +82,12 @@ class MonomerReference:
         nbf, nmo = _shape(self.C, 2, "C")
         if _shape(self.eps, 1, "eps") != (nmo,):
             raise ValueError(
-                f"Orbital energies should have shape ({nmo},), had {self.eps.shape}!"
+                f"Orbital energies should have shape ({nmo},), not {self.eps.shape}!"
             )
         if _shape(self.V, 2, "V") != (nbf, nbf):
             raise ValueError(
-                f"V should have shape ({nbf}, {nbf}), as the AOs of C, "
-                f"had {self.V.shape}!"
+                f"V should have shape ({nbf}, {nbf}) to match the AOs of C, "
+                f"not {self.V.shape}!"
             )
         if not 0 <= self.ndocc + self.nsocc <= nmo or min(self.ndocc, self.nsocc) < 0:
             raise ValueError(
@@ -121,8 +121,8 @@ class Backend(ABC):
         nuclear_repulsion (float): Repulsion of all nuclei of the dimer.
         fragments (DimerFragments): Atoms and fragments of the dimer, in the frame of
             the calculation.
-        functional (str | None, optional): Functional of an RKS reference; None for
-            other references, whatever is passed. Defaults to None.
+        functional (str | None, optional): Functional of an RKS reference, ignored for
+            other references. Defaults to None.
         grac_A (float | None, optional): GRAC shift of monomer A. Defaults to None.
         grac_B (float | None, optional): GRAC shift of monomer B. Defaults to None.
 
@@ -151,21 +151,21 @@ class Backend(ABC):
 
         if set(monomers) != set(MONOMERS):
             raise ValueError(
-                f"Monomers should be {list(MONOMERS)}, were {sorted(monomers)}!"
+                f"The monomers should be {list(MONOMERS)}, not {sorted(monomers)}!"
             )
         for label in MONOMERS:
             if not isinstance(monomers[label], MonomerReference):
                 raise ValueError(
                     f"Monomer {label} should be a MonomerReference, "
-                    f"was {type(monomers[label]).__name__}!"
+                    f"not {type(monomers[label]).__name__}!"
                 )
 
         nbf = _shape(S, 2, "S")[0]
         if S.shape != (nbf, nbf):
-            raise ValueError(f"S should be square, had shape {S.shape}!")
+            raise ValueError(f"S should be square, but has shape {S.shape}!")
         if _shape(Qpq, 3, "Qpq")[1:] != (nbf, nbf):
             raise ValueError(
-                f"Qpq should have shape (naux, {nbf}, {nbf}), as S, had {Qpq.shape}!"
+                f"Qpq should have shape (naux, {nbf}, {nbf}) to match S, not {Qpq.shape}!"
             )
         for label in MONOMERS:
             if monomers[label].nbf != nbf:
@@ -202,8 +202,8 @@ class Backend(ABC):
 
         Args:
             lefts (Sequence[np.ndarray]): C_left matrices, (nbf, k) each.
-            rights (Sequence[np.ndarray]): C_right matrices, as many as `lefts`, each
-                with the columns of its C_left.
+            rights (Sequence[np.ndarray]): C_right matrices, one per C_left and with as
+                many columns, (nbf, k) each.
 
         Returns:
             tuple[list[np.ndarray], list[np.ndarray]]: The J and the K matrices, in the
@@ -230,7 +230,7 @@ class Backend(ABC):
             monomer (str): "A" or "B".
             vectors (Sequence[np.ndarray]): (ov) vectors, (ndocc, nvirt) each.
             cpscf_jk (object, optional): J/K object of `build_cpscf_jk` to build the
-                products with; None, the default, takes the monomer SCF's.
+                products with; None, the default, uses the J/K of the monomer SCF.
 
         Returns:
             list[np.ndarray]: The (ov) products, in the order of `vectors`.
@@ -239,8 +239,8 @@ class Backend(ABC):
     @abstractmethod
     def dipole_integrals(self) -> list[np.ndarray]:
         """
-        Integrals of the electronic dipole operator, -r, in the AO basis, with the
-        origin of the dimer's frame: the electron charge included, as Psi4's
+        Integrals of the electronic dipole operator, -r, in the AO basis, about the
+        origin of the dimer's frame, with the electron charge included, as in Psi4's
         `ao_dipole`.
 
         Returns:
@@ -250,7 +250,7 @@ class Backend(ABC):
     @abstractmethod
     def nuclear_dipole(self) -> np.ndarray:
         """
-        Dipole moment of the dimer's nuclei, sum_A Z_A R_A, with the origin of the
+        Dipole moment of the dimer's nuclei, sum_A Z_A R_A, about the origin of the
         dimer's frame. Ghost atoms carry no charge.
 
         Returns:
@@ -260,8 +260,7 @@ class Backend(ABC):
     def build_cpscf_jk(self, cpscf_type: str, df_basis: str | None = None) -> object:
         """
         J/K object for CPSCF solves of type `cpscf_type` (see the `cpscf_type` option),
-        for `orbital_hessian_product`. The backend's own type, the J/K of the monomer
-        SCFs, needs none.
+        to pass to `orbital_hessian_product`.
 
         Args:
             cpscf_type (str): "DIRECT" or "DF".
@@ -273,21 +272,21 @@ class Backend(ABC):
                 already.
 
         Raises:
-            NotImplementedError: If the backend has no CPSCF J/K types, the default.
+            NotImplementedError: If the backend has no CPSCF J/K types, as by default.
         """
 
         raise NotImplementedError(
-            f"The {type(self).__name__} backend has no CPSCF J/K types; "
+            f"{type(self).__name__} has no CPSCF J/K types; "
             "leave the `cpscf_type` option at None."
         )
 
     def clean_scratch(self) -> None:
-        """Free what the backend keeps on disk between calculations, at the end of a
-        job such as `calc_sapt_energy`. Nothing by default."""
+        """Remove the files the backend keeps on disk between calculations, at the end
+        of a job such as `calc_sapt_energy`. Does nothing by default."""
 
     def timer(self) -> AbstractContextManager[None]:
-        """Context timed by the backend's own timers, if it has any; propSAPT logs its
-        timings either way. None by default."""
+        """A context timed by the backend's own timers, if it has any; propSAPT logs its
+        own timings either way. By default, a context that does nothing."""
 
         return nullcontext()
 
@@ -295,8 +294,14 @@ class Backend(ABC):
 def _shape(array: np.ndarray, ndim: int, name: str) -> tuple[int, ...]:
     """Shape of `array`, checked to have `ndim` dimensions."""
 
-    if not isinstance(array, np.ndarray) or array.ndim != ndim:
-        found = array.shape if isinstance(array, np.ndarray) else type(array).__name__
-        raise ValueError(f"{name} should be a {ndim}-dimensional array, was {found}!")
+    if not isinstance(array, np.ndarray):
+        raise ValueError(
+            f"{name} should be a {ndim}-dimensional array, "
+            f"not a {type(array).__name__}!"
+        )
+    if array.ndim != ndim:
+        raise ValueError(
+            f"{name} should be a {ndim}-dimensional array, but has shape {array.shape}!"
+        )
 
     return array.shape

@@ -28,8 +28,8 @@ logger = logging.getLogger(__name__)
 
 
 class _Psi4Attribute:
-    """A read-only attribute of a `Dimer` that is an object of its Psi4 backend, kept
-    for compatibility: attribute `name` of the backend, or its item `key`."""
+    """A read-only attribute of a `Dimer`, kept for compatibility, that gives attribute
+    `name` of its Psi4 backend, or item `key` of that attribute."""
 
     def __init__(self, name: str, key: str | None = None, doc: str | None = None):
         self.name = name
@@ -48,7 +48,7 @@ class _Psi4Attribute:
             value = getattr(backend, self.name)
         except AttributeError:
             raise AttributeError(
-                f"`{self.attribute}` is an object of the Psi4 backend; this dimer's "
+                f"`{self.attribute}` belongs to the Psi4 backend, but this dimer's "
                 f"backend is {type(backend).__name__}."
             ) from None
 
@@ -56,7 +56,7 @@ class _Psi4Attribute:
 
     def __set__(self, dimer, value):
         raise AttributeError(
-            f"`{self.attribute}` is read-only: it is the Psi4 backend's, "
+            f"`{self.attribute}` is read-only: it belongs to the Psi4 backend, "
             "see `Dimer.backend`."
         )
 
@@ -80,7 +80,7 @@ class Dimer(sinfinity):
 
     Memory comes from Psi4's setting (`psi4.set_memory`), as for any Psi4 calculation.
 
-    The monomer SCFs and the integrals are Psi4's, run by
+    Psi4 runs the monomer SCFs and builds the integrals, through
     `prop_sapt.backends.psi4_backend.Psi4Backend`, which the dimer keeps as `backend`.
     Its Psi4 objects are also read-only attributes of the dimer: `dimer` (the
     molecule), `wfnA` and `wfnB` (the monomer wavefunctions), `dimer_wfn`, `mints` and

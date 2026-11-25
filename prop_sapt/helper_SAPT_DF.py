@@ -66,8 +66,8 @@ class helper_SAPT(object):
     """
     The arrays of a dimer that the SAPT contractions use, from a reference calculation
     of the dimer by a backend (see `prop_sapt.backends`): orbitals, orbital energies,
-    potentials and overlaps of the monomers, density-fitted integrals, and the J/K builds
-    and CPSCF solves.
+    potentials and overlaps of the monomers, and density-fitted integrals. The J/K builds
+    and CPSCF solves also go through the backend.
 
     Args:
         backend (Backend): The reference calculation, kept as `backend`.
@@ -238,7 +238,7 @@ class helper_SAPT(object):
 
         ### DF ERIs and the overlap of the dimer basis
         self.Qpq = backend.Qpq
-        # functions of the SAPT fitting basis, spherical ones if it is spherical
+        # number of functions of the SAPT fitting basis (spherical ones if it is)
         self.naux = self.Qpq.shape[0]
         self.S = backend.S
 
@@ -525,7 +525,7 @@ class helper_SAPT(object):
     def compute_jk(self, Cleft, Cright, tensor=None):
         """
         J and K matrices of generalized densities D = C_left C_right^T, or
-        D = C_left M C_right^T with a matrix M of `tensor`, from the backend
+        D = C_left M C_right^T with M given as `tensor`, from the backend
         (`Backend.compute_jk`).
 
         M is folded into the side with fewer columns. A pair with no columns on a side
@@ -539,7 +539,8 @@ class helper_SAPT(object):
                 or a list of them, one per pair. Defaults to None, no M.
 
         Returns:
-            tuple: J and K, AO matrices if one pair is given and lists of them otherwise.
+            tuple: J and K: AO matrices if single matrices are given, lists of them
+                otherwise.
         """
 
         if self.reference == "ROHF":

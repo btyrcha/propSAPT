@@ -37,7 +37,7 @@ requests of the private repository propSAPT was developed in before it was publi
   settings (`wfnA`, `wfnB`, `mints`, `dimer_wfn`, `jk`, `memory`, `psi4_options`,
   `fitting_bases`, ...) are still there, now read-only. `dimer.nao_aux` is now
   `dimer.naux`, the number of functions of the SAPT fitting basis: `nao_aux` counted
-  Cartesian functions also where the basis is spherical. `changed_psi4_options` moved
+  Cartesian functions even for a spherical basis. `changed_psi4_options` moved
   from `prop_sapt.utils` to `prop_sapt.backends.psi4_backend`.
 
 ### Fixed

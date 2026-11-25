@@ -116,7 +116,7 @@ def test_functional_only_for_rks():
     "changes, message",
     [
         ({"reference": "UHF"}, "not implemented"),
-        ({"monomers": {"A": monomer()}}, "Monomers should be"),
+        ({"monomers": {"A": monomer()}}, "The monomers should be"),
         ({"monomers": {"A": monomer(), "B": None}}, "should be a MonomerReference"),
         ({"S": np.zeros((NBF, NBF + 1))}, "S should be square"),
         ({"Qpq": np.zeros((NAUX, NBF, NBF + 1))}, "Qpq should have shape"),
@@ -155,5 +155,5 @@ def test_backend_needs_the_operations():
 def test_no_cpscf_jk_types_by_default():
     backend = ArrayBackend(**backend_data())
 
-    with pytest.raises(NotImplementedError, match="ArrayBackend backend has no CPSCF"):
+    with pytest.raises(NotImplementedError, match="ArrayBackend has no CPSCF"):
         backend.build_cpscf_jk("DF")

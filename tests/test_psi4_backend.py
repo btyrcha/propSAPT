@@ -70,8 +70,8 @@ def test_naux_counts_the_fitting_functions(prepare_dimer):
 
 
 def test_dipole_integrals(prepare_dimer):
-    """Psi4's, with the electron charge in the electronic ones; the nuclear dipole is
-    sum Z R over the real atoms."""
+    """The electronic integrals are Psi4's, with the electron charge included; the
+    nuclear dipole is sum Z R over the real atoms."""
 
     backend = prepare_dimer.backend
     dipoles = backend.dipole_integrals()
@@ -144,7 +144,8 @@ def test_psi4_attributes_of_another_backend(get):
     dimer.backend = SimpleNamespace()
 
     with pytest.raises(
-        AttributeError, match="Psi4 backend; .* backend is SimpleNamespace"
+        AttributeError,
+        match="belongs to the Psi4 backend, but this dimer's backend is SimpleNamespace",
     ):
         get(dimer)
 
@@ -192,7 +193,7 @@ def test_failed_compute_jk_leaves_no_inputs(prepare_dimer):
     mol = prepare_dimer
     backend = mol.backend
 
-    # a 3-dimensional array is no matrix
+    # a 3-dimensional array is not a matrix
     with pytest.raises(ValueError):
         backend.compute_jk([mol.Co_A, np.zeros((2, 2, 2))], [mol.Co_A, mol.Co_B])
 

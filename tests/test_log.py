@@ -132,8 +132,10 @@ def _calls(pattern: str) -> list[str]:
 
 
 def test_only_the_psi4_backend_writes_to_psi4_output():
-    """The modules log, and only the Psi4 backend's handler writes into Psi4's output
-    file, so a backend other than Psi4 needs only another handler."""
+    """The modules log instead of calling `psi4.core.print_out`, which only the Psi4
+    backend's handler calls, so a backend other than Psi4 needs only another handler.
+    The `print_out` methods of Psi4 objects (in `cubes` and `forces`) are not counted.
+    """
 
     calls = _calls("psi4.core.print_out(")
     assert [call.split(":")[0] for call in calls] == ["backends/psi4_backend.py"]
