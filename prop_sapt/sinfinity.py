@@ -39,8 +39,8 @@ def get_B_aa(s_ba, s_ab):
 
 class sinfinity(helper_SAPT):
 
-    def __init__(self, dimer, reference="RHF", memory=None, **kwargs):
-        super().__init__(dimer, reference, memory, **kwargs)
+    def __init__(self, backend):
+        super().__init__(backend)
 
         ### Starting initialisation
         logger.info("Initializing Sinfinity object...")

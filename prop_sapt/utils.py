@@ -51,17 +51,6 @@ def package_version(name: str) -> str:
         return "unknown"
 
 
-def changed_psi4_options() -> dict | None:
-    """The Psi4 options changed from their defaults, None if Psi4 cannot list them."""
-
-    try:
-        from psi4.driver.p4util import prepare_options_for_set_options
-    except ImportError:
-        return None
-
-    return prepare_options_for_set_options()
-
-
 def prepare_path(file_path: str) -> str:
     """
     Create directories (and subdirectories) from `file_path` if they don't exist.

@@ -61,6 +61,13 @@ itself: the Psi4 option ``save_jk`` is not needed.
 If your geometry string will include more fragments, they will be treated as ghost atoms.
 You can specify midbonds and farbonds in this way.
 
+Psi4 runs as the dimer's backend, ``dimer.backend``
+(:class:`~prop_sapt.backends.psi4_backend.Psi4Backend`), which holds the results of the
+monomer SCFs and the integrals that propSAPT works from. Its Psi4 objects are also on the
+dimer, as ``dimer.wfnA`` and ``dimer.wfnB`` (the monomer wavefunctions), ``dimer.mints``
+and ``dimer.dimer_wfn``, and through ``get_psi4_molecule()`` and ``get_psi4_basisset()``.
+These attributes are read-only, since replacing one would not change the calculations.
+
 The fragment structure is kept on the dimer as ``dimer.fragments``
 (:class:`~prop_sapt.fragments.DimerFragments`): the atoms of monomers A and B and of any
 extra fragments, their charges and multiplicities, the ghost atoms, and the coordinates in

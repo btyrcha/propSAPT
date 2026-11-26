@@ -51,7 +51,7 @@ def test_parse_from_file(tmp_path):
 
 
 def test_parse_keeps_dimer_frame_with_extra_fragment():
-    """Angstrom input off the origin gets the frame of `helper_SAPT.__init__`."""
+    """Angstrom input off the origin gets the frame of `Psi4Backend`."""
 
     fragments = parse_fragments(LI_WATER_MIDBOND)
 

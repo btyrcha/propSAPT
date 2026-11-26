@@ -4,7 +4,7 @@ import pytest
 
 from .he_h2 import HE_H2
 from prop_sapt import Dimer, get_propsapt_options
-from prop_sapt.helper_SAPT_DF import jk_memory_doubles
+from prop_sapt.backends.psi4_backend import jk_memory_doubles
 
 HE_H = """
 symmetry c1
@@ -127,16 +127,17 @@ def test_overlap_of_empty_block(prepare_dimer, monkeypatch, string):
     assert mol.s(string).shape == expected
 
 
-class CountedHx:
-    """Wraps a monomer wavefunction, recording how many vectors each `cphf_Hx` call gets."""
+class CountedProducts:
+    """Wraps the orbital-Hessian products of a backend, recording how many vectors each
+    call gets."""
 
-    def __init__(self, wfn):
-        self.wfn = wfn
+    def __init__(self, product):
+        self.product = product
         self.calls = []
 
-    def cphf_Hx(self, x_vec):
-        self.calls.append(len(x_vec))
-        return self.wfn.cphf_Hx(x_vec)
+    def __call__(self, monomer, vectors, cpscf_jk=None):
+        self.calls.append(len(vectors))
+        return self.product(monomer, vectors, cpscf_jk)
 
 
 def random_perturbations(mol, monomer, count):
@@ -166,9 +167,9 @@ def test_cpscf_batch_builds_products_together(prepare_dimer, monkeypatch, monome
     vectors: as many calls as its slowest vector alone, the first with every vector."""
 
     perturbations = random_perturbations(prepare_dimer, monomer, 3)
-    attribute = "wfnA" if monomer == "A" else "wfnB"
-    counted = CountedHx(getattr(prepare_dimer, attribute))
-    monkeypatch.setattr(prepare_dimer, attribute, counted)
+    backend = prepare_dimer.backend
+    counted = CountedProducts(backend.orbital_hessian_product)
+    monkeypatch.setattr(backend, "orbital_hessian_product", counted)
 
     single_calls = []
     for p in perturbations:
@@ -225,6 +226,71 @@ def test_orbital_hessian_symmetric_positive(prepare_dimer, monomer):
 
 def test_orbital_hessian_product_of_nothing(prepare_dimer):
     assert prepare_dimer.orbital_hessian_product("A", []) == []
+
+
+class RecordedJK:
+    """Wraps the J/K builds of a backend, recording the pairs of each call."""
+
+    def __init__(self, compute_jk):
+        self.compute_jk = compute_jk
+        self.calls = []
+
+    def __call__(self, lefts, rights):
+        self.calls.append([(Cl.shape[1], Cr.shape[1]) for Cl, Cr in zip(lefts, rights)])
+        return self.compute_jk(lefts, rights)
+
+
+def test_compute_jk_fills_in_empty_pairs(prepare_dimer, monkeypatch):
+    """A pair with no columns on a side gets zero matrices without reaching the backend;
+    the other pairs keep their places."""
+
+    mol = prepare_dimer
+    recorded = RecordedJK(mol.backend.compute_jk)
+    monkeypatch.setattr(mol.backend, "compute_jk", recorded)
+    empty = mol.Co_A[:, :0]
+
+    J, K = mol.compute_jk([mol.Co_A, empty, mol.Co_B], [mol.Co_A, mol.Co_B, mol.Co_B])
+
+    assert recorded.calls == [[(mol.ndocc_A, mol.ndocc_A), (mol.ndocc_B, mol.ndocc_B)]]
+    np.testing.assert_allclose(J[0], mol.J_A, rtol=0, atol=1e-12)
+    np.testing.assert_allclose(K[2], mol.K_B, rtol=0, atol=1e-12)
+    assert not J[1].any() and not K[1].any()
+    assert J[1].shape == (mol.nbf, mol.nbf)
+
+
+def test_compute_jk_of_empty_pairs_only(prepare_dimer, monkeypatch):
+    mol = prepare_dimer
+    recorded = RecordedJK(mol.backend.compute_jk)
+    monkeypatch.setattr(mol.backend, "compute_jk", recorded)
+    empty = mol.Co_A[:, :0]
+
+    J, K = mol.compute_jk(empty, mol.Co_B)
+
+    assert recorded.calls == []
+    assert J.shape == K.shape == (mol.nbf, mol.nbf)
+    assert not J.any() and not K.any()
+
+
+@pytest.mark.parametrize("side", ["left", "right"])
+def test_compute_jk_folds_in_the_tensor(prepare_dimer, side):
+    """D = C_left M C_right^T, whichever side M is folded into (the one with fewer
+    columns): J and K are those of D itself, given to the backend as D I^T."""
+
+    mol = prepare_dimer
+    M = np.random.default_rng(5).standard_normal((mol.ndocc_A, mol.nvirt_A))
+    if side == "left":
+        Cl, Cr = mol.Co_A, mol.Cv_A
+    else:
+        Cl, Cr, M = mol.Cv_A, mol.Co_A, M.T
+    assert (Cl.shape[1] < Cr.shape[1]) == (side == "left")
+
+    J, K = mol.compute_jk(Cl, Cr, tensor=M)
+    (J_ref,), (K_ref,) = mol.backend.compute_jk([Cl @ M @ Cr.T], [np.eye(mol.nbf)])
+
+    np.testing.assert_allclose(J, J_ref, rtol=0, atol=1e-12)
+    np.testing.assert_allclose(K, K_ref, rtol=0, atol=1e-12)
+    # K tells D from its transpose
+    assert np.abs(K - K.T).max() > 1e-3
 
 
 def test_cpscf_rejects_wrong_shape(prepare_dimer):

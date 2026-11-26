@@ -52,87 +52,30 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
 import time
 from typing import overload, Literal, Any
-from functools import wraps
 import numpy as np
 import opt_einsum as oe
-import psi4
-from psi4.driver.p4util import message_box, OptionsState, OptionsStateCM
 
+from .backends.base import Backend
 from .cpscf_solver import conjugate_gradient
 from .options import PROPSAPT_OPTIONS, check_cpscf_type, check_df_basis_cpscf
 
 logger = logging.getLogger(__name__)
 
 
-@overload
-def psi4_energy(name: str, return_wfn: Literal[False] = False, **kwargs) -> float: ...
-
-
-@overload
-def psi4_energy(
-    name: str, return_wfn: Literal[True], **kwargs
-) -> tuple[float, psi4.core.Wavefunction]: ...
-
-
-@wraps(psi4.energy)
-def psi4_energy(
-    name: str, return_wfn: bool = False, **kwargs
-) -> float | tuple[float, psi4.core.Wavefunction]:
-    # SAVE_JK keeps the JK object on the wavefunction, which CPSCF (`cphf_Hx`) needs;
-    # the user's setting is restored afterwards, as Psi4's own SAPT does
-    optstash = OptionsState(["SAVE_JK"], ["SCF", "SAVE_JK"])
-    try:
-        psi4.core.set_global_option("SAVE_JK", True)
-        psi4.core.set_local_option("SCF", "SAVE_JK", True)
-        return psi4.energy(name, return_wfn=return_wfn, **kwargs)
-    finally:
-        optstash.restore()
-
-
-def jk_memory_doubles(memory: float | None = None) -> int:
-    """Memory of the JK object `helper_SAPT` builds, in doubles, the unit of
-    `JK.set_memory`.
+class helper_SAPT(object):
+    """
+    The arrays of a dimer that the SAPT contractions use, from a reference calculation
+    of the dimer by a backend (see `prop_sapt.backends`): orbitals, orbital energies,
+    potentials and overlaps of the monomers, and density-fitted integrals. The J/K builds
+    and CPSCF solves also go through the backend.
 
     Args:
-        memory (float | None, optional): Memory in GB, from the deprecated
-            `Dimer(memory=...)`. None, the default, takes Psi4's memory
-            (`psi4.set_memory`) times `SCF_MEM_SAFETY_FACTOR`, as Psi4's SCF does for
-            its own JK object.
-
-    Returns:
-        int: Memory in doubles (8 bytes each).
+        backend (Backend): The reference calculation, kept as `backend`.
     """
 
-    if memory is None:
-        safety_factor = psi4.core.get_global_option("SCF_MEM_SAFETY_FACTOR")
-        memory_bytes = psi4.get_memory() * safety_factor
-    else:
-        memory_bytes = memory * 1e9
+    def __init__(self, backend: Backend):
 
-    return int(memory_bytes / 8)
-
-
-class helper_SAPT(object):
-    def __init__(self, dimer, reference="RHF", memory=None, **kwargs):
-
-        # propSAPT is all-electron: reject frozen core instead of ignoring it
-        if psi4.core.get_global_option("FREEZE_CORE") not in ("FALSE", "0"):
-            raise ValueError(
-                "propSAPT does not support frozen core; set FREEZE_CORE to false."
-            )
-
-        # Verify reference
-        if reference not in ["RHF", "ROHF", "UHF", "RKS", "UKS"]:
-            raise ValueError(f"Unsupported reference type '{reference}'.")
-
-        if reference in ["ROHF", "UHF", "UKS"]:
-            # NOTE: Future upgrades
-            raise ValueError(f"Reference '{reference}' not implemented yet.")
-
-        # Check if the functional is specified for DFT
-        dft_functional = kwargs.get(
-            "functional", PROPSAPT_OPTIONS["default_functional"]
-        )
+        reference = backend.reference
 
         # Initialize time
         tinit_start = time.time()
@@ -146,105 +89,42 @@ class helper_SAPT(object):
         logger.info(f"Selected reference is {reference}")
 
         # Set a few crucial attributes
-        self.reference = reference.upper()
+        self.backend = backend
+        self.reference = reference
 
         # DFT settings, recorded in the output artifacts
-        self.functional = dft_functional if self.reference == "RKS" else None
-        self.grac_A = kwargs.get("grac_A")
-        self.grac_B = kwargs.get("grac_B")
-        dimer.reset_point_group("c1")
-        dimer.fix_orientation(True)
-        dimer.fix_com(True)
-        dimer.update_geometry()
-        nfrags = dimer.nfragments()
+        self.functional = backend.functional
+        self.grac_A = backend.grac_A
+        self.grac_B = backend.grac_B
 
-        if nfrags < 2:
-            raise ValueError(f"Found {nfrags:d} fragments, must be at least 2.")
-        elif nfrags > 2:
-            logger.info(
-                f"Found {nfrags:d} fragments, using first 2 as monomers, "
-                "and the rest as extra basis functions (ghosts)."
-            )
+        self.fragments = backend.fragments
+        self.mult_A = backend.fragments.A.multiplicity
+        self.mult_B = backend.fragments.B.multiplicity
 
-        # Grab monomers in DCBS
-        monomerA = dimer.extract_subsets(1, [i for i in range(2, nfrags + 1)])
-        monomerA.set_name("monomerA")
-        monomerB = dimer.extract_subsets(2, [1] + [i for i in range(3, nfrags + 1)])
-        monomerB.set_name("monomerB")
-        self.mult_A = monomerA.multiplicity()
-        self.mult_B = monomerB.multiplicity()
+        monomer_A = backend.monomers["A"]
+        monomer_B = backend.monomers["B"]
 
-        # closed-shell references only, fail before any SCF is run
-        for label, mult in (("A", self.mult_A), ("B", self.mult_B)):
-            if mult != 1:
-                raise ValueError(
-                    f"Monomer {label} has multiplicity {mult}, "
-                    f"{reference} reference requires singlet monomers."
-                )
-
-        # Compute monomer properties
-        logger.info(message_box(f"Monomer A {reference}").strip("\n"))
-        tstart = time.time()
+        # SCF energies of the monomers
         if reference == "RHF":
-            self.rhfA, self.wfnA = psi4_energy(
-                "SCF", return_wfn=True, molecule=monomerA
-            )
+            self.rhfA, self.rhfB = monomer_A.energy, monomer_B.energy
         elif reference == "RKS":
-            with OptionsStateCM(["dft_grac_shift"]):
-                if kwargs.get("grac_A"):
-                    psi4.set_options({"dft_grac_shift": kwargs["grac_A"]})
-                else:
-                    logger.warning(
-                        "GRAC shift for monomer A not specified; running without GRAC."
-                    )
-                self.dftA, self.wfnA = psi4_energy(
-                    dft_functional, return_wfn=True, molecule=monomerA
-                )
-        self.V_A = np.asarray(
-            psi4.core.MintsHelper(self.wfnA.basisset()).ao_potential()
-        )
-        logger.info(
-            f"{reference} for monomer A finished in {time.time() - tstart:.2f} seconds."
-        )
+            self.dftA, self.dftB = monomer_A.energy, monomer_B.energy
 
-        logger.info(message_box(f"Monomer B {reference}").strip("\n"))
-        tstart = time.time()
-        if reference == "RHF":
-            self.rhfB, self.wfnB = psi4_energy(
-                "SCF", return_wfn=True, molecule=monomerB
-            )
-        elif reference == "RKS":
-            with OptionsStateCM(["dft_grac_shift"]):
-                if kwargs.get("grac_B"):
-                    psi4.set_options({"dft_grac_shift": kwargs["grac_B"]})
-                else:
-                    logger.warning(
-                        "GRAC shift for monomer B not specified; running without GRAC."
-                    )
-                self.dftB, self.wfnB = psi4_energy(
-                    dft_functional, return_wfn=True, molecule=monomerB
-                )
-        self.V_B = np.asarray(
-            psi4.core.MintsHelper(self.wfnB.basisset()).ao_potential()
-        )
-        logger.info(
-            f"{reference} for monomer B finished in {time.time() - tstart:.2f} seconds."
-        )
+        self.V_A = monomer_A.V
+        self.V_B = monomer_B.V
 
         # Setup a few variables
-        self.jk_memory = jk_memory_doubles(memory)  # in doubles
-        self.memory = self.jk_memory * 8 / 1e9  # the same in GB
-        self.nmo = self.wfnA.nmo()
-        self.nbf = self.wfnA.basisset().nbf()
+        self.nmo = monomer_A.nmo
+        self.nbf = backend.nbf
 
         # Monomer A
-        self.nuc_rep_A = monomerA.nuclear_repulsion_energy()
-        self.ndocc_A = self.wfnA.doccpi()[0]
+        self.nuc_rep_A = monomer_A.nuclear_repulsion
+        self.ndocc_A = monomer_A.ndocc
         self.nvirt_A = self.nmo - self.ndocc_A
 
         if reference == "ROHF":
             self.idx_A = ["i", "a", "r"]
-            self.nsocc_A = self.wfnA.soccpi()[0]
+            self.nsocc_A = monomer_A.nsocc
             occA = self.ndocc_A + self.nsocc_A
 
         elif reference == "UHF" or reference == "UKS":
@@ -258,20 +138,20 @@ class helper_SAPT(object):
         else:
             raise ValueError(f"Unknown reference type: {reference}.")
 
-        self.C_A = np.asarray(self.wfnA.Ca())
+        self.C_A = monomer_A.C
         self.Co_A = self.C_A[:, : self.ndocc_A]
         self.Ca_A = self.C_A[:, self.ndocc_A : occA]
         self.Cv_A = self.C_A[:, occA:]
-        self.eps_A = np.asarray(self.wfnA.epsilon_a())
+        self.eps_A = monomer_A.eps
 
         # Monomer B
-        self.nuc_rep_B = monomerB.nuclear_repulsion_energy()
-        self.ndocc_B = self.wfnB.doccpi()[0]
-        self.nvirt_B = self.nmo - self.ndocc_B
+        self.nuc_rep_B = monomer_B.nuclear_repulsion
+        self.ndocc_B = monomer_B.ndocc
+        self.nvirt_B = monomer_B.nmo - self.ndocc_B
 
         if reference == "ROHF":
             self.idx_B = ["j", "b", "s"]
-            self.nsocc_B = self.wfnB.soccpi()[0]
+            self.nsocc_B = monomer_B.nsocc
             occB = self.ndocc_B + self.nsocc_B
 
         elif reference == "UHF" or reference == "UKS":
@@ -285,16 +165,14 @@ class helper_SAPT(object):
         else:
             raise ValueError(f"Unknown reference type: {reference}.")
 
-        self.C_B = np.asarray(self.wfnB.Ca())
+        self.C_B = monomer_B.C
         self.Co_B = self.C_B[:, : self.ndocc_B]
         self.Ca_B = self.C_B[:, self.ndocc_B : occB]
         self.Cv_B = self.C_B[:, occB:]
-        self.eps_B = np.asarray(self.wfnB.epsilon_a())
+        self.eps_B = monomer_B.eps
 
         # Dimer
-        self.nuc_rep = (
-            dimer.nuclear_repulsion_energy() - self.nuc_rep_A - self.nuc_rep_B
-        )
+        self.nuc_rep = backend.nuclear_repulsion - self.nuc_rep_A - self.nuc_rep_B
         self.vt_nuc_rep = self.nuc_rep / (
             (2 * self.ndocc_A + self.nsocc_A) * (2 * self.ndocc_B + self.nsocc_B)
         )
@@ -358,70 +236,17 @@ class helper_SAPT(object):
             f"Number of molecular orbitals per type:\n{rule}\n{labels}\n{rule}\n{counts}"
         )
 
-        ### Compute DF ERIs for dimer basis
-        tstart = time.time()
-        logger.info("Compute DF integrals for dimer-centered basis...")
-
-        self.dimer_wfn = psi4.core.Wavefunction.build(
-            dimer, psi4.core.get_global_option("BASIS")
-        )
-        mints = psi4.core.MintsHelper(self.dimer_wfn.basisset())
-        self.mints = mints
-
-        # DF integrals in AO
-        aux_basis = psi4.core.BasisSet.build(
-            self.dimer_wfn.molecule(),
-            target=psi4.core.get_global_option("DF_BASIS_SAPT"),
-            other=psi4.core.get_global_option("DF_BASIS_SAPT"),
-            fitrole="RIFIT",
-        )
-        aux_basis.print_out()
-        self.nao_aux = aux_basis.nao()
-        # the fitting bases as built, not the options naming them
-        self.fitting_bases = {"DF_BASIS_SAPT": aux_basis.blend()}
-        zero_basis = psi4.core.BasisSet.zero_ao_basis_set()
-        metric = self.mints.ao_eri(aux_basis, zero_basis, aux_basis, zero_basis)
-        metric.power(-0.5, 1.0e-14)
-        metric = np.squeeze(metric)
-        Ppq = self.mints.ao_eri(
-            aux_basis,
-            zero_basis,
-            self.dimer_wfn.basisset(),
-            self.dimer_wfn.basisset(),
-        )
-        Ppq = np.squeeze(Ppq)
-        self.Qpq = np.array(oe.contract("QP,Ppq->Qpq", metric, Ppq))
-
-        logger.info(f"... DF integrals finished in {time.time() - tstart:.2f} seconds.")
-
-        # JK object
-        logger.info("Initialize JK objects...")
-        tstart = time.time()
-        aux_basis = psi4.core.BasisSet.build(
-            self.dimer_wfn.molecule(),
-            "DF_BASIS_SCF",
-            psi4.core.get_option("SCF", "DF_BASIS_SCF"),
-            "JKFIT",
-            psi4.core.get_global_option("BASIS"),
-            puream=self.dimer_wfn.basisset().has_puream(),
-        )
-        self.fitting_bases["DF_BASIS_SCF"] = aux_basis.blend()
-        # also the default fitting basis of the "DF" CPSCF, see `build_cpscf_jk`
-        self._df_basis_scf = aux_basis
-
-        self.jk = psi4.core.JK.build(self.dimer_wfn.basisset(), aux_basis)
-        self.jk.set_memory(self.jk_memory)
-        self.jk.initialize()
-        logger.info(f"...initialized JK objects in {time.time() - tstart:.2f} seconds.")
+        ### DF ERIs and the overlap of the dimer basis
+        self.Qpq = backend.Qpq
+        # number of functions of the SAPT fitting basis (spherical ones if it is)
+        self.naux = self.Qpq.shape[0]
+        self.S = backend.S
 
         self.J_A, self.K_A = self.compute_jk(self.Co_A, self.Co_A)
         self.J_B, self.K_B = self.compute_jk(self.Co_B, self.Co_B)
 
         # J/K object of the CPSCF solves, see `build_cpscf_jk`; None uses the monomer SCF's
         self.cpscf_jk = None
-
-        # Overlap matrix in AO
-        self.S = np.asarray(self.mints.ao_overlap())
 
         # Save additional rank 2 tensors
         self.V_A_BB = oe.contract("ui,vj,uv->ij", self.C_B, self.C_B, self.V_A)
@@ -620,9 +445,9 @@ class helper_SAPT(object):
         perturbation: for RHF,
         H_{ar,a'r'} = (eps_r - eps_a) delta_{aa'} delta_{rr'}
         + 4 (ar|a'r') - (ar'|a'r) - (aa'|rr'),
-        and for RKS the exchange-correlation kernel too. Its J and K matrices come from
-        the J/K object of the monomer SCF, or from `cpscf_jk` if it is set (see
-        `build_cpscf_jk`). Psi4's `cphf_Hx` gives the products, with the opposite sign.
+        and for RKS the exchange-correlation kernel too. The backend builds the
+        products (`Backend.orbital_hessian_product`), with the J/K of the monomer SCF,
+        or of `cpscf_jk` if it is set (see `build_cpscf_jk`).
 
         Args:
             monomer (str): "A" or "B".
@@ -637,47 +462,26 @@ class helper_SAPT(object):
         if len(vectors) == 0:
             return []
 
-        wfn = self.wfnA if monomer == "A" else self.wfnB
-        matrices = [
-            psi4.core.Matrix.from_array(np.ascontiguousarray(x)) for x in vectors
-        ]
-
-        # `cphf_Hx` takes the J and K matrices from the wavefunction's J/K object
-        swap_jk = self.cpscf_jk is not None
-        if swap_jk:
-            scf_jk = wfn.jk()
-            wfn.set_jk(self.cpscf_jk)
-
-        try:
-            products = wfn.cphf_Hx(matrices)
-        finally:
-            if swap_jk:
-                wfn.set_jk(scf_jk)
-
-        return [-np.asarray(product) for product in products]
+        return self.backend.orbital_hessian_product(monomer, vectors, self.cpscf_jk)
 
     def build_cpscf_jk(
         self, cpscf_type: str | None, df_basis: str | None = None
-    ) -> psi4.core.JK | None:
+    ) -> object:
         """
-        J/K object for CPSCF solves of type `cpscf_type`, shared by both monomers.
-
-        It is set up as Psi4's SCF sets up its own (`initialize_jk`), with the memory of
-        propSAPT's J/K object, `jk_memory`. `cpscf_batch` uses it in place of the
-        monomer SCF's J/K object while it is `cpscf_jk`. The "DF" one is MemDFJK if it
-        fits in that memory and DiskDFJK otherwise, as for Psi4's `SCF_TYPE` "DF".
+        J/K object for CPSCF solves of type `cpscf_type`, shared by both monomers, from
+        the backend (`Backend.build_cpscf_jk`). `cpscf_batch` uses it in place of the
+        monomer SCF's J/K while it is `cpscf_jk`.
 
         Args:
             cpscf_type (str | None): "DIRECT" or "DF", case-insensitive, see the
                 `cpscf_type` option; None stands for the monomer SCF's J/K objects.
             df_basis (str | None, optional): Fitting basis of "DF". Defaults to the
-                dimer's `DF_BASIS_SCF` fitting basis (see `fitting_bases`): the one of
-                Psi4's `DF_BASIS_SCF` when the dimer was built, or else the JKFIT basis
-                of its orbital basis.
+                backend's default, for Psi4 the dimer's `DF_BASIS_SCF` fitting basis
+                (see `fitting_bases`).
 
         Returns:
-            psi4.core.JK | None: The J/K object, or None if the monomer SCF's J/K
-                objects are of this type already ("DF" only without `df_basis`).
+            object: The J/K object, or None if the monomer SCF's J/K objects are of
+                this type already ("DF" only without `df_basis`).
         """
 
         cpscf_type = check_cpscf_type(cpscf_type)
@@ -686,56 +490,7 @@ class helper_SAPT(object):
         if cpscf_type is None:
             return None
 
-        scf_jk_names = {self.wfnA.jk().name(), self.wfnB.jk().name()}
-        if cpscf_type == "DIRECT" and scf_jk_names == {"DirectJK"}:
-            return None
-        if (
-            cpscf_type == "DF"
-            and df_basis is None
-            and scf_jk_names <= {"MemDFJK", "DiskDFJK"}
-        ):
-            return None
-
-        # the monomers share the dimer basis set (ghost atoms), as in Psi4's SAPT
-        wfn = self.wfnA
-        aux = None
-        if cpscf_type == "DF" and df_basis is None:
-            aux = self._df_basis_scf
-        elif cpscf_type == "DF":
-            # a named fitting basis covers every atom; Psi4 only needs a valid orbital
-            # basis name next to it, the dimer's, not the options at this solve
-            aux = psi4.core.BasisSet.build(
-                wfn.molecule(),
-                "DF_BASIS_SCF",
-                df_basis,
-                "JKFIT",
-                wfn.basisset().name(),
-                puream=wfn.basisset().has_puream(),
-            )
-
-        tstart = time.time()
-        logger.info(f"Initialize the {cpscf_type} J/K object of CPSCF...")
-        jk = psi4.core.JK.build(
-            wfn.basisset(),
-            aux=aux,
-            jk_type=cpscf_type,
-            do_wK=wfn.functional().is_x_lrc(),
-            memory=self.jk_memory,
-        )
-
-        # `initialize_jk` also puts the J/K object on the wavefunction
-        scf_jk = wfn.jk()
-        try:
-            wfn.initialize_jk(self.jk_memory, jk=jk)
-        finally:
-            wfn.set_jk(scf_jk)
-
-        fitting = f", fitting basis {aux.name()} ({aux.nbf()} functions)" if aux else ""
-        logger.info(
-            f"...initialized {jk.name()}{fitting} in {time.time() - tstart:.2f} seconds."
-        )
-
-        return jk
+        return self.backend.build_cpscf_jk(cpscf_type, df_basis)
 
     def _check_cpscf(self, monomer):
         """Raises ValueError unless CPSCF is implemented for this reference and `monomer`."""
@@ -768,6 +523,25 @@ class helper_SAPT(object):
         return self.orbitals[string[0]].T.dot(x).dot(self.orbitals[string[1]])
 
     def compute_jk(self, Cleft, Cright, tensor=None):
+        """
+        J and K matrices of generalized densities D = C_left C_right^T, or
+        D = C_left M C_right^T with M given as `tensor`, from the backend
+        (`Backend.compute_jk`).
+
+        M is folded into the side with fewer columns. A pair with no columns on a side
+        gets zero matrices without reaching the backend.
+
+        Args:
+            Cleft (np.ndarray | list[np.ndarray]): C_left matrix, (nbf, k), or a list.
+            Cright (np.ndarray | list[np.ndarray]): C_right matrix, (nbf, l), or a list
+                as long as `Cleft`.
+            tensor (np.ndarray | list[np.ndarray] | None, optional): M matrix, (k, l),
+                or a list of them, one per pair. Defaults to None, no M.
+
+        Returns:
+            tuple: J and K: AO matrices if single matrices are given, lists of them
+                otherwise.
+        """
 
         if self.reference == "ROHF":
             raise NotImplementedError(
@@ -789,7 +563,8 @@ class helper_SAPT(object):
             raise ValueError("Cleft list is not the same length as Cright list")
 
         zero_append = []
-        num_compute = 0
+        lefts = []
+        rights = []
 
         for num, (Cl, Cr) in enumerate(zip(Cleft, Cright)):
             if (Cr.shape[1] == 0) or (Cl.shape[1] == 0):
@@ -810,22 +585,14 @@ class helper_SAPT(object):
                 else:
                     Cr = np.dot(Cr, tensor[num].T)
 
-            Cl = psi4.core.Matrix.from_array(Cl)
-            Cr = psi4.core.Matrix.from_array(Cr)
-
-            self.jk.C_left_add(Cl)
-            self.jk.C_right_add(Cr)
-            num_compute += 1
-
-        self.jk.compute()
+            lefts.append(Cl)
+            rights.append(Cr)
 
         J_list = []
         K_list = []
-        for num in range(num_compute):
-            J_list.append(np.array(self.jk.J()[num]))
-            K_list.append(np.array(self.jk.K()[num]))
-
-        self.jk.C_clear()
+        if lefts:
+            J_list, K_list = self.backend.compute_jk(lefts, rights)
+            J_list, K_list = list(J_list), list(K_list)
 
         z = np.zeros((self.nbf, self.nbf))
         for num in zero_append:

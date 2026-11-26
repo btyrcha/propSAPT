@@ -8,6 +8,7 @@ import psi4
 import pytest
 
 import prop_sapt.log
+from prop_sapt.backends.psi4_backend import Psi4OutputHandler
 
 from .test_cpscf_solver import DenseHessian, right_hand_sides, solve
 
@@ -130,16 +131,25 @@ def _calls(pattern: str) -> list[str]:
     return found
 
 
-def test_only_the_log_module_writes_to_psi4_output():
-    """The modules log, and only `prop_sapt.log` writes into Psi4's output file, so a
-    backend other than Psi4 needs only another handler."""
+def test_only_the_psi4_backend_writes_to_psi4_output():
+    """The modules log instead of calling `psi4.core.print_out`, which only the Psi4
+    backend's handler calls, so a backend other than Psi4 needs only another handler.
+    The `print_out` methods of Psi4 objects (in `cubes` and `forces`) are not counted.
+    """
 
     calls = _calls("psi4.core.print_out(")
-    assert [call.split(":")[0] for call in calls] == ["log.py"]
+    assert [call.split(":")[0] for call in calls] == ["backends/psi4_backend.py"]
 
 
-def test_psi4_scratch_cleaned_only_at_the_end_of_jobs():
-    """Psi4's scratch files are cleaned between jobs, not before raising an error."""
+def test_log_module_installs_the_psi4_backends_handler():
+    assert prop_sapt.log.Psi4OutputHandler is Psi4OutputHandler
+    assert any(isinstance(handler, Psi4OutputHandler) for handler in _handlers())
+
+
+def test_psi4_scratch_cleaned_only_by_the_backend():
+    """Psi4's scratch files are cleaned by the Psi4 backend, at the end of jobs
+    (`clean_scratch`), not before raising an error."""
 
     files = [call.split(":")[0] for call in _calls("psi4.core.clean()")]
-    assert files == ["properties.py", "runner.py", "sapt_driver.py"]
+    assert files == ["backends/psi4_backend.py"]
+    assert len(_calls(".clean_scratch()")) == 3

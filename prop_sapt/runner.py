@@ -19,6 +19,7 @@ import numpy as np
 import psi4
 
 from ._version import __version__
+from .backends.psi4_backend import Psi4Backend
 from .basis_overrides import apply_basis_overrides
 from .config import RunConfig, load_config, resolve_config
 from .densities import calc_densities
@@ -280,6 +281,7 @@ def run(
             handle.write("\n")
 
     finally:
-        psi4.core.clean()
+        # on the class: the dimer, and so its backend, may not have been built
+        Psi4Backend.clean_scratch()
 
     return results

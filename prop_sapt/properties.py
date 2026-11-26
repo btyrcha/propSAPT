@@ -4,7 +4,6 @@ Calculations of SAPT one-electron properties.
 
 from collections.abc import Generator
 
-import psi4
 import numpy as np
 import pandas as pd
 import opt_einsum as oe
@@ -688,12 +687,10 @@ def calc_induced_dipole(dimer: Dimer, response: bool | str = True) -> pd.DataFra
     _check_response(response)
 
     # grab nuclear dipole moment
-    nuc_dipole = dimer.dimer.nuclear_dipole()
-    nuc_dipole = np.array([nuc_dipole[0], nuc_dipole[1], nuc_dipole[2]])
+    nuc_dipole = dimer.backend.nuclear_dipole()
 
     # grab AO dipole moment matrices
-    d_vec = dimer.mints.ao_dipole()
-    d_vec = [np.asarray(elem) for elem in d_vec]
+    d_vec = dimer.backend.dipole_integrals()
 
     # the CPSCF equations of the three axes are solved together, see `solve_batched`
     names = {axis: f"Property calculation along {axis}" for axis in "XYZ"}
@@ -779,6 +776,6 @@ def calc_property(
         ### Results saving to file
         results.to_csv(results_fname)
 
-    psi4.core.clean()
+    dimer.backend.clean_scratch()
 
     return results

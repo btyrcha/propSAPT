@@ -368,7 +368,7 @@ def parse_fragments(geometry: str | os.PathLike) -> DimerFragments:
 
     molecule = psi4.core.Molecule.from_string(geometry)
 
-    # the frame of `helper_SAPT.__init__`: input orientation (centered by Psi4 unless
+    # the frame of `Psi4Backend`: input orientation (centered by Psi4 unless
     # `no_com`), symmetry not imposed
     molecule.reset_point_group("c1")
     molecule.fix_orientation(True)

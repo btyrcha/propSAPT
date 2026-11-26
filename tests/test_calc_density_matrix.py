@@ -28,9 +28,7 @@ from prop_sapt.densities_components import (
 def prepare_dipole_along_x(prepare_dimer):
     """Prepare dipole moment AO matrix along X axis."""
 
-    d_vec = prepare_dimer.mints.ao_dipole()
-    d_vec = [np.asarray(elem) for elem in d_vec]
-    d_X = d_vec[0]
+    d_X = prepare_dimer.backend.dipole_integrals()[0]
 
     return d_X
 

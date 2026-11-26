@@ -226,7 +226,7 @@ def test_basis_overrides_apply_only_to_options_in_use():
         hydrogen, "aug-cc-pvqz-ri"
     )
 
-    # the way helper_SAPT_DF builds the DF_BASIS_SAPT basis
+    # the way Psi4Backend builds the DF_BASIS_SAPT basis
     target = psi4.core.get_global_option("DF_BASIS_SAPT")
     assert ri_basis_size(molecule, target) == expected
     assert expected < ri_basis_size(molecule, "aug-cc-pvqz-ri")
@@ -262,7 +262,7 @@ def test_basis_dirs_make_extra_basis_files_available(tmp_path, monkeypatch):
             molecule, "DF_BASIS_SCF", target, "JKFIT", "aug-cc-pvtz"
         ).nbf()
 
-    # the way helper_SAPT_DF builds the DF_BASIS_SCF basis
+    # the way Psi4Backend builds the DF_BASIS_SCF basis
     target = psi4.core.get_option("SCF", "DF_BASIS_SCF")
     assert target == "PROPSAPT-TEST-JKFIT"
     assert jkfit_basis_size(target) == jkfit_basis_size("def2-universal-jkfit")
@@ -324,7 +324,7 @@ def energies_with_overrides(basis_overrides) -> np.ndarray:
     dimer = runner.build_dimer(config, HE_H2)
 
     return np.array(
-        [calc_elst1_energy(dimer), calc_disp2_energy(dimer)["DISP2"], dimer.nao_aux]
+        [calc_elst1_energy(dimer), calc_disp2_energy(dimer)["DISP2"], dimer.naux]
     )
 
 

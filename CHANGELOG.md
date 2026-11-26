@@ -32,6 +32,13 @@ requests of the private repository propSAPT was developed in before it was publi
   `logging` calls now quiet or redirect it, in whole or per module. The progress of
   `make_cube` over the grid is logged at the DEBUG level. See the
   [usage guide](https://btyrcha.github.io/propSAPT/usage.html#output-and-logging).
+- Psi4 runs as the dimer's backend, `dimer.backend`, which holds the monomer SCFs and the
+  integrals propSAPT works from; the results are the same. The dimer's Psi4 objects and
+  settings (`wfnA`, `wfnB`, `mints`, `dimer_wfn`, `jk`, `memory`, `psi4_options`,
+  `fitting_bases`, ...) are still there, now read-only. `dimer.nao_aux` is now
+  `dimer.naux`, the number of functions of the SAPT fitting basis: `nao_aux` counted
+  Cartesian functions even for a spherical basis. `changed_psi4_options` moved
+  from `prop_sapt.utils` to `prop_sapt.backends.psi4_backend`.
 
 ### Fixed
 
